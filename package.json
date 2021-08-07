@@ -7,17 +7,21 @@
   "author": "team13",
   "license": "MIT",
   "scripts": {
-    "dev": "next dev client",
-    "build": "next build",
-    "start": "next start"
+    "dev:client": "next dev client",
+    "build:client": "next build client",
+    "start:client": "next start client",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix --ext .js,.jsx ."
   },
   "dependencies": {
+    "@next/eslint-plugin-next": "^11.0.1",
     "next": "11.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
+    "eslint-config-next": "^11.0.1",
     "eslint-plugin-react": "^7.24.0"
   }
 }
