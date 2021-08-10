@@ -6,6 +6,8 @@ const mongoose = require('mongoose')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt')
+const swaggerUI = require('swagger-ui-express')
+const swaggerDoc = require('./docs')
 const User = require('./models/user')
 require('dotenv').config()
 
@@ -51,6 +53,9 @@ function initApp() {
 
     // set up routing
     app.use('/api', require('./routes/api'))
+
+    // set up swagger ui
+    app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc))
 
     app.use((_, res) => {
         res.status(400).end('404')
