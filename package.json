@@ -26,17 +26,19 @@
     "dotenv": "^10.0.0",
     "email-validator": "^2.0.4",
     "express": "^4.17.1",
+    "framer-motion": "^4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.6",
     "morgan": "^1.10.0",
-    "framer-motion": "^4",
     "next": "11.0.1",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^6.1.0",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "swagger-ui-express": "^4.1.6",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
