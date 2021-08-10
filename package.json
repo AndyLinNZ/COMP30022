@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "dev:client": "next dev client",
-    "build:client": "next build client",
+    "build:client": "yarn lint:fix && next build client",
     "start:client": "next start client",
     "lint": "eslint",
     "lint:fix": "eslint --fix --ext .js,.jsx ."
