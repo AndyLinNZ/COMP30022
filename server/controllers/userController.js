@@ -6,7 +6,7 @@ require('dotenv').config()
 
 // regex to check all passwords follow policy:
 // min 8 characters, 1 alphabetical char, 1 numerical digit
-const strongPassword = new RegExp("(?=.*[a-zA-Z])(?=.*[0-9])(?=.{8,})");
+const strongPassword = new RegExp('(?=.*[a-zA-Z])(?=.*[0-9])(?=.{8,})')
 
 function registerUser(req, res, next) {
     if(!req.body.email) return next({ message: 'Missing "email" field' })
