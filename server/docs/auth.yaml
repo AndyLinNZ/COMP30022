@@ -82,6 +82,14 @@ paths:
                   value:
                     success: false
                     message: 'Missing "lastName" field'
+                invalidEmail:
+                  value:
+                    success: false
+                    message: 'Invalid email'
+                weakPassword:
+                  value:
+                    success: false
+                    message: 'Password is too weak'
         '409':
           description: 'Email already registered.'
           content:
