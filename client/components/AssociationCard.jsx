@@ -7,7 +7,8 @@ const AssociationCard = ({ name, org, activeSeasons, icon }) => {
     return (
         <Box
             bg="white"
-            w="350px"
+            w="400px"
+            minW="300px"
             h="175px"
             borderRadius="0.75rem"
             display="flex"
@@ -16,6 +17,12 @@ const AssociationCard = ({ name, org, activeSeasons, icon }) => {
             pos="relative"
             boxShadow="0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);"
             px="2"
+            cursor="pointer"
+            transition="box-shadow 0.8s ease"
+            _hover={{
+                boxShadow:
+                    '0 15px 30px rgba(0,0,0,0.1), 0 20px 20px rgba(0,0,0,0.12);',
+            }}
         >
             <Box pos="absolute" top="-25%">
                 <Avatar src={icon} size="xl" />

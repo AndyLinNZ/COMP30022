@@ -1,33 +1,34 @@
 {
-  "name": "COMP30022",
-  "version": "1.0.0",
-  "description": "COMP30022 Project",
-  "main": "index.js",
-  "repository": "https://github.com/JoshDubar/COMP30022.git",
-  "author": "team13",
-  "license": "MIT",
-  "scripts": {
-    "dev:client": "next dev client",
-    "build:client": "yarn lint:fix && next build client",
-    "start:client": "next start client",
-    "lint": "eslint",
-    "lint:fix": "eslint --fix --ext .js,.jsx ."
-  },
-  "dependencies": {
-    "@chakra-ui/react": "^1.6.6",
-    "@emotion/react": "^11",
-    "@emotion/styled": "^11",
-    "@fontsource/roboto-condensed": "^4.5.0",
-    "@next/eslint-plugin-next": "^11.0.1",
-    "framer-motion": "^4",
-    "next": "11.0.1",
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
-  },
-  "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-config-next": "^11.0.1",
-    "eslint-config-prettier": "^8.3.0",
-    "prettier": "^2.3.2"
-  }
+    "name": "COMP30022",
+    "version": "1.0.0",
+    "description": "COMP30022 Project",
+    "main": "index.js",
+    "repository": "https://github.com/JoshDubar/COMP30022.git",
+    "author": "team13",
+    "license": "MIT",
+    "scripts": {
+        "dev:client": "next dev client",
+        "build:client": "yarn lint:fix && next build client",
+        "start:client": "next start client",
+        "lint": "eslint",
+        "precommit": "eslint --fix --ext .js,.jsx ."
+    },
+    "dependencies": {
+        "@chakra-ui/icons": "^1.0.15",
+        "@chakra-ui/react": "^1.6.6",
+        "@emotion/react": "^11",
+        "@emotion/styled": "^11",
+        "@fontsource/roboto-condensed": "^4.5.0",
+        "@next/eslint-plugin-next": "^11.0.1",
+        "framer-motion": "^4",
+        "next": "11.0.1",
+        "react": "17.0.2",
+        "react-dom": "17.0.2"
+    },
+    "devDependencies": {
+        "eslint": "^7.32.0",
+        "eslint-config-next": "^11.0.1",
+        "eslint-config-prettier": "^8.3.0",
+        "prettier": "^2.3.2"
+    }
 }

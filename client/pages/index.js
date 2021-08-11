@@ -1,34 +1,83 @@
 import React from 'react'
-import AssociationCard from 'components/AssociationCard'
-import Head from 'next/head'
-import Image from 'next/image'
+import { Flex, Box, Heading, Checkbox, Text } from '@chakra-ui/react'
+import Header from 'components/Header'
+import HeroBackDrop from 'components/svg/HeroBackDrop'
+import AssociationSearch from 'components/AssociationSearch'
+import AssociationGrid from 'components/AssociationGrid'
 
 export default function Home() {
+    const [boxHeight, setBoxHeight] = React.useState(0)
+    const [inSeason, setInSeason] = React.useState(true)
+    const [upcomingSeason, setUpcomingSeason] = React.useState(true)
+
+    React.useEffect(() => {
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth
+            if (width < 1000) {
+                setBoxHeight((1 / window.innerWidth) * 200000)
+            } else {
+                setBoxHeight(0)
+            }
+        })
+    })
+
     return (
-        <div
-            style={{
-                height: '100vh',
-                width: '100vw',
-                background: '#EBEBEB',
-            }}
+        <Flex
+            maxW="100vw"
+            flexDir="column"
+            justifyContent="flex-start"
+            overflowX="hidden"
+            bg="grey"
         >
-            <div
-                style={{
-                    position: 'absolute',
-                    transform: 'translate(-50%, -50%)',
-                    top: '50%',
-                    left: '50%',
-                }}
+            <Box h={boxHeight} bg="orange" overflow="hidden" />
+            <HeroBackDrop />
+            <Header />
+            <Flex
+                pos="absolute"
+                left="50%"
+                transform="translateX(-50%)"
+                mt="60px"
+                flexDir="column"
+                w="100%"
             >
-                <AssociationCard
-                    name={
-                        'National Basketball Association dasd adassadsada dsad'
-                    }
-                    org="Basketball Victoria"
-                    activeSeasons={2}
-                    icon={null}
-                />
-            </div>
-        </div>
+                <Heading
+                    fontSize="120px"
+                    fontWeight="normal"
+                    color="heading"
+                    mb="6"
+                    textAlign="center"
+                >
+                    dribblr.
+                </Heading>
+                <AssociationSearch />
+            </Flex>
+            <Box px="3rem">
+                <Flex>
+                    <Checkbox
+                        defaultIsChecked
+                        value={inSeason}
+                        iconColor="white"
+                        colorScheme="greyText"
+                        size="lg"
+                        mr="4"
+                    >
+                        <Text fontSize="1rem">IN SEASON</Text>
+                    </Checkbox>
+                    <Checkbox
+                        defaultIsChecked
+                        value={upcomingSeason}
+                        onClick={() => setUpcomingSeason((prev) => !prev)}
+                        iconColor="white"
+                        colorScheme="greyText"
+                        size="lg"
+                    >
+                        <Text fontSize="1rem">SEASON UPCOMING</Text>
+                    </Checkbox>
+                </Flex>
+                <Flex alignItems="center" width="100%" mt="5rem">
+                    <AssociationGrid />
+                </Flex>
+            </Box>
+        </Flex>
     )
 }
