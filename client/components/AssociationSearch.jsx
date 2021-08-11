@@ -2,7 +2,7 @@ import { Box, Input, InputGroup, InputLeftElement } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
 import React from 'react'
 
-const AssociationSearch = () => {
+const AssociationSearch = ({ value, onChange }) => {
     return (
         <Box as="form" width="100%" px={['10%', '20%']} onSubmit={() => {}}>
             <InputGroup>
@@ -16,6 +16,8 @@ const AssociationSearch = () => {
                     borderWidth="3px"
                     _placeholder={{ color: 'white' }}
                     _focus={{}}
+                    value={value}
+                    onChange={(event) => onChange(event.currentTarget.value)}
                 />
             </InputGroup>
         </Box>

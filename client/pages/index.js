@@ -5,10 +5,92 @@ import HeroBackDrop from 'components/svg/HeroBackDrop'
 import AssociationSearch from 'components/AssociationSearch'
 import AssociationGrid from 'components/AssociationGrid'
 
+const mockTeams = [
+    {
+        name: 'National Basketball Association',
+        org: 'Basketball Victoria',
+        activeSeasons: 2,
+        _id: 0,
+    },
+    {
+        name: 'National Orange Association',
+        org: 'Basketball Victoria',
+        activeSeasons: 1,
+        _id: 1,
+    },
+    {
+        name: 'National Basketball Players',
+        org: 'Basketball Victoria',
+        activeSeasons: 0,
+        _id: 2,
+    },
+    {
+        name: 'Okay Basketball Association',
+        org: 'Basketball Victoria',
+        activeSeasons: 2,
+        _id: 3,
+    },
+    {
+        name: 'National Basketball Association',
+        org: 'Basketball Victoria',
+        activeSeasons: 1,
+        _id: 4,
+    },
+    {
+        name: 'National Basketball Association',
+        org: 'Basketball Victoria',
+        activeSeasons: 0,
+        _id: 5,
+    },
+    {
+        name: 'National Basketball Association',
+        org: 'Basketball Victoria',
+        activeSeasons: 2,
+        _id: 6,
+    },
+    {
+        name: 'National Basketball Association',
+        org: 'Basketball Victoria',
+        activeSeasons: 2,
+        _id: 7,
+    },
+    {
+        name: 'National Basketball Association',
+        org: 'Basketball Victoria',
+        activeSeasons: 2,
+        _id: 8,
+    },
+    {
+        name: 'National Basketball Association',
+        org: 'Basketball Victoria',
+        activeSeasons: 2,
+        _id: 9,
+    },
+    {
+        name: 'National Basketball Association',
+        org: 'Basketball Victoria',
+        activeSeasons: 2,
+        _id: 10,
+    },
+]
+
 export default function Home() {
     const [boxHeight, setBoxHeight] = React.useState(0)
     const [inSeason, setInSeason] = React.useState(true)
     const [upcomingSeason, setUpcomingSeason] = React.useState(true)
+    const [searchValue, setSearchValue] = React.useState('')
+
+    const [filteredTeams, setFilteredTeams] = React.useState(mockTeams)
+
+    React.useEffect(() => {
+        setFilteredTeams(
+            mockTeams.filter(({ name }) =>
+                name.toLowerCase().includes(searchValue.toLowerCase())
+            )
+        )
+    }, [searchValue, mockTeams])
+
+    console.log(filteredTeams)
 
     React.useEffect(() => {
         window.addEventListener('resize', () => {
@@ -49,9 +131,12 @@ export default function Home() {
                 >
                     dribblr.
                 </Heading>
-                <AssociationSearch />
+                <AssociationSearch
+                    value={searchValue}
+                    onChange={setSearchValue}
+                />
             </Flex>
-            <Box px="3rem">
+            <Box px="3rem" minH="500px">
                 <Flex>
                     <Checkbox
                         isChecked={inSeason}
@@ -80,7 +165,9 @@ export default function Home() {
                     </Checkbox>
                 </Flex>
                 <Flex alignItems="center" width="100%" mt="5rem">
-                    <AssociationGrid {...{ inSeason, upcomingSeason }} />
+                    <AssociationGrid
+                        {...{ inSeason, upcomingSeason, teams: filteredTeams }}
+                    />
                 </Flex>
             </Box>
         </Flex>
