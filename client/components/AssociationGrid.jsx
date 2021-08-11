@@ -70,7 +70,15 @@ const mockTeams = [
         _id: 10,
     },
 ]
-const AssociationGrid = ({ teams = mockTeams }) => {
+const AssociationGrid = ({ teams = mockTeams, inSeason, upcomingSeason }) => {
+    const displayTeams = React.useMemo(() => {
+        return teams.filter(({ activeSeasons }) => {
+            if (inSeason && activeSeasons >= 1) return true
+            if (!inSeason && activeSeasons === 0) return true
+            if (upcomingSeason && activeSeasons === 0) return true
+            return false
+        })
+    }, [teams, inSeason, upcomingSeason])
     return (
         <SimpleGrid
             columns={[1, 2, 3]}
@@ -78,7 +86,7 @@ const AssociationGrid = ({ teams = mockTeams }) => {
             width="100%"
             justifyContent="center"
         >
-            {teams.map(({ name, org, activeSeasons, _id }) => (
+            {displayTeams.map(({ name, org, activeSeasons, _id }) => (
                 <GridItem
                     key={_id}
                     display="flex"

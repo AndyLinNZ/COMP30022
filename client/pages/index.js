@@ -54,8 +54,11 @@ export default function Home() {
             <Box px="3rem">
                 <Flex>
                     <Checkbox
-                        defaultIsChecked
-                        value={inSeason}
+                        isChecked={inSeason}
+                        onChange={(e) => {
+                            e.preventDefault()
+                            setInSeason(!inSeason)
+                        }}
                         iconColor="white"
                         colorScheme="greyText"
                         size="lg"
@@ -64,9 +67,11 @@ export default function Home() {
                         <Text fontSize="1rem">IN SEASON</Text>
                     </Checkbox>
                     <Checkbox
-                        defaultIsChecked
-                        value={upcomingSeason}
-                        onClick={() => setUpcomingSeason((prev) => !prev)}
+                        isChecked={upcomingSeason}
+                        onChange={(e) => {
+                            e.preventDefault()
+                            setUpcomingSeason(!upcomingSeason)
+                        }}
                         iconColor="white"
                         colorScheme="greyText"
                         size="lg"
@@ -75,7 +80,7 @@ export default function Home() {
                     </Checkbox>
                 </Flex>
                 <Flex alignItems="center" width="100%" mt="5rem">
-                    <AssociationGrid />
+                    <AssociationGrid {...{ inSeason, upcomingSeason }} />
                 </Flex>
             </Box>
         </Flex>
