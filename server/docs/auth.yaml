@@ -91,6 +91,15 @@ paths:
               example:
                 success: false
                 message: 'A user has already registered with that email'
+        '500':
+          description: '(unknown) Registration error.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                message: 'Registration error'
 
   /login:
     post:
