@@ -19,20 +19,20 @@ function registerUser(req, res, next) {
     let { email, password, firstName, lastName } = req.body
     User.register(new User({ email, firstName, lastName }), password, (err, user) => {
         if(err && err.toString().includes('username is already registered')) {
-            return next({ message: 'A user has already registered with that email' })
+            return next({ status: 409, message: 'A user has already registered with that email' })
         } else if(err) {
             console.log(`Registration error: ${err}`)
-            return next({ message: 'Registration error' })
+            return next({ status: 500, message: 'Registration error' })
         }
 
-        return res.json({ success: true, message: 'Registration successful' })
+        return res.status(201).json({ success: true, message: 'Registration successful' })
     })
 }
 
 function loginUser(req, res, next) {
     passport.authenticate('local', (_, user, err) => {
         if(err) {
-            return next({ message: err.message })
+            return next({ status: 401 , message: err.message })
         }
 
         const token = JWT.sign({ username: user.username }, process.env.JWT_SECRET, { algorithm: 'HS256', expiresIn: '2d' })
