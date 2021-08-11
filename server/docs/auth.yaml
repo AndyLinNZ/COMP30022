@@ -1,0 +1,125 @@
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+  schemas:
+    UserRegistration:
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+      required:
+        - email
+        - password
+        - firstName
+        - lastName
+      example:
+        email: john.smith@example.com
+        password: "S3cur3 P4ssw0rd 123!"
+        firstName: John
+        lastName: Smith
+
+    UserLogin:
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+      example:
+        username: john.smith@example.com
+        password: "S3cur3 P4ssw0rd 123!"
+
+paths:
+  /register:
+    post:
+      summary: 'Registers a new user.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+      responses:
+        '201':
+          description: 'Successfully registered user.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: true
+                message: 'Registration successful'
+        '400':
+          description: 'Invalid request.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              examples:
+                missingEmail:
+                  value:
+                    success: false
+                    message: 'Missing "email" field'
+                missingPassword:
+                  value:
+                    success: false
+                    message: 'Missing "password" field'
+                missingFirstName:
+                  value:
+                    success: false
+                    message: 'Missing "firstName" field'
+                missingLastName:
+                  value:
+                    success: false
+                    message: 'Missing "lastName" field'
+        '409':
+          description: 'Email already registered.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                message: 'A user has already registered with that email'
+
+  /login:
+    post:
+      summary: 'Logs a user in.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+      responses:
+        '200':
+          description: 'Successfully logged in.'
+          content:
+            application/json:
+              schema:
+                success:
+                  type: boolean
+                token:
+                  type: string
+              example:
+                success: true
+                token: "eyJ..."
+        '401':
+          description: 'Login failed.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                message: 'Password or username is incorrect'
