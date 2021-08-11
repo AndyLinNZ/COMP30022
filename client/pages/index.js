@@ -90,8 +90,6 @@ export default function Home() {
         )
     }, [searchValue, mockTeams])
 
-    console.log(filteredTeams)
-
     React.useEffect(() => {
         window.addEventListener('resize', () => {
             const width = window.innerWidth
