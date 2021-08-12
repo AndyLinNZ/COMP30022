@@ -8,17 +8,19 @@
   "license": "MIT",
   "scripts": {
     "dev:client": "next dev client",
-    "build:client": "yarn lint:fix && next build client",
+    "build:client": "yarn precommit && next build client",
     "start:client": "next start client",
     "start:server": "node server/app.js",
     "dev:server": "nodemon server/app.js",
     "lint": "eslint",
-    "lint:fix": "eslint --fix --ext .js,.jsx ."
+    "precommit": "eslint --fix --ext .js,.jsx ."
   },
   "dependencies": {
+    "@chakra-ui/icons": "^1.0.15",
     "@chakra-ui/react": "^1.6.6",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@fontsource/roboto-condensed": "^4.5.0",
     "@next/eslint-plugin-next": "^11.0.1",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
