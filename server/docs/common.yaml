@@ -1,0 +1,11 @@
+components:
+  schemas:
+    GenericResponse:
+      properties:
+        success:
+          type: bool
+        message:
+          type: string
+        required:
+          - success
+          - message
