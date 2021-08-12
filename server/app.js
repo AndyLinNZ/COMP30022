@@ -13,16 +13,20 @@ require('dotenv').config()
 
 function connectDB() {
     return new Promise((res, _) => {
-        const DB_URI = process.env.MONGO_CONNECTION_URI || 'mongodb://localhost:27017/dribblrDB'
-        mongoose.connect(DB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useCreateIndex: true,
-            dbName: 'dribblrDB'
-        }).then(() => {
-            console.log('Connected to DB!')
-            return res()
-        })
+        const DB_URI =
+            process.env.MONGO_CONNECTION_URI ||
+            'mongodb://localhost:27017/dribblrDB'
+        mongoose
+            .connect(DB_URI, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+                useCreateIndex: true,
+                dbName: 'dribblrDB',
+            })
+            .then(() => {
+                console.log('Connected to DB!')
+                return res()
+            })
     })
 }
 
@@ -43,13 +47,15 @@ function initApp() {
     const jwtOpts = {
         secretOrKey: process.env.JWT_SECRET,
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        algorithms: ['HS256']
+        algorithms: ['HS256'],
     }
-    passport.use(new JwtStrategy(jwtOpts, (payload, next) => {
-        User.findOne({ username: payload.username })
-            .then(user => next(null, user || false))
-            .catch(_ => next(null, false))
-    }))
+    passport.use(
+        new JwtStrategy(jwtOpts, (payload, next) => {
+            User.findOne({ username: payload.username })
+                .then((user) => next(null, user || false))
+                .catch((_) => next(null, false))
+        })
+    )
 
     // set up routing
     app.use('/api', require('./routes/api'))
