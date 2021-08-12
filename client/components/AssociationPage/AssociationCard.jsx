@@ -7,7 +7,7 @@ const AssociationCard = ({ name, org, activeSeasons, icon }) => {
     return (
         <Box
             bg="white"
-            w="400px"
+            w="100%"
             minW="300px"
             h="175px"
             borderRadius="0.75rem"

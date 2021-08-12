@@ -1,6 +1,6 @@
 import { SimpleGrid, GridItem } from '@chakra-ui/react'
 import React from 'react'
-import AssociationCard from 'components/AssociationCard'
+import AssociationCard from 'components/AssociationPage/AssociationCard'
 
 const AssociationGrid = ({ teams, inSeason, upcomingSeason }) => {
     const displayTeams = React.useMemo(() => {
@@ -17,6 +17,7 @@ const AssociationGrid = ({ teams, inSeason, upcomingSeason }) => {
             gridRowGap="3.5rem"
             width="100%"
             justifyContent="center"
+            columnGap={'2rem'}
         >
             {displayTeams.map(({ name, org, activeSeasons, _id }) => (
                 <GridItem

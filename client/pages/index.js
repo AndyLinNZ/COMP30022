@@ -2,8 +2,8 @@ import React from 'react'
 import { Flex, Box, Heading, Checkbox, Text } from '@chakra-ui/react'
 import Header from 'components/Header'
 import HeroBackDrop from 'components/svg/HeroBackDrop'
-import AssociationSearch from 'components/AssociationSearch'
-import AssociationGrid from 'components/AssociationGrid'
+import AssociationSearch from 'components/AssociationPage/AssociationSearch'
+import AssociationGrid from 'components/AssociationPage/AssociationGrid'
 
 const mockTeams = [
     {
