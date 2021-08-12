@@ -40,7 +40,7 @@ components:
         password: "S3cur3 P4ssw0rd 123!"
 
 paths:
-  /register:
+  /auth/register:
     post:
       summary: 'Registers a new user.'
       requestBody:
@@ -109,7 +109,7 @@ paths:
                 success: false
                 message: 'Registration error'
 
-  /login:
+  /auth/login:
     post:
       summary: 'Logs a user in.'
       requestBody:
