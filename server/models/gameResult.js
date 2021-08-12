@@ -14,4 +14,4 @@ const gameResultSchema = new mongoose.Schema({
     },
 })
 
-module.exports = mongoose.model('gameResult', gameResultSchema)
+module.exports = mongoose.model('GameResult', gameResultSchema)

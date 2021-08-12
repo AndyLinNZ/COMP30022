@@ -1,11 +1,13 @@
 const express = require('express')
 const router = express.Router()
+const authRouter = require('./authRouter')
 const leagueRouter = require('./leagueRouter')
 const seasonRouter = require('./seasonRouter')
-const userController = require('../controllers/userController')
 
-router.post('/register', userController.registerUser)
-router.post('/login', userController.loginUser)
+// routes
+router.use('/auth', authRouter)
+router.use('/league', leagueRouter)
+router.use('/season', seasonRouter)
 
 // general error handling
 router.use((err, req, res, _) => {
@@ -14,9 +16,5 @@ router.use((err, req, res, _) => {
         error: err.message || 'Bad Request',
     })
 })
-
-// routes
-router.use('/league', leagueRouter)
-router.use('/season', seasonRouter)
 
 module.exports = router

@@ -12,4 +12,4 @@ const gradeSchema = new mongoose.Schema({
     },
 })
 
-module.exports = mongoose.model('grade', gradeSchema)
+module.exports = mongoose.model('Grade', gradeSchema)

@@ -9,4 +9,4 @@ const fixtureSchema = new mongoose.Schema({
     },
 })
 
-module.exports = mongoose.model('fixture', fixtureSchema)
+module.exports = mongoose.model('Fixture', fixtureSchema)

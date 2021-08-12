@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const playerStatSchema = new mongoose.Schema({
     playerId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'player',
+        ref: 'Player',
     },
     points: {
         type: Number,
@@ -45,4 +45,4 @@ const playerStatSchema = new mongoose.Schema({
     },
 })
 
-module.exports = mongoose.model('playerStat', playerStatSchema)
+module.exports = mongoose.model('PlayerStat', playerStatSchema)
