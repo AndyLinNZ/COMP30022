@@ -11,7 +11,7 @@ const gameSchema = new mongoose.Schema({
     },
     winningTeam: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'team',
+        ref: 'Team',
     },
     location: {
         type: {
@@ -31,4 +31,4 @@ const gameSchema = new mongoose.Schema({
     },
 })
 
-module.exports = mongoose.model('game', gameSchema)
+module.exports = mongoose.model('Game', gameSchema)

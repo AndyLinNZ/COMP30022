@@ -7,8 +7,8 @@ const playerSchema = new mongoose.Schema({
     },
     teamId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'team',
+        ref: 'Team',
     },
 })
 
-module.exports = mongoose.model('player', playerSchema)
+module.exports = mongoose.model('Player', playerSchema)
