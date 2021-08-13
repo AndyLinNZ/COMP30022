@@ -1,12 +1,16 @@
 const mongoose = require('mongoose')
 
 const gameResultSchema = new mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+    },
     teamId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Team',
     },
-    points: Number,
+    points: {
+        type: Number,
+    },
     matchResult: {
         type: String,
         enum: ['win', 'loss', 'draw'],

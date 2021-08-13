@@ -7,6 +7,11 @@ const leagueSchema = new mongoose.Schema({
     organisation: {
         type: String,
     },
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
     admins: [
         {
             type: mongoose.Schema.Types.ObjectId,
