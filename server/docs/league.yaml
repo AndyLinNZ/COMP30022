@@ -77,7 +77,7 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
               example:
                 success: false
-                message: 'Bad Request'
+                error: 'Bad Request'
 
     post:
       tags:
@@ -117,7 +117,7 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
               example:
                 success: false
-                message: 'User does not exist'
+                error: 'User does not exist'
 
   /league/{leagueId}:
     get:
@@ -156,7 +156,7 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
               example:
                 success: false
-                message: 'League does not exist'
+                error: 'League does not exist'
 
   /league/{leagueId}/season:                
     get:
@@ -189,7 +189,7 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
               example:
                 success: false
-                message: 'League does not exist'
+                error: 'League does not exist'
 
     post:
       tags:
@@ -235,7 +235,7 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
               example:
                 success: false
-                message: 'League does not exist'
+                error: 'League does not exist'
         '403':
           description: 'User is not an admin for this league.'
           content:
@@ -244,7 +244,7 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
               example:
                 success: false
-                message: 'User is not an admin'
+                error: 'User is not an admin'
 
   /league/{leagueId}/admin:
     patch:
@@ -287,11 +287,13 @@ paths:
                 $ref: '#/components/schemas/ApiResponse'
               examples:
                 nonExistentAdminId:
-                  success: false
-                  message: 'Some users do not exist'
+                  value:
+                    success: false
+                    error: 'Some users do not exist'
                 nonExistentLeagueId:
-                  success: false
-                  message: 'League does not exist'
+                  value:
+                    success: false
+                    error: 'League does not exist'
         '403':
           description: 'User is not the creator for this league.'
           content:
@@ -300,7 +302,7 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
               example:
                 success: false
-                message: 'User is not a creator'
+                error: 'User is not a creator'
 
   /league/{leagueId}/admin/remove:
     patch:
@@ -341,11 +343,13 @@ paths:
                 $ref: '#/components/schemas/ApiResponse'
               examples:
                 nonExistentAdminId:
-                  success: false
-                  message: 'Some users do not exist'
+                  value:
+                    success: false
+                    error: 'Some users do not exist'
                 nonExistentLeagueId:
-                  success: false
-                  message: 'League does not exist'
+                  value:
+                    success: false
+                    error: 'League does not exist'
         '403':
           description: 'User is not the creator for this league.'
           content:
@@ -354,4 +358,4 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
               example:
                 success: false
-                message: 'User is not a creator'
+                error: 'User is not a creator'

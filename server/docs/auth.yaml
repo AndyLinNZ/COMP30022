@@ -71,27 +71,27 @@ paths:
                 missingEmail:
                   value:
                     success: false
-                    message: 'Missing "email" field'
+                    error: 'Missing "email" field'
                 missingPassword:
                   value:
                     success: false
-                    message: 'Missing "password" field'
+                    error: 'Missing "password" field'
                 missingFirstName:
                   value:
                     success: false
-                    message: 'Missing "firstName" field'
+                    error: 'Missing "firstName" field'
                 missingLastName:
                   value:
                     success: false
-                    message: 'Missing "lastName" field'
+                    error: 'Missing "lastName" field'
                 invalidEmail:
                   value:
                     success: false
-                    message: 'Invalid email'
+                    error: 'Invalid email'
                 weakPassword:
                   value:
                     success: false
-                    message: 'Password is too weak'
+                    error: 'Password is too weak'
         '409':
           description: 'Email already registered.'
           content:
@@ -100,7 +100,7 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
               example:
                 success: false
-                message: 'A user has already registered with that email'
+                error: 'A user has already registered with that email'
         '500':
           description: '(unknown) Registration error.'
           content:
@@ -109,7 +109,7 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
               example:
                 success: false
-                message: 'Registration error'
+                error: 'Registration error'
 
   /auth/login:
     post:
@@ -143,4 +143,4 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
               example:
                 success: false
-                message: 'Password or username is incorrect'
+                error: 'Password or username is incorrect'

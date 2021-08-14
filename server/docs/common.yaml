@@ -9,8 +9,9 @@ components:
         required:
           - success
           - message
+
     ApiResponse:
-      propeties:
+      properties:
         success:
           type: bool
         data:
