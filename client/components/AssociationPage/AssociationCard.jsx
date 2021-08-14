@@ -5,7 +5,7 @@ import ActiveSeasonLabel from './ActiveSeasonLabel'
 import { useMediaQuerySSR } from 'hooks'
 
 const AssociationCard = ({ name, org, activeSeasons, icon }) => {
-    const isDesktop = useMediaQuerySSR(768)
+    const isDesktop = useMediaQuerySSR(1024)
 
     return isDesktop ? (
         <Box

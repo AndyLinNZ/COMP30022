@@ -7,6 +7,7 @@ import AssociationSearch from 'components/AssociationPage/AssociationSearch'
 import AssociationGrid from 'components/AssociationPage/AssociationGrid'
 import Logo from 'components/svg/Logo'
 import { useMediaQuerySSR } from 'hooks'
+import Footer from 'components/Footer'
 
 const mockTeams = [
     {
@@ -78,7 +79,6 @@ const mockTeams = [
 ]
 
 export default function Home() {
-    const [boxHeight, setBoxHeight] = React.useState(0)
     const [inSeason, setInSeason] = React.useState(true)
     const [upcomingSeason, setUpcomingSeason] = React.useState(true)
     const [searchValue, setSearchValue] = React.useState('')
@@ -94,30 +94,18 @@ export default function Home() {
         )
     }, [searchValue, mockTeams])
 
-    React.useEffect(() => {
-        window.addEventListener('resize', () => {
-            const width = window.innerWidth
-            if (width < 1000) {
-                setBoxHeight((1 / window.innerWidth) * 200000)
-            } else {
-                setBoxHeight(0)
-            }
-        })
-    })
-
     return (
         <Flex
             maxW="100vw"
             flexDir="column"
             justifyContent="flex-start"
-            overflowX="hidden"
             bg="grey"
+            overflow="hidden"
         >
             {isDesktop ? (
                 <HeroBackDrop />
             ) : (
                 <>
-                    {/* <Box bg="orange" h="50" /> */}
                     <HeroBackDropMobile />
                 </>
             )}
@@ -139,7 +127,7 @@ export default function Home() {
                     onChange={setSearchValue}
                 />
             </Flex>
-            <Box px="3rem" minH="500px" mt={[6, 2]}>
+            <Box px="3rem" minH="500px" mt={[6, 2]} mb="5rem">
                 <Flex>
                     <Checkbox
                         isChecked={inSeason}
@@ -172,6 +160,9 @@ export default function Home() {
                         {...{ inSeason, upcomingSeason, teams: filteredTeams }}
                     />
                 </Flex>
+            </Box>
+            <Box w="100%">
+                <Footer />
             </Box>
         </Flex>
     )

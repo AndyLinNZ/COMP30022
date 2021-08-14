@@ -19,6 +19,9 @@ const theme = extendTheme({
         greyText: {
             500: '#3E3D3D',
         },
+        black: {
+            500: '#000',
+        },
         orange: '#FFBD2D',
         heading: '#15110D',
     },
