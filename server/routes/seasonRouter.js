@@ -6,4 +6,8 @@ const seasonRouter = express.Router()
 // GET
 seasonRouter.get('/:seasonId', seasonController.getSeason)
 
+// POST
+
+// PATCH
+
 module.exports = seasonRouter

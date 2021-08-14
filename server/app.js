@@ -2,7 +2,6 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
-const mongoose = require('mongoose')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt')
@@ -10,25 +9,6 @@ const swaggerUI = require('swagger-ui-express')
 const swaggerDoc = require('./docs')
 const User = require('./models/user')
 require('dotenv').config()
-
-function connectDB() {
-    return new Promise((res, _) => {
-        const DB_URI =
-            process.env.MONGO_CONNECTION_URI ||
-            'mongodb://localhost:27017/dribblrDB'
-        mongoose
-            .connect(DB_URI, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-                useCreateIndex: true,
-                dbName: 'dribblrDB',
-            })
-            .then(() => {
-                console.log('Connected to DB!')
-                return res()
-            })
-    })
-}
 
 function initApp() {
     const app = express()
@@ -67,10 +47,7 @@ function initApp() {
         res.status(400).end('404')
     })
 
-    const PORT = process.env.PORT || 3000
-    app.listen(PORT, () => {
-        console.log(`Server listening on port ${PORT}`)
-    })
+    return app
 }
 
-connectDB().then(initApp)
+module.exports = initApp
