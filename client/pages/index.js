@@ -1,9 +1,12 @@
 import React from 'react'
-import { Flex, Box, Heading, Checkbox, Text } from '@chakra-ui/react'
+import { Flex, Box, Checkbox, Text } from '@chakra-ui/react'
 import Header from 'components/Header'
 import HeroBackDrop from 'components/svg/HeroBackDrop'
+import HeroBackDropMobile from 'components/svg/HeroBackDropMobile'
 import AssociationSearch from 'components/AssociationPage/AssociationSearch'
 import AssociationGrid from 'components/AssociationPage/AssociationGrid'
+import Logo from 'components/svg/Logo'
+import { useMediaQuerySSR } from 'hooks'
 
 const mockTeams = [
     {
@@ -79,6 +82,7 @@ export default function Home() {
     const [inSeason, setInSeason] = React.useState(true)
     const [upcomingSeason, setUpcomingSeason] = React.useState(true)
     const [searchValue, setSearchValue] = React.useState('')
+    const isDesktop = useMediaQuerySSR(940)
 
     const [filteredTeams, setFilteredTeams] = React.useState(mockTeams)
 
@@ -109,8 +113,14 @@ export default function Home() {
             overflowX="hidden"
             bg="grey"
         >
-            <Box h={boxHeight} bg="orange" overflow="hidden" />
-            <HeroBackDrop />
+            {isDesktop ? (
+                <HeroBackDrop />
+            ) : (
+                <>
+                    {/* <Box bg="orange" h="50" /> */}
+                    <HeroBackDropMobile />
+                </>
+            )}
             <Header />
             <Flex
                 pos="absolute"
@@ -120,21 +130,16 @@ export default function Home() {
                 flexDir="column"
                 w="100%"
             >
-                <Heading
-                    fontSize="120px"
-                    fontWeight="normal"
-                    color="heading"
-                    mb="6"
-                    textAlign="center"
-                >
-                    dribblr.
-                </Heading>
+                <Box display="flex" justifyContent="center" w="100%" mb="4">
+                    <Logo />
+                </Box>
+
                 <AssociationSearch
                     value={searchValue}
                     onChange={setSearchValue}
                 />
             </Flex>
-            <Box px="3rem" minH="500px">
+            <Box px="3rem" minH="500px" mt={[6, 2]}>
                 <Flex>
                     <Checkbox
                         isChecked={inSeason}
@@ -162,7 +167,7 @@ export default function Home() {
                         <Text fontSize="1rem">SEASON UPCOMING</Text>
                     </Checkbox>
                 </Flex>
-                <Flex alignItems="center" width="100%" mt="5rem">
+                <Flex alignItems="center" width="100%" mt={['2rem', '5rem']}>
                     <AssociationGrid
                         {...{ inSeason, upcomingSeason, teams: filteredTeams }}
                     />

@@ -14,7 +14,7 @@ const AssociationGrid = ({ teams, inSeason, upcomingSeason }) => {
     return (
         <SimpleGrid
             columns={[1, 2, 3]}
-            gridRowGap="3.5rem"
+            gridRowGap={['1.5rem', '3.5rem']}
             width="100%"
             justifyContent="center"
             columnGap={'2rem'}

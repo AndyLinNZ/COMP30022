@@ -1,8 +1,9 @@
-import { Box, Button, Flex, useMediaQuery } from '@chakra-ui/react'
+import { Box, Button, Flex } from '@chakra-ui/react'
+import { useMediaQuerySSR } from 'hooks'
 import React from 'react'
 
 const Header = () => {
-    const [showSignUp] = useMediaQuery('(min-width: 768px)')
+    const showSignUp = useMediaQuerySSR(1024)
     return (
         <Flex
             as="nav"
@@ -20,7 +21,7 @@ const Header = () => {
                     bg="white"
                     color="greyText.500"
                     px="6"
-                    mr={[-2, '4']}
+                    mr={[-2, 4, 4]}
                     borderRadius="0.75rem"
                     transition="background 0.5s ease, color 0.5s ease"
                     _hover={{ bg: 'greyText.500', color: 'white' }}
