@@ -10,8 +10,8 @@
     "dev:client": "next dev client",
     "build:client": "yarn precommit && next build client",
     "start:client": "next start client",
-    "start:server": "node server/app.js",
-    "dev:server": "nodemon server/app.js",
+    "start:server": "node server/index.js",
+    "dev:server": "nodemon server/index.js",
     "lint": "eslint",
     "precommit": "eslint --fix --ext .js,.jsx ."
   },
@@ -40,6 +40,7 @@
     "passport-local-mongoose": "^6.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "supertest": "^6.1.5",
     "swagger-ui-express": "^4.1.6",
     "yamljs": "^0.3.0"
   },
@@ -47,6 +48,7 @@
     "eslint": "^7.32.0",
     "eslint-config-next": "^11.0.1",
     "eslint-config-prettier": "^8.3.0",
+    "jest": "^27.0.6",
     "prettier": "^2.3.2"
   }
 }
