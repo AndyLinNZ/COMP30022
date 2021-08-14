@@ -23,7 +23,7 @@ module.exports = {
         'linebreak-style': ['error', 'unix'],
         quotes: ['error', 'single'],
         semi: ['error', 'never'],
-        'no-unused-vars': ['warn', { vars: 'all', args: 'after-used' }],
+        'no-unused-vars': ['warn', { vars: 'all', args: 'after-used', 'argsIgnorePattern': '^_' }],
         'react/prop-types': 'off',
     },
 }

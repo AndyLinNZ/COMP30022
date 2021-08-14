@@ -19,7 +19,7 @@ function registerUser(req, res, next) {
     if (!req.body.lastName) return next({ message: 'Missing "lastName" field' })
 
     let { email, password, firstName, lastName } = req.body
-    User.register(new User({ email, firstName, lastName }), password, (err, user) => {
+    User.register(new User({ email, firstName, lastName }), password, (err, _) => {
         if (err && err.toString().includes('username is already registered')) {
             return next({
                 status: 409,
