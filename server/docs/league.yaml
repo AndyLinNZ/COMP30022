@@ -1,0 +1,357 @@
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+  schemas:
+    LeagueRegistration:
+      properties:
+        leagueName:
+          type: string
+        organisationName:
+          type: string
+      required:
+        - leagueName
+        - organisationName
+      example:
+        leagueName: Joshua Basketball Association
+        organisationName: JoshuaDubar
+
+    SeasonRegistration:
+      properties:
+        seasonName:
+          type: string
+        seasonStart:
+          type: date
+        seasonFinish:
+          type: date
+      required:
+        - seasonName
+        - seasonStart
+        - seasonFinish
+      example:
+        seasonName: Summer 2020/2021
+        seasonStart: '2021-08-12T12:23:34.944Z'
+        seasonFinish: '2021-08-24T12:23:34.944Z'
+
+    LeagueAdminChange:
+      properties:
+        adminsIds:
+          type: array
+      required:
+        - adminIds
+      example:
+        adminIds:
+          - 2222222b2222b22222b222b2
+
+paths:
+  /league:
+    get:
+      tags:
+        - 'League'
+      summary: 'Get all leagues.'
+      responses:
+        '200':
+          description: 'Successfully got all leagues.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  - _id: 11111a111111aa1111a11111
+                    admins: 
+                      - 22222b222222bb2222b22222
+                    seasons: []
+                    name: Joshua Basketball Association
+                    organisation: JoshuaDubar
+                    creator: 22222b222222bb2222b22222
+                    __v: 0        
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                message: 'Bad Request'
+
+    post:
+      tags:
+        - 'League'
+      summary: 'Creates a league.'
+      security:
+      - BearerAuth: []  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeagueRegistration'
+      responses:
+        '201':
+          description: 'Successfully created a league.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data: 
+                  _id: 11111a111111aa1111a11111
+                  admins: 
+                    - 22222b222222bb2222b22222
+                  seasons: []
+                  name: Joshua Basketball Association
+                  organisation: JoshuaDubar
+                  creator: 22222b222222bb2222b22222
+                  __v: 0
+        '404':
+          description: 'User does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                message: 'User does not exist'
+
+  /league/{leagueId}:
+    get:
+      tags:
+        - 'League'
+      summary: 'Find league by id.'
+      parameters:
+      - name: 'leagueId'
+        in: 'path'
+        description: 'ID of league to return.'
+        required: true
+        type: 'string'
+      responses:
+        '200':
+          description: 'Successfully found a league.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data: 
+                  _id: 11111a111111aa1111a11111
+                  admins: 
+                    - 22222b222222bb2222b22222
+                  seasons: []
+                  name: Joshua Basketball Association
+                  organisation: JoshuaDubar
+                  creator: 22222b222222bb2222b22222
+                  __v: 0
+        '404':
+          description: 'League does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                message: 'League does not exist'
+
+  /league/{leagueId}/season:                
+    get:
+      tags:
+        - 'League'
+      summary: 'Get all seasons for a league.'
+      parameters:
+      - name: 'leagueId'
+        in: 'path'
+        description: 'ID of the league.'
+        required: true
+        type: 'string'
+      responses:
+        '200':
+          description: 'Successfully found all seasons for a league.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  - 33333c333333cc3333c33333
+                  - 3333333c3333c33333c333c3
+        '404':
+          description: 'League does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                message: 'League does not exist'
+
+    post:
+      tags:
+        - 'League'
+      summary: 'Create a season for a league.'
+      description: 'This can only be done by a logged in user and a league admin.'
+      parameters:
+      - name: 'leagueId'
+        in: 'path'
+        description: 'ID of the league.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SeasonRegistration'
+      responses:
+        '200':
+          description: 'Successfully created a season for a league.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  status: upcoming
+                  grades: []
+                  _id: 33333c333333cc3333c33333
+                  name: Summer 2020/2021
+                  dateStart: '2021-08-12T12:23:34.944Z'
+                  dateFinish: '2021-08-14T12:23:34.944Z'
+                  __v: 0
+        '404':
+          description: 'League does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                message: 'League does not exist'
+        '403':
+          description: 'User is not an admin for this league.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                message: 'User is not an admin'
+
+  /league/{leagueId}/admin:
+    patch:
+      tags:
+        - 'League'
+      summary: 'Add admins for a league from an array of adminIds.'
+      description: 'This can only be done by a logged in user and the creator of the league.'
+      parameters:
+      - name: 'leagueId'
+        in: 'path'
+        description: 'ID of the league.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeagueAdminChange'
+      responses:
+        '200':
+          description: 'Successfully added admin(s) for a league.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  admins:
+                    - 22222b222222bb2222b22222
+                    - 2222222b2222b22222b222b2
+        '404':
+          description: 'Some of the users in the adminIds array do not exist or league does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              examples:
+                nonExistentAdminId:
+                  success: false
+                  message: 'Some users do not exist'
+                nonExistentLeagueId:
+                  success: false
+                  message: 'League does not exist'
+        '403':
+          description: 'User is not the creator for this league.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                message: 'User is not a creator'
+
+  /league/{leagueId}/admin/remove:
+    patch:
+      tags:
+        - 'League'
+      summary: 'Remove admins for a league from an array of adminIds.'
+      description: 'This can only be done by a logged in user and the creator of the league.'
+      parameters:
+      - name: 'leagueId'
+        in: 'path'
+        description: 'ID of the league.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeagueAdminChange'
+      responses:
+        '200':
+          description: 'Successfully removed admin(s) for a league.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  admins: []
+        '404':
+          description: 'Some of the users in the adminIds array do not exist or league does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              examples:
+                nonExistentAdminId:
+                  success: false
+                  message: 'Some users do not exist'
+                nonExistentLeagueId:
+                  success: false
+                  message: 'League does not exist'
+        '403':
+          description: 'User is not the creator for this league.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                message: 'User is not a creator'

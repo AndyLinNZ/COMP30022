@@ -9,3 +9,13 @@ components:
         required:
           - success
           - message
+    ApiResponse:
+      propeties:
+        success:
+          type: bool
+        data:
+          type: object
+        required:
+          - success
+          - data
+
