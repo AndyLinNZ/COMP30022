@@ -3,6 +3,7 @@ module.exports = {
         browser: true,
         es6: true,
         node: true,
+        'jest/globals': true,
     },
     extends: ['eslint:recommended', 'plugin:react/recommended', 'prettier'],
     globals: {
@@ -13,10 +14,10 @@ module.exports = {
         ecmaFeatures: {
             jsx: true,
         },
-        ecmaVersion: 2018,
+        ecmaVersion: 2020,
         sourceType: 'module',
     },
-    plugins: ['react'],
+    plugins: ['react', 'jest'],
     rules: {
         indent: ['error', 4],
         'linebreak-style': ['error', 'unix'],
