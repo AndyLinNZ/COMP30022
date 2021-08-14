@@ -8,7 +8,7 @@ components:
           type: string
         required:
           - success
-          - message
+          - error
     ApiResponse:
       propeties:
         success:
