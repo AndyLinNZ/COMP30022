@@ -42,6 +42,8 @@ components:
 paths:
   /auth/register:
     post:
+      tags:
+        - 'Authorisation'
       summary: 'Registers a new user.'
       requestBody:
         required: true
@@ -111,6 +113,8 @@ paths:
 
   /auth/login:
     post:
+      tags:
+        - 'Authorisation'
       summary: 'Logs a user in.'
       requestBody:
         required: true

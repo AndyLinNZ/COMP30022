@@ -4,3 +4,10 @@ info:
   title: dribblr
 servers:
   - url: http://localhost:3000/api
+tags:
+  - name: 'Authorisation'
+    description: 'Everything about login and registration.'
+  - name: 'League'
+    description: 'Everything about league, including league seasons and league admins.'
+  - name: 'Season'
+    description: 'Individual season operations.'

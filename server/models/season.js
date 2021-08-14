@@ -10,8 +10,10 @@ const seasonSchema = new mongoose.Schema({
         default: Date.now,
         required: true,
     },
-    dateFinished: {
+    dateFinish: {
         type: Date,
+        default: Date.now,
+        required: true,
     },
     status: {
         type: String,
@@ -19,12 +21,15 @@ const seasonSchema = new mongoose.Schema({
         default: 'upcoming',
         required: true,
     },
-    grades: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Grade',
-        },
-    ],
+    grades: {
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Grade',
+            },
+        ],
+        default: [],
+    },
 })
 
 module.exports = mongoose.model('Season', seasonSchema)

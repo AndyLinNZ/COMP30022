@@ -3,7 +3,7 @@ const Season = require('../models/season')
 const User = require('../models/user')
 
 async function createLeague(req, res, next) {
-    let { leagueName, organisationName, userId } = req.body
+    let { leagueName, organisationName } = req.body
     try {
         const user = await User.findById(req.user._id).lean()
         if (!user) return next({ status: 404, message: 'User does not exist' })
@@ -72,7 +72,7 @@ async function getAllLeagueSeasons(req, res, next) {
 }
 
 async function createLeagueSeason(req, res, next) {
-    let { seasonName, seasonStart } = req.body
+    let { seasonName, seasonStart, seasonFinish } = req.body
     try {
         const league = await League.findById(req.params.leagueId)
         if (!league) return next({ status: 404, message: 'League does not exist' })
@@ -80,6 +80,7 @@ async function createLeagueSeason(req, res, next) {
         const newSeason = new Season({
             name: seasonName,
             dateStart: seasonStart,
+            datefinish: seasonFinish,
             grades: [],
         })
         await newSeason.save()
@@ -125,8 +126,38 @@ async function addLeagueAdmins(req, res, next) {
     }
 }
 
+async function removeLeagueAdmins(req, res, next) {
+    try {
+        const removeLeagueAdmins = await Promise.all(
+            req.body.adminIds.map(async (userId) => {
+                const user = await User.findOne({
+                    _id: userId,
+                }).lean()
+                if (!user)
+                    return next({ status: 404, message: 'Some users do not exist' })
+                return user
+            })
+        )
+        await League.updateOne(
+            { _id: req.params.leagueId },
+            { $pull: { admins: removeLeagueAdmins } }
+        )
+        const updatedLeague = await League.findById(req.params.leagueId).lean()
+        if (!updatedLeague) return next({ status: 404, message: 'League does not exist' })
+
+        return res.status(200).json({
+            success: true,
+            data: updatedLeague.admins,
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
 module.exports = {
     addLeagueAdmins,
+    removeLeagueAdmins,
     getLeague,
     getAllLeagues,
     getAllLeagueSeasons,

@@ -20,12 +20,15 @@ const teamSchema = new mongoose.Schema({
     totalDraws: {
         type: Number,
     },
-    gameResults: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'GameResult',
-        },
-    ],
+    gameResults: {
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'GameResult',
+            },
+        ],
+        default: [],
+    },
 })
 
 module.exports = mongoose.model('Team', teamSchema)
