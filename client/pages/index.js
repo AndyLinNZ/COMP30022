@@ -1,9 +1,13 @@
 import React from 'react'
-import { Flex, Box, Heading, Checkbox, Text } from '@chakra-ui/react'
+import { Flex, Box, Checkbox, Text } from '@chakra-ui/react'
 import Header from 'components/Header'
 import HeroBackDrop from 'components/svg/HeroBackDrop'
+import HeroBackDropMobile from 'components/svg/HeroBackDropMobile'
 import AssociationSearch from 'components/AssociationPage/AssociationSearch'
 import AssociationGrid from 'components/AssociationPage/AssociationGrid'
+import Logo from 'components/svg/Logo'
+import { useMediaQuerySSR } from 'hooks'
+import Footer from 'components/Footer'
 
 const mockTeams = [
     {
@@ -75,10 +79,10 @@ const mockTeams = [
 ]
 
 export default function Home() {
-    const [boxHeight, setBoxHeight] = React.useState(0)
     const [inSeason, setInSeason] = React.useState(true)
     const [upcomingSeason, setUpcomingSeason] = React.useState(true)
     const [searchValue, setSearchValue] = React.useState('')
+    const isDesktop = useMediaQuerySSR(940)
 
     const [filteredTeams, setFilteredTeams] = React.useState(mockTeams)
 
@@ -90,27 +94,21 @@ export default function Home() {
         )
     }, [searchValue, mockTeams])
 
-    React.useEffect(() => {
-        window.addEventListener('resize', () => {
-            const width = window.innerWidth
-            if (width < 1000) {
-                setBoxHeight((1 / window.innerWidth) * 200000)
-            } else {
-                setBoxHeight(0)
-            }
-        })
-    })
-
     return (
         <Flex
             maxW="100vw"
             flexDir="column"
             justifyContent="flex-start"
-            overflowX="hidden"
             bg="grey"
+            overflow="hidden"
         >
-            <Box h={boxHeight} bg="orange" overflow="hidden" />
-            <HeroBackDrop />
+            {isDesktop ? (
+                <HeroBackDrop />
+            ) : (
+                <>
+                    <HeroBackDropMobile />
+                </>
+            )}
             <Header />
             <Flex
                 pos="absolute"
@@ -120,21 +118,16 @@ export default function Home() {
                 flexDir="column"
                 w="100%"
             >
-                <Heading
-                    fontSize="120px"
-                    fontWeight="normal"
-                    color="heading"
-                    mb="6"
-                    textAlign="center"
-                >
-                    dribblr.
-                </Heading>
+                <Box display="flex" justifyContent="center" w="100%" mb="4">
+                    <Logo />
+                </Box>
+
                 <AssociationSearch
                     value={searchValue}
                     onChange={setSearchValue}
                 />
             </Flex>
-            <Box px="3rem" minH="500px">
+            <Box px="3rem" minH="500px" mt={[6, 2]} mb="5rem">
                 <Flex>
                     <Checkbox
                         isChecked={inSeason}
@@ -162,11 +155,14 @@ export default function Home() {
                         <Text fontSize="1rem">SEASON UPCOMING</Text>
                     </Checkbox>
                 </Flex>
-                <Flex alignItems="center" width="100%" mt="5rem">
+                <Flex alignItems="center" width="100%" mt={['2rem', '5rem']}>
                     <AssociationGrid
                         {...{ inSeason, upcomingSeason, teams: filteredTeams }}
                     />
                 </Flex>
+            </Box>
+            <Box w="100%">
+                <Footer />
             </Box>
         </Flex>
     )
