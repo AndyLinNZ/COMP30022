@@ -30,7 +30,7 @@ const leagueSchema = new mongoose.Schema({
                 required: false,
             },
         ],
-        defaukt: [],
+        default: [],
     },
 })
 
