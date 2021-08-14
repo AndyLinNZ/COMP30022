@@ -144,9 +144,9 @@ paths:
                   admins: 
                     - 22222b222222bb2222b22222
                   seasons: []
-                  name: "Joshua Basketball Association"
-                  organisation: "JoshuaDubar"
-                  creator: "22222b222222bb2222b22222"
+                  name: Joshua Basketball Association
+                  organisation: JoshuaDubar
+                  creator: 22222b222222bb2222b22222
                   __v: 0
         '404':
           description: 'League does not exist.'
@@ -355,8 +355,3 @@ paths:
               example:
                 success: false
                 message: 'User is not a creator'
-      
-      
-
-
-
