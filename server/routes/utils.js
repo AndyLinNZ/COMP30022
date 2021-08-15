@@ -1,5 +1,5 @@
 const passport = require('passport')
-const League = require('./models/league')
+const League = require('../models/league')
 
 const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 
