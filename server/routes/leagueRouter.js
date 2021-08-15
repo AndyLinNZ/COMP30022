@@ -1,5 +1,5 @@
 const express = require('express')
-const { ensureAuthenticated, ensureAdmin, ensureCreator } = require('../utils')
+const { ensureAuthenticated, ensureAdmin, ensureCreator } = require('./utils')
 const leagueController = require('../controllers/leagueController.js')
 
 const leagueRouter = express.Router()
