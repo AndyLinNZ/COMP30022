@@ -20,16 +20,10 @@ leagueRouter.post(
 
 // PATCH
 leagueRouter.patch(
-    '/:leagueId/admin/',
+    '/:leagueId/admin',
     ensureAuthenticated,
     ensureCreator,
-    leagueController.addLeagueAdmins
-)
-leagueRouter.patch(
-    '/:leagueId/admin/remove',
-    ensureAuthenticated,
-    ensureCreator,
-    leagueController.removeLeagueAdmins
+    leagueController.updateLeagueAdmins
 )
 
 module.exports = leagueRouter

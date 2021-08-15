@@ -250,7 +250,7 @@ paths:
     patch:
       tags:
         - 'League'
-      summary: 'Add admins for a league from an array of adminIds.'
+      summary: 'Update the admins for a league to an array of adminIds.'
       description: 'This can only be done by a logged in user and the creator of the league.'
       parameters:
       - name: 'leagueId'
@@ -268,7 +268,7 @@ paths:
               $ref: '#/components/schemas/LeagueAdminChange'
       responses:
         '200':
-          description: 'Successfully added admin(s) for a league.'
+          description: 'Successfully changed admin(s) for a league.'
           content:
             application/json:
               schema:
@@ -279,62 +279,6 @@ paths:
                   admins:
                     - 22222b222222bb2222b22222
                     - 2222222b2222b22222b222b2
-        '404':
-          description: 'Some of the users in the adminIds array do not exist or league does not exist.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-              examples:
-                nonExistentAdminId:
-                  value:
-                    success: false
-                    error: 'Some users do not exist'
-                nonExistentLeagueId:
-                  value:
-                    success: false
-                    error: 'League does not exist'
-        '403':
-          description: 'User is not the creator for this league.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericResponse'
-              example:
-                success: false
-                error: 'User is not a creator'
-
-  /league/{leagueId}/admin/remove:
-    patch:
-      tags:
-        - 'League'
-      summary: 'Remove admins for a league from an array of adminIds.'
-      description: 'This can only be done by a logged in user and the creator of the league.'
-      parameters:
-      - name: 'leagueId'
-        in: 'path'
-        description: 'ID of the league.'
-        required: true
-        type: 'string'
-      security:
-      - BearerAuth: []  
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LeagueAdminChange'
-      responses:
-        '200':
-          description: 'Successfully removed admin(s) for a league.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-              example:
-                success: true
-                data:
-                  admins: []
         '404':
           description: 'Some of the users in the adminIds array do not exist or league does not exist.'
           content:
