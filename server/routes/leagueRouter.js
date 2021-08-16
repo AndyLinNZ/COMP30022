@@ -17,13 +17,19 @@ leagueRouter.post(
     ensureAdmin,
     leagueController.createLeagueSeason
 )
-
-// PATCH
-leagueRouter.patch(
+leagueRouter.post(
     '/:leagueId/admin',
     ensureAuthenticated,
     ensureCreator,
-    leagueController.updateLeagueAdmins
+    leagueController.createLeagueAdmins
+)
+
+// DELETE
+leagueRouter.delete(
+    '/:leagueId/admin',
+    ensureAuthenticated,
+    ensureCreator,
+    leagueController.deleteLeagueAdmins
 )
 
 module.exports = leagueRouter
