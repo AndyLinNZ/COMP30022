@@ -83,6 +83,7 @@ async function createLeagueSeason(req, res, next) {
             name: seasonName,
             dateStart: seasonStart,
             datefinish: seasonFinish,
+            league: league,
             grades: [],
         })
         await newSeason.save()

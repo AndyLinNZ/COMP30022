@@ -10,15 +10,19 @@ const teamSchema = new mongoose.Schema({
     },
     totalPoints: {
         type: Number,
+        default: 0,
     },
     totalWins: {
         type: Number,
+        default: 0,
     },
     totalLosses: {
         type: Number,
+        default: 0,
     },
     totalDraws: {
         type: Number,
+        default: 0,
     },
     gameResults: {
         type: [

@@ -6,9 +6,14 @@ const seasonRouter = express.Router()
 
 // GET
 seasonRouter.get('/:seasonId', seasonController.getSeason)
+seasonRouter.get('/:seasonId/grade', seasonController.getAllSeasonGrades)
 
 // POST
-
-// PATCH
+seasonRouter.post(
+    '/:seasonId/grade',
+    ensureAuthenticated,
+    ensureAdmin,
+    seasonController.createGrade
+)
 
 module.exports = seasonRouter

@@ -6,7 +6,7 @@ const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 
 async function ensureAdmin(req, res, next) {
     try {
-        const leagueId = determineLeague(req.params)
+        const leagueId = determineLeagueId(req.params)
         const league = await League.findById(leagueId)
         if (!league) return res.status(404).json({ message: 'League does not exist' })
 
@@ -36,11 +36,16 @@ async function ensureCreator(req, res, next) {
     }
 }
 
-async function determineLeague(params) {
+async function determineLeagueId(params) {
+    if (params.gradeId) {
+        const grade = await Grade.findById(params.gradeId)
+        if (!grade) return res.status(404).json({ message: 'Grade does not exist' })
+        params.seasonId = grade.season._id
+    }
     if (params.seasonId) {
         const season = await Season.findById(params.seasonId)
         if (!season) return res.status(404).json({ message: 'Season does not exist' })
-        return season.leagueId
+        params.leagueId = season.league._id
     }
     if (params.leagueId) {
         return params.leagueId

@@ -21,6 +21,11 @@ const seasonSchema = new mongoose.Schema({
         default: 'upcoming',
         required: true,
     },
+    league: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'League',
+        required: true,
+    },
     grades: {
         type: [
             {
