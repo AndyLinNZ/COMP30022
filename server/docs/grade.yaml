@@ -1,0 +1,150 @@
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+  schemas:
+    TeamRegistration:
+      properties:
+        teamName:
+          type: string
+      required:
+        - teamName
+      example:
+        teamName: Joshua SENPAl
+
+paths:
+  /grade/{gradeId}:
+    get:
+      tags:
+        - 'Grade'
+      summary: 'Find grade by id.'
+      parameters:
+      - name: 'gradeId'
+        in: 'path'
+        description: 'ID of grade to return.'
+        required: true
+        type: 'string'
+      responses:
+        '200':
+          description: 'Successfully found a grade.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  difficulty: E
+                  gender: female
+                  teams: []
+                  _id: 44444d444444dd4444d44444
+                  name: Joshua Dubar Grade
+                  season: 33333c333333cc3333c33333
+                  __v: 0
+        '404':
+          description: 'Grade does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                error: 'Grade does not exist'
+
+  /grade/{gradeId}/team:
+    get:
+      tags:
+        - 'Grade'
+      summary: 'Get all teams for a grade.'
+      parameters:
+      - name: 'gradeId'
+        in: 'path'
+        description: 'ID of the grade.'
+        required: true
+        type: 'string'
+      responses:
+        '200':
+          description: 'Successfully found all teams for a Grade.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  teams:
+                    - 55555e555555ee5555e55555
+        '404':
+          description: 'Grade does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                error: 'Grade does not exist'
+    post:
+      tags:
+        - 'Grade'
+      summary: 'Create a team for a grade.'
+      description: 'This can only be done by a logged in user and a league admin.'
+      parameters:
+      - name: 'gradeId'
+        in: 'path'
+        description: 'ID of the grade.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamRegistration'
+      responses:
+        '200':
+          description: 'Successfully created a team for a grade.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  totalPoints: 0
+                  totalWins: 0
+                  totalLosses: 0
+                  totalDraws: 0
+                  gameResults: []
+                  _id: 55555e555555ee5555e55555
+                  name: Joshua SENPAl
+                  grade:
+                    difficulty: E
+                    gender: female
+                    teams: []
+                    _id: 44444d444444dd4444d44444
+                    name: Joshua Dubar Grade
+                    season: 33333c333333cc3333c33333
+                    __v: 0
+                  __v: 0
+        '404':
+          description: 'Grade does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                error: 'Grade does not exist'
+        '403':
+          description: 'User is not an admin for this league.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                error: 'User is not an admin'

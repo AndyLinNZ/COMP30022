@@ -22,7 +22,7 @@ async function createGrade(req, res, next) {
         const season = await Season.findById(req.params.seasonId)
         if (!season) return next({ status: 404, message: 'Season does not exist' })
         if (['male', 'female', 'mixed'].indexOf(gradeGender) < 0)
-            return next({ status: 400, message: 'Invalid gender grade' })
+            return next({ status: 400, message: 'Invalid gender' })
         if (['A', 'B', 'C', 'D', 'E'].indexOf(gradeDifficulty) < 0)
             return next({ status: 400, message: 'Invalid difficulty' })
 

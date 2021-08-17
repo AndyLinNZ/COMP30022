@@ -4,6 +4,24 @@ components:
       type: http
       scheme: bearer
 
+  schemas:
+    GradeRegistration:
+      properties:
+        gradeName:
+          type: string
+        gradeGender:
+          type: string
+        gradeDifficulty:
+          type: String
+      required:
+        - gradeName
+        - gradeGender
+        - gradeDifficulty
+      example:
+        gradeName: Joshua Dubar Grade
+        gradeGender: female
+        gradeDifficulty: E
+
 paths:
   /season/{seasonId}:
     get:
@@ -41,4 +59,114 @@ paths:
                 $ref: '#/components/schemas/GenericResponse'
               example:
                 success: false
-                message: 'Season does not exist'
+                error: 'Season does not exist'
+
+  /season/{seasonId}/grade:
+    get:
+      tags:
+        - 'Season'
+      summary: 'Get all grades for a Season.'
+      parameters:
+      - name: 'seasonId'
+        in: 'path'
+        description: 'ID of the season.'
+        required: true
+        type: 'string'
+      responses:
+        '200':
+          description: 'Successfully found all grades for a season.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  grades:
+                    - 44444d444444dd4444d44444
+        '404':
+          description: 'Season does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                error: 'Season does not exist'
+    post:
+      tags:
+        - 'Season'
+      summary: 'Create a grade for a season.'
+      description: 'This can only be done by a logged in user and a league admin.'
+      parameters:
+      - name: 'seasonId'
+        in: 'path'
+        description: 'ID of the season.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GradeRegistration'
+      responses:
+        '200':
+          description: 'Successfully created a grade for a season.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  difficulty: E
+                  gender: female
+                  teams: []
+                  _id: 44444d444444dd4444d44444
+                  name: Joshua Dubar Grade
+                  season:
+                    status: upcoming
+                    grades:
+                      - 44444d444444dd4444d44444
+                    _id: 33333c333333cc3333c33333
+                    name: Summer 2020/2021
+                    dateStart: '2021-08-12T12:23:34.944Z'
+                    dateFinish: '2021-08-14T12:23:34.944Z'
+                    __v: 0
+                  __v: 0
+        '400':
+          description: 'Invalid request body.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              examples:
+                invalidGradeGender:
+                  value:
+                    success: false
+                    error: 'Invalid gender'
+                invalidGradeDifficulty:
+                  value:
+                    success: false
+                    error: 'Invalid difficulty'
+        '404':
+          description: 'Season does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                error: 'Season does not exist'
+        '403':
+          description: 'User is not an admin for this league.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+              example:
+                success: false
+                error: 'User is not an admin'
