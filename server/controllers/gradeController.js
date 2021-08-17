@@ -1,14 +1,29 @@
-const Grade = require('../models/season')
-const Team = require('../models/grade')
+const Grade = require('../models/grade')
+const Team = require('../models/team')
+
+async function getGrade(req, res, next) {
+    try {
+        const grade = await Grade.findById(req.params.gradeId)
+        if (!grade) return next({ status: 404, message: 'Grade does not exist' })
+
+        return res.status(200).json({
+            success: true,
+            data: grade,
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
 
 async function createTeam(req, res, next) {
-    let { name } = req.body
+    let { teamName } = req.body
     try {
         const grade = await Grade.findById(req.params.gradeId)
         if (!grade) return next({ status: 404, message: 'Grade does not exist' })
 
         const newTeam = new Team({
-            name: name,
+            name: teamName,
             grade: grade,
         })
         await newTeam.save()
@@ -41,6 +56,7 @@ async function getAllGradeTeams(req, res, next) {
 }
 
 module.exports = {
+    getGrade,
     createTeam,
     getAllGradeTeams,
 }

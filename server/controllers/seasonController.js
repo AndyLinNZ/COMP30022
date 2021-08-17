@@ -17,19 +17,19 @@ async function getSeason(req, res, next) {
 }
 
 async function createGrade(req, res, next) {
-    let { name, gender, difficulty } = req.body
+    let { gradeName, gradeGender, gradeDifficulty } = req.body
     try {
         const season = await Season.findById(req.params.seasonId)
         if (!season) return next({ status: 404, message: 'Season does not exist' })
-        if (!['male', 'female', 'mixed'].indexOf(gender))
+        if (['male', 'female', 'mixed'].indexOf(gradeGender) < 0)
             return next({ status: 400, message: 'Invalid gender grade' })
-        if (!['A', 'B', 'C', 'D', 'E'].indexOf(difficulty))
+        if (['A', 'B', 'C', 'D', 'E'].indexOf(gradeDifficulty) < 0)
             return next({ status: 400, message: 'Invalid difficulty' })
 
         const newGrade = new Grade({
-            name: name,
-            gradeGender: gender,
-            difficulty: difficulty,
+            name: gradeName,
+            gender: gradeGender,
+            difficulty: gradeDifficulty,
             season: season,
         })
         await newGrade.save()

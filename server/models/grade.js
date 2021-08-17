@@ -10,11 +10,20 @@ const gradeSchema = new mongoose.Schema({
         default: 'C',
         required: true,
     },
-    gradeGender: {
+    gender: {
         type: String,
         enum: ['male', 'female', 'mixed'],
         default: 'mixed',
         required: true,
+    },
+    teams: {
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Team',
+            },
+        ],
+        default: [],
     },
     season: {
         type: mongoose.Schema.Types.ObjectId,

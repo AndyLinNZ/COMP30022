@@ -1,12 +1,13 @@
 const passport = require('passport')
 const League = require('../models/league')
 const Season = require('../models/season')
+const Grade = require('../models/grade')
 
 const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 
 async function ensureAdmin(req, res, next) {
     try {
-        const leagueId = determineLeagueId(req.params)
+        const leagueId = await determineLeagueId(req.params)
         const league = await League.findById(leagueId)
         if (!league) return res.status(404).json({ message: 'League does not exist' })
 
