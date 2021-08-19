@@ -1,9 +1,4 @@
 components:
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-
   schemas:
     GradeRegistration:
       properties:
@@ -21,6 +16,13 @@ components:
         gradeName: Joshua Dubar Grade
         gradeGender: female
         gradeDifficulty: E
+
+    SeasonNotFoundResponse:
+      allOf:
+        - $ref: '#/components/schemas/GenericErrorResponse'
+      example:
+        success: false
+        error: 'Season does not exist'
 
 paths:
   /season/{seasonId}:
@@ -56,10 +58,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
-              example:
-                success: false
-                error: 'Season does not exist'
+                $ref: '#/components/schemas/SeasonNotFoundResponse'
 
   /season/{seasonId}/grade:
     get:
@@ -89,10 +88,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
-              example:
-                success: false
-                error: 'Season does not exist'
+                $ref: '#/components/schemas/SeasonNotFoundResponse'
     post:
       tags:
         - 'Season'
@@ -152,21 +148,15 @@ paths:
                   value:
                     success: false
                     error: 'Invalid difficulty'
-        '404':
-          description: 'Season does not exist.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericResponse'
-              example:
-                success: false
-                error: 'Season does not exist'
         '403':
           description: 'User is not an admin for this league.'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
-              example:
-                success: false
-                error: 'User is not an admin'
+                $ref: '#/components/schemas/UserNotAdminResponse'
+        '404':
+          description: 'Season does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeasonNotFoundResponse'

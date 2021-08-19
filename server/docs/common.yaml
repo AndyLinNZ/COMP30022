@@ -1,15 +1,10 @@
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
   schemas:
-    GenericResponse:
-      properties:
-        success:
-          type: bool
-        message:
-          type: string
-        required:
-          - success
-          - error
-          
     ApiResponse:
       properties:
         success:
@@ -20,3 +15,36 @@ components:
           - success
           - data
 
+    GenericErrorResponse:
+      properties:
+        success:
+          type: bool
+        message:
+          type: string
+        required:
+          - success
+          - error
+      example:
+        success: false
+        error: 'Invalid request'
+
+    UserNotAdminResponse:
+      allOf:
+        - $ref: '#/components/schemas/GenericErrorResponse'
+      example:
+        success: false
+        error: 'User is not an admin'
+
+    UserNotCreatorResponse:
+      allOf:
+        - $ref: '#/components/schemas/GenericErrorResponse'
+      example:
+        success: false
+        error: 'User is not a creator'
+
+    UsersNotFoundResponse:
+      allOf:
+        - $ref: '#/components/schemas/GenericErrorResponse'
+      example:
+        success: false
+        error: 'Some users do not exist'

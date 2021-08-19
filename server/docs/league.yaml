@@ -1,9 +1,4 @@
 components:
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-
   schemas:
     LeagueRegistration:
       properties:
@@ -45,6 +40,13 @@ components:
         adminIds:
           - 2222222b2222b22222b222b2
 
+    LeagueNotFoundResponse:
+      allOf:
+        - $ref: '#/components/schemas/GenericErrorResponse'
+      example:
+        success: false
+        error: 'League does not exist'
+
 paths:
   /league:
     get:
@@ -70,14 +72,11 @@ paths:
                     creator: 22222b222222bb2222b22222
                     __v: 0        
         '400':
-          description: 'Bad Request'
+          description: 'Invalid request.'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
-              example:
-                success: false
-                error: 'Bad Request'
+                $ref: '#/components/schemas/GenericErrorResponse'
 
     post:
       tags:
@@ -109,15 +108,6 @@ paths:
                   organisation: JoshuaDubar
                   creator: 22222b222222bb2222b22222
                   __v: 0
-        '404':
-          description: 'User does not exist.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericResponse'
-              example:
-                success: false
-                error: 'User does not exist'
 
   /league/{leagueId}:
     get:
@@ -153,10 +143,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
-              example:
-                success: false
-                error: 'League does not exist'
+                $ref: '#/components/schemas/LeagueNotFoundResponse'
 
   /league/{leagueId}/season:                
     get:
@@ -186,10 +173,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
-              example:
-                success: false
-                error: 'League does not exist'
+                $ref: '#/components/schemas/LeagueNotFoundResponse'
 
     post:
       tags:
@@ -227,24 +211,18 @@ paths:
                   dateStart: '2021-08-12T12:23:34.944Z'
                   dateFinish: '2021-08-14T12:23:34.944Z'
                   __v: 0
-        '404':
-          description: 'League does not exist.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericResponse'
-              example:
-                success: false
-                error: 'League does not exist'
         '403':
           description: 'User is not an admin for this league.'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
-              example:
-                success: false
-                error: 'User is not an admin'
+                $ref: '#/components/schemas/UserNotAdminResponse'
+        '404':
+          description: 'League does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeagueNotFoundResponse'
 
   /league/{leagueId}/admin:
     post:
@@ -279,30 +257,27 @@ paths:
                   admins:
                     - 22222b222222bb2222b22222
                     - 2222222b2222b22222b222b2
-        '404':
-          description: 'Some of the users in the adminIds array do not exist or league does not exist.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-              examples:
-                nonExistentAdminId:
-                  value:
-                    success: false
-                    error: 'Some users do not exist'
-                nonExistentLeagueId:
-                  value:
-                    success: false
-                    error: 'League does not exist'
         '403':
           description: 'User is not the creator for this league.'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
-              example:
-                success: false
-                error: 'User is not a creator'
+                $ref: '#/components/schemas/UserNotCreatorResponse'
+        '404':
+          description: 'Some of the users in the adminIds array do not exist or league does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorResponse'
+              examples:
+                UsersNotFound:
+                  value:
+                    success: false
+                    error: 'Some users do not exist.'
+                LeagueNotFound:
+                  value:
+                    success: false
+                    error: 'League does not exist.'
     delete:
       tags:
         - 'League'
@@ -333,27 +308,24 @@ paths:
                 success: true
                 data:
                   admins: []
-        '404':
-          description: 'Some of the users in the adminIds array do not exist or league does not exist.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-              examples:
-                nonExistentAdminId:
-                  value:
-                    success: false
-                    error: 'Some users do not exist'
-                nonExistentLeagueId:
-                  value:
-                    success: false
-                    error: 'League does not exist'
         '403':
           description: 'User is not the creator for this league.'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
-              example:
-                success: false
-                error: 'User is not a creator'
+                $ref: '#/components/schemas/UserNotCreatorResponse'
+        '404':
+          description: 'Some of the users in the adminIds array do not exist or league does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorResponse'
+              examples:
+                UsersNotFound:
+                  value:
+                    success: false
+                    error: 'Some users do not exist.'
+                LeagueNotFound:
+                  value:
+                    success: false
+                    error: 'League does not exist.'

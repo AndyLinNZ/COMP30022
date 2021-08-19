@@ -15,7 +15,7 @@ router.use('/grade', gradeRouter)
 router.use((err, req, res, _) => {
     res.status(err.status || 400).json({
         success: false,
-        error: err.message || 'Bad Request',
+        error: err.message || 'Invalid Request',
     })
 })
 

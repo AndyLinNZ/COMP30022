@@ -1,9 +1,4 @@
 components:
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-
   schemas:
     UserRegistration:
       properties:
@@ -57,7 +52,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
+                $ref: '#/components/schemas/GenericErrorResponse'
               example:
                 success: true
                 message: 'Registration successful'
@@ -66,7 +61,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
+                $ref: '#/components/schemas/GenericErrorResponse'
               examples:
                 missingEmail:
                   value:
@@ -97,7 +92,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
+                $ref: '#/components/schemas/GenericErrorResponse'
               example:
                 success: false
                 error: 'A user has already registered with that email'
@@ -106,7 +101,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
+                $ref: '#/components/schemas/GenericErrorResponse'
               example:
                 success: false
                 error: 'Registration error'
@@ -140,7 +135,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
+                $ref: '#/components/schemas/GenericErrorResponse'
               example:
                 success: false
                 error: 'Password or username is incorrect'

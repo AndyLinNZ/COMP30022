@@ -1,9 +1,4 @@
 components:
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-
   schemas:
     TeamRegistration:
       properties:
@@ -13,6 +8,13 @@ components:
         - teamName
       example:
         teamName: Joshua SENPAl
+
+    GradeNotFoundResponse:
+      allOf:
+        - $ref: '#/components/schemas/GenericErrorResponse'
+      example:
+        success: false
+        error: 'Grade does not exist'
 
 paths:
   /grade/{gradeId}:
@@ -48,10 +50,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
-              example:
-                success: false
-                error: 'Grade does not exist'
+                $ref: '#/components/schemas/GradeNotFoundResponse'
 
   /grade/{gradeId}/team:
     get:
@@ -81,10 +80,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
-              example:
-                success: false
-                error: 'Grade does not exist'
+                $ref: '#/components/schemas/GradeNotFoundResponse'
     post:
       tags:
         - 'Grade'
@@ -135,16 +131,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
-              example:
-                success: false
-                error: 'Grade does not exist'
+                $ref: '#/components/schemas/GradeNotFoundResponse'
         '403':
           description: 'User is not an admin for this league.'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResponse'
-              example:
-                success: false
-                error: 'User is not an admin'
+                $ref: '#/components/schemas/UserNotAdminResponse'
