@@ -1,18 +1,24 @@
 const express = require('express')
-const { ensureAuthenticated, ensureAdmin } = require('./utils')
+const { getLeagueGradeSeason, ensureAuthenticated, ensureLeagueAdmin } = require('./utils')
 const seasonController = require('../controllers/seasonController.js')
 
 const seasonRouter = express.Router()
 
 // GET
-seasonRouter.get('/:seasonId', seasonController.getSeason)
-seasonRouter.get('/:seasonId/grade', seasonController.getAllSeasonGrades)
+seasonRouter.get(
+    '/:seasonId',
+    getLeagueGradeSeason,
+    seasonController.getSeason)
+seasonRouter.get(
+    '/:seasonId/grade',
+    getLeagueGradeSeason,
+    seasonController.getAllSeasonGrades)
 
 // POST
 seasonRouter.post(
     '/:seasonId/grade',
     ensureAuthenticated,
-    ensureAdmin,
+    ensureLeagueAdmin,
     seasonController.createGrade
 )
 

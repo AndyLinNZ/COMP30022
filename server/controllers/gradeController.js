@@ -3,12 +3,9 @@ const Team = require('../models/team')
 
 async function getGrade(req, res, next) {
     try {
-        const grade = await Grade.findById(req.params.gradeId)
-        if (!grade) return next({ status: 404, message: 'Grade does not exist' })
-
         return res.status(200).json({
             success: true,
-            data: grade,
+            data: req.grade,
         })
     } catch (err) {
         console.log(err)
@@ -16,19 +13,17 @@ async function getGrade(req, res, next) {
     }
 }
 
+// TODO: move this to a separate endpoint and decouple it from grades
 async function createTeam(req, res, next) {
     let { teamName } = req.body
     try {
-        const grade = await Grade.findById(req.params.gradeId)
-        if (!grade) return next({ status: 404, message: 'Grade does not exist' })
-
         const newTeam = new Team({
             name: teamName,
-            grade: grade,
+            grade: req.grade._id,
         })
         await newTeam.save()
-        grade.teams.push(newTeam)
-        await grade.save()
+        req.grade.teams.push(newTeam)
+        await req.grade.save()
 
         return res.status(201).json({
             success: true,
@@ -42,12 +37,10 @@ async function createTeam(req, res, next) {
 
 async function getAllGradeTeams(req, res, next) {
     try {
-        const grade = await Grade.findById(req.params.gradeId)
-        if (!grade) return next({ status: 404, message: 'Grade does not exist' })
-
+        await req.grade.execPopulate('teams')
         return res.status(200).json({
             success: true,
-            data: grade.teams,
+            data: req.grade.teams,
         })
     } catch (err) {
         console.log(err)
