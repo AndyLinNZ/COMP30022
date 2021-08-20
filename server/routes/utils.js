@@ -1,10 +1,8 @@
 const passport = require('passport')
+const series = require('middleware-flow').series
 const League = require('../models/league')
 const Season = require('../models/season')
 const Grade = require('../models/grade')
-
-// from https://medium.com/javascript-scene/reduce-composing-software-fe22f0c39a1d
-const pipe = (...fns) => x => fns.reduce((v, f) => f(v), x);
 
 const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 
@@ -59,8 +57,8 @@ async function _ensureLeagueCreator(req, res, next) {
     }
 }
 
-const ensureLeagueAdmin = pipe(getLeagueGradeSeason, _ensureLeagueAdmin)
-const ensureLeagueCreator = pipe(getLeagueGradeSeason, _ensureLeagueCreator)
+const ensureLeagueAdmin = series(getLeagueGradeSeason, _ensureLeagueAdmin)
+const ensureLeagueCreator = series(getLeagueGradeSeason, _ensureLeagueCreator)
 
 module.exports = {
     ensureAuthenticated,
