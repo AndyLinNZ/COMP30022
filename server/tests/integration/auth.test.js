@@ -1,6 +1,6 @@
 const setupTestEnv = require('./test-env')
 const supertest = require('supertest')
-const initApp = require('../app')
+const initApp = require('../../app')
 const app = initApp()
 const request = supertest(app)
 

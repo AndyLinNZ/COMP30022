@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const JWT = require('jsonwebtoken')
-const connectDB = require('../db')
-const User = require('../models/user')
+const connectDB = require('../../db')
+const User = require('../../models/user')
 require('dotenv').config()
 
 /*
