@@ -12,7 +12,7 @@
     "start:client": "next start client",
     "start:server": "node server/index.js",
     "dev:server": "nodemon server/index.js",
-    "test:server": "jest",
+    "test:server": "jest --runInBand",
     "lint": "eslint",
     "precommit": "eslint --fix --ext .js,.jsx client server"
   },
