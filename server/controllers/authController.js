@@ -40,7 +40,7 @@ function loginUser(req, res, next) {
             return next({ status: 401, message: err.message })
         }
 
-        const token = JWT.sign({ username: user.username }, process.env.JWT_SECRET, {
+        const token = JWT.sign({ username: user.email }, process.env.JWT_SECRET, {
             algorithm: 'HS256',
             expiresIn: '2d',
         })
