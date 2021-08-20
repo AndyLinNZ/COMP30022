@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
+const JWT = require('jsonwebtoken')
 const connectDB = require('../db')
 const User = require('../models/user')
+require('dotenv').config()
 
 /*
  * to be called before declaring tests
@@ -9,22 +11,33 @@ const User = require('../models/user')
  * optionally, a default user can be created
  * for testing authenticated endpoints
  */
-function setupTestEnv(dbName, options) {
+function setupTestEnv(dbName, ret, options={}) {
     beforeAll(async () => {
         await connectDB('mongodb://localhost:27017/', dbName)
         await mongoose.connection.dropDatabase()
 
-        if (options?.createDefaultUser) {
-            const userDetails = {
-                email: 'john.smith@example.com',
-                firstName: 'John',
-                lastName: 'Smith'
-            }
-            const password = 'S3cur3 P4ssw0rd 123!'
-            const newUser = new User(userDetails)
-            User.register(newUser, password, (err, _) => {
-                if (err) throw err
+        if (options?.createDefaultUsers) {
+            const usersDetails = [
+                [{
+                    email: 'john.smith@example.com',
+                    firstName: 'John',
+                    lastName: 'Smith'
+                }, 'S3cur3 P4ssw0rd 123!'],
+                [{
+                    email: 'jane.doe@example.com',
+                    firstName: 'Jane',
+                    lastName: 'Doe'
+                }, 'PassworD!!1!1']
+            ]
+            var auth_promises = usersDetails.map(async (details) => {
+                var [userDetails, password] = details
+                var newUser = new User(userDetails)
+                await User.register(newUser, password)
+                var auth_token = JWT.sign({ userid: newUser._id },
+                    process.env.JWT_SECRET, { algorithm: 'HS256', expiresIn: '2d' })
+                return auth_token
             })
+            ret.auth_tokens = await Promise.all(auth_promises)
         }
     })
 
