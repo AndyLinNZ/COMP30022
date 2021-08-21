@@ -18,12 +18,20 @@ module.exports = {
         sourceType: 'module',
     },
     plugins: ['react', 'jest'],
+    settings: {
+        react: {
+            version: 'latest',
+        },
+    },
     rules: {
         indent: ['error', 4],
         'linebreak-style': ['error', 'unix'],
         quotes: ['error', 'single'],
         semi: ['error', 'never'],
-        'no-unused-vars': ['warn', { vars: 'all', args: 'after-used', 'argsIgnorePattern': '^_' }],
+        'no-unused-vars': [
+            'warn',
+            { vars: 'all', args: 'after-used', argsIgnorePattern: '^_' },
+        ],
         'react/prop-types': 'off',
     },
 }
