@@ -1,0 +1,18 @@
+name: Client Tests CI
+
+on:
+    pull_request:
+        branches:
+            - master
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        env:
+            working-directory: ./client
+        steps:
+            - uses: actions/checkout@v2
+            - run: yarn
+              working-directory: ${{env.working-directory}}
+            - run: yarn test
+              working-directory: ${{env.working-directory}}
