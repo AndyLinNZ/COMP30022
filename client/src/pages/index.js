@@ -126,10 +126,7 @@ export default function Home() {
                     <Logo />
                 </Box>
 
-                <AssociationSearch
-                    value={searchValue}
-                    onChange={setSearchValue}
-                />
+                <AssociationSearch value={searchValue} onChange={setSearchValue} />
             </Flex>
             <Box px="3rem" minH="500px" mt={[6, 2]} mb="5rem">
                 <Flex>

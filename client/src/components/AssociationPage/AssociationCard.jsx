@@ -23,8 +23,7 @@ const AssociationCard = ({ name, org, activeSeasons, icon }) => {
             cursor="pointer"
             transition="box-shadow 0.8s ease"
             _hover={{
-                boxShadow:
-                    '0 15px 30px rgba(0,0,0,0.1), 0 20px 20px rgba(0,0,0,0.12);',
+                boxShadow: '0 15px 30px rgba(0,0,0,0.1), 0 20px 20px rgba(0,0,0,0.12);',
             }}
         >
             <Box pos="absolute" top="-25%">
@@ -58,8 +57,7 @@ const AssociationCard = ({ name, org, activeSeasons, icon }) => {
             cursor="pointer"
             transition="box-shadow 0.8s ease"
             _hover={{
-                boxShadow:
-                    '0 15px 30px rgba(0,0,0,0.1), 0 20px 20px rgba(0,0,0,0.12);',
+                boxShadow: '0 15px 30px rgba(0,0,0,0.1), 0 20px 20px rgba(0,0,0,0.12);',
             }}
         >
             <Box pos="absolute" bottom={3} right={3}>

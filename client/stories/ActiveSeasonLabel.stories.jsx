@@ -1,5 +1,5 @@
 import React from 'react'
-import ActiveSeasonLabel from '../components/AssociationPage/ActiveSeasonLabel'
+import ActiveSeasonLabel from '../src/components/AssociationPage/ActiveSeasonLabel'
 
 export default {
     title: 'components/Assocationpage/ActiveSeasonLabel',

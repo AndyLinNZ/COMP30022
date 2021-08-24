@@ -9,6 +9,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./server
 
     strategy:
       matrix:
@@ -30,6 +32,8 @@ jobs:
         mongodb-version: ${{ matrix.mongodb-version }}
 
     - run: yarn
-    - run: yarn test:server
+      working-directory: ${{env.working-directory}}
+    - run: yarn test
+      working-directory: ${{env.working-directory}}
       env:
         JWT_SECRET: aaaaaaaaaaaaaaaaaaaaaaaaa

@@ -1,5 +1,5 @@
 import React from 'react'
-import AssociationCard from '../components/AssociationPage/AssociationCard'
+import AssociationCard from '../src/components/AssociationPage/AssociationCard'
 
 export default {
     title: 'components/Assocationpage/AssociationCard',
