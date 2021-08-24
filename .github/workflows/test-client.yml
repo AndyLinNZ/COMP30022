@@ -12,7 +12,7 @@ jobs:
             working-directory: ./client
         steps:
             - uses: actions/checkout@v2
-            - name: Install modules
-              run: yarn
-            - name: Run tests
-              run: yarn test
+            - run: yarn
+              working-directory: ${{env.working-directory}}
+            - run: yarn test
+              working-directory: ${{env.working-directory}}
