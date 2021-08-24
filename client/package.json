@@ -8,7 +8,7 @@
     "license": "MIT",
     "scripts": {
         "dev": "next dev",
-        "build": "yarn --cwd .. precommit && next build",
+        "build": "next build",
         "start": "next start",
         "test": "jest",
         "precommit": "eslint --fix --ext .js,.jsx",
