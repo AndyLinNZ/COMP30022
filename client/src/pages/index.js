@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import { Flex, Box, Checkbox, Text } from '@chakra-ui/react'
 import Header from 'components/Header'
 import HeroBackDrop from 'components/svg/HeroBackDrop'
@@ -102,6 +103,9 @@ export default function Home() {
             bg="grey"
             overflow="hidden"
         >
+            <Head>
+                <title>Dribblr | Basketball Leagues</title>
+            </Head>
             {isDesktop ? (
                 <HeroBackDrop />
             ) : (

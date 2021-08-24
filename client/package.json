@@ -11,7 +11,8 @@
         "build": "yarn --cwd .. precommit && next build",
         "start": "next start",
         "test": "jest",
-        "precommit": "eslint --fix --ext .js,.jsx"
+        "precommit": "eslint --fix --ext .js,.jsx",
+        "storybook": "start-storybook -p 9009"
     },
     "dependencies": {
         "@chakra-ui/icons": "^1.0.15",
@@ -26,6 +27,11 @@
         "react-dom": "^17.0.2"
     },
     "devDependencies": {
+        "@storybook/addon-actions": "^6.3.7",
+        "@storybook/addon-controls": "^6.3.7",
+        "@storybook/addon-docs": "^6.3.7",
+        "@storybook/addon-viewport": "^6.3.7",
+        "@storybook/react": "^6.3.7",
         "@testing-library/jest-dom": "^5.14.1",
         "@testing-library/react": "^12.0.0",
         "eslint": "^7.32.0",
