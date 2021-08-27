@@ -5,7 +5,7 @@ const baseURL = API_URL
 
 const headers = {}
 
-const token = localStorage.getItem('token')
+const token = typeof window !== 'undefined' && window.localStorage.getItem('token')
 
 if (token) {
     headers.Authorization = `Bearer ${token}`
@@ -38,8 +38,8 @@ axios.interceptors.response.use(
         return response
     },
     async (error) => {
-        if (error.config.status === 403) {
-            localStorage.removeItem('token')
+        if (typeof window !== 'undefined' && error.config.status === 403) {
+            window.localStorage.removeItem('token')
 
             window.location = '/login'
         } else {
