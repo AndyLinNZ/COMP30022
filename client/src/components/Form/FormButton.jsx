@@ -11,7 +11,14 @@ const inverseColorScheme = {
     color: 'greyText.500',
 }
 
-const FormButton = ({ inverse = false, onClick, children }) => {
+const FormButton = ({
+    inverse = false,
+    onClick,
+    type,
+    disabled,
+    isLoading = false,
+    children,
+}) => {
     const colorScheme = inverse ? inverseColorScheme : defaultColorScheme
     return (
         // adding a width to buttons is generally bad practice
@@ -25,6 +32,9 @@ const FormButton = ({ inverse = false, onClick, children }) => {
             _hover={{ opacity: 0.95 }}
             {...colorScheme}
             onClick={onClick}
+            type={type}
+            disabled={disabled}
+            isLoading={isLoading}
         >
             {children}
         </Button>
