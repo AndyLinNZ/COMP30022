@@ -3,21 +3,14 @@ import { API_URL } from 'utils/constants'
 
 const baseURL = API_URL
 
-const headers = {}
-
-const token = typeof window !== 'undefined' && window.localStorage.getItem('token')
-
-if (token) {
-    headers.Authorization = `Bearer ${token}`
-}
-
 const axiosInstance = axios.create({
     baseURL,
-    headers,
 })
 
 axios.interceptors.request.use(
     (config) => {
+        const token =
+            typeof window !== 'undefined' && window.localStorage.getItem('token')
         if (token) {
             config.headers.Authorization = `Bearer ${token}`
         }
@@ -38,7 +31,7 @@ axios.interceptors.response.use(
         return response
     },
     async (error) => {
-        if (typeof window !== 'undefined' && error.config.status === 403) {
+        if (typeof window !== 'undefined' && error.config.status === 401) {
             window.localStorage.removeItem('token')
 
             window.location = '/login'

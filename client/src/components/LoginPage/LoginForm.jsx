@@ -24,7 +24,8 @@ const LoginForm = () => {
         resolver: yupResolver(loginSchema),
     })
     const { mutate: loginUser, isLoading } = useLogin({
-        onSuccess: () => {
+        onSuccess: (response) => {
+            window.localStorage.setItem('token', response.data.token)
             router.push(HOME_PATH)
         },
         onError: (error) => {

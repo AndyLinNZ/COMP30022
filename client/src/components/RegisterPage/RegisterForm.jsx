@@ -33,7 +33,8 @@ const RegisterForm = () => {
     })
 
     const { mutate, isLoading } = useRegister({
-        onSuccess: () => {
+        onSuccess: (response) => {
+            window.localStorage.setItem('token', response.data.token)
             router.push(HOME_PATH)
         },
         onError: (error) => {
