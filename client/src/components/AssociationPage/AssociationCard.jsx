@@ -23,12 +23,11 @@ const AssociationCard = ({ name, org, activeSeasons, icon }) => {
             cursor="pointer"
             transition="box-shadow 0.8s ease"
             _hover={{
-                boxShadow:
-                    '0 15px 30px rgba(0,0,0,0.1), 0 20px 20px rgba(0,0,0,0.12);',
+                boxShadow: '0 15px 30px rgba(0,0,0,0.1), 0 20px 20px rgba(0,0,0,0.12);',
             }}
         >
             <Box pos="absolute" top="-25%">
-                <Avatar src={icon} size="xl" />
+                <Avatar src={icon} size="xl" bg="grey" />
             </Box>
             <Box textAlign="center" color="greyText" mt="1rem" maxW="100%">
                 <Text fontSize="1.125rem">{name}</Text>
@@ -58,12 +57,11 @@ const AssociationCard = ({ name, org, activeSeasons, icon }) => {
             cursor="pointer"
             transition="box-shadow 0.8s ease"
             _hover={{
-                boxShadow:
-                    '0 15px 30px rgba(0,0,0,0.1), 0 20px 20px rgba(0,0,0,0.12);',
+                boxShadow: '0 15px 30px rgba(0,0,0,0.1), 0 20px 20px rgba(0,0,0,0.12);',
             }}
         >
             <Box pos="absolute" bottom={3} right={3}>
-                <Avatar src={icon} size="lg" />
+                <Avatar src={icon} size="lg" bg="grey" />
             </Box>
             <Box textAlign="left" color="greyText" maxW="100%">
                 <Text fontSize="1.125rem" fontWeight="bold">

@@ -1,9 +1,7 @@
-import React from 'react'
-import { ChakraProvider, extendTheme } from '@chakra-ui/react'
-import '../styles/globals.css'
+import { extendTheme } from '@chakra-ui/react'
 import '@fontsource/roboto-condensed'
 
-const theme = extendTheme({
+export const theme = extendTheme({
     fonts: {
         body: 'Roboto Condensed',
         heading: 'Roboto Condensed',
@@ -27,13 +25,3 @@ const theme = extendTheme({
     },
     breakpoints: ['600px', '1024px', '1440px'],
 })
-
-function MyApp({ Component, pageProps }) {
-    return (
-        <ChakraProvider theme={theme}>
-            <Component {...pageProps} />
-        </ChakraProvider>
-    )
-}
-
-export default MyApp

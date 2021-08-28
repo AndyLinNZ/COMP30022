@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import { Flex, Box, Checkbox, Text } from '@chakra-ui/react'
 import Header from 'components/Header'
 import HeroBackDrop from 'components/svg/HeroBackDrop'
@@ -102,6 +103,9 @@ export default function Home() {
             bg="grey"
             overflow="hidden"
         >
+            <Head>
+                <title>Dribblr | Basketball Leagues</title>
+            </Head>
             {isDesktop ? (
                 <HeroBackDrop />
             ) : (
@@ -122,10 +126,7 @@ export default function Home() {
                     <Logo />
                 </Box>
 
-                <AssociationSearch
-                    value={searchValue}
-                    onChange={setSearchValue}
-                />
+                <AssociationSearch value={searchValue} onChange={setSearchValue} />
             </Flex>
             <Box px="3rem" minH="500px" mt={[6, 2]} mb="5rem">
                 <Flex>

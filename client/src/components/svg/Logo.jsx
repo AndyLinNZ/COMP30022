@@ -1,12 +1,11 @@
 import * as React from 'react'
 
-function SvgComponent(props) {
+function SvgComponent({ width, height, ...props }) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
-            width={700}
-            height={152}
+            width={width || 700}
             viewBox="0 0 875 188"
             {...props}
         >

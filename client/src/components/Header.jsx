@@ -1,9 +1,12 @@
 import { Box, Button, Flex } from '@chakra-ui/react'
 import { useMediaQuerySSR } from 'hooks'
+import { useRouter } from 'next/router'
 import React from 'react'
+import { LOGIN_PATH, SIGN_UP_PATH } from 'utils/constants'
 
 const Header = () => {
     const showSignUp = useMediaQuerySSR(1024)
+    const router = useRouter()
     return (
         <Flex
             as="nav"
@@ -25,6 +28,7 @@ const Header = () => {
                     borderRadius="0.75rem"
                     transition="background 0.5s ease, color 0.5s ease"
                     _hover={{ bg: 'greyText.500', color: 'white' }}
+                    onClick={() => router.push(LOGIN_PATH)}
                 >
                     LOGIN
                 </Button>
@@ -37,6 +41,7 @@ const Header = () => {
                         borderRadius="0.75rem"
                         transition="background 0.5s ease, color 0.5s ease"
                         _hover={{ color: 'greyText.500', bg: 'white' }}
+                        onClick={() => router.push(SIGN_UP_PATH)}
                     >
                         SIGNUP
                     </Button>
