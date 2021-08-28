@@ -7,12 +7,11 @@ async function createTeam(req, res, next) {
     let { teamName } = req.body
 
     try {
-        const user = await User.findById(req.user._id).lean()
-        if (!user) return next({ status: 404, message: 'User does not exist '})
+        const user = req.user
 
         const newTeam = new Team({
             name: teamName,
-            admin: user,
+            admin: req.user._id,
             grade: req.grade._id
         })
 
