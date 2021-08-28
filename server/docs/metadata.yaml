@@ -10,4 +10,6 @@ tags:
   - name: 'League'
     description: 'Everything about league, including league seasons and league admins.'
   - name: 'Season'
-    description: 'Individual season operations.'
+    description: 'Everything about season, including season grades.'
+  - name: 'Grade'
+    description: 'Everything about grade, including grade teams.'

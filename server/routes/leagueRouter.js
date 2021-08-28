@@ -1,35 +1,41 @@
 const express = require('express')
-const { ensureAuthenticated, ensureAdmin, ensureCreator } = require('./utils')
+const { getLeagueGradeSeason, ensureAuthenticated, ensureLeagueAdmin, ensureLeagueCreator } = require('./utils')
 const leagueController = require('../controllers/leagueController.js')
 
 const leagueRouter = express.Router()
 
 // GET
 leagueRouter.get('/', leagueController.getAllLeagues)
-leagueRouter.get('/:leagueId', leagueController.getLeague)
-leagueRouter.get('/:leagueId/season', leagueController.getAllLeagueSeasons)
+leagueRouter.get(
+    '/:leagueId',
+    getLeagueGradeSeason,
+    leagueController.getLeague)
+leagueRouter.get(
+    '/:leagueId/season',
+    getLeagueGradeSeason,
+    leagueController.getAllLeagueSeasons)
 
 // POST
 leagueRouter.post('/', ensureAuthenticated, leagueController.createLeague)
 leagueRouter.post(
     '/:leagueId/season',
     ensureAuthenticated,
-    ensureAdmin,
+    ensureLeagueAdmin,
     leagueController.createLeagueSeason
 )
-
-// PATCH
-leagueRouter.patch(
-    '/:leagueId/admin/',
+leagueRouter.post(
+    '/:leagueId/admin',
     ensureAuthenticated,
-    ensureCreator,
-    leagueController.addLeagueAdmins
+    ensureLeagueCreator,
+    leagueController.createLeagueAdmins
 )
-leagueRouter.patch(
-    '/:leagueId/admin/remove',
+
+// DELETE
+leagueRouter.delete(
+    '/:leagueId/admin',
     ensureAuthenticated,
-    ensureCreator,
-    leagueController.removeLeagueAdmins
+    ensureLeagueCreator,
+    leagueController.deleteLeagueAdmins
 )
 
 module.exports = leagueRouter

@@ -9,9 +9,15 @@ const gameSchema = new mongoose.Schema({
     dateFinished: {
         type: Date,
     },
-    winningTeam: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Team',
+    gameResults: {
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'GameResult',
+                required: true,
+            },
+        ],
+        default: [],
     },
     location: {
         type: {
