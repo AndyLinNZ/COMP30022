@@ -14,6 +14,7 @@ async function getGrade(req, res, next) {
 }
 
 // TODO: move this to a separate endpoint and decouple it from grades
+// Won't be writing a test for this atm until its refactored
 async function createTeam(req, res, next) {
     let { teamName } = req.body
     try {
@@ -37,10 +38,10 @@ async function createTeam(req, res, next) {
 
 async function getAllGradeTeams(req, res, next) {
     try {
-        await req.grade.execPopulate('teams')
+        const grade = await req.grade.execPopulate('teams')
         return res.status(200).json({
             success: true,
-            data: req.grade.teams,
+            data: grade.teams,
         })
     } catch (err) {
         console.log(err)
