@@ -3,23 +3,22 @@ const Season = require('../models/season')
 const User = require('../models/user')
 
 async function createLeague(req, res, next) {
-    let { leagueName, organisationName } = req.body
     try {
-        const user = await User.findById(req.user._id).lean()
-        if (!user) return next({ status: 404, message: 'User does not exist' })
-
+        let { leagueName, organisationName } = req.body
         const newLeague = new League({
             name: leagueName,
             organisation: organisationName,
-            creator: user,
-            admins: [user],
+            creator: req.user._id,
+            admins: [req.user._id],
             seasons: [],
         })
-        await newLeague.save()
+        const league = await newLeague.save()
+        req.user.leagues.push(newLeague)
+        await req.user.save()
 
         return res.status(201).json({
             success: true,
-            data: newLeague,
+            data: league,
         })
     } catch (err) {
         console.log(err)
@@ -43,12 +42,9 @@ async function getAllLeagues(_, res, next) {
 
 async function getLeague(req, res, next) {
     try {
-        const league = await League.findById(req.params.leagueId).lean()
-        if (!league) return next({ status: 404, message: 'League does not exist' })
-
         return res.status(200).json({
             success: true,
-            data: league,
+            data: req.league,
         })
     } catch (err) {
         console.log(err)
@@ -58,9 +54,7 @@ async function getLeague(req, res, next) {
 
 async function getAllLeagueSeasons(req, res, next) {
     try {
-        const league = await League.findById(req.params.leagueId)
-        if (!league) return next({ status: 404, message: 'League does not exist' })
-
+        const league = await req.league.execPopulate('seasons')
         return res.status(200).json({
             success: true,
             data: league.seasons,
@@ -72,24 +66,22 @@ async function getAllLeagueSeasons(req, res, next) {
 }
 
 async function createLeagueSeason(req, res, next) {
-    let { seasonName, seasonStart, seasonFinish } = req.body
     try {
-        const league = await League.findById(req.params.leagueId)
-        if (!league) return next({ status: 404, message: 'League does not exist' })
-
+        let { seasonName, seasonStart, seasonFinish } = req.body
         const newSeason = new Season({
             name: seasonName,
             dateStart: seasonStart,
             datefinish: seasonFinish,
+            league: req.league._id,
             grades: [],
         })
-        await newSeason.save()
-        league.seasons.push(newSeason)
-        await league.save()
+        const season = await newSeason.save()
+        req.league.seasons.push(newSeason)
+        await req.league.save()
 
         return res.status(201).json({
             success: true,
-            data: newSeason,
+            data: season,
         })
     } catch (err) {
         console.log(err)
@@ -97,28 +89,28 @@ async function createLeagueSeason(req, res, next) {
     }
 }
 
-async function addLeagueAdmins(req, res, next) {
+async function createLeagueAdmins(req, res, next) {
     try {
         const newLeagueAdmins = await Promise.all(
             req.body.adminIds.map(async (userId) => {
-                const user = await User.findOne({
-                    _id: userId,
-                }).lean()
-                if (!user)
-                    return next({ status: 404, message: 'Some users do not exist' })
+                const user = await User.findOneAndUpdate(
+                    { _id: userId },
+                    { $addToSet: { leagues: req.league._id } }
+                )
+                if (!user) return next({ status: 404, message: 'Some users do not exist' })
                 return user
             })
         )
-        await League.updateOne(
-            { _id: req.params.leagueId },
-            { $addToSet: { admins: newLeagueAdmins } }
+
+        const league = await League.findOneAndUpdate(
+            { _id: req.league._id },
+            { $addToSet: { admins: newLeagueAdmins } },
+            { new: true }
         )
-        const updatedLeague = await League.findById(req.params.leagueId).lean()
-        if (!updatedLeague) return next({ status: 404, message: 'League does not exist' })
 
         return res.status(200).json({
             success: true,
-            data: updatedLeague.admins,
+            data: league.admins,
         })
     } catch (err) {
         console.log(err)
@@ -126,28 +118,30 @@ async function addLeagueAdmins(req, res, next) {
     }
 }
 
-async function removeLeagueAdmins(req, res, next) {
+async function deleteLeagueAdmins(req, res, next) {
     try {
-        const removeLeagueAdmins = await Promise.all(
+        const toDeleteLeagueAdmins = await Promise.all(
             req.body.adminIds.map(async (userId) => {
-                const user = await User.findOne({
-                    _id: userId,
-                }).lean()
-                if (!user)
-                    return next({ status: 404, message: 'Some users do not exist' })
+                const user = await User.findOneAndUpdate(
+                    { _id: userId },
+                    { $pull: { leagues: { $in: req.league._id } } }
+                )
+                if (!user) return next({ status: 404, message: 'Some users do not exist' })
                 return user
             })
         )
-        await League.updateOne(
-            { _id: req.params.leagueId },
-            { $pull: { admins: removeLeagueAdmins } }
+
+        const league = await League.findOneAndUpdate(
+            { _id: req.league._id },
+            {
+                $pull: { admins: { $in: toDeleteLeagueAdmins } },
+            },
+            { new: true }
         )
-        const updatedLeague = await League.findById(req.params.leagueId).lean()
-        if (!updatedLeague) return next({ status: 404, message: 'League does not exist' })
 
         return res.status(200).json({
             success: true,
-            data: updatedLeague.admins,
+            data: league.admins,
         })
     } catch (err) {
         console.log(err)
@@ -156,8 +150,8 @@ async function removeLeagueAdmins(req, res, next) {
 }
 
 module.exports = {
-    addLeagueAdmins,
-    removeLeagueAdmins,
+    createLeagueAdmins,
+    deleteLeagueAdmins,
     getLeague,
     getAllLeagues,
     getAllLeagueSeasons,

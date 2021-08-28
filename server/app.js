@@ -31,7 +31,7 @@ function initApp() {
     }
     passport.use(
         new JwtStrategy(jwtOpts, (payload, next) => {
-            User.findOne({ username: payload.username })
+            User.findOne({ _id: payload.userid })
                 .then((user) => next(null, user || false))
                 .catch((_) => next(null, false))
         })

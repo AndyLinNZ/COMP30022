@@ -11,6 +11,11 @@ const gameResultSchema = new mongoose.Schema({
     points: {
         type: Number,
     },
+    game: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Game',
+        required: true,
+    },
     matchResult: {
         type: String,
         enum: ['win', 'loss', 'draw'],

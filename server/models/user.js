@@ -5,19 +5,29 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        index: true
+        index: true,
     },
     password: {
-        type: String
+        type: String,
     },
     firstName: {
         type: String,
-        required: true
+        required: true,
     },
     lastName: {
         type: String,
-        required: true
-    }
+        required: true,
+    },
+    leagues: {
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'League',
+                required: true,
+            },
+        ],
+        default: [],
+    },
 })
 
 userSchema.plugin(passportLocalMongoose, {

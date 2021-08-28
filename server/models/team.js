@@ -4,21 +4,30 @@ const teamSchema = new mongoose.Schema({
     name: {
         type: String,
     },
+    admin: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
     grade: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Grade',
     },
     totalPoints: {
         type: Number,
+        default: 0,
     },
     totalWins: {
         type: Number,
+        default: 0,
     },
     totalLosses: {
         type: Number,
+        default: 0,
     },
     totalDraws: {
         type: Number,
+        default: 0,
     },
     gameResults: {
         type: [
