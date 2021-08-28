@@ -28,6 +28,5 @@ async function getAllGradeTeams(req, res, next) {
 
 module.exports = {
     getGrade,
-    createTeam,
     getAllGradeTeams,
 }

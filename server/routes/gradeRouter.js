@@ -14,11 +14,4 @@ gradeRouter.get(
     getLeagueGradeSeason,
     gradeController.getAllGradeTeams)
 
-// POST
-gradeRouter.post(
-    '/:gradeId/team',
-    ensureAuthenticated,
-    ensureLeagueAdmin,
-    gradeController.createTeam)
-
 module.exports = gradeRouter
