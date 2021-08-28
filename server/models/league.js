@@ -3,9 +3,11 @@ const mongoose = require('mongoose')
 const leagueSchema = new mongoose.Schema({
     name: {
         type: String,
+        required: true,
     },
     organisation: {
         type: String,
+        required: true,
     },
     creator: {
         type: mongoose.Schema.Types.ObjectId,

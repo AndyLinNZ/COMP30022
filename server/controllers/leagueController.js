@@ -3,8 +3,8 @@ const Season = require('../models/season')
 const User = require('../models/user')
 
 async function createLeague(req, res, next) {
-    let { leagueName, organisationName } = req.body
     try {
+        let { leagueName, organisationName } = req.body
         const newLeague = new League({
             name: leagueName,
             organisation: organisationName,
@@ -12,13 +12,13 @@ async function createLeague(req, res, next) {
             admins: [req.user._id],
             seasons: [],
         })
-        await newLeague.save()
+        const league = await newLeague.save()
         req.user.leagues.push(newLeague)
         await req.user.save()
 
         return res.status(201).json({
             success: true,
-            data: newLeague,
+            data: league,
         })
     } catch (err) {
         console.log(err)
@@ -54,10 +54,10 @@ async function getLeague(req, res, next) {
 
 async function getAllLeagueSeasons(req, res, next) {
     try {
-        await req.league.execPopulate('seasons')
+        const league = await req.league.execPopulate('seasons')
         return res.status(200).json({
             success: true,
-            data: req.league.seasons,
+            data: league.seasons,
         })
     } catch (err) {
         console.log(err)
@@ -75,13 +75,13 @@ async function createLeagueSeason(req, res, next) {
             league: req.league._id,
             grades: [],
         })
-        await newSeason.save()
+        const season = await newSeason.save()
         req.league.seasons.push(newSeason)
         await req.league.save()
 
         return res.status(201).json({
             success: true,
-            data: newSeason,
+            data: season,
         })
     } catch (err) {
         console.log(err)
@@ -93,17 +93,24 @@ async function createLeagueAdmins(req, res, next) {
     try {
         const newLeagueAdmins = await Promise.all(
             req.body.adminIds.map(async (userId) => {
-                const user = await User.findById(userId).lean()
+                const user = await User.findOneAndUpdate(
+                    { _id: userId },
+                    { $addToSet: { leagues: req.league._id } }
+                )
                 if (!user) return next({ status: 404, message: 'Some users do not exist' })
-                return user.update({ $addToSet: { leagues: req.league._id } })
+                return user
             })
         )
 
-        await req.league.update({ $addToSet: { admins: newLeagueAdmins } })
+        const league = await League.findOneAndUpdate(
+            { _id: req.league._id },
+            { $addToSet: { admins: newLeagueAdmins } },
+            { new: true }
+        )
 
-        return res.status(201).json({
+        return res.status(200).json({
             success: true,
-            data: req.league.admins,
+            data: league.admins,
         })
     } catch (err) {
         console.log(err)
@@ -115,17 +122,26 @@ async function deleteLeagueAdmins(req, res, next) {
     try {
         const toDeleteLeagueAdmins = await Promise.all(
             req.body.adminIds.map(async (userId) => {
-                const user = await User.findById(userId).lean()
+                const user = await User.findOneAndUpdate(
+                    { _id: userId },
+                    { $pull: { leagues: { $in: req.league._id } } }
+                )
                 if (!user) return next({ status: 404, message: 'Some users do not exist' })
-                return user.update({ $pull: { leagues: { $in: req.params.leagueId } } })
+                return user
             })
         )
 
-        await req.league.update({ $pull: { admins: { $in: toDeleteLeagueAdmins } } })
+        const league = await League.findOneAndUpdate(
+            { _id: req.league._id },
+            {
+                $pull: { admins: { $in: toDeleteLeagueAdmins } },
+            },
+            { new: true }
+        )
 
         return res.status(200).json({
             success: true,
-            data: req.league.admins,
+            data: league.admins,
         })
     } catch (err) {
         console.log(err)

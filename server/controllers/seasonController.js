@@ -1,4 +1,3 @@
-const Season = require('../models/season')
 const Grade = require('../models/grade')
 
 async function getSeason(req, res, next) {
@@ -27,13 +26,13 @@ async function createGrade(req, res, next) {
             difficulty: gradeDifficulty,
             season: req.season._id,
         })
-        await newGrade.save()
+        const grade = await newGrade.save()
         req.season.grades.push(newGrade)
         await req.season.save()
 
         return res.status(201).json({
             success: true,
-            data: newGrade,
+            data: grade,
         })
     } catch (err) {
         console.log(err)
@@ -43,10 +42,10 @@ async function createGrade(req, res, next) {
 
 async function getAllSeasonGrades(req, res, next) {
     try {
-        await req.season.execPopulate('grades')
+        const season = await req.season.execPopulate('grades')
         return res.status(200).json({
             success: true,
-            data: req.season.grades,
+            data: season.grades,
         })
     } catch (err) {
         console.log(err)
