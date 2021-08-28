@@ -4,6 +4,11 @@ const teamSchema = new mongoose.Schema({
     name: {
         type: String,
     },
+    admin: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
     grade: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Grade',
