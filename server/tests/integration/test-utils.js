@@ -8,7 +8,7 @@ require('dotenv').config()
  * to be called before declaring tests
  * this function sets up a testing database and
  * cleans it up after tests have finished
- * optionally, a default user can be created
+ * optionally, default users can be created
  * for testing authenticated endpoints
  */
 function setupTestEnv(dbName, ret, options={}) {
@@ -35,7 +35,7 @@ function setupTestEnv(dbName, ret, options={}) {
                 await User.register(newUser, password)
                 var auth_token = JWT.sign({ userid: newUser._id },
                     process.env.JWT_SECRET, { algorithm: 'HS256', expiresIn: '2d' })
-                return auth_token
+                return [newUser._id.toString(), auth_token]
             })
             ret.auth_tokens = await Promise.all(auth_promises)
         }
