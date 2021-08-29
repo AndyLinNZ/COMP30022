@@ -4,7 +4,7 @@ const User = require('../models/user')
 // returns true if all items in arr are valid object ids
 const allValidIds = (arr) => arr.every(ObjectId.isValid)
 
-// returns false is any of the given ids are invalid object ids
+// returns false if any of the given ids are invalid object ids
 // or if any of them do not correspond to a user in the database
 // returns true otherwise
 async function allValidUserIds(ids) {
