@@ -65,13 +65,14 @@ async function getAllLeagueSeasons(req, res, next) {
     }
 }
 
+// TODO: validation on name and dates
 async function createLeagueSeason(req, res, next) {
     try {
         let { seasonName, seasonStart, seasonFinish } = req.body
         const newSeason = new Season({
             name: seasonName,
             dateStart: seasonStart,
-            datefinish: seasonFinish,
+            dateFinish: seasonFinish,
             league: req.league._id,
             grades: [],
         })
