@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongoose').Types
 const League = require('../models/league')
 const Season = require('../models/season')
 const User = require('../models/user')
@@ -94,11 +95,14 @@ async function createLeagueAdmins(req, res, next) {
     try {
         const newLeagueAdmins = await Promise.all(
             req.body.adminIds.map(async (userId) => {
-                const user = await User.findOneAndUpdate(
+                var validId = ObjectId.isValid(userId)
+                var user
+                if (validId) user = await User.findById(userId)
+                if (!user || !validId) return next({ status: 404, message: 'Some users do not exist' })
+                user = await User.findOneAndUpdate(
                     { _id: userId },
                     { $addToSet: { leagues: req.league._id } }
                 )
-                if (!user) return next({ status: 404, message: 'Some users do not exist' })
                 return user
             })
         )
@@ -123,11 +127,14 @@ async function deleteLeagueAdmins(req, res, next) {
     try {
         const toDeleteLeagueAdmins = await Promise.all(
             req.body.adminIds.map(async (userId) => {
-                const user = await User.findOneAndUpdate(
+                var validId = ObjectId.isValid(userId)
+                var user
+                if (validId) user = await User.findById(userId)
+                if (!user || !validId) return next({ status: 404, message: 'Some users do not exist' })
+                user = await User.findOneAndUpdate(
                     { _id: userId },
                     { $pull: { leagues: { $in: req.league._id } } }
                 )
-                if (!user) return next({ status: 404, message: 'Some users do not exist' })
                 return user
             })
         )
