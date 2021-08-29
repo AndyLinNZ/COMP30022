@@ -1,4 +1,4 @@
-const setupTestEnv = require('./test-env')
+const setupTestEnv = require('./test-utils')
 const supertest = require('supertest')
 const initApp = require('../../app')
 const app = initApp()
