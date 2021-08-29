@@ -305,9 +305,9 @@ describe('Unit Testing: createLeagueAdmins in leagueController', () => {
             admins: ['611a8ba31fb4c81d84a5513b', '611a8a311fb4c81d84a55126'],
         })
 
-        User.findById = jest
+        User.find = jest
             .fn()
-            .mockResolvedValue(new User(user))
+            .mockResolvedValue([new User(user)])
         User.findOneAndUpdate = jest
             .fn()
             .mockResolvedValue(new User({ ...user, leagues: ['611bbfe2aaa94829988d0b18'] }))
@@ -454,9 +454,6 @@ describe('Unit Testing: deleteLeagueAdmins in leagueController', () => {
             admins: ['611a8a311fb4c81d84a55126'],
         })
 
-        User.findById = jest
-            .fn()
-            .mockResolvedValue(new User(user))
         User.findOneAndUpdate = jest
             .fn()
             .mockResolvedValue(new User({ ...user, leagues: ['611bbfe2aaa94829988d0b18'] }))
@@ -554,6 +551,7 @@ describe('Unit Testing: deleteLeagueAdmins in leagueController', () => {
             adminIds: ['jdubz'],
         }
 
+        User.find = jest.fn().mockResolvedValue([])
         User.findOneAndUpdate = jest.fn().mockResolvedValue(null)
 
         await leagueController.deleteLeagueAdmins(req, res, next)

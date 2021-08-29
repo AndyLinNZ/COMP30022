@@ -2,6 +2,7 @@ const { ObjectId } = require('mongoose').Types
 const League = require('../models/league')
 const Season = require('../models/season')
 const User = require('../models/user')
+const { allValidUserIds } = require('./util')
 
 async function createLeague(req, res, next) {
     try {
@@ -93,20 +94,19 @@ async function createLeagueSeason(req, res, next) {
 
 async function createLeagueAdmins(req, res, next) {
     try {
+        if (!await allValidUserIds(req.body.adminIds)) {
+            return next({ status: 404, message: 'Some users do not exist' })
+        }
+
         var newLeagueAdmins = await Promise.all(
             req.body.adminIds.map(async (userId) => {
-                var validId = ObjectId.isValid(userId)
-                var user
-                if (validId) user = await User.findById(userId)
-                if (!user || !validId) return next({ status: 404, message: 'Some users do not exist' })
-                user = await User.findOneAndUpdate(
+                const user = await User.findOneAndUpdate(
                     { _id: userId },
                     { $addToSet: { leagues: req.league._id } }
                 )
                 return user
             })
         )
-        newLeagueAdmins = newLeagueAdmins.filter(x => x)
 
         const league = await League.findOneAndUpdate(
             { _id: req.league._id },
@@ -126,20 +126,19 @@ async function createLeagueAdmins(req, res, next) {
 
 async function deleteLeagueAdmins(req, res, next) {
     try {
+        if (!await allValidUserIds(req.body.adminIds)) {
+            return next({ status: 404, message: 'Some users do not exist' })
+        }
+
         var toDeleteLeagueAdmins = await Promise.all(
             req.body.adminIds.map(async (userId) => {
-                var validId = ObjectId.isValid(userId)
-                var user
-                if (validId) user = await User.findById(userId)
-                if (!user || !validId) return next({ status: 404, message: 'Some users do not exist' })
-                user = await User.findOneAndUpdate(
+                const user = await User.findOneAndUpdate(
                     { _id: userId },
                     { $pull: { leagues: { $in: req.league._id } } }
                 )
                 return user
             })
         )
-        toDeleteLeagueAdmins = toDeleteLeagueAdmins.filter(x => x)
 
         const league = await League.findOneAndUpdate(
             { _id: req.league._id },
