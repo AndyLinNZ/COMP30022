@@ -306,7 +306,7 @@ paths:
               example:
                 success: true
                 data:
-                  admins: []
+                  - 1111111a1111a11111a111a1
         '403':
           description: 'User is not the creator for this league.'
           content:
