@@ -3,7 +3,7 @@ info:
   version: 1.0.0
   title: dribblr
 servers:
-  - url: http://localhost:3000/api
+  - url: http://localhost:4000/api
 tags:
   - name: 'Authorisation'
     description: 'Everything about login and registration.'
