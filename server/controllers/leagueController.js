@@ -93,7 +93,7 @@ async function createLeagueSeason(req, res, next) {
 
 async function createLeagueAdmins(req, res, next) {
     try {
-        const newLeagueAdmins = await Promise.all(
+        var newLeagueAdmins = await Promise.all(
             req.body.adminIds.map(async (userId) => {
                 var validId = ObjectId.isValid(userId)
                 var user
@@ -106,6 +106,7 @@ async function createLeagueAdmins(req, res, next) {
                 return user
             })
         )
+        newLeagueAdmins = newLeagueAdmins.filter(x => x)
 
         const league = await League.findOneAndUpdate(
             { _id: req.league._id },
@@ -125,7 +126,7 @@ async function createLeagueAdmins(req, res, next) {
 
 async function deleteLeagueAdmins(req, res, next) {
     try {
-        const toDeleteLeagueAdmins = await Promise.all(
+        var toDeleteLeagueAdmins = await Promise.all(
             req.body.adminIds.map(async (userId) => {
                 var validId = ObjectId.isValid(userId)
                 var user
@@ -138,6 +139,7 @@ async function deleteLeagueAdmins(req, res, next) {
                 return user
             })
         )
+        toDeleteLeagueAdmins = toDeleteLeagueAdmins.filter(x => x)
 
         const league = await League.findOneAndUpdate(
             { _id: req.league._id },
