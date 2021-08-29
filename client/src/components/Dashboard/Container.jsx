@@ -10,7 +10,6 @@ const Container = ({ heading, children }) => {
             left="50%"
             transform="translate(-50%, -50%)"
             w="75%"
-            h="425px"
         >
             <Text fontSize="2rem">{heading}</Text>
             <Box
@@ -19,6 +18,8 @@ const Container = ({ heading, children }) => {
                 bg="white"
                 borderRadius="1rem"
                 boxShadow="0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);"
+                padding="1rem"
+                minH="375px"
             >
                 {children}
             </Box>
