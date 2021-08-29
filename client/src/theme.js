@@ -20,6 +20,7 @@ export const theme = extendTheme({
         black: {
             500: '#000',
         },
+        greyBg: '#707070',
         orange: '#FFBD2D',
         heading: '#15110D',
     },
