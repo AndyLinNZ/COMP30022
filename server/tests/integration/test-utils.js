@@ -27,7 +27,12 @@ function setupTestEnv(dbName, ret, options={}) {
                     email: 'jane.doe@example.com',
                     firstName: 'Jane',
                     lastName: 'Doe'
-                }, 'PassworD!!1!1']
+                }, 'PassworD!!1!1'],
+                [{
+                    email: 'josh.d@example.com',
+                    firstName: 'Joshua',
+                    lastName: 'Dubar'
+                }, 'Passwordddz']
             ]
             var auth_promises = usersDetails.map(async (details) => {
                 var [userDetails, password] = details
