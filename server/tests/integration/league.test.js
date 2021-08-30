@@ -52,7 +52,7 @@ describe('Integration Testing: finding leagues', () => {
         expect(res.body.data.creator).toBe(env.auth_tokens[0][0])
     })
 
-    test('Finding a league with a nonexist id should return an error', async () => {
+    test('Finding a league with a nonexistent id should return an error', async () => {
         const res = await request.get(`/api/league/${env.auth_tokens[0][0]}`)
 
         expect(res.statusCode).toBe(404)
@@ -131,7 +131,7 @@ describe('Integration Testing: finding seasons for a league', () => {
         expect(res.body.data[0].dateFinish).toBe('2021-08-19T12:23:34.944Z')
     })
 
-    test('Finding seasons for a nonexist league should return an error', async () => {
+    test('Finding seasons for a nonexistent league should return an error', async () => {
         const res = await request.get('/api/league/1337/season')
 
         expect(res.statusCode).toBe(404)
