@@ -141,7 +141,7 @@ describe('Integration Testing: finding grades for a season', () => {
         expect(res.body.data[0].season).toBe(env.season0_id)
     })
 
-    test('Finding grades for a nonexisten season should return an error', async () => {
+    test('Finding grades for a nonexistent season should return an error', async () => {
         const res = await request.get(`/api/season/1337/grade`)
 
         expect(res.statusCode).toBe(404)
