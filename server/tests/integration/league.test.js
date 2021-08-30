@@ -6,7 +6,7 @@ const request = supertest(app)
 
 const env = {}
 const setupOptions = { createDefaultUsers: true }
-setupTestEnv('dribblrDR-league-test', env, setupOptions)
+setupTestEnv('dribblrDB-league-test', env, setupOptions)
 
 describe('Integration Testing: creating leagues', () => {
     test('Logged in user should be able to create a league', async () => {
