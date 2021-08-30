@@ -1,10 +1,10 @@
-const setupTestEnv = require('./test-env')
+const setupTestEnv = require('./test-utils')
 const supertest = require('supertest')
 const initApp = require('../../app')
 const app = initApp()
 const request = supertest(app)
 
-setupTestEnv('dribblrDR-auth-test')
+setupTestEnv('dribblrDB-auth-test')
 
 test('Registration with invalid email should fail', async () => {
     const res = await request.post('/api/auth/register')

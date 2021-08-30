@@ -254,9 +254,8 @@ paths:
               example:
                 success: true
                 data:
-                  admins:
-                    - 22222b222222bb2222b22222
-                    - 2222222b2222b22222b222b2
+                  - 22222b222222bb2222b22222
+                  - 2222222b2222b22222b222b2
         '403':
           description: 'User is not the creator for this league.'
           content:
@@ -307,7 +306,7 @@ paths:
               example:
                 success: true
                 data:
-                  admins: []
+                  - 1111111a1111a11111a111a1
         '403':
           description: 'User is not the creator for this league.'
           content:

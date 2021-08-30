@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongoose').Types
 const passport = require('passport')
 const series = require('middleware-flow').series
 const League = require('../models/league')
@@ -10,21 +11,28 @@ const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 // and appropriately populates req.league, req.grade and req.season
 // or returns an error otherwise (if not found, or if params not sent in request)
 async function getLeagueGradeSeason(req, res, next) {
+    var validId
     if (req.params.gradeId) {
-        const grade = await Grade.findById(req.params.gradeId)
-        if (!grade) return res.status(404).json({ success: false, error: 'Grade does not exist' })
+        validId = ObjectId.isValid(req.params.gradeId)
+        var grade
+        if(validId) grade = await Grade.findById(req.params.gradeId)
+        if (!grade || !validId) return res.status(404).json({ success: false, error: 'Grade does not exist' })
         req.grade = grade
     }
     var seasonId = req.params.seasonId || req.grade?.season._id
     if (seasonId) {
-        const season = await Season.findById(seasonId)
-        if (!season) return res.status(404).json({ success: false, error: 'Season does not exist' })
+        validId = ObjectId.isValid(seasonId)
+        var season
+        if(validId) season = await Season.findById(seasonId)
+        if (!season || !validId) return res.status(404).json({ success: false, error: 'Season does not exist' })
         req.season = season
     }
     var leagueId = req.params.leagueId || req.season?.league._id
     if (leagueId) {
-        const league = await League.findById(leagueId)
-        if (!league) return res.status(404).json({ success: false, error: 'League does not exist' })
+        validId = ObjectId.isValid(leagueId)
+        var league
+        if(validId) league = await League.findById(leagueId)
+        if (!league || !validId) return res.status(404).json({ success: false, error: 'League does not exist' })
         req.league = league
         return next()
     }

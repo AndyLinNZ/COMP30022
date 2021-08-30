@@ -1,6 +1,8 @@
+const { ObjectId } = require('mongoose').Types
 const League = require('../models/league')
 const Season = require('../models/season')
 const User = require('../models/user')
+const { allValidUserIds } = require('./util')
 
 async function createLeague(req, res, next) {
     try {
@@ -65,13 +67,14 @@ async function getAllLeagueSeasons(req, res, next) {
     }
 }
 
+// TODO: validation on name and dates
 async function createLeagueSeason(req, res, next) {
     try {
         let { seasonName, seasonStart, seasonFinish } = req.body
         const newSeason = new Season({
             name: seasonName,
             dateStart: seasonStart,
-            datefinish: seasonFinish,
+            dateFinish: seasonFinish,
             league: req.league._id,
             grades: [],
         })
@@ -91,13 +94,16 @@ async function createLeagueSeason(req, res, next) {
 
 async function createLeagueAdmins(req, res, next) {
     try {
-        const newLeagueAdmins = await Promise.all(
+        if (!await allValidUserIds(req.body.adminIds)) {
+            return next({ status: 404, message: 'Some users do not exist' })
+        }
+
+        var newLeagueAdmins = await Promise.all(
             req.body.adminIds.map(async (userId) => {
                 const user = await User.findOneAndUpdate(
                     { _id: userId },
                     { $addToSet: { leagues: req.league._id } }
                 )
-                if (!user) return next({ status: 404, message: 'Some users do not exist' })
                 return user
             })
         )
@@ -120,13 +126,16 @@ async function createLeagueAdmins(req, res, next) {
 
 async function deleteLeagueAdmins(req, res, next) {
     try {
-        const toDeleteLeagueAdmins = await Promise.all(
+        if (!await allValidUserIds(req.body.adminIds)) {
+            return next({ status: 404, message: 'Some users do not exist' })
+        }
+
+        var toDeleteLeagueAdmins = await Promise.all(
             req.body.adminIds.map(async (userId) => {
                 const user = await User.findOneAndUpdate(
                     { _id: userId },
                     { $pull: { leagues: { $in: req.league._id } } }
                 )
-                if (!user) return next({ status: 404, message: 'Some users do not exist' })
                 return user
             })
         )
