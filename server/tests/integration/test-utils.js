@@ -1,3 +1,4 @@
+const { MongoMemoryServer } = require('mongodb-memory-server')
 const mongoose = require('mongoose')
 const JWT = require('jsonwebtoken')
 const connectDB = require('../../db')
@@ -12,8 +13,11 @@ require('dotenv').config()
  * for testing authenticated endpoints
  */
 function setupTestEnv(dbName, ret, options={}) {
+    var mongod
+
     beforeAll(async () => {
-        await connectDB('mongodb://localhost:27017/', dbName)
+        mongod = await MongoMemoryServer.create()
+        await connectDB(mongod.getUri(), dbName)
         await mongoose.connection.dropDatabase()
 
         if (options?.createDefaultUsers) {
@@ -49,6 +53,7 @@ function setupTestEnv(dbName, ret, options={}) {
     afterAll(async () => {
         await mongoose.connection.dropDatabase()
         await mongoose.connection.close()
+        await mongod.stop()
     })
 }
 
