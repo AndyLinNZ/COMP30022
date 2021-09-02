@@ -4,35 +4,48 @@ const series = require('middleware-flow').series
 const League = require('../models/league')
 const Season = require('../models/season')
 const Grade = require('../models/grade')
+const Team = require('../models/team')
 
 const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 
-// this middleware checks the request parameters for a league id, grade id, or season id
-// and appropriately populates req.league, req.grade and req.season
+// this middleware checks the request parameters for a league id, season id, grade id or team id
+// and appropriately populates req.league, req.season, req.grade and req.team
 // or returns an error otherwise (if not found, or if params not sent in request)
-async function getLeagueGradeSeason(req, res, next) {
+async function getLeagueSeasonGradeTeam(req, res, next) {
     var validId
-    if (req.params.gradeId) {
+    if (req.params.teamId) {
+        validId = ObjectId.isValid(req.params.teamId)
+        var team
+        if (validId) team = await Team.findById(req.params.teamId)
+        if (!team || !validId)
+            return res.status(404).json({ success: false, error: 'Team does not exist' })
+        req.team = team
+    }
+    var gradeId = req.params.gradeId || req.team?.grade._id
+    if (gradeId) {
         validId = ObjectId.isValid(req.params.gradeId)
         var grade
-        if(validId) grade = await Grade.findById(req.params.gradeId)
-        if (!grade || !validId) return res.status(404).json({ success: false, error: 'Grade does not exist' })
+        if (validId) grade = await Grade.findById(req.params.gradeId)
+        if (!grade || !validId)
+            return res.status(404).json({ success: false, error: 'Grade does not exist' })
         req.grade = grade
     }
     var seasonId = req.params.seasonId || req.grade?.season._id
     if (seasonId) {
         validId = ObjectId.isValid(seasonId)
         var season
-        if(validId) season = await Season.findById(seasonId)
-        if (!season || !validId) return res.status(404).json({ success: false, error: 'Season does not exist' })
+        if (validId) season = await Season.findById(seasonId)
+        if (!season || !validId)
+            return res.status(404).json({ success: false, error: 'Season does not exist' })
         req.season = season
     }
     var leagueId = req.params.leagueId || req.season?.league._id
     if (leagueId) {
         validId = ObjectId.isValid(leagueId)
         var league
-        if(validId) league = await League.findById(leagueId)
-        if (!league || !validId) return res.status(404).json({ success: false, error: 'League does not exist' })
+        if (validId) league = await League.findById(leagueId)
+        if (!league || !validId)
+            return res.status(404).json({ success: false, error: 'League does not exist' })
         req.league = league
         return next()
     }
@@ -65,12 +78,12 @@ async function _ensureLeagueCreator(req, res, next) {
     }
 }
 
-const ensureLeagueAdmin = series(getLeagueGradeSeason, _ensureLeagueAdmin)
-const ensureLeagueCreator = series(getLeagueGradeSeason, _ensureLeagueCreator)
+const ensureLeagueAdmin = series(getLeagueSeasonGradeTeam, _ensureLeagueAdmin)
+const ensureLeagueCreator = series(getLeagueSeasonGradeTeam, _ensureLeagueCreator)
 
 module.exports = {
     ensureAuthenticated,
-    getLeagueGradeSeason,
+    getLeagueSeasonGradeTeam,
     ensureLeagueCreator,
     ensureLeagueAdmin,
 }

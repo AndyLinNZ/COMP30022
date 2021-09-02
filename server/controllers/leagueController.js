@@ -1,4 +1,3 @@
-const { ObjectId } = require('mongoose').Types
 const League = require('../models/league')
 const Season = require('../models/season')
 const User = require('../models/user')
@@ -94,7 +93,7 @@ async function createLeagueSeason(req, res, next) {
 
 async function createLeagueAdmins(req, res, next) {
     try {
-        if (!await allValidUserIds(req.body.adminIds)) {
+        if (!(await allValidUserIds(req.body.adminIds))) {
             return next({ status: 404, message: 'Some users do not exist' })
         }
 
@@ -126,7 +125,7 @@ async function createLeagueAdmins(req, res, next) {
 
 async function deleteLeagueAdmins(req, res, next) {
     try {
-        if (!await allValidUserIds(req.body.adminIds)) {
+        if (!(await allValidUserIds(req.body.adminIds))) {
             return next({ status: 404, message: 'Some users do not exist' })
         }
 

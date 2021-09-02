@@ -28,6 +28,16 @@ const userSchema = new mongoose.Schema({
         ],
         default: [],
     },
+    teams: {
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Team',
+                required: true,
+            },
+        ],
+        default: [],
+    },
 })
 
 userSchema.plugin(passportLocalMongoose, {

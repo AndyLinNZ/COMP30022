@@ -9,9 +9,14 @@ const teamSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
-    grade: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Grade',
+    grades: {
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Grade',
+            },
+        ],
+        default: [],
     },
     totalPoints: {
         type: Number,
