@@ -15,20 +15,20 @@ setupTestEnv('dribblrDB-season-test', env, setupOptions)
 // set up test league
 const testLeague = {
     leagueName: 'Joshua Basketball Association',
-    organisationName: 'JoshuaDubar'
+    organisationName: 'JoshuaDubar',
 }
 const testSeason = {
     name: 'Summer 2020/2021',
     seasonStart: '2021-08-12T12:23:34.944Z',
-    seasonFinish: '2021-08-24T12:23:34.944Z'
+    seasonFinish: '2021-08-24T12:23:34.944Z',
 }
 const testGrade = {
     name: 'Joshua Dubar Grade',
     difficulty: 'E',
-    gender: 'female'
+    gender: 'female',
 }
 const testTeam = {
-    name: 'jdubz'
+    name: 'jdubz',
 }
 beforeAll(async () => {
     // add new test league object to database
@@ -37,7 +37,7 @@ beforeAll(async () => {
         organisation: testLeague.organisationName,
         creator: env.auth_tokens[0][0],
         admins: [env.auth_tokens[0][0], env.auth_tokens[1][0]],
-        seasons: []
+        seasons: [],
     })
     const league = await newLeague.save()
 
@@ -47,7 +47,7 @@ beforeAll(async () => {
         dateStart: testSeason.seasonStart,
         dateFinish: testSeason.seasonFinish,
         league: league._id,
-        grades: []
+        grades: [],
     })
     const season = await newSeason.save()
 
@@ -59,7 +59,7 @@ beforeAll(async () => {
     const newGrade = new Grade({
         ...testGrade,
         teams: [],
-        season: season._id
+        season: season._id,
     })
     const grade = await newGrade.save()
 
@@ -71,7 +71,7 @@ beforeAll(async () => {
     const newTeam = new Team({
         ...testTeam,
         admin: env.auth_tokens[0][0],
-        grade: grade._id
+        grades: [grade._id],
     })
     const team = await newTeam.save()
 
@@ -135,6 +135,6 @@ describe('Integration Testing: finding teams in grades', () => {
         expect(res.body.data[0].totalDraws).toBe(0)
         expect(res.body.data[0].gameResults).toStrictEqual([])
         expect(res.body.data[0].admin).toBe(env.auth_tokens[0][0])
-        expect(res.body.data[0].grade).toBe(env.grade0_id)
+        expect(res.body.data[0].grades).toStrictEqual([env.grade0_id])
     })
 })
