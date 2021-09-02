@@ -16,6 +16,7 @@ describe('Unit Testing: createTeam in teamController', () => {
             teamName: 'joshua dubar team',
             admin: '611a8a311fb4c81d84a55126',
             grades: [],
+            players: [],
             __v: 0,
             status: 'upcoming',
         })

@@ -134,6 +134,7 @@ describe('Integration Testing: finding teams in grades', () => {
         expect(res.body.data[0].totalLosses).toBe(0)
         expect(res.body.data[0].totalDraws).toBe(0)
         expect(res.body.data[0].gameResults).toStrictEqual([])
+        expect(res.body.data[0].players).toStrictEqual([])
         expect(res.body.data[0].admin).toBe(env.auth_tokens[0][0])
         expect(res.body.data[0].grades).toStrictEqual([env.grade0_id])
     })

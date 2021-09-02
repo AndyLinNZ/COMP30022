@@ -19,6 +19,15 @@ const teamSchema = new mongoose.Schema({
         ],
         default: [],
     },
+    players: {
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Player',
+            },
+        ],
+        default: [],
+    },
     totalPoints: {
         type: Number,
         default: 0,

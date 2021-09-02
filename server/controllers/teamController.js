@@ -9,6 +9,7 @@ async function createTeam(req, res, next) {
             name: teamName,
             admin: req.user._id,
             grades: [],
+            players: [],
         })
 
         const team = await newTeam.save()
@@ -25,6 +26,19 @@ async function createTeam(req, res, next) {
     }
 }
 
+async function getTeam(req, res, next) {
+    try {
+        return res.status(200).json({
+            success: true,
+            data: req.team,
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
 module.exports = {
     createTeam,
+    getTeam,
 }
