@@ -46,6 +46,7 @@ function setupTestEnv(dbName, ret, options={}) {
                     process.env.JWT_SECRET, { algorithm: 'HS256', expiresIn: '2d' })
                 return [newUser._id.toString(), auth_token]
             })
+            ret.usersDetails = usersDetails
             ret.auth_tokens = await Promise.all(auth_promises)
         }
     })
