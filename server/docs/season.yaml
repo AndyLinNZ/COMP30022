@@ -81,8 +81,12 @@ paths:
               example:
                 success: true
                 data:
-                  grades:
-                    - 44444d444444dd4444d44444
+                  - difficulty: 'E'
+                    gender: 'female'
+                    teams: []
+                    _id: '44444d444444dd4444d44444'
+                    name: 'Joshua Dubar Grade'
+                    season: '33333c333333cc3333c33333'
         '404':
           description: 'Season does not exist.'
           content:

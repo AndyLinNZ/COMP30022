@@ -166,8 +166,12 @@ paths:
               example:
                 success: true
                 data:
-                  - 33333c333333cc3333c33333
-                  - 3333333c3333c33333c333c3
+                  - status: 'upcoming'
+                    grades: []
+                    _id: '33333c333333cc3333c33333'
+                    name: 'Summer 2020/2021'
+                    dateStart: '2021-08-12T12:23:34.944Z'
+                    dateFinish: '2021-08-14T12:23:34.944Z'
         '404':
           description: 'League does not exist.'
           content:
