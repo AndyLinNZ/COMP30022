@@ -1,0 +1,27 @@
+paths:
+  /user/details:
+    get:
+      tags:
+        - 'User'
+      summary: 'Get user details.'
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: 'Successfully retrieved user details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  email: 'john.smith@example.com'
+                  firstName: 'John'
+                  lastName: 'Smith'
+                  leagues:
+                    - admins: ['612b9bc70ea7e4540fc2b30a']
+                      creator: '612b9bc70ea7e4540fc2b30a'
+                      name: 'Joshua Basketball Association'
+                      organisation: 'JoshuaDubar'
+                      seasons: []
