@@ -4,12 +4,14 @@ const authRouter = require('./authRouter')
 const leagueRouter = require('./leagueRouter')
 const seasonRouter = require('./seasonRouter')
 const gradeRouter = require('./gradeRouter')
+const teamRouter = require('./teamRouter')
 
 // routes
 router.use('/auth', authRouter)
 router.use('/league', leagueRouter)
 router.use('/season', seasonRouter)
 router.use('/grade', gradeRouter)
+router.use('/team', teamRouter)
 
 // general error handling
 router.use((err, req, res, _) => {

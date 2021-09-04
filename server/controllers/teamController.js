@@ -1,6 +1,4 @@
 const Team = require('../models/team')
-const User = require('../models/user')
-const Grade = require('../models/grade')
 
 async function createTeam(req, res, next) {
     try {
@@ -38,7 +36,20 @@ async function getTeam(req, res, next) {
     }
 }
 
+async function updateTeam(req, res, next) {
+    try {
+        return res.status(200).json({
+            success: true,
+            data: req.team,
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
 module.exports = {
     createTeam,
     getTeam,
+    updateTeam,
 }

@@ -8,7 +8,8 @@ function connectDB(DB_URI, dbName) {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
                 useCreateIndex: true,
-                dbName
+                useFindAndModify: false,
+                dbName,
             })
             .then(() => {
                 console.log('Connected to DB!')

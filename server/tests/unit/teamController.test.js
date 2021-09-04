@@ -1,12 +1,27 @@
 const teamController = require('../../controllers/teamController')
 const User = require('../../models/user')
+const Team = require('../../models/team')
 const { mockRequest, mockResponse, mockNext } = require('./test-utils')
+
+beforeEach(() => {
+    jest.restoreAllMocks()
+})
 
 describe('Unit Testing: createTeam in teamController', () => {
     test('Creating team with valid teamName should create a team', async () => {
         const req = mockRequest()
         const res = mockResponse()
         const next = mockNext()
+
+        req.user = new User({
+            _id: '611a8ba31fb4c81d84a5513b',
+            email: 'jdubz@dribblr.com',
+            password: 'Password!',
+            firstName: 'Joshua',
+            lastName: 'Dubar',
+            leagues: [],
+            teams: [],
+        })
 
         req.body = {
             teamName: 'joshua dubar team',

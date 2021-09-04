@@ -8,13 +8,13 @@ const allValidIds = (arr) => arr.every(ObjectId.isValid)
 // or if any of them do not correspond to a user in the database
 // returns true otherwise
 async function allValidUserIds(ids) {
-    if(!allValidIds(ids)) return Promise.resolve(false)
+    if (!allValidIds(ids)) return Promise.resolve(false)
     const users = await User.find({
-        _id: { $in: ids.map(ObjectId) }
+        _id: { $in: ids.map(ObjectId) },
     })
     return Promise.resolve(users.length === ids.length)
 }
 
 module.exports = {
-    allValidUserIds
+    allValidUserIds,
 }

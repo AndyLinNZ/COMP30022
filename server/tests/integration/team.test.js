@@ -19,7 +19,7 @@ describe('Integration Testing: creating teams', () => {
 
         expect(res.statusCode).toBe(201)
         expect(res.body.success).toBe(true)
-        expect(res.body.data.admin).toStrictEqual([env.auth_tokens[0][0]])
+        expect(res.body.data.admin).toStrictEqual(env.auth_tokens[0][0])
         expect(res.body.data.grades).toStrictEqual([])
         expect(res.body.data.name).toBe('jdubz team')
     })

@@ -3,6 +3,10 @@ const Season = require('../../models/season')
 const Grade = require('../../models/grade')
 const { mockRequest, mockResponse, mockNext } = require('./test-utils')
 
+beforeEach(() => {
+    jest.restoreAllMocks()
+})
+
 describe('Unit Testing: getAllSeasonGrades in seasonController', () => {
     test('Getting season grades with 1 grade should return populated grade', async () => {
         const req = mockRequest()

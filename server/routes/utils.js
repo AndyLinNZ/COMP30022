@@ -8,21 +8,12 @@ const Team = require('../models/team')
 
 const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 
-// this middleware checks the request parameters for a league id, season id, grade id or team id
-// and appropriately populates req.league, req.season, req.grade and req.team
+// this middleware checks the request parameters for a league id, grade id, or season id
+// and appropriately populates req.league, req.grade, and req.season
 // or returns an error otherwise (if not found, or if params not sent in request)
-async function getLeagueSeasonGradeTeam(req, res, next) {
+async function getLeagueGradeSeason(req, res, next) {
     var validId
-    if (req.params.teamId) {
-        validId = ObjectId.isValid(req.params.teamId)
-        var team
-        if (validId) team = await Team.findById(req.params.teamId)
-        if (!team || !validId)
-            return res.status(404).json({ success: false, error: 'Team does not exist' })
-        req.team = team
-    }
-    var gradeId = req.params.gradeId || req.team?.grade._id
-    if (gradeId) {
+    if (req.params.gradeId) {
         validId = ObjectId.isValid(req.params.gradeId)
         var grade
         if (validId) grade = await Grade.findById(req.params.gradeId)
@@ -52,6 +43,14 @@ async function getLeagueSeasonGradeTeam(req, res, next) {
     return res.status(400).json({ success: false, error: 'Invalid request' })
 }
 
+async function getTeamDocument(req, res, next) {
+    const teamId = req.params.teamId ? req.params.teamId : req.body.teamId
+    const team = ObjectId.isValid(teamId) ? await Team.findById(teamId) : null
+    if (!team) return res.status(404).json({ success: false, error: 'Team does not exist' })
+    req.team = team
+    return next()
+}
+
 async function _ensureLeagueAdmin(req, res, next) {
     try {
         if (req.league.admins.includes(req.user._id)) {
@@ -78,12 +77,28 @@ async function _ensureLeagueCreator(req, res, next) {
     }
 }
 
-const ensureLeagueAdmin = series(getLeagueSeasonGradeTeam, _ensureLeagueAdmin)
-const ensureLeagueCreator = series(getLeagueSeasonGradeTeam, _ensureLeagueCreator)
+async function _ensureTeamAdmin(req, res, next) {
+    try {
+        if (req.team.admin.equals(req.user._id)) {
+            next()
+        } else {
+            return res.status(403).json({ success: false, error: 'User is not an admin' })
+        }
+    } catch (err) {
+        console.log(err)
+        return res.status(400).json({ success: false, error: 'Invalid request' })
+    }
+}
+
+const ensureLeagueAdmin = series(getLeagueGradeSeason, _ensureLeagueAdmin)
+const ensureLeagueCreator = series(getLeagueGradeSeason, _ensureLeagueCreator)
+const ensureTeamAdmin = series(getTeamDocument, _ensureTeamAdmin)
 
 module.exports = {
     ensureAuthenticated,
-    getLeagueSeasonGradeTeam,
+    getTeamDocument,
+    getLeagueGradeSeason,
     ensureLeagueCreator,
     ensureLeagueAdmin,
+    ensureTeamAdmin,
 }

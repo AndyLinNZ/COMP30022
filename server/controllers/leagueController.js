@@ -1,7 +1,7 @@
 const League = require('../models/league')
 const Season = require('../models/season')
 const User = require('../models/user')
-const { allValidUserIds } = require('./util')
+const { allValidUserIds } = require('./utils')
 
 async function createLeague(req, res, next) {
     try {
