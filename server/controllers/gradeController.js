@@ -1,6 +1,3 @@
-const Team = require('../models/team')
-const { getTeamDocument } = require('./utils')
-
 async function getGrade(req, res, next) {
     try {
         return res.status(200).json({
@@ -16,6 +13,7 @@ async function getGrade(req, res, next) {
 async function getAllGradeTeams(req, res, next) {
     try {
         const grade = await req.grade.execPopulate('teams')
+
         return res.status(200).json({
             success: true,
             data: grade.teams,

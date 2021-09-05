@@ -1,13 +1,13 @@
 components:
   schemas:
-    TeamRegistration:
+    TeamAddition:
       properties:
-        teamName:
+        teamId:
           type: string
       required:
-        - teamName
+        - teamId
       example:
-        teamName: Joshua SENPAl
+        teamId: 55555e555555ee5555e55555
 
     GradeNotFoundResponse:
       allOf:
@@ -84,7 +84,7 @@ paths:
     post:
       tags:
         - 'Grade'
-      summary: 'Create a team for a grade.'
+      summary: 'Add a team to a grade.'
       description: 'This can only be done by a logged in user and a league admin.'
       parameters:
       - name: 'gradeId'
@@ -99,10 +99,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TeamRegistration'
+              $ref: '#/components/schemas/TeamAddition'
       responses:
         '200':
-          description: 'Successfully created a team for a grade.'
+          description: 'Successfully added a team to a grade.'
           content:
             application/json:
               schema:
@@ -110,28 +110,28 @@ paths:
               example:
                 success: true
                 data:
-                  totalPoints: 0
-                  totalWins: 0
-                  totalLosses: 0
-                  totalDraws: 0
-                  gameResults: []
-                  _id: 55555e555555ee5555e55555
-                  name: Joshua SENPAl
-                  grade:
-                    difficulty: E
-                    gender: female
-                    teams: []
-                    _id: 44444d444444dd4444d44444
-                    name: Joshua Dubar Grade
-                    season: 33333c333333cc3333c33333
-                    __v: 0
+                  difficulty: E
+                  gender: female
+                  teams: [55555e555555ee5555e55555]
+                  _id: 44444d444444dd4444d44444
+                  name: Joshua Dubar Grade
+                  season: 33333c333333cc3333c33333
                   __v: 0
-        '404':
-          description: 'Grade does not exist.'
+        '400':
+          description: 'Team already exists in a grade for the season.'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GradeNotFoundResponse'
+                $ref: '#/components/schemas/GenericErrorResponse'
+              example:
+                success: false
+                error: 'Team already exists in a grade for the season'
+        '404':
+          description: 'Team does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamNotFoundResponse'
         '403':
           description: 'User is not an admin for this league.'
           content:

@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const authRouter = require('./authRouter')
+const userRouter = require('./userRouter')
 const leagueRouter = require('./leagueRouter')
 const seasonRouter = require('./seasonRouter')
 const gradeRouter = require('./gradeRouter')
@@ -8,6 +9,7 @@ const teamRouter = require('./teamRouter')
 
 // routes
 router.use('/auth', authRouter)
+router.use('/user', userRouter)
 router.use('/league', leagueRouter)
 router.use('/season', seasonRouter)
 router.use('/grade', gradeRouter)

@@ -15,6 +15,17 @@ async function allValidUserIds(ids) {
     return Promise.resolve(users.length === ids.length)
 }
 
+// creates a new object containing the key:values specified
+// from the original object
+const pick = (obj, keys) => {
+    var newObj = {}
+    keys.forEach((k) => {
+        newObj[k] = obj[k]
+    })
+    return newObj
+}
+
 module.exports = {
     allValidUserIds,
+    pick,
 }

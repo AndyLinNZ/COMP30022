@@ -13,3 +13,5 @@ tags:
     description: 'Everything about season, including season grades.'
   - name: 'Grade'
     description: 'Everything about grade, including grade teams.'
+  - name: 'Team'
+    description: 'Everything about teams.'

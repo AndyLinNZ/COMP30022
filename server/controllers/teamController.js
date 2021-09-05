@@ -36,6 +36,7 @@ async function getTeam(req, res, next) {
     }
 }
 
+// TODO
 async function updateTeam(req, res, next) {
     try {
         return res.status(200).json({
