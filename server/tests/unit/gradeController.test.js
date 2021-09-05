@@ -211,7 +211,6 @@ describe('Unit Testing: addTeam in gradeController', () => {
         }
 
         Season.prototype.execPopulate = jest.fn().mockResolvedValue(populatedObj)
-
         Team.prototype.save = jest.fn().mockImplementationOnce()
         Grade.prototype.save = jest.fn().mockResolvedValue(expectedGrade)
 

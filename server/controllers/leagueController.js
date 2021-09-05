@@ -96,7 +96,7 @@ async function createLeagueSeason(req, res, next) {
 
 async function createLeagueAdmins(req, res, next) {
     try {
-        if (!(await allValidUserIds(req.body.adminIds))) {
+        if (!await allValidUserIds(req.body.adminIds)) {
             return next({ status: 404, message: 'Some users do not exist' })
         }
 
@@ -128,7 +128,7 @@ async function createLeagueAdmins(req, res, next) {
 
 async function deleteLeagueAdmins(req, res, next) {
     try {
-        if (!(await allValidUserIds(req.body.adminIds))) {
+        if (!await allValidUserIds(req.body.adminIds)) {
             return next({ status: 404, message: 'Some users do not exist' })
         }
 

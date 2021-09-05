@@ -10,7 +10,7 @@ setupTestEnv('dribblrDB-grade-test', env, setupOptions)
 
 // set up test team
 const testTeam = {
-    teamName: 'jdubz',
+    teamName: 'jdubz'
 }
 beforeAll(async () => {
     // add new test league object to database
@@ -18,7 +18,7 @@ beforeAll(async () => {
         ...testTeam,
         admin: env.auth_tokens[0][0],
         grades: [],
-        players: [],
+        players: []
     })
     const team = await newTeam.save()
 
@@ -27,8 +27,7 @@ beforeAll(async () => {
 
 describe('Integration Testing: creating teams', () => {
     test('User should be able to create team', async () => {
-        const res = await request
-            .post(`/api/team`)
+        const res = await request.post(`/api/team`)
             .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
             .send({
                 teamName: 'jdubz team',

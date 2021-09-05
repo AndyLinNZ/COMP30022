@@ -8,9 +8,9 @@ const allValidIds = (arr) => arr.every(ObjectId.isValid)
 // or if any of them do not correspond to a user in the database
 // returns true otherwise
 async function allValidUserIds(ids) {
-    if (!allValidIds(ids)) return Promise.resolve(false)
+    if(!allValidIds(ids)) return Promise.resolve(false)
     const users = await User.find({
-        _id: { $in: ids.map(ObjectId) },
+        _id: { $in: ids.map(ObjectId) }
     })
     return Promise.resolve(users.length === ids.length)
 }
@@ -19,7 +19,7 @@ async function allValidUserIds(ids) {
 // from the original object
 const pick = (obj, keys) => {
     var newObj = {}
-    keys.forEach((k) => {
+    keys.forEach(k => {
         newObj[k] = obj[k]
     })
     return newObj
@@ -27,5 +27,5 @@ const pick = (obj, keys) => {
 
 module.exports = {
     allValidUserIds,
-    pick,
+    pick
 }
