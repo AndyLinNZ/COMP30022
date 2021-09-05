@@ -27,4 +27,13 @@ paths:
                       name: 'Joshua Basketball Association'
                       organisation: 'JoshuaDubar'
                       seasons: []
-                  teams: []
+                  teams:
+                    - _id: 55555e555555ee5555e55555
+                      totalPoints: 0
+                      totalWins: 0
+                      totalLosses: 0
+                      totalDraws: 0
+                      gameResults: []
+                      players: []
+                      name: Joshua SENPAl
+                      grades: []
