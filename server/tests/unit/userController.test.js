@@ -14,7 +14,7 @@ describe('Unit Testing: getUserDetails in userController', () => {
             firstName: 'John',
             lastName: 'Smith',
             leagues: ['612b9bdf0ea7e4540fc2b30f'],
-            teams: []
+            teams: ['611ba6a199599722e4d01c38']
         }
         req.user = new User(userDetails)
 
@@ -28,10 +28,24 @@ describe('Unit Testing: getUserDetails in userController', () => {
                 seasons: [],
             },
         ]
+        const expectedTeams = [
+            {
+                totalPoints: 0,
+                totalWins: 0,
+                totalLosses: 0,
+                totalDraws: 0,
+                gameResults: [],
+                _id: '611ba6a199599722e4d01c38',
+                name: 'jdubz team',
+                grades: [],
+                players: [],
+            }
+        ]
 
         const populatedObj = {
             ...userDetails,
             leagues: expectedLeagues,
+            teams: expectedTeams
         }
 
         User.prototype.execPopulate = jest.fn().mockResolvedValue(populatedObj)

@@ -1,4 +1,5 @@
 const setupTestEnv = require('./test-utils')
+const Team = require('../../models/team')
 const supertest = require('supertest')
 const initApp = require('../../app')
 const app = initApp()
@@ -10,7 +11,7 @@ setupTestEnv('dribblrDB-grade-test', env, setupOptions)
 
 // set up test team
 const testTeam = {
-    teamName: 'jdubz'
+    name: 'jdubz'
 }
 beforeAll(async () => {
     // add new test league object to database
@@ -47,15 +48,15 @@ describe('Integration Testing: finding teams', () => {
 
         expect(res.statusCode).toBe(200)
         expect(res.body.success).toBe(true)
-        expect(res.body.data.admin).toStrictEqual([env.auth_tokens[0][0]])
+        expect(res.body.data.admin).toStrictEqual(env.auth_tokens[0][0])
         expect(res.body.data.players).toStrictEqual([])
         expect(res.body.data.gameResults).toStrictEqual([])
         expect(res.body.data.grades).toStrictEqual([])
         expect(res.body.data.name).toBe(testTeam.name)
-        expect(res.body.data[0].totalPoints).toBe(0)
-        expect(res.body.data[0].totalWins).toBe(0)
-        expect(res.body.data[0].totalLosses).toBe(0)
-        expect(res.body.data[0].totalDraws).toBe(0)
+        expect(res.body.data.totalPoints).toBe(0)
+        expect(res.body.data.totalWins).toBe(0)
+        expect(res.body.data.totalLosses).toBe(0)
+        expect(res.body.data.totalDraws).toBe(0)
     })
 
     test('Finding a team with a nonexistent id should return an error', async () => {
