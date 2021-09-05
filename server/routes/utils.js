@@ -76,7 +76,7 @@ async function _ensureTeamAdmin(req, res, next) {
         if (req.team.admin.equals(req.user._id)) {
             next()
         } else {
-            return res.status(403).json({ success: false, error: 'User is not an admin' })
+            return res.status(403).json({ success: false, error: 'User is not a team admin' })
         }
     } catch (err) {
         console.log(err)

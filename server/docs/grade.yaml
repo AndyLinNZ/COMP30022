@@ -133,8 +133,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/TeamNotFoundResponse'
         '403':
-          description: 'User is not an admin for this league.'
+          description: 'User is not an admin for this team.'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserNotAdminResponse'
+                $ref: '#/components/schemas/UserNotTeamAdminResponse'
