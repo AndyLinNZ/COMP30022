@@ -4,6 +4,10 @@ const Season = require('../../models/season')
 const User = require('../../models/user')
 const { mockRequest, mockResponse, mockNext } = require('./test-utils')
 
+beforeEach(() => {
+    jest.restoreAllMocks()
+})
+
 describe('Unit Testing: getAllLeagues in leagueController', () => {
     test('Getting existing leagues (2) should return 2 leagues', async () => {
         const req = mockRequest()
@@ -292,6 +296,7 @@ describe('Unit Testing: createLeagueAdmins in leagueController', () => {
             firstName: 'Joshua',
             lastName: 'Dubar',
             leagues: [],
+            teams: [],
         }
 
         req.league = new League(leagueDetails)
@@ -305,9 +310,7 @@ describe('Unit Testing: createLeagueAdmins in leagueController', () => {
             admins: ['611a8ba31fb4c81d84a5513b', '611a8a311fb4c81d84a55126'],
         })
 
-        User.find = jest
-            .fn()
-            .mockResolvedValue([new User(user)])
+        User.find = jest.fn().mockResolvedValue([new User(user)])
         User.findOneAndUpdate = jest
             .fn()
             .mockResolvedValue(new User({ ...user, leagues: ['611bbfe2aaa94829988d0b18'] }))
@@ -353,6 +356,7 @@ describe('Unit Testing: createLeagueAdmins in leagueController', () => {
             firstName: 'Joshua',
             lastName: 'Dubar',
             leagues: [],
+            teams: [],
         }
 
         req.league = new League(leagueDetails)
@@ -441,6 +445,7 @@ describe('Unit Testing: deleteLeagueAdmins in leagueController', () => {
             firstName: 'Joshua',
             lastName: 'Dubar',
             leagues: [],
+            teams: [],
         }
 
         req.league = new League(leagueDetails)
@@ -499,6 +504,7 @@ describe('Unit Testing: deleteLeagueAdmins in leagueController', () => {
             firstName: 'Joshua',
             lastName: 'Dubar',
             leagues: [],
+            teams: [],
         }
 
         req.league = new League(leagueDetails)

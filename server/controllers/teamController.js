@@ -1,31 +1,56 @@
 const Team = require('../models/team')
-const User = require('../models/user')
-const Grade = require('../models/grade')
 
 async function createTeam(req, res, next) {
-
-    let { teamName } = req.body
-
     try {
-        const user = req.user
-
+        let { teamName } = req.body
         const newTeam = new Team({
             name: teamName,
             admin: req.user._id,
-            grade: req.grade._id
+            grades: [],
+            players: [],
         })
 
-        await newTeam.save()
-        req.grade.teams.push(newTeam)
-        await req.grade.save()
+        const team = await newTeam.save()
+        req.user.teams.push(team)
+        await req.user.save()
 
         return res.status(201).json({
             success: true,
-            data: newTeam,
+            data: team,
         })
-
     } catch (err) {
         console.log(err)
         return next(err)
     }
+}
+
+async function getTeam(req, res, next) {
+    try {
+        return res.status(200).json({
+            success: true,
+            data: req.team,
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
+// TODO
+async function updateTeam(req, res, next) {
+    try {
+        return res.status(200).json({
+            success: true,
+            data: req.team,
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
+module.exports = {
+    createTeam,
+    getTeam,
+    updateTeam,
 }

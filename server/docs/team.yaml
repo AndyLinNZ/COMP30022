@@ -1,0 +1,85 @@
+components:
+  schemas:
+    TeamRegistration:
+      properties:
+        teamName:
+          type: string
+      required:
+        - teamName
+      example:
+        teamName: Joshua SENPAl
+
+paths:
+  /team:
+   post:
+      tags:
+        - 'Team'
+      summary: 'Creates a team.'
+      security:
+      - BearerAuth: []  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamRegistration'
+      responses:
+        '201':
+          description: 'Successfully created a team.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  totalPoints: 0
+                  totalWins: 0
+                  totalLosses: 0
+                  totalDraws: 0
+                  gameResults: []
+                  players: []
+                  admin: 11111a111111aa1111a11111
+                  _id: 55555e555555ee5555e55555
+                  name: Joshua SENPAl
+                  grades: []
+                  __v: 0
+
+  /team/{teamId}:
+    get:
+      tags:
+        - 'Team'
+      summary: 'Find team by id.'
+      parameters:
+      - name: 'teamId'
+        in: 'path'
+        description: 'ID of team to return.'
+        required: true
+        type: 'string'
+      responses:
+        '200':
+          description: 'Successfully found a team.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  totalPoints: 0
+                  totalWins: 0
+                  totalLosses: 0
+                  totalDraws: 0
+                  gameResults: []
+                  players: []
+                  admin: 11111a111111aa1111a11111
+                  _id: 55555e555555ee5555e55555
+                  name: Joshua SENPAl
+                  grades: []
+                  __v: 0
+        '404':
+          description: 'Team does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamNotFoundResponse'

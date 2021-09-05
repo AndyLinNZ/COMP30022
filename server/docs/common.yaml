@@ -48,3 +48,10 @@ components:
       example:
         success: false
         error: 'Some users do not exist'
+
+    TeamNotFoundResponse:
+      allOf:
+        - $ref: '#/components/schemas/GenericErrorResponse'
+      example:
+        success: false
+        error: 'Team does not exist'

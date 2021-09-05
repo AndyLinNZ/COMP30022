@@ -1,8 +1,7 @@
-const { ObjectId } = require('mongoose').Types
 const League = require('../models/league')
 const Season = require('../models/season')
 const User = require('../models/user')
-const { allValidUserIds } = require('./util')
+const { allValidUserIds } = require('./utils')
 
 async function createLeague(req, res, next) {
     try {
@@ -14,6 +13,7 @@ async function createLeague(req, res, next) {
             admins: [req.user._id],
             seasons: [],
         })
+
         const league = await newLeague.save()
         req.user.leagues.push(newLeague)
         await req.user.save()
@@ -57,6 +57,7 @@ async function getLeague(req, res, next) {
 async function getAllLeagueSeasons(req, res, next) {
     try {
         const league = await req.league.execPopulate('seasons')
+
         return res.status(200).json({
             success: true,
             data: league.seasons,
@@ -78,6 +79,7 @@ async function createLeagueSeason(req, res, next) {
             league: req.league._id,
             grades: [],
         })
+
         const season = await newSeason.save()
         req.league.seasons.push(newSeason)
         await req.league.save()

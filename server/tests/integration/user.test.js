@@ -19,6 +19,7 @@ describe('Integration Testing: getting user details', () => {
         expect(res.body.data.firstName).toBe(env.usersDetails[0][0].firstName)
         expect(res.body.data.lastName).toBe(env.usersDetails[0][0].lastName)
         expect(res.body.data.leagues).toStrictEqual([])
+        expect(res.body.data.teams).toStrictEqual([])
     })
 
     test('Should be able to get user details for logged in user #2', async () => {
@@ -31,6 +32,7 @@ describe('Integration Testing: getting user details', () => {
         expect(res.body.data.firstName).toBe(env.usersDetails[1][0].firstName)
         expect(res.body.data.lastName).toBe(env.usersDetails[1][0].lastName)
         expect(res.body.data.leagues).toStrictEqual([])
+        expect(res.body.data.teams).toStrictEqual([])
     })
 
     test('Getting user details with invalid JWT should return an error', async () => {

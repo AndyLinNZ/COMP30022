@@ -26,6 +26,7 @@ async function createGrade(req, res, next) {
             difficulty: gradeDifficulty,
             season: req.season._id,
         })
+
         const grade = await newGrade.save()
         req.season.grades.push(newGrade)
         await req.season.save()
@@ -43,6 +44,7 @@ async function createGrade(req, res, next) {
 async function getAllSeasonGrades(req, res, next) {
     try {
         const season = await req.season.execPopulate('grades')
+
         return res.status(200).json({
             success: true,
             data: season.grades,
