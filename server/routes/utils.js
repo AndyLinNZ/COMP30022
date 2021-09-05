@@ -12,28 +12,22 @@ const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 // and appropriately populates req.league, req.grade and req.season
 // or returns an error otherwise (if not found, or if params not sent in request)
 async function getLeagueGradeSeason(req, res, next) {
-    var validId
     if (req.params.gradeId) {
-        validId = ObjectId.isValid(req.params.gradeId)
-        var grade
-        if(validId) grade = await Grade.findById(req.params.gradeId)
-        if(!grade || !validId) return res.status(404).json({ success: false, error: 'Grade does not exist' })
+        const gradeId = req.params.gradeId
+        var grade = ObjectId.isValid(gradeId) ? await Grade.findById(gradeId) : null
+        if(!grade) return res.status(404).json({ success: false, error: 'Grade does not exist' })
         req.grade = grade
     }
     var seasonId = req.params.seasonId || req.grade?.season._id
     if (seasonId) {
-        validId = ObjectId.isValid(seasonId)
-        var season
-        if(validId) season = await Season.findById(seasonId)
-        if(!season || !validId) return res.status(404).json({ success: false, error: 'Season does not exist' })
+        var season = ObjectId.isValid(seasonId) ? await Season.findById(seasonId) : null
+        if(!season) return res.status(404).json({ success: false, error: 'Season does not exist' })
         req.season = season
     }
     var leagueId = req.params.leagueId || req.season?.league._id
     if (leagueId) {
-        validId = ObjectId.isValid(leagueId)
-        var league
-        if(validId) league = await League.findById(leagueId)
-        if(!league || !validId) return res.status(404).json({ success: false, error: 'League does not exist' })
+        var league = ObjectId.isValid(leagueId) ? await League.findById(leagueId) : null
+        if(!league) return res.status(404).json({ success: false, error: 'League does not exist' })
         req.league = league
         return next()
     }
