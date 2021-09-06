@@ -12,7 +12,8 @@
         "start": "next start",
         "test": "jest",
         "precommit": "eslint --fix --ext .js,.jsx",
-        "storybook": "start-storybook -p 9009"
+        "storybook": "start-storybook -p 9009",
+        "coverage": "jest --collectCoverage"
     },
     "dependencies": {
         "@chakra-ui/icons": "^1.0.15",
