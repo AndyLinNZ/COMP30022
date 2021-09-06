@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { FormButton, Input } from 'components/Form'
 import { Text, VStack } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import { HOME_PATH, LOGIN_PATH } from 'utils/constants'
+import { appPaths } from 'utils/constants'
 import { useRegister } from 'hooks'
 
 const registerSchema = yup.object().shape({
@@ -35,7 +35,7 @@ const RegisterForm = () => {
     const { mutate, isLoading } = useRegister({
         onSuccess: (response) => {
             window.localStorage.setItem('token', response.data.token)
-            router.push(HOME_PATH)
+            router.push(appPaths.DASHBOARD_TEAMS_PATH)
         },
         onError: (error) => {
             console.log(error)
@@ -76,17 +76,13 @@ const RegisterForm = () => {
                     error={errors.password?.message}
                     {...register('password')}
                 />
-                <FormButton
-                    type="submit"
-                    disabled={Object.keys(errors) > 0}
-                    isLoading={isLoading}
-                >
+                <FormButton type="submit" disabled={Object.keys(errors) > 0} isLoading={isLoading}>
                     SIGN UP
                 </FormButton>
             </VStack>
             <VStack spacing="0.5rem">
                 <Text>Already have an account?</Text>
-                <FormButton inverse onClick={() => router.push(LOGIN_PATH)}>
+                <FormButton inverse onClick={() => router.push(appPaths.LOGIN_PATH)}>
                     LOG IN NOW
                 </FormButton>
             </VStack>
