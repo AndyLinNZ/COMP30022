@@ -14,4 +14,7 @@ teamRouter.post('/:teamId/player', ensureAuthenticated, ensureTeamAdmin, teamCon
 // UPDATE
 teamRouter.patch('/:teamId', ensureTeamAdmin, teamController.updateTeam)
 
+// DELETE
+teamRouter.delete('/:teamId/player', ensureAuthenticated, ensureTeamAdmin, teamController.deletePlayersFromTeam)
+
 module.exports = teamRouter

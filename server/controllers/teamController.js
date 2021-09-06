@@ -83,9 +83,42 @@ async function addPlayerToTeam(req, res, next) {
     }
 }
 
+async function deletePlayersFromTeam(req, res, next) {
+    try {
+        if (!await allValidPlayerIds(req.body.playerIds)) {
+            return next({ status: 404, message: 'Some players do not exist' })
+        }
+
+        var toDeletePlayers = await Promise.all(
+            req.body.playerIds.map(async (playerId) => {
+                const player = await Player.findOneAndUpdate(
+                    { _id: playerId },
+                    { $pull: { team: { $in: req.team._id } } }
+                )
+                return player
+            })
+        )
+
+        const team = await Team.findOneAndUpdate(
+            { _id: req.team._id },
+            { $pull: { players: { $in: toDeletePlayers } } },
+            { new: true }
+        )
+
+        return res.status(200).json({
+            success: true,
+            data: team.players,
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
 module.exports = {
     createTeam,
     getTeam,
     updateTeam,
-    addPlayerToTeam
+    addPlayerToTeam,
+    deletePlayersFromTeam
 }

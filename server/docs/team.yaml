@@ -124,4 +124,45 @@ paths:
                   value:
                     success: false
                     error: 'Team does not exist'
+
+  /team/{teamId}/player:
+    delete:
+      tags:
+        - 'Team'
+      summary: 'Delete a player from a team.'
+      description: 'This can only be done by a logged in user and the team admin.'
+      parameters:
+      - name: 'teamId'
+        in: 'path'
+        description: 'ID of team to return.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []  
+      responses:
+        '200':
+          description: 'Successfully delete a player from a team.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  - 66666f666666ff6666f66666
+        '404':
+          description: 'Some of the players in the playerIds array do not exist or team does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorResponse'
+              examples:
+                PlayersNotFound:
+                  value:
+                    success: false
+                    error: 'Some players do not exist'
+                TeamNotFound:
+                  value:
+                    success: false
+                    error: 'Team does not exist'
                 
