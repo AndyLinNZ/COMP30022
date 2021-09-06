@@ -84,7 +84,7 @@ describe('Integration Testing: finding teams', () => {
     })
 })
 
-describe('Integration Testing: adding players from team', () => {
+describe('Integration Testing: adding players to a team', () => {
     test('User should not be able to add team players if they are not the team admin', async () => {
         const res = await request.post(`/api/team/${env.team0_id}/player`)
             .set('Authorization', `Bearer ${env.auth_tokens[1][1]}`)
@@ -133,5 +133,55 @@ describe('Integration Testing: adding players from team', () => {
         expect(res.statusCode).toBe(200)
         expect(res.body.success).toBe(true)
         expect(res.body.data).toStrictEqual([env.player0_id])
+    })
+})
+
+describe('Integration Testing: Deleting players from a team', () => {
+    test('Users other than the team admin should not be able to remove players', async () => {
+        const res = await request.delete(`/api/team/${env.team0_id}/player`)
+            .set('Authorization', `Bearer ${env.auth_tokens[1][1]}`)
+            .send({
+                playerIds: [env.player0_id]
+            })
+
+        expect(res.statusCode).toBe(403)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('User is not a team admin')
+    })
+
+    test('Removing players as team admin from an invalid team should return an error', async () => {
+        const res = await request.delete('/api/team/1337/player')
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send({
+                playerIds: [env.player0_id]
+            })
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Team does not exist')
+    })
+
+    test('Removing player with invalid player ids should return an error', async () => {
+        const res = await request.delete(`/api/team/${env.team0_id}/player`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send({
+                playerIds: ['1337']
+            })
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Some players do not exist')
+    })
+
+    test('Team admin should be able to delete a player from a team', async () => {
+        const res = await request.delete(`/api/team/${env.team0_id}/player`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send({
+                playerIds: [env.player0_id]
+            })
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data).toStrictEqual([])
     })
 })
