@@ -1,6 +1,7 @@
 const Team = require('../models/team')
 const Player = require('../models/player')
 const { allValidPlayerIds } = require('./utils')
+const player = require('../models/player')
 
 async function createTeam(req, res, next) {
     try {
@@ -93,7 +94,7 @@ async function deletePlayersFromTeam(req, res, next) {
             req.body.playerIds.map(async (playerId) => {
                 const player = await Player.findOneAndUpdate(
                     { _id: playerId },
-                    { $pull: { team: { $in: req.team._id } } }
+                    { team: null }
                 )
                 return player
             })
@@ -107,7 +108,7 @@ async function deletePlayersFromTeam(req, res, next) {
 
         return res.status(200).json({
             success: true,
-            data: team.players,
+            data: team.players
         })
     } catch (err) {
         console.log(err)
