@@ -10,6 +10,7 @@ teamRouter.get('/:teamId', getTeamDocument, teamController.getTeam)
 // POST
 teamRouter.post('/', ensureAuthenticated, teamController.createTeam)
 teamRouter.post('/:teamId/player', ensureAuthenticated, ensureTeamAdmin, teamController.addPlayerToTeam)
+teamRouter.post('/:teamId/gameResult', teamController.addGameResultToTeam)
 
 // UPDATE
 teamRouter.patch('/:teamId', ensureTeamAdmin, teamController.updateTeam)

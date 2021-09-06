@@ -1,7 +1,8 @@
 const Team = require('../models/team')
 const Player = require('../models/player')
-const { allValidPlayerIds } = require('./utils')
+const { allValidPlayerIds, allValidGameResultIds } = require('./utils')
 const player = require('../models/player')
+const GameResult = require('../models/gameResult')
 
 async function createTeam(req, res, next) {
     try {
@@ -116,10 +117,47 @@ async function deletePlayersFromTeam(req, res, next) {
     }
 }
 
+async function addGameResultToTeam(req, res, next) {
+    try {
+        if (!await allValidGameResultIds(req.body.gameResultId)) {
+            return next({ status: 404, message: 'Game result does not exist' })
+        }
+
+        var newGameResult = await Promise.all(
+            req.body.gameResultIds.map(async (gameResultId) => {
+                const gameResult = await GameResult.findOneAndUpdate(
+                    { _id: playerId },
+                    { team: req.team._id }
+                )
+                return player
+            })
+        )
+
+        const newGameResult = await GameResult.find(
+            {_id: req.body.gameResultId}
+        )
+
+        const team = await Team.findOneAndUpdate(
+            { _id: req.team._id },
+            { $addToSet: { gameResults: newGameResult } },
+            { new: true }
+        )
+
+        return res.status(200).json({
+            success: true,
+            data: team.gameResult
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
 module.exports = {
     createTeam,
     getTeam,
     updateTeam,
     addPlayerToTeam,
-    deletePlayersFromTeam
+    deletePlayersFromTeam,
+    addGameResultToTeam
 }
