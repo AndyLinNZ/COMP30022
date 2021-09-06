@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from 'utils/test-utils'
-import Header from 'components/Header'
+import Header from 'components/Header/Header'
 
 describe('Header', () => {
     test('renders normally', () => {

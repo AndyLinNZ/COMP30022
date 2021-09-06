@@ -2,6 +2,7 @@ import { AddIcon } from '@chakra-ui/icons'
 import { Flex, IconButton, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React from 'react'
+import { appPaths } from 'utils/constants'
 
 const AddTeamCapsule = () => {
     const router = useRouter()
@@ -18,7 +19,7 @@ const AddTeamCapsule = () => {
                 boxShadow: '0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);',
             }}
             bg="greyBg"
-            onClick={() => router.push('/dashboard/teams/create')}
+            onClick={() => router.push(appPaths.DASHBOARD_CREATE_TEAM_PATH)}
         >
             <Flex
                 pos="absolute"
@@ -31,7 +32,6 @@ const AddTeamCapsule = () => {
                 w="50px"
                 alignItems="center"
                 justifyContent="center"
-                onClick={{ router }}
             >
                 <AddIcon fontSize="1.25rem" color="greyBg" />
             </Flex>

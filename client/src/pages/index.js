@@ -1,7 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
 import { Flex, Box, Checkbox, Text } from '@chakra-ui/react'
-import Header from 'components/Header'
+import Header from 'components/Header/Header'
 import HeroBackDrop from 'components/svg/HeroBackDrop'
 import HeroBackDropMobile from 'components/svg/HeroBackDropMobile'
 import AssociationSearch from 'components/AssociationPage/AssociationSearch'
@@ -89,20 +89,12 @@ export default function Home() {
 
     React.useEffect(() => {
         setFilteredTeams(
-            mockTeams.filter(({ name }) =>
-                name.toLowerCase().includes(searchValue.toLowerCase())
-            )
+            mockTeams.filter(({ name }) => name.toLowerCase().includes(searchValue.toLowerCase()))
         )
     }, [searchValue, mockTeams])
 
     return (
-        <Flex
-            maxW="100vw"
-            flexDir="column"
-            justifyContent="flex-start"
-            bg="grey"
-            overflow="hidden"
-        >
+        <Flex maxW="100vw" flexDir="column" justifyContent="flex-start" bg="grey" overflow="hidden">
             <Head>
                 <title>Dribblr | Basketball Leagues</title>
             </Head>
@@ -157,9 +149,7 @@ export default function Home() {
                     </Checkbox>
                 </Flex>
                 <Flex alignItems="center" width="100%" mt={['2rem', '5rem']}>
-                    <AssociationGrid
-                        {...{ inSeason, upcomingSeason, teams: filteredTeams }}
-                    />
+                    <AssociationGrid {...{ inSeason, upcomingSeason, teams: filteredTeams }} />
                 </Flex>
             </Box>
             <Box w="100%">

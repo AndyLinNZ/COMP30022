@@ -13,3 +13,8 @@ export const login = async (user) => {
     })
     return data
 }
+
+export const getUserDetails = async () => {
+    const data = await axiosInstance.get('/user/details')
+    return data
+}
