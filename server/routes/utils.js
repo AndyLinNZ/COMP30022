@@ -5,6 +5,7 @@ const League = require('../models/league')
 const Season = require('../models/season')
 const Grade = require('../models/grade')
 const Team = require('../models/team')
+const Game = require('../models/game')
 
 const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 
@@ -42,6 +43,14 @@ async function getTeamDocument(req, res, next) {
     const team = ObjectId.isValid(teamId) ? await Team.findById(teamId) : null
     if (!team) return res.status(404).json({ success: false, error: 'Team does not exist' })
     req.team = team
+    return next()
+}
+
+async function getGameDocument(req, res, next) {
+    const gameId = req.params.gameId ? req.params.gameId : req.body.gameId
+    const game = ObjectId.isValid(gameId) ? await Game.findById(gameId) : null
+    if (!game) return res.status(404).json({ success: false, error: 'Game does not exist' })
+    req.game = game
     return next()
 }
 
@@ -91,6 +100,7 @@ const ensureTeamAdmin = series(getTeamDocument, _ensureTeamAdmin)
 module.exports = {
     ensureAuthenticated,
     getTeamDocument,
+    getGameDocument,
     getLeagueGradeSeason,
     ensureLeagueCreator,
     ensureLeagueAdmin,
