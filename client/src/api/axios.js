@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { API_URL } from 'utils/constants'
+import { isBrowser } from 'utils'
 
 const baseURL = API_URL
 
@@ -13,7 +14,7 @@ axiosInstance.interceptors.request.use(
             Accept: 'application/json',
             'Content-Type': 'application/json',
         }
-        const token = typeof window !== 'undefined' && window.localStorage.getItem('token')
+        const token = isBrowser() && window.localStorage.getItem('token')
         if (token) {
             config.headers['Authorization'] = `Bearer ${token}`
         }
@@ -29,7 +30,7 @@ axiosInstance.interceptors.response.use(
         return response
     },
     async (error) => {
-        if (typeof window !== 'undefined' && error.config.status === 401) {
+        if (isBrowser() && error.config.status === 401) {
             window.localStorage.removeItem('token')
 
             window.location = '/login'

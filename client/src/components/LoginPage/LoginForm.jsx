@@ -7,6 +7,7 @@ import { Text, VStack } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { appPaths } from 'utils/constants'
 import { useLogin } from 'hooks'
+import { isBrowser } from 'utils'
 
 const loginSchema = yup.object().shape({
     email: yup.string().required('Please enter your email'),
@@ -36,6 +37,10 @@ const LoginForm = () => {
     const onSubmit = (data) => {
         console.log(data)
         loginUser(data)
+    }
+
+    if (isBrowser() && window.localStorage.getItem('token')) {
+        router.push(appPaths.HOME_PATH)
     }
 
     return (

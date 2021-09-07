@@ -1,7 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
 import { Flex, Box, Checkbox, Text } from '@chakra-ui/react'
-import Header from 'components/Header/Header'
+import HomeHeader from 'components/Header/HomeHeader'
 import HeroBackDrop from 'components/svg/HeroBackDrop'
 import HeroBackDropMobile from 'components/svg/HeroBackDropMobile'
 import AssociationSearch from 'components/AssociationPage/AssociationSearch'
@@ -9,6 +9,8 @@ import AssociationGrid from 'components/AssociationPage/AssociationGrid'
 import Logo from 'components/svg/Logo'
 import { useMediaQuerySSR } from 'hooks'
 import Footer from 'components/Footer'
+import { isBrowser } from 'utils'
+import UserHeader from 'components/Header/UserHeader'
 
 const mockTeams = [
     {
@@ -93,6 +95,8 @@ export default function Home() {
         )
     }, [searchValue, mockTeams])
 
+    const loggedIn = isBrowser() && window.localStorage.getItem('token')
+
     return (
         <Flex maxW="100vw" flexDir="column" justifyContent="flex-start" bg="grey" overflow="hidden">
             <Head>
@@ -105,7 +109,7 @@ export default function Home() {
                     <HeroBackDropMobile />
                 </>
             )}
-            <Header />
+            {loggedIn ? <UserHeader isHome /> : <HomeHeader />}
             <Flex
                 pos="absolute"
                 left="50%"
@@ -120,7 +124,7 @@ export default function Home() {
 
                 <AssociationSearch value={searchValue} onChange={setSearchValue} />
             </Flex>
-            <Box px="3rem" minH="500px" mt={[6, 2]} mb="5rem">
+            <Box px={['3rem', '10rem']} minH="500px" mt={[6, 2]} mb="5rem">
                 <Flex>
                     <Checkbox
                         isChecked={inSeason}

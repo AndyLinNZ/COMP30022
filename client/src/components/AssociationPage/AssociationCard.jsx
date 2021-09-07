@@ -27,7 +27,7 @@ const AssociationCard = ({ name, org, activeSeasons, icon }) => {
             }}
         >
             <Box pos="absolute" top="-25%">
-                <Avatar src={icon} size="xl" bg="grey" />
+                <Avatar src={icon} size="xl" bg="grey" border="2px solid black" />
             </Box>
             <Box textAlign="center" color="greyText" mt="1rem" maxW="100%">
                 <Text fontSize="1.125rem">{name}</Text>
