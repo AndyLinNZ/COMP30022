@@ -137,21 +137,6 @@ paths:
                     dateFinish: '2021-08-14T12:23:34.944Z'
                     __v: 0
                   __v: 0
-        '400':
-          description: 'Invalid request body.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-              examples:
-                invalidGradeGender:
-                  value:
-                    success: false
-                    error: 'Invalid gender'
-                invalidGradeDifficulty:
-                  value:
-                    success: false
-                    error: 'Invalid difficulty'
         '403':
           description: 'User is not an admin for this league.'
           content:

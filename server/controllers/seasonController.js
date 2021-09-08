@@ -16,10 +16,6 @@ async function getSeason(req, res, next) {
 async function createGrade(req, res, next) {
     try {
         let { gradeName, gradeGender, gradeDifficulty } = req.body
-        if (['male', 'female', 'mixed'].indexOf(gradeGender) < 0)
-            return next({ status: 400, message: 'Invalid gender' })
-        if (['A', 'B', 'C', 'D', 'E'].indexOf(gradeDifficulty) < 0)
-            return next({ status: 400, message: 'Invalid difficulty' })
 
         const newGrade = new Grade({
             name: gradeName,
