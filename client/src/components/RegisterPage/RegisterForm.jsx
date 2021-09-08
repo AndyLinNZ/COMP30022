@@ -7,7 +7,7 @@ import { Text, VStack } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { appPaths } from 'utils/constants'
 import { useRegister } from 'hooks'
-import { isBrowser } from 'utils'
+import { isBrowser, isLoggedIn } from 'utils'
 
 const registerSchema = yup.object().shape({
     firstName: yup.string().required('First name is required'),
@@ -48,7 +48,7 @@ const RegisterForm = () => {
         mutate(data)
     }
 
-    if (isBrowser() && window.localStorage.getItem('token')) {
+    if (isLoggedIn()) {
         router.push(appPaths.HOME_PATH)
     }
 

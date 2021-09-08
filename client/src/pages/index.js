@@ -9,7 +9,7 @@ import AssociationGrid from 'components/AssociationPage/AssociationGrid'
 import Logo from 'components/svg/Logo'
 import { useMediaQuerySSR } from 'hooks'
 import Footer from 'components/Footer'
-import { isBrowser } from 'utils'
+import { isBrowser, isLoggedIn } from 'utils'
 import UserHeader from 'components/Header/UserHeader'
 
 const mockTeams = [
@@ -95,8 +95,6 @@ export default function Home() {
         )
     }, [searchValue, mockTeams])
 
-    const loggedIn = isBrowser() && window.localStorage.getItem('token')
-
     return (
         <Flex maxW="100vw" flexDir="column" justifyContent="flex-start" bg="grey" overflow="hidden">
             <Head>
@@ -109,7 +107,7 @@ export default function Home() {
                     <HeroBackDropMobile />
                 </>
             )}
-            {loggedIn ? <UserHeader isHome /> : <HomeHeader />}
+            {isLoggedIn() ? <UserHeader isHome /> : <HomeHeader />}
             <Flex
                 pos="absolute"
                 left="50%"

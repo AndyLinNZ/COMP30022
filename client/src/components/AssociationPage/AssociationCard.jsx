@@ -1,6 +1,6 @@
 import { Avatar, Box, Text } from '@chakra-ui/react'
 import React from 'react'
-import BasketballIcon from 'components/icons/BasketballIcon'
+import BasketballIcon from 'components/svg/BasketballIcon'
 import ActiveSeasonLabel from './ActiveSeasonLabel'
 import { useMediaQuerySSR } from 'hooks'
 
