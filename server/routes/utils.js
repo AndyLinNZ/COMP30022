@@ -25,7 +25,7 @@ async function getLeagueGradeSeason(req, res, next) {
         if(!season) return res.status(404).json({ success: false, error: 'Season does not exist' })
         req.season = season
     }
-    var leagueId = req.params.leagueId || req.season?.league._id
+    var leagueId = req.params.leagueId || req.season?.league._id || req.body.leagueId
     if (leagueId) {
         var league = ObjectId.isValid(leagueId) ? await League.findById(leagueId) : null
         if(!league) return res.status(404).json({ success: false, error: 'League does not exist' })
