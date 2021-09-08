@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { appPaths } from 'utils/constants'
 
-const Header = () => {
+const HomeHeader = () => {
     const showSignUp = useMediaQuerySSR(1024)
     const router = useRouter()
 
@@ -52,4 +52,4 @@ const Header = () => {
     )
 }
 
-export default Header
+export default HomeHeader

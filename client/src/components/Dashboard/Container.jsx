@@ -9,7 +9,7 @@ const Container = ({ heading, children }) => {
             top="50%"
             left="50%"
             transform="translate(-50%, -50%)"
-            w="75%"
+            w={['95%', '75%']}
         >
             <Text fontSize="2rem">{heading}</Text>
             <Box

@@ -5,3 +5,7 @@ export const extractData = (data) => {
 export const isBrowser = () => {
     return typeof window !== 'undefined'
 }
+
+export const isLoggedIn = () => {
+    return !!(isBrowser() && window.localStorage.getItem('token'))
+}

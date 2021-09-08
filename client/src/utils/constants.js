@@ -6,4 +6,6 @@ export const appPaths = {
     HOME_PATH: '/',
     DASHBOARD_TEAMS_PATH: '/dashboard/teams',
     DASHBOARD_CREATE_TEAM_PATH: '/dashboard/teams/create',
+    DASHBOARD_LEAGUES_PATH: '/dashboard/leagues',
+    DASHBOARD_CREATE_LEAGUE_PATH: '/dashboard/leagues/create',
 }
