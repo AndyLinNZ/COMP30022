@@ -58,13 +58,9 @@ describe('Integration Testing: finding teams', () => {
         expect(res.body.success).toBe(true)
         expect(res.body.data.admin).toStrictEqual(env.auth_tokens[0][0])
         expect(res.body.data.players).toStrictEqual([])
-        expect(res.body.data.gameResults).toStrictEqual([])
+        expect(res.body.data.games).toStrictEqual([])
         expect(res.body.data.grades).toStrictEqual([])
         expect(res.body.data.name).toBe(testTeam.name)
-        expect(res.body.data.totalPoints).toBe(0)
-        expect(res.body.data.totalWins).toBe(0)
-        expect(res.body.data.totalLosses).toBe(0)
-        expect(res.body.data.totalDraws).toBe(0)
     })
 
     test('Finding a team with a nonexistent id should return an error', async () => {
