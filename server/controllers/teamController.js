@@ -133,10 +133,6 @@ async function addGameResultToTeam(req, res, next) {
             })
         )
 
-        const newGameResult = await GameResult.find(
-            {_id: req.body.gameResultId}
-        )
-
         const team = await Team.findOneAndUpdate(
             { _id: req.team._id },
             { $addToSet: { gameResults: newGameResult } },

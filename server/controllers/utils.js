@@ -6,7 +6,7 @@ const allValidObjectIds = (arr) => arr.every(ObjectId.isValid)
 // returns false if any of the given ids are invalid object ids
 // or if any of them do not correspond to a document of docType
 // in the database. returns true otherwise
-const allValidDoumentIds = async (ids, docType) => {
+const allValidDocumentIds = async (ids, docType) => {
     if(!allValidObjectIds(ids)) return Promise.resolve(false)
     const docs = await docType.find({
         _id: { $in: ids.map(ObjectId) }
@@ -25,6 +25,6 @@ const pick = (obj, keys) => {
 }
 
 module.exports = {
-    allValidDoumentIds,
+    allValidDocumentIds,
     pick
 }
