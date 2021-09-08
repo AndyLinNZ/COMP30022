@@ -1,8 +1,8 @@
 const Team = require('../models/team')
 const Player = require('../models/player')
-const { allValidPlayerIds, allValidGameResultIds } = require('./utils')
 const player = require('../models/player')
 const GameResult = require('../models/gameResult')
+const { allValidDocumentIds } = require('./utils')
 
 async function createTeam(req, res, next) {
     try {
@@ -55,7 +55,7 @@ async function updateTeam(req, res, next) {
 
 async function addPlayerToTeam(req, res, next) {
    try {
-        if (!await allValidPlayerIds(req.body.playerIds)) {
+        if (!await allValidDocumentIds(req.body.playerIds, Player)) {
             return next({ status: 404, message: 'Some players do not exist' })
         }
 
@@ -87,7 +87,7 @@ async function addPlayerToTeam(req, res, next) {
 
 async function deletePlayersFromTeam(req, res, next) {
     try {
-        if (!await allValidPlayerIds(req.body.playerIds)) {
+        if (!await allValidDocumentIds(req.body.playerIds, Player)) {
             return next({ status: 404, message: 'Some players do not exist' })
         }
 
@@ -119,7 +119,7 @@ async function deletePlayersFromTeam(req, res, next) {
 
 async function addGameResultToTeam(req, res, next) {
     try {
-        if (!await allValidGameResultIds(req.body.gameResultId)) {
+        if (!await allValidDocumentIds(req.body.gameResultId, GameResult)) {
             return next({ status: 404, message: 'Game result does not exist' })
         }
 
