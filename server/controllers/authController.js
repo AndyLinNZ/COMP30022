@@ -10,11 +10,9 @@ const strongPassword = new RegExp('(?=.*[a-zA-Z])(?=.*[0-9])(?=.{8,})')
 
 function registerUser(req, res, next) {
     if (!req.body.email) return next({ message: 'Missing "email" field' })
-    if (!emailValidator.validate(req.body.email))
-        return next({ message: 'Invalid email' })
+    if (!emailValidator.validate(req.body.email)) return next({ message: 'Invalid email' })
     if (!req.body.password) return next({ message: 'Missing "password" field' })
-    if (!req.body.password.match(strongPassword))
-        return next({ message: 'Password is too weak' })
+    if (!req.body.password.match(strongPassword)) return next({ message: 'Password is too weak' })
     if (!req.body.firstName) return next({ message: 'Missing "firstName" field' })
     if (!req.body.lastName) return next({ message: 'Missing "lastName" field' })
 
@@ -42,7 +40,7 @@ function loginUser(req, res, next) {
 
         const token = JWT.sign({ userid: user._id }, process.env.JWT_SECRET, {
             algorithm: 'HS256',
-            expiresIn: '2d',
+            expiresIn: '7d',
         })
         res.json({ success: true, token })
     })(req, res, next)
