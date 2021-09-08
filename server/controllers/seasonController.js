@@ -1,3 +1,4 @@
+const Season = require('../models/season')
 const Grade = require('../models/grade')
 
 async function getSeason(req, res, next) {
@@ -55,8 +56,35 @@ async function getAllSeasonGrades(req, res, next) {
     }
 }
 
+async function updateSeason(req, res, next) {
+    try {
+        let { seasonName, seasonStart, seasonFinish, seasonStatus } = req.body
+		
+		const updateQuery = {}
+		if (seasonName) updateQuery.name = seasonName
+		if (seasonStart) updateQuery.dateStart = seasonStart
+		if (seasonFinish) updateQuery.dateFinish = seasonFinish
+		if (seasonStatus) updateQuery.status = seasonStatus
+
+        const season = await Season.findOneAndUpdate(
+            { _id: req.season._id },
+            { $set: updateQuery },
+            { new: true, runValidators: true }
+        )
+		
+        return res.status(200).json({
+            success: true,
+            data: season,
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
 module.exports = {
     getSeason,
     createGrade,
     getAllSeasonGrades,
+	updateSeason
 }
