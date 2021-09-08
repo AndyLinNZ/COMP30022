@@ -9,16 +9,41 @@ const gameSchema = new mongoose.Schema({
     dateFinished: {
         type: Date,
     },
-    gameResults: {
-        type: [
-            {
+    team1: {
+        team: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Team',
+            required: true,
+        },
+        points: {
+            type: Number,
+        },
+        playersStats: {
+            type: [{
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'GameResult',
+                ref: 'PlayerStat',
                 required: true,
-            },
-        ],
-        default: [],
+            }]
+        },
     },
+    team2: {
+        team: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Team',
+            required: true,
+        },
+        points: {
+            type: Number,
+        },
+        playersStats: {
+            type: [{
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'PlayerStat',
+                required: true,
+            }]
+        },
+    },
+    locationName: String,
     location: {
         type: {
             type: String,
