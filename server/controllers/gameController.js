@@ -30,10 +30,24 @@ async function createGame(req, res, next) {
 
         const game = await newGame.save()
 
+        // adding game to team's details
+        const updatedTeam1 = await Team.findOneAndUpdate(
+            { _id: team1_id},
+            { $addToSet: { games: game } },
+            { new: true } 
+        )
+
+        const updatedTeam2 = await Team.findOneAndUpdate(
+            { _id: team2_id},
+            { $addToSet: { games: game } },
+            { new: true } 
+        )
+
         return res.status(201).json({
             success: true,
             data: game,
         })
+        
     } catch (err) {
         console.log(err)
         return next(err)
