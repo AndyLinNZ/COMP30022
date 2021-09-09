@@ -83,7 +83,7 @@ paths:
       parameters:
       - name: 'seasonId'
         in: 'path'
-        description: 'ID of season to return.'
+        description: 'ID of season to patch.'
         required: true
         type: 'string'
       security:

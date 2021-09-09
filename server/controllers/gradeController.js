@@ -1,5 +1,4 @@
 const Grade = require('../models/grade')
-const Season = require('../models/season')
 
 async function getGrade(req, res, next) {
     try {
@@ -16,7 +15,7 @@ async function getGrade(req, res, next) {
 async function deleteGrade(req, res, next) {
     try {
         await Grade.deleteOne({ _id: req.grade._id })
-        
+
         return res.status(204).send()
     } catch (err) {
         console.log(err)

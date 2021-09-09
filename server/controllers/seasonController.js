@@ -56,11 +56,11 @@ async function updateSeason(req, res, next) {
     try {
         let { seasonName, seasonStart, seasonFinish, seasonStatus } = req.body
 		
-		const updateQuery = {}
-		if (seasonName) updateQuery.name = seasonName
-		if (seasonStart) updateQuery.dateStart = seasonStart
-		if (seasonFinish) updateQuery.dateFinish = seasonFinish
-		if (seasonStatus) updateQuery.status = seasonStatus
+        const updateQuery = {}
+        if (seasonName) updateQuery.name = seasonName
+        if (seasonStart) updateQuery.dateStart = seasonStart
+        if (seasonFinish) updateQuery.dateFinish = seasonFinish
+        if (seasonStatus) updateQuery.status = seasonStatus
 
         const season = await Season.findOneAndUpdate(
             { _id: req.season._id },
@@ -82,5 +82,5 @@ module.exports = {
     getSeason,
     createGrade,
     getAllSeasonGrades,
-	updateSeason
+    updateSeason
 }
