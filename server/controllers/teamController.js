@@ -117,43 +117,10 @@ async function deletePlayersFromTeam(req, res, next) {
     }
 }
 
-async function addGameResultToTeam(req, res, next) {
-    try {
-        if (!await allValidDocumentIds(req.body.gameResultId, GameResult)) {
-            return next({ status: 404, message: 'Game result does not exist' })
-        }
-
-        var newGameResult = await Promise.all(
-            req.body.gameResultIds.map(async (gameResultId) => {
-                const gameResult = await GameResult.findOneAndUpdate(
-                    { _id: playerId },
-                    { team: req.team._id }
-                )
-                return player
-            })
-        )
-
-        const team = await Team.findOneAndUpdate(
-            { _id: req.team._id },
-            { $addToSet: { gameResults: newGameResult } },
-            { new: true }
-        )
-
-        return res.status(200).json({
-            success: true,
-            data: team.gameResult
-        })
-    } catch (err) {
-        console.log(err)
-        return next(err)
-    }
-}
-
 module.exports = {
     createTeam,
     getTeam,
     updateTeam,
     addPlayerToTeam,
     deletePlayersFromTeam,
-    addGameResultToTeam
 }
