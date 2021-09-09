@@ -1,6 +1,7 @@
 const { ObjectId } = require('mongoose').Types
 const Team = require('../models/team')
 const Game = require('../models/game')
+const PlayerStat = require('../models/playerStat')
 
 async function createGame(req, res, next) {
     try {
@@ -39,6 +40,90 @@ async function createGame(req, res, next) {
     }
 }
 
+async function updateGameInProgress(req, res, next) {
+    try {
+
+        if (!await allValidDocumentIds(req.params.gameId, Game)) {
+            return next({ status: 404, message: 'The game does not exist' })
+        }
+
+        const updatedGame = await Game.findOneAndUpdate(
+            { _id: req.params.gameId},
+            { status: 'progress' },
+            { new: true } 
+        )
+
+        return res.status(200).json({
+            success: true,
+            data: updatedGame.status
+        })
+
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
+async function updateCompletedGame(req, res, next) {
+    try {
+
+        let { team1_playerStatIds, team2_playerStatIds } = req.body
+
+        if (!await allValidDocumentIds(req.params.gameId, Game)) {
+            return next({ status: 404, message: 'The game does not exist' })
+        }
+
+        // checking every single playerStatId
+        // adding their points together
+        var team1_points = 0
+        var team1_playerStat = await Promise.all(
+            team1_playerStatIds.map(async (playerStatId) => {
+                const foundPlayerStat = ObjectId.isValid(playerStatId) ? await PlayerStat.findById(playerStatId) : null
+
+                if (!foundPlayerStat) {
+                    team1_points += foundPlayerStat.points
+                }
+
+                return foundPlayerStat
+            })
+        )
+
+        team2_points = 0
+        var team2_playerStat = await Promise.all(
+            team2_playerStatIds.map(async (playerStatId) => {
+                const foundPlayerStat = ObjectId.isValid(playerStatId) ? await PlayerStat.findById(playerStatId) : null
+
+                if (!foundPlayerStat) {
+                    team2_points += foundPlayerStat.points
+                }
+
+                return foundPlayerStat
+            })
+        )
+
+        if (team1_playerStat.includes(null) || team2_playerStat.includes(null)) return next({ status: 404, message: 'Some PlayerStats do not exist' })
+
+        const updatedGame = await Game.findOneAndUpdate(
+            { _id: req.params.gameId },
+            { team1: { points: team1_points, playerStats: team1_playerStat } },
+            { team2: { points: team2_points, playerStats: team2_playerStat } },
+            { status: 'completed' },
+            { new: true }
+        )
+
+        return res.status(200).json({
+            success: true,
+            data: updatedGame.status
+        })
+
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
 module.exports = {
-    createGame
+    createGame,
+    updateGameInProgress,
+    updateCompletedGame
 }
