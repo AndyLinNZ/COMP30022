@@ -18,6 +18,7 @@ const FormButton = ({
     disabled,
     isLoading = false,
     children,
+    ...props
 }) => {
     const colorScheme = inverse ? inverseColorScheme : defaultColorScheme
     return (
@@ -35,6 +36,7 @@ const FormButton = ({
             type={type}
             disabled={disabled}
             isLoading={isLoading}
+            {...props}
         >
             {children}
         </Button>

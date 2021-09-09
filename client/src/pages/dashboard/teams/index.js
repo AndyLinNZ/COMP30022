@@ -1,5 +1,4 @@
 import React from 'react'
-import Head from 'next/head'
 import { useMediaQuerySSR, useUserDetails } from 'hooks'
 import { Template, Container } from 'components/Dashboard'
 import { TeamCapsule, AddTeamCapsule } from 'components/Dashboard/teams'

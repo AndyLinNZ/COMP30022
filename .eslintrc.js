@@ -26,12 +26,16 @@ module.exports = {
     rules: {
         indent: ['error', 4],
         'linebreak-style': ['error', 'unix'],
-        quotes: ['error', 'single'],
-        semi: ['error', 'never'],
-        'no-unused-vars': [
-            'warn',
-            { vars: 'all', args: 'after-used', argsIgnorePattern: '^_' },
+        quotes: [
+            'error',
+            'single',
+            {
+                allowTemplateLiterals: true,
+                avoidEscape: true,
+            },
         ],
+        semi: ['error', 'never'],
+        'no-unused-vars': ['warn', { vars: 'all', args: 'after-used', argsIgnorePattern: '^_' }],
         'react/prop-types': 'off',
     },
 }
