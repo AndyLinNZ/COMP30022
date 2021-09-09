@@ -35,8 +35,6 @@ async function getLeagueGradeSeason(req, res, next) {
 }
 
 // this middleware gets a team document and populates req.team
-// right now it's not specific to just a teamController, because grades and most likely other
-// controllers like gameResults and players will need to end up using this as well
 async function getTeamDocument(req, res, next) {
     const teamId = req.params.teamId ? req.params.teamId : req.body.teamId
     const team = ObjectId.isValid(teamId) ? await Team.findById(teamId) : null

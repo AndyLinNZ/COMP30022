@@ -16,6 +16,22 @@ components:
         gradeName: Joshua Dubar Grade
         gradeGender: female
         gradeDifficulty: E
+    
+    SeasonChange:
+      properties:
+        seasonName:
+          type: string
+        seasonStart:
+          type: Date
+        seasonFinish:
+          type: Date
+        seasonStatus:
+          type: String
+      example:
+        seasonName: Summer 2020/2021 jdubz
+        seasonStart: '2021-09-12T12:23:34.944Z'
+        seasonFinish: '2021-09-12T12:23:34.944Z'
+        seasonStatus: completed
 
     SeasonNotFoundResponse:
       allOf:
@@ -39,6 +55,48 @@ paths:
       responses:
         '200':
           description: 'Successfully found a season.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  status: upcoming
+                  grades: []
+                  _id: 33333c333333cc3333c33333
+                  name: Summer 2020/2021
+                  dateStart: '2021-08-12T12:23:34.944Z'
+                  dateFinish: '2021-08-14T12:23:34.944Z'
+                  __v: 0
+        '404':
+          description: 'Season does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeasonNotFoundResponse'
+    patch:
+      tags:
+        - 'Season'
+      summary: 'Update seasonName, seasonStart, seasonFinish or seasonStatus by id.'
+      description: 'This can only be done by a logged in user and the creator of the league of the season.'
+      parameters:
+      - name: 'seasonId'
+        in: 'path'
+        description: 'ID of season to return.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SeasonChange'
+      responses:
+        '200':
+          description: 'Successfully updated a season.'
           content:
             application/json:
               schema:

@@ -231,3 +231,29 @@ describe('Unit Testing: addTeam in gradeController', () => {
         expect(res.json).toHaveBeenCalledWith(actualRes.json)
     })
 })
+
+describe('Unit Testing: deleteGrade in gradeController', () => {
+    test('Deleting grade teams with valid gradeId should delete the grade', async () => {
+        const req = mockRequest()
+        const res = mockResponse()
+        const next = mockNext()
+
+        const gradeDetails = {
+            _id: '612788ed698aac7c50c3d3b6',
+            name: 'jdubz grade',
+            gender: 'male',
+            difficulty: 'A',
+            season: '60741060d14008bd0efff9d5',
+            teams: ['611ba6a199599722e4d01c38'],
+        }
+        req.grade = new Grade(gradeDetails)
+
+        Grade.deleteOne = jest.fn().mockImplementationOnce()
+
+        await gradeController.deleteGrade(req, res, next)
+
+        expect(next).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledTimes(1)
+        expect(res.status).toHaveBeenCalledWith(204)
+    })
+})
