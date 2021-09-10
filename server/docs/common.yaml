@@ -35,6 +35,13 @@ components:
         success: false
         error: 'User is not an admin'
 
+    UserNotTeamAdminResponse:
+      allOf:
+        - $ref: '#/components/schemas/GenericErrorResponse'
+      example:
+        success: false
+        error: 'User is not a team admin'
+
     UserNotCreatorResponse:
       allOf:
         - $ref: '#/components/schemas/GenericErrorResponse'

@@ -16,4 +16,7 @@ seasonRouter.post(
     seasonController.createGrade
 )
 
+// UPDATE
+seasonRouter.patch('/:seasonId', ensureAuthenticated, ensureLeagueAdmin, seasonController.updateSeason)
+
 module.exports = seasonRouter
