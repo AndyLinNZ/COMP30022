@@ -8,4 +8,6 @@ export const appPaths = {
     DASHBOARD_CREATE_TEAM_PATH: '/dashboard/teams/create',
     DASHBOARD_LEAGUES_PATH: '/dashboard/leagues',
     DASHBOARD_CREATE_LEAGUE_PATH: '/dashboard/leagues/create',
+    DASHBOARD_PROFILE_PATH: '/dashboard/profile',
+    LOG_OUT_PATH: '/logout',
 }
