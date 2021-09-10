@@ -54,3 +54,4 @@ yarn precommit
 git push origin feature/myfeature
 ```
 
+5. Make a pull request, outlining a summary of your commits and changes.
