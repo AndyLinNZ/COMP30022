@@ -16,8 +16,8 @@ const index = () => {
         <Template>
             <Container heading={heading}>
                 <VStack spacing="1.25rem">
-                    {user?.leagues?.map((league, index) => {
-                        return <LeagueCapsule key={`${league.name}__${index}`} league={league} />
+                    {user?.leagues?.map((league) => {
+                        return <LeagueCapsule key={league._id} league={league} />
                     })}
                     {user?.leagues?.length < 4 && <AddLeagueCapsule />}
                 </VStack>
