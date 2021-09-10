@@ -6,8 +6,9 @@ const gameSchema = new mongoose.Schema({
         default: Date.now,
         required: true,
     },
-    dateFinished: {
+    dateFinish: {
         type: Date,
+        required: true
     },
     team1: {
         team: {
@@ -15,15 +16,13 @@ const gameSchema = new mongoose.Schema({
             ref: 'Team',
             required: true,
         },
-        points: {
-            type: Number,
-        },
         playersStats: {
             type: [{
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'PlayerStat',
                 required: true,
-            }]
+            }],
+            default: []
         },
     },
     team2: {
@@ -32,15 +31,13 @@ const gameSchema = new mongoose.Schema({
             ref: 'Team',
             required: true,
         },
-        points: {
-            type: Number,
-        },
         playersStats: {
             type: [{
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'PlayerStat',
                 required: true,
-            }]
+            }],
+            default: []
         },
     },
     locationName: String,

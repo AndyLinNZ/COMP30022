@@ -11,9 +11,6 @@ teamRouter.get('/:teamId', getTeamDocument, teamController.getTeam)
 teamRouter.post('/', ensureAuthenticated, teamController.createTeam)
 teamRouter.post('/:teamId/player', ensureAuthenticated, ensureTeamAdmin, teamController.addPlayerToTeam)
 
-// UPDATE
-teamRouter.patch('/:teamId', ensureTeamAdmin, teamController.updateTeam)
-
 // DELETE
 teamRouter.delete('/:teamId/player', ensureAuthenticated, ensureTeamAdmin, teamController.deletePlayersFromTeam)
 

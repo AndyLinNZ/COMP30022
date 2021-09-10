@@ -4,6 +4,7 @@ const {
     ensureAuthenticated,
     ensureLeagueAdmin,
     getTeamDocument,
+    getGameDocument
 } = require('./utils')
 const gradeController = require('../controllers/gradeController.js')
 
@@ -20,6 +21,21 @@ gradeRouter.post(
     ensureLeagueAdmin,
     getTeamDocument,
     gradeController.addTeamToGrade
+)
+gradeRouter.post(
+    '/:gradeId/game',
+    ensureAuthenticated,
+    ensureLeagueAdmin,
+    gradeController.createGradeGame
+)
+
+// PATCH
+gradeRouter.patch(
+    '/:gradeId/game/:gameId',
+    ensureAuthenticated,
+    ensureLeagueAdmin,
+    getGameDocument,
+    gradeController.updateGame
 )
 
 module.exports = gradeRouter

@@ -40,31 +40,14 @@ async function getTeam(req, res, next) {
     }
 }
 
-// TODO
-async function updateTeam(req, res, next) {
-    try {
-        return res.status(200).json({
-            success: true,
-            data: req.team,
-        })
-    } catch (err) {
-        console.log(err)
-        return next(err)
-    }
-}
-
 async function addPlayerToTeam(req, res, next) {
    try {
-        if (!await allValidDocumentIds(req.body.playerIds, Player)) {
-            return next({ status: 404, message: 'Some players do not exist' })
-        }
-
         var newPlayers = await Promise.all(
-            req.body.playerIds.map(async (playerId) => {
-                const player = await Player.findOneAndUpdate(
-                    { _id: playerId },
-                    { team: req.team._id }
-                )
+            req.body.playerNames.map(async (playerName) => {
+                const newPlayer = new Player({
+                    name: playerName
+                })
+                const player = await newPlayer.save()
                 return player
             })
         )
@@ -120,7 +103,6 @@ async function deletePlayersFromTeam(req, res, next) {
 module.exports = {
     createTeam,
     getTeam,
-    updateTeam,
     addPlayerToTeam,
     deletePlayersFromTeam,
 }
