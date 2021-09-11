@@ -28,4 +28,7 @@ gradeRouter.post(
     gradeController.createRound
 )
 
+// DELETE
+gradeRouter.delete('/:gradeId', ensureAuthenticated, ensureLeagueAdmin, gradeController.deleteGrade)
+
 module.exports = gradeRouter

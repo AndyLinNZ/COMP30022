@@ -1,10 +1,10 @@
 import React from 'react'
 import { render } from 'utils/test-utils'
-import Header from 'components/Header'
+import HomeHeader from 'components/Header/HomeHeader'
 
 describe('Header', () => {
     test('renders normally', () => {
-        const { container } = render(<Header />)
+        const { container } = render(<HomeHeader />)
         expect(container).toMatchInlineSnapshot(`
 <div>
   <nav

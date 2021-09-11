@@ -13,3 +13,12 @@ export const login = async (user) => {
     })
     return data
 }
+
+export const getUserDetails = async () => {
+    const data = await axiosInstance.get('/user/details')
+    return data
+}
+
+export const createLeague = async (league) => {
+    return await axiosInstance.post('/league', league)
+}

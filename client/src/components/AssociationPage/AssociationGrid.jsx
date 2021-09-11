@@ -20,12 +20,7 @@ const AssociationGrid = ({ teams, inSeason, upcomingSeason }) => {
             columnGap={'2rem'}
         >
             {displayTeams.map(({ name, org, activeSeasons, _id }) => (
-                <GridItem
-                    key={_id}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                >
+                <GridItem key={_id} display="flex" alignItems="center" justifyContent="center">
                     <AssociationCard
                         name={name}
                         org={org}

@@ -5,8 +5,9 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { FormButton, Input } from 'components/Form'
 import { Text, VStack } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import { HOME_PATH, SIGN_UP_PATH } from 'utils/constants'
+import { appPaths } from 'utils/constants'
 import { useLogin } from 'hooks'
+import { isBrowser, isLoggedIn } from 'utils'
 
 const loginSchema = yup.object().shape({
     email: yup.string().required('Please enter your email'),
@@ -26,7 +27,7 @@ const LoginForm = () => {
     const { mutate: loginUser, isLoading } = useLogin({
         onSuccess: (response) => {
             window.localStorage.setItem('token', response.data.token)
-            router.push(HOME_PATH)
+            router.push(appPaths.DASHBOARD_TEAMS_PATH)
         },
         onError: (error) => {
             console.log(error)
@@ -36,6 +37,10 @@ const LoginForm = () => {
     const onSubmit = (data) => {
         console.log(data)
         loginUser(data)
+    }
+
+    if (isLoggedIn()) {
+        router.push(appPaths.HOME_PATH)
     }
 
     return (
@@ -63,7 +68,7 @@ const LoginForm = () => {
             <VStack spacing="0.5rem">
                 {/* eslint-disable-next-line*/}
                 <Text>{"Don't have an account?"}</Text>
-                <FormButton inverse onClick={() => router.push(SIGN_UP_PATH)}>
+                <FormButton inverse onClick={() => router.push(appPaths.SIGN_UP_PATH)}>
                     SIGN UP NOW
                 </FormButton>
             </VStack>

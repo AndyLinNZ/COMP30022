@@ -71,9 +71,18 @@ beforeAll(async () => {
     })
     const grade1 = await secondGrade.save()
 
+    // add a test grade object to database to be deleted
+    const thirdGrade = new Grade({
+        ...testGrade,
+        teams: [],
+        season: season._id
+    })
+    const grade2 = await thirdGrade.save()
+
     // add the new grades as a grade to the season
     season.grades.push(grade._id)
     season.grades.push(grade1._id)
+    season.grades.push(grade2._id)
     await season.save()
 
     // add a new team object to database
@@ -102,6 +111,7 @@ beforeAll(async () => {
     env.season0_id = season._id.toString()
     env.grade0_id = grade._id.toString()
     env.grade1_id = grade1._id.toString()
+    env.grade2_id = grade2._id.toString()
     env.team0_id = team._id.toString()
     env.team1_id = team1._id.toString()
 })
@@ -171,8 +181,7 @@ describe('Integration Testing: adding team to a grade', () => {
     })
 
     test('Should be able to add team to a grade that is not in any other grade for the season', async () => {
-        const res = await request
-            .post(`/api/grade/${env.grade0_id}/team`)
+        const res = await request.post(`/api/grade/${env.grade0_id}/team`)
             .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
             .send({
                 teamId: env.team1_id,
@@ -185,5 +194,32 @@ describe('Integration Testing: adding team to a grade', () => {
         expect(res.body.data.name).toBe(testGrade.name)
         expect(res.body.data.season).toBe(env.season0_id)
         expect(res.body.data.teams).toStrictEqual([env.team0_id, env.team1_id])
+    })
+})
+
+describe('Integration Testing: deleting a grade', () => {
+    test('Deleting a grade with a nonexistent id should return an error', async () => {
+        const res = await request.delete(`/api/grade/aaaabbbbcccc`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Grade does not exist')
+    })
+
+    test('Deleting a grade with an invalid MongoDB object id should return an error', async () => {
+        const res = await request.delete(`/api/grade/1337`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Grade does not exist')
+    })
+
+    test('Should be able to delete a grade with valid id', async () => {
+        const res = await request.delete(`/api/grade/${env.grade2_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+
+        expect(res.statusCode).toBe(204)
     })
 })

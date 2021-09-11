@@ -4,6 +4,7 @@ const Game = require('../models/game')
 const Player = require('../models/player')
 const PlayerStat = require('../models/playerStat')
 const Round = require('../models/round')
+const Grade = require('../models/grade')
 
 async function getGrade(req, res, next) {
     try {
@@ -11,6 +12,17 @@ async function getGrade(req, res, next) {
             success: true,
             data: req.grade,
         })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
+async function deleteGrade(req, res, next) {
+    try {
+        await Grade.deleteOne({ _id: req.grade._id })
+
+        return res.status(204).send()
     } catch (err) {
         console.log(err)
         return next(err)
@@ -76,4 +88,5 @@ module.exports = {
     getAllGradeTeams,
     addTeamToGrade,
     createRound,
+    deleteGrade,
 }

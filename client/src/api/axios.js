@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { API_URL } from 'utils/constants'
+import { isBrowser } from 'utils'
 
 const baseURL = API_URL
 
@@ -7,17 +8,15 @@ const axiosInstance = axios.create({
     baseURL,
 })
 
-axios.interceptors.request.use(
+axiosInstance.interceptors.request.use(
     (config) => {
-        const token =
-            typeof window !== 'undefined' && window.localStorage.getItem('token')
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`
-        }
         config.headers = {
-            Authorization: token ? `Bearer ${token}` : null,
             Accept: 'application/json',
             'Content-Type': 'application/json',
+        }
+        const token = isBrowser() && window.localStorage.getItem('token')
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`
         }
         return config
     },
@@ -26,12 +25,12 @@ axios.interceptors.request.use(
     }
 )
 
-axios.interceptors.response.use(
+axiosInstance.interceptors.response.use(
     (response) => {
         return response
     },
     async (error) => {
-        if (typeof window !== 'undefined' && error.config.status === 401) {
+        if (isBrowser() && error.config.status === 401) {
             window.localStorage.removeItem('token')
 
             window.location = '/login'

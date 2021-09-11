@@ -6,6 +6,7 @@ const { allValidDocumentIds } = require('./utils')
 async function createLeague(req, res, next) {
     try {
         let { leagueName, organisationName } = req.body
+
         const newLeague = new League({
             name: leagueName,
             organisation: organisationName,
@@ -68,10 +69,11 @@ async function getAllLeagueSeasons(req, res, next) {
     }
 }
 
-// TODO: validation on name and dates
+// TODO: validation on name
 async function createLeagueSeason(req, res, next) {
     try {
         let { seasonName, seasonStart, seasonFinish } = req.body
+
         const newSeason = new Season({
             name: seasonName,
             dateStart: seasonStart,
@@ -144,9 +146,7 @@ async function deleteLeagueAdmins(req, res, next) {
 
         const league = await League.findOneAndUpdate(
             { _id: req.league._id },
-            {
-                $pull: { admins: { $in: toDeleteLeagueAdmins } },
-            },
+            { $pull: { admins: { $in: toDeleteLeagueAdmins } } },
             { new: true }
         )
 
