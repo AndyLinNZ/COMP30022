@@ -118,11 +118,7 @@ describe('Unit Testing: addTeam in gradeController', () => {
         req.grade = new Grade(gradeDetails)
 
         const teamDetails = {
-            totalPoints: 0,
-            totalWins: 0,
-            totalLosses: 0,
-            totalDraws: 0,
-            gameResults: [],
+            games: [],
             admin: '611a8a311fb4c81d84a55126',
             _id: '611ba6a199599722e4d01c38',
             name: 'jdubz team',
@@ -178,11 +174,8 @@ describe('Unit Testing: addTeam in gradeController', () => {
         req.grade = new Grade(gradeDetails)
 
         const teamDetails = {
-            totalPoints: 0,
-            totalWins: 0,
-            totalLosses: 0,
-            totalDraws: 0,
-            gameResults: [],
+            games: [],
+            admin: '611a8a311fb4c81d84a55126',
             _id: '611ba6a199599722e4d01c38',
             name: 'jdubz team',
             grades: [],
