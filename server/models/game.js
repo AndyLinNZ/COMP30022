@@ -9,12 +9,6 @@ const gameSchema = new mongoose.Schema({
     dateFinish: {
         type: Date,
         required: true,
-        validate: {
-            validator: function(date) {
-                return this.startdate < date;
-            },
-            message: "dateFinish has to be greater than dateStart"
-        }
     },
     gameResults: {
         type: [
@@ -43,5 +37,12 @@ gameSchema.virtual('status').get(function() {
   if (this.dateFinish > Date.now() && Date.now() > this.dateStart) return 'progress'
   return 'upcoming'
 })
+
+gameSchema.pre('validate', function (next) {
+  if (this.dateStart >= this.dateFinish) {
+    this.invalidate('dateFinish', 'Start date must be less than end date.', this.dateFinish);
+  }
+  next();
+});
 
 module.exports = mongoose.model('Game', gameSchema)
