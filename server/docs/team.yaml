@@ -9,6 +9,27 @@ components:
       example:
         teamName: Joshua SENPAl
 
+    TeamAddPlayers:
+      properties:
+        playerNames:
+          type: array
+      required:
+        - playerNames
+      example:
+        playerNames:
+          - "Joshua SENPAl Player"
+
+    TeamDeletePlayers:
+      properties:
+        playerIds:
+          type: array
+      required:
+        - playerIds
+      example:
+        playerIds:
+          - "66666f666666ff6666f66666"
+
+
 paths:
   /team:
    post:
@@ -33,11 +54,7 @@ paths:
               example:
                 success: true
                 data:
-                  totalPoints: 0
-                  totalWins: 0
-                  totalLosses: 0
-                  totalDraws: 0
-                  gameResults: []
+                  games: []
                   players: []
                   admin: 11111a111111aa1111a11111
                   _id: 55555e555555ee5555e55555
@@ -66,11 +83,7 @@ paths:
               example:
                 success: true
                 data:
-                  totalPoints: 0
-                  totalWins: 0
-                  totalLosses: 0
-                  totalDraws: 0
-                  gameResults: []
+                  games: []
                   players: []
                   admin: 11111a111111aa1111a11111
                   _id: 55555e555555ee5555e55555
@@ -83,3 +96,82 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TeamNotFoundResponse'
+
+  /team/{teamId}/player:
+    post:
+      tags:
+        - 'Team'
+      summary: 'Add a player to a team.'
+      description: 'This can only be done by a logged in user and the team admin.'
+      parameters:
+      - name: 'teamId'
+        in: 'path'
+        description: 'ID of team to add player to.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamAddPlayers'
+      responses:
+        '200':
+          description: 'Successfully created and added players to a team. Returns full list of players in team.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  - "613c2ff0160d49222703633a"
+
+    delete:
+      tags:
+        - 'Team'
+      summary: 'Delete a player from a team.'
+      description: 'This can only be done by a logged in user and the team admin.'
+      parameters:
+      - name: 'teamId'
+        in: 'path'
+        description: 'ID of team to remove player from.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamDeletePlayers'
+      responses:
+        '200':
+          description: 'Successfully delete a player from a team.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  - 66666f666666ff6666f66666
+        '404':
+          description: 'Some of the players in the playerIds array do not exist or team does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorResponse'
+              examples:
+                PlayersNotFound:
+                  value:
+                    success: false
+                    error: 'Some players do not exist'
+                TeamNotFound:
+                  value:
+                    success: false
+                    error: 'Team does not exist'
+                

@@ -120,7 +120,7 @@ paths:
         required: true
         type: 'string'
       security:
-      - BearerAuth: []  
+      - BearerAuth: []
       requestBody:
         required: true
         content:
@@ -165,3 +165,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserNotTeamAdminResponse'
+
+  /grade/{gradeId}/round:
+    post:
+      tags:
+        - 'Grade'
+      summary: 'Create a new round in a grade.'
+      description: 'This can only be done by a logged in user and a league admin.'
+      parameters:
+      - name: 'gradeId'
+        in: 'path'
+        description: 'ID of the grade.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []
+      responses:
+        '201':
+          description: 'Successfully created a new round.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  _id: 613c39999910f3519e888821
+                  grade: 613c32222222222193333331
+                  games: []
+
+        '404':
+          description: 'Grade does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GradeNotFoundResponse'

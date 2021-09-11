@@ -4,7 +4,7 @@ const formatLeagueResp = (leagueDoc) =>
     pick(leagueDoc, ['_id', 'name', 'organisation', 'creator', 'admins', 'seasons'])
 
 const formatTeamResp = (teamDoc) =>
-    pick(teamDoc, ['_id', 'name', 'totalWins', 'totalDraws', 'totalLosses', 'totalPoints', 'grades', 'players', 'gameResults'])
+    pick(teamDoc, ['_id', 'name', 'totalWins', 'totalDraws', 'totalLosses', 'totalPoints', 'grades', 'players', 'games'])
 
 const formatUserResp = (userDoc) => {
     var leagues = userDoc.leagues.map(formatLeagueResp)

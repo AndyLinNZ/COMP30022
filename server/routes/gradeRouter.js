@@ -21,6 +21,12 @@ gradeRouter.post(
     getTeamDocument,
     gradeController.addTeamToGrade
 )
+gradeRouter.post(
+    '/:gradeId/round',
+    ensureAuthenticated,
+    ensureLeagueAdmin,
+    gradeController.createRound
+)
 
 // DELETE
 gradeRouter.delete('/:gradeId', ensureAuthenticated, ensureLeagueAdmin, gradeController.deleteGrade)

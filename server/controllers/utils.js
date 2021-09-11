@@ -1,18 +1,17 @@
 const { ObjectId } = require('mongoose').Types
-const User = require('../models/user')
 
 // returns true if all items in arr are valid object ids
-const allValidIds = (arr) => arr.every(ObjectId.isValid)
+const allValidObjectIds = (arr) => arr.every(ObjectId.isValid)
 
 // returns false if any of the given ids are invalid object ids
-// or if any of them do not correspond to a user in the database
-// returns true otherwise
-async function allValidUserIds(ids) {
-    if(!allValidIds(ids)) return Promise.resolve(false)
-    const users = await User.find({
+// or if any of them do not correspond to a document of docType
+// in the database. returns true otherwise
+const allValidDocumentIds = async (ids, docType) => {
+    if(!allValidObjectIds(ids)) return Promise.resolve(false)
+    const docs = await docType.find({
         _id: { $in: ids.map(ObjectId) }
     })
-    return Promise.resolve(users.length === ids.length)
+    return Promise.resolve(docs.length === ids.length)
 }
 
 // creates a new object containing the key:values specified
@@ -26,6 +25,6 @@ const pick = (obj, keys) => {
 }
 
 module.exports = {
-    allValidUserIds,
-    pick
+    allValidDocumentIds,
+    pick,
 }

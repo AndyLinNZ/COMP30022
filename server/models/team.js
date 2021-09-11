@@ -28,27 +28,11 @@ const teamSchema = new mongoose.Schema({
         ],
         default: [],
     },
-    totalPoints: {
-        type: Number,
-        default: 0,
-    },
-    totalWins: {
-        type: Number,
-        default: 0,
-    },
-    totalLosses: {
-        type: Number,
-        default: 0,
-    },
-    totalDraws: {
-        type: Number,
-        default: 0,
-    },
-    gameResults: {
+    games: {
         type: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'GameResult',
+                ref: 'Game',
             },
         ],
         default: [],
