@@ -28,12 +28,6 @@ gradeRouter.post(
     ensureLeagueAdmin,
     gradeController.createRound
 )
-gradeRouter.post(
-    '/:gradeId/game',
-    ensureAuthenticated,
-    ensureLeagueAdmin,
-    gradeController.createGradeGame
-)
 
 // PATCH
 gradeRouter.patch(

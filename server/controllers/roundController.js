@@ -45,13 +45,20 @@ async function createRoundGame(req, res, next) {
         await Team.findOneAndUpdate(
             { _id: team1_id},
             { $addToSet: { games: game } },
-            { new: true } 
+            { new: true },
         )
 
         await Team.findOneAndUpdate(
             { _id: team2_id},
             { $addToSet: { games: game } },
-            { new: true } 
+            { new: true },
+        )
+
+        // add the game to the round
+        await Round.findOneAndUpdate(
+            { _id: req.round._id},
+            { $addToSet: { games: game } },
+            { new: true },
         )
 
         return res.status(201).json({
