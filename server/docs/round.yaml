@@ -47,6 +47,22 @@ components:
         team1_id: '55555e555555ee5555e55555'
         team2_id: '66666e555555ee5555e44444'
 
+    GameUpdate:
+      properties:
+        team1:
+          type: object
+        team2:
+          type: object
+      example:
+        team1:
+          613c5cbea0a3d4e46b70d821:
+            points: 69
+            assists: 3
+        team2:
+          613c5ccea0a3d4e46b70d826:
+            points: 44
+            assists: 0
+
 
 paths:
   /round/{roundId}:
@@ -132,3 +148,80 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TeamNotFoundResponse'
+
+
+  /round/{roundId}/game/{gameId}:
+    patch:
+      tags:
+        - 'Round'
+      summary: 'Update a game within a round.'
+      description: 'This can only be done by a logged in user and a league admin.'
+      parameters:
+      - name: 'roundId'
+        in: 'path'
+        description: 'ID of the round.'
+        required: true
+        type: 'string'
+      - name: 'gameId'
+        in: 'path'
+        description: 'ID of the game.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameUpdate'
+      responses:
+        '200':
+          description: 'Successfully updated game.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  team: 6138a1a7be9bc3b701dec78c
+                  _id: 613c614411b24a676c401429
+                  dateFinish: '2021-08-12T11:00:00.000Z'
+                  dateStart: '2021-08-12T10:00:00.000Z'
+                  location:
+                    coordinates:
+                      - 123.456
+                      - 88.666
+                    type: Point
+                  locationName: Joshua SENPAl Stadium
+                  team1:
+                    team: 6138a1f8be9bc3b701dec7a1
+                    playersStats:
+                      - _id: 613c61a5c9138b8534eacf9f
+                        playerId: 613c5cbea0a3d4e46b70d821
+                        points: 69
+                        assists: 3
+                      - _id: 613c61a5c9138b8534eacfa3
+                        playerId: 613c5ccea0a3d4e46b70d826
+                        points: 44
+                        assists: 0
+        '404':
+          description: 'Team does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorResponse'
+              examples:
+                roundNotFound:
+                  value:
+                    success: false
+                    error: 'Round does not exist'
+                gameNotFound:
+                  value:
+                    success: false
+                    error: 'Game does not exist'
+                playerNotFound:
+                  value:
+                    success: false
+                    error: 'Player does not exist'

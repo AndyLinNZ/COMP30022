@@ -76,17 +76,15 @@ async function updateRoundGame(req, res, next) {
     try {
         let { team1, team2 } = req.body
 
-        const team1_all_playerStats = await createPlayerStats(team1, next)
-        const team2_all_playerStats = await createPlayerStats(team2, next)
-
-        const game = req.game
-        game.team1.playersStats.push(...team1_all_playerStats)
-        game.team2.playersStats.push(...team2_all_playerStats)
-        await game.save()
+        await req.game.execPopulate('team1.playersStats')
+        await req.game.execPopulate('team2.playersStats')
+        await updatePlayersStats(req.game.team1.playersStats,team1, next)
+        await updatePlayersStats(req.game.team2.playersStats, team2, next)
+        await req.game.save()
 
         return res.status(200).json({
             success: true,
-            data: game
+            data: req.game,
         })
 
     } catch (err) {
@@ -95,16 +93,24 @@ async function updateRoundGame(req, res, next) {
     }
 }
 
-async function createPlayerStats(team, next) {
+async function updatePlayersStats(oldPlayersStats, team, next) {
     var allPlayerStats = await Promise.all(Object.keys(team).map(async player_id => {
         const player = ObjectId.isValid(player_id) ? await Player.findById(player_id) : null
         if (!player) return next({ status: 404, message: 'Player does not exist' })
 
+        // check if player stats already exists
+        var existingPS = oldPlayersStats.find(v1 => v1.playerId == player_id)
+        if(existingPS) {
+            Object.assign(existingPS, team[player_id])
+            return existingPS.save()
+        }
+
+        // otherwise, create new playerStats document and add it
         let playerStats = team[player_id]
         Object.assign(playerStats, { "playerId": player_id })
         const playerStat = new PlayerStat(playerStats)
         await playerStat.save()
-        return playerStat
+        oldPlayersStats.push(playerStat)
     }))
     return allPlayerStats
 }

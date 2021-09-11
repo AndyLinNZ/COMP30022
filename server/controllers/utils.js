@@ -26,5 +26,5 @@ const pick = (obj, keys) => {
 
 module.exports = {
     allValidDocumentIds,
-    pick
+    pick,
 }

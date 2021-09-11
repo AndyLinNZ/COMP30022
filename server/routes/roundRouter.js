@@ -20,4 +20,13 @@ roundRouter.post(
     roundController.createRoundGame
 )
 
+// PATCH
+roundRouter.patch(
+    '/:roundId/game/:gameId',
+    ensureAuthenticated,
+    ensureLeagueAdmin,
+    getGameDocument,
+    roundController.updateRoundGame
+)
+
 module.exports = roundRouter
