@@ -43,20 +43,20 @@ async function createRoundGame(req, res, next) {
 
         // adding game to team's details
         await Team.findOneAndUpdate(
-            { _id: team1_id},
+            { _id: team1_id },
             { $addToSet: { games: game } },
             { new: true },
         )
 
         await Team.findOneAndUpdate(
-            { _id: team2_id},
+            { _id: team2_id },
             { $addToSet: { games: game } },
             { new: true },
         )
 
         // add the game to the round
         await Round.findOneAndUpdate(
-            { _id: req.round._id},
+            { _id: req.round._id },
             { $addToSet: { games: game } },
             { new: true },
         )
@@ -78,7 +78,7 @@ async function updateRoundGame(req, res, next) {
 
         await req.game.execPopulate('team1.playersStats')
         await req.game.execPopulate('team2.playersStats')
-        await updatePlayersStats(req.game.team1.playersStats,team1, next)
+        await updatePlayersStats(req.game.team1.playersStats, team1, next)
         await updatePlayersStats(req.game.team2.playersStats, team2, next)
         await req.game.save()
 

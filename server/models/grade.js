@@ -37,4 +37,5 @@ const gradeSchema = new mongoose.Schema({
     }]
 })
 
+gradeSchema.index({ season: 1, name: 1 }, { unique: true })
 module.exports = mongoose.model('Grade', gradeSchema)

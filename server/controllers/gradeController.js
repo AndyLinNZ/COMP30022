@@ -1,8 +1,3 @@
-const { ObjectId } = require('mongoose').Types
-const Team = require('../models/team')
-const Game = require('../models/game')
-const Player = require('../models/player')
-const PlayerStat = require('../models/playerStat')
 const Round = require('../models/round')
 const Grade = require('../models/grade')
 
@@ -73,7 +68,7 @@ async function createRound(req, res, next) {
         req.grade.fixture.push(round._id)
         await req.grade.save()
 
-        return res.status(200).json({
+        return res.status(201).json({
             success: true,
             data: round,
         })

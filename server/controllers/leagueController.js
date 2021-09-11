@@ -1,6 +1,7 @@
 const League = require('../models/league')
 const Season = require('../models/season')
 const User = require('../models/user')
+const { formatOrderByStatus } = require('./responseFormatters')
 const { allValidDocumentIds } = require('./utils')
 
 async function createLeague(req, res, next) {
@@ -61,7 +62,7 @@ async function getAllLeagueSeasons(req, res, next) {
 
         return res.status(200).json({
             success: true,
-            data: league.seasons,
+            data: league.seasons.sort(formatOrderByStatus()),
         })
     } catch (err) {
         console.log(err)
@@ -69,7 +70,6 @@ async function getAllLeagueSeasons(req, res, next) {
     }
 }
 
-// TODO: validation on name
 async function createLeagueSeason(req, res, next) {
     try {
         let { seasonName, seasonStart, seasonFinish } = req.body
