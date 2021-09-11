@@ -50,7 +50,7 @@ beforeAll(async () => {
 })
 
 describe('Integration Testing: finding seasons', () => {
-    test('Shoudl be able to find an existent season', async () => {
+    test('Should be able to find an existent season', async () => {
         const res = await request.get(`/api/season/${env.season0_id}`)
 
         expect(res.statusCode).toBe(200)

@@ -6,8 +6,9 @@ const gameSchema = new mongoose.Schema({
         default: Date.now,
         required: true,
     },
-    dateFinished: {
+    dateFinish: {
         type: Date,
+        required: true
     },
     gameResults: {
         type: [
@@ -28,13 +29,13 @@ const gameSchema = new mongoose.Schema({
             type: [Number],
             index: '2dsphere',
         },
-    },
-    status: {
-        type: String,
-        enum: ['upcoming', 'progress', 'completed'],
-        default: 'upcoming',
-        required: true,
-    },
+    }
+})
+
+gameSchema.virtual('status').get(function() {
+  if (this.dateFinish <= Date.now()) return 'completed'
+  if (this.dateFinish > Date.now() > this.dateStart) return 'progress'
+  return 'upcoming'
 })
 
 module.exports = mongoose.model('Game', gameSchema)

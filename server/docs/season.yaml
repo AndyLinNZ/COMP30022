@@ -62,7 +62,7 @@ paths:
               example:
                 success: true
                 data:
-                  status: upcoming
+                  status: completed
                   grades: []
                   _id: 33333c333333cc3333c33333
                   name: Summer 2020/2021
@@ -104,7 +104,7 @@ paths:
               example:
                 success: true
                 data:
-                  status: upcoming
+                  status: completed
                   grades: []
                   _id: 33333c333333cc3333c33333
                   name: Summer 2020/2021
@@ -186,7 +186,7 @@ paths:
                   _id: 44444d444444dd4444d44444
                   name: Joshua Dubar Grade
                   season:
-                    status: upcoming
+                    status: completed
                     grades:
                       - 44444d444444dd4444d44444
                     _id: 33333c333333cc3333c33333

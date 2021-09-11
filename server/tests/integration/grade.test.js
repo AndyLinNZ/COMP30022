@@ -66,6 +66,7 @@ beforeAll(async () => {
     // add a test grade object to database but with no teams
     const secondGrade = new Grade({
         ...testGrade,
+        name: 'Joshua Dubar Grade 2',
         teams: [],
         season: season._id
     })
@@ -74,6 +75,7 @@ beforeAll(async () => {
     // add a test grade object to database to be deleted
     const thirdGrade = new Grade({
         ...testGrade,
+        name: 'Joshua Dubar Grade 3',
         teams: [],
         season: season._id
     })
@@ -101,6 +103,7 @@ beforeAll(async () => {
     // add a test team object to database but isn't in a grade
     const secondTeam = new Team({
         ...testTeam,
+        name: 'Josh Dubar Team 2',
         admin: env.auth_tokens[0][0],
         grades: [],
         players: []

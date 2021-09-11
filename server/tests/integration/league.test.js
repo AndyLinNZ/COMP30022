@@ -109,7 +109,7 @@ describe('Integration Testing: creating seasons', () => {
 
         expect(res.statusCode).toBe(201)
         expect(res.body.success).toBe(true)
-        expect(res.body.data.status).toBe('upcoming')
+        expect(res.body.data.status).toBe('completed')
         expect(res.body.data.grades).toStrictEqual([])
         expect(res.body.data.name).toBe('test season name')
         expect(res.body.data.dateStart).toBe('2021-08-12T12:23:34.944Z')
@@ -124,7 +124,7 @@ describe('Integration Testing: finding seasons for a league', () => {
         expect(res.statusCode).toBe(200)
         expect(res.body.success).toBe(true)
         expect(res.body.data.length).toBe(1)
-        expect(res.body.data[0].status).toBe('upcoming')
+        expect(res.body.data[0].status).toBe('completed')
         expect(res.body.data[0].grades).toStrictEqual([])
         expect(res.body.data[0].name).toBe('test season name')
         expect(res.body.data[0].dateStart).toBe('2021-08-12T12:23:34.944Z')

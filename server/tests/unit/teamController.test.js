@@ -32,8 +32,7 @@ describe('Unit Testing: createTeam in teamController', () => {
             admin: '611a8a311fb4c81d84a55126',
             grades: [],
             players: [],
-            __v: 0,
-            status: 'upcoming',
+            __v: 0
         })
 
         User.prototype.save = jest.fn().mockImplementationOnce()

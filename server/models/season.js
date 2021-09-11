@@ -15,12 +15,6 @@ const seasonSchema = new mongoose.Schema({
         default: Date.now,
         required: true,
     },
-    status: {
-        type: String,
-        enum: ['upcoming', 'progress', 'completed'],
-        default: 'upcoming',
-        required: true,
-    },
     league: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'League',
@@ -37,4 +31,11 @@ const seasonSchema = new mongoose.Schema({
     },
 })
 
+seasonSchema.virtual('status').get(function() {
+  if (this.dateFinish <= Date.now()) return 'completed'
+  if (this.dateFinish > Date.now() > this.dateStart) return 'progress'
+  return 'upcoming'
+})
+
+seasonSchema.index({ league: 1, name: 1 }, { unique: true })
 module.exports = mongoose.model('Season', seasonSchema)

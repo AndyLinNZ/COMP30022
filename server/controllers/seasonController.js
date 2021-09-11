@@ -60,7 +60,6 @@ async function updateSeason(req, res, next) {
         if (seasonName) updateQuery.name = seasonName
         if (seasonStart) updateQuery.dateStart = seasonStart
         if (seasonFinish) updateQuery.dateFinish = seasonFinish
-        if (seasonStatus) updateQuery.status = seasonStatus
 
         const season = await Season.findOneAndUpdate(
             { _id: req.season._id },

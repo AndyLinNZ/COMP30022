@@ -55,4 +55,5 @@ const teamSchema = new mongoose.Schema({
     },
 })
 
+teamSchema.index({ admin: 1, name: 1 }, { unique: true })
 module.exports = mongoose.model('Team', teamSchema)

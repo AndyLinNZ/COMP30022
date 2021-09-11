@@ -9,9 +9,10 @@ function connectDB(DB_URI, dbName) {
                 useUnifiedTopology: true,
                 useCreateIndex: true,
                 useFindAndModify: false,
-                dbName,
+                dbName
             })
             .then(() => {
+                mongoose.set('toJSON', { virtuals: true })
                 console.log('Connected to DB!')
                 return res()
             })
