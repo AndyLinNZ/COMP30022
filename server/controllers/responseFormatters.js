@@ -32,7 +32,6 @@ const formatOrderByStatus = () => {
     }
 }
 
-
 module.exports = {
     formatLeagueResp,
     formatTeamResp,
