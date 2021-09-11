@@ -23,6 +23,12 @@ gradeRouter.post(
     gradeController.addTeamToGrade
 )
 gradeRouter.post(
+    '/:gradeId/round',
+    ensureAuthenticated,
+    ensureLeagueAdmin,
+    gradeController.createRound
+)
+gradeRouter.post(
     '/:gradeId/game',
     ensureAuthenticated,
     ensureLeagueAdmin,

@@ -179,6 +179,40 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserNotTeamAdminResponse'
 
+  /grade/{gradeId}/round:
+    post:
+      tags:
+        - 'Grade'
+      summary: 'Create a new round in a grade.'
+      description: 'This can only be done by a logged in user and a league admin.'
+      parameters:
+      - name: 'gradeId'
+        in: 'path'
+        description: 'ID of the grade.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []
+      responses:
+        '201':
+          description: 'Successfully created a new round.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  _id: 613c39999910f3519e888821
+                  games: []
+
+        '404':
+          description: 'Grade does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GradeNotFoundResponse'
+
   /grade/{gradeId}/game:
     post:
       tags:
@@ -192,7 +226,7 @@ paths:
         required: true
         type: 'string'
       security:
-      - BearerAuth: []  
+      - BearerAuth: []
       requestBody:
         required: true
         content:
@@ -201,7 +235,7 @@ paths:
               $ref: '#/components/schemas/GameAddition'
       responses:
         '201':
-          description: 'Successfully created a league.'
+          description: 'Successfully created a game.'
           content:
             application/json:
               schema:
@@ -231,3 +265,54 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TeamNotFoundResponse'
+
+  /grade/{gradeId}/game/{gameId}:
+    patch:
+      tags:
+        - 'Grade'
+      summary: 'Update a game within a grade.'
+      description: 'This can only be done by a logged in user and a league admin.'
+      parameters:
+      - name: 'gradeId'
+        in: 'path'
+        description: 'ID of the grade.'
+        required: true
+        type: 'string'
+      - name: 'gameId'
+        in: 'path'
+        description: 'ID of the game.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameUpdate'
+      responses:
+        '200':
+          description: 'Successfully updated game.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data: asdf
+        '404':
+          description: 'Team does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorResponse'
+              examples:
+                gradeNotFound:
+                  value:
+                    success: false
+                    error: 'Grade does not exist'
+                gameNotFound:
+                  value:
+                    success: false
+                    error: 'Game does not exist'

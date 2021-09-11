@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 
 const roundSchema = new mongoose.Schema({
-    round: {
-        type: Number,
-    },
+    // round: {
+    //     type: Number,
+    // },
     date: {
         type: Date,
     },

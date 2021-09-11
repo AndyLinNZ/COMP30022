@@ -3,6 +3,7 @@ const Team = require('../models/team')
 const Game = require('../models/game')
 const Player = require('../models/player')
 const PlayerStat = require('../models/playerStat')
+const Round = require('../models/round')
 
 async function getGrade(req, res, next) {
     try {
@@ -48,6 +49,23 @@ async function addTeamToGrade(req, res, next) {
             data: grade,
         })
     } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
+async function createRound(req, res, next) {
+    try {
+        const newRound = new Round()
+        const round = await newRound.save()
+        req.grade.fixture.push(round._id)
+        await req.grade.save()
+
+        return res.status(200).json({
+            success: true,
+            data: round,
+        })
+    } catch(err) {
         console.log(err)
         return next(err)
     }
@@ -142,6 +160,7 @@ module.exports = {
     getGrade,
     getAllGradeTeams,
     addTeamToGrade,
+    createRound,
     createGradeGame,
-    updateGame
+    updateGame,
 }
