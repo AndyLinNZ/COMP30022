@@ -9,6 +9,27 @@ components:
       example:
         teamName: Joshua SENPAl
 
+    TeamAddPlayers:
+      properties:
+        playerNames:
+          type: array
+      required:
+        - playerNames
+      example:
+        playerNames:
+          - "Joshua SENPAl Player"
+
+    TeamDeletePlayers:
+      properties:
+        playerIds:
+          type: array
+      required:
+        - playerIds
+      example:
+        playerIds:
+          - "66666f666666ff6666f66666"
+
+
 paths:
   /team:
    post:
@@ -93,14 +114,20 @@ paths:
       parameters:
       - name: 'teamId'
         in: 'path'
-        description: 'ID of team to return.'
+        description: 'ID of team to add player to.'
         required: true
         type: 'string'
       security:
       - BearerAuth: []  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamAddPlayers'
       responses:
         '200':
-          description: 'Successfully added a player to a team.'
+          description: 'Successfully created and added players to a team. Returns full list of players in team.'
           content:
             application/json:
               schema:
@@ -108,24 +135,8 @@ paths:
               example:
                 success: true
                 data:
-                  - 66666f666666ff6666f66666
-        '404':
-          description: 'Some of the players in the playerIds array do not exist or team does not exist.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericErrorResponse'
-              examples:
-                PlayersNotFound:
-                  value:
-                    success: false
-                    error: 'Some players do not exist'
-                TeamNotFound:
-                  value:
-                    success: false
-                    error: 'Team does not exist'
+                  - "613c2ff0160d49222703633a"
 
-  /team/{teamId}/player:
     delete:
       tags:
         - 'Team'
@@ -134,11 +145,17 @@ paths:
       parameters:
       - name: 'teamId'
         in: 'path'
-        description: 'ID of team to return.'
+        description: 'ID of team to remove player from.'
         required: true
         type: 'string'
       security:
       - BearerAuth: []  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamDeletePlayers'
       responses:
         '200':
           description: 'Successfully delete a player from a team.'
