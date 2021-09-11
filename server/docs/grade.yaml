@@ -204,6 +204,7 @@ paths:
                 success: true
                 data:
                   _id: 613c39999910f3519e888821
+                  grade: 613c32222222222193333331
                   games: []
 
         '404':

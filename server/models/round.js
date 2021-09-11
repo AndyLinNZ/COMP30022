@@ -7,6 +7,11 @@ const roundSchema = new mongoose.Schema({
     date: {
         type: Date,
     },
+    grade: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Grade',
+        required: true,
+    },
     games: {
         type: [
             {

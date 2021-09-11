@@ -56,7 +56,7 @@ async function addTeamToGrade(req, res, next) {
 
 async function createRound(req, res, next) {
     try {
-        const newRound = new Round()
+        const newRound = new Round({ grade: req.grade._id })
         const round = await newRound.save()
         req.grade.fixture.push(round._id)
         await req.grade.save()
