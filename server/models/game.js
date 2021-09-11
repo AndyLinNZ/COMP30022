@@ -8,7 +8,13 @@ const gameSchema = new mongoose.Schema({
     },
     dateFinish: {
         type: Date,
-        required: true
+        required: true,
+        validate: {
+            validator: function(date) {
+                return this.startdate < date;
+            },
+            message: "dateFinish has to be greater than dateStart"
+        }
     },
     gameResults: {
         type: [

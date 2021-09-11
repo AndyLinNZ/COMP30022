@@ -12,8 +12,13 @@ const seasonSchema = new mongoose.Schema({
     },
     dateFinish: {
         type: Date,
-        default: Date.now,
         required: true,
+        validate: {
+            validator: function(date) {
+                return this.startdate < date;
+            },
+            message: "dateFinish has to be greater than dateStart"
+        }
     },
     league: {
         type: mongoose.Schema.Types.ObjectId,
