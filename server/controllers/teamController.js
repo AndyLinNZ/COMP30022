@@ -1,7 +1,6 @@
 const Team = require('../models/team')
 const Player = require('../models/player')
 const player = require('../models/player')
-const GameResult = require('../models/gameResult')
 const { allValidDocumentIds } = require('./utils')
 
 async function createTeam(req, res, next) {

@@ -54,11 +54,7 @@ paths:
               example:
                 success: true
                 data:
-                  totalPoints: 0
-                  totalWins: 0
-                  totalLosses: 0
-                  totalDraws: 0
-                  gameResults: []
+                  games: []
                   players: []
                   admin: 11111a111111aa1111a11111
                   _id: 55555e555555ee5555e55555
@@ -87,11 +83,7 @@ paths:
               example:
                 success: true
                 data:
-                  totalPoints: 0
-                  totalWins: 0
-                  totalLosses: 0
-                  totalDraws: 0
-                  gameResults: []
+                  games: []
                   players: []
                   admin: 11111a111111aa1111a11111
                   _id: 55555e555555ee5555e55555
