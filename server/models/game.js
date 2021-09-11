@@ -59,7 +59,7 @@ gameSchema.virtual('status').get(function() {
   return 'upcoming'
 })
 
-gameSchema.pre('validate', function (next) {
+gameSchema.pre('validate', function(next) {
   if (this.dateStart >= this.dateFinish) {
     this.invalidate('dateFinish', 'Start date must be less than end date.', this.dateFinish);
   }

@@ -27,10 +27,7 @@ const formatOrderByStatus = () => {
         if (first < second) result = -1
         else if (first > second) result = 1
         // Compare by dates instead
-        else { 
-            result = a.dateStart < b.dateStart ? 1 : -1
-            console.log(`Comparing ${a.dateStart} and ${b.dateStart}: ${result}`)
-        }
+        else result = a.dateStart < b.dateStart ? 1 : -1
         return result
     }
 }
