@@ -1,7 +1,7 @@
 const League = require('../models/league')
 const Season = require('../models/season')
 const User = require('../models/user')
-const { allValidUserIds } = require('./utils')
+const { allValidDocumentIds } = require('./utils')
 
 async function createLeague(req, res, next) {
     try {
@@ -98,7 +98,7 @@ async function createLeagueSeason(req, res, next) {
 
 async function createLeagueAdmins(req, res, next) {
     try {
-        if (!await allValidUserIds(req.body.adminIds)) {
+        if (!await allValidDocumentIds(req.body.adminIds, User)) {
             return next({ status: 404, message: 'Some users do not exist' })
         }
 
@@ -130,7 +130,7 @@ async function createLeagueAdmins(req, res, next) {
 
 async function deleteLeagueAdmins(req, res, next) {
     try {
-        if (!await allValidUserIds(req.body.adminIds)) {
+        if (!await allValidDocumentIds(req.body.adminIds, User)) {
             return next({ status: 404, message: 'Some users do not exist' })
         }
 
