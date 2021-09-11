@@ -134,7 +134,6 @@ describe('Unit Testing: addTeam in gradeController', () => {
 
         const seasonDetails = {
             _id: '60741060d14008bd0efff9d5',
-            status: 'upcoming',
             grades: ['612788ed698aac7c50c3d3b6'],
             name: 'Summer 2020/2021',
             league: '611a8a661fb4c81d84a5512c',
@@ -147,6 +146,7 @@ describe('Unit Testing: addTeam in gradeController', () => {
         // We expect execPopulate to populate the teams array with the full document
         const populatedObj = {
             ...seasonDetails,
+            status: 'completed',
             grades: [gradeDetails],
         }
 
@@ -193,7 +193,6 @@ describe('Unit Testing: addTeam in gradeController', () => {
 
         const seasonDetails = {
             _id: '60741060d14008bd0efff9d5',
-            status: 'upcoming',
             grades: ['612788ed698aac7c50c3d3b6'],
             name: 'Summer 2020/2021',
             league: '611a8a661fb4c81d84a5512c',
@@ -207,6 +206,7 @@ describe('Unit Testing: addTeam in gradeController', () => {
 
         const populatedObj = {
             ...seasonDetails,
+            status: 'completed',
             grades: [gradeDetails],
         }
 

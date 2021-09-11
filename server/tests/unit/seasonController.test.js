@@ -15,7 +15,6 @@ describe('Unit Testing: getAllSeasonGrades in seasonController', () => {
 
         const seasonDetails = {
             _id: '60741060d14008bd0efff9d5',
-            status: 'upcoming',
             grades: ['611ba1c73dc3af241c95e7e2'],
             name: 'Summer 2020/2021',
             league: '611a8a661fb4c81d84a5512c',
@@ -40,6 +39,7 @@ describe('Unit Testing: getAllSeasonGrades in seasonController', () => {
         // We expect execPopulate to populate the grades array with the full document
         const populatedObj = {
             ...seasonDetails,
+            status: 'completed',
             grades: expectedGrades,
         }
 
@@ -66,9 +66,9 @@ describe('Unit Testing: getAllSeasonGrades in seasonController', () => {
         const req = mockRequest()
         const res = mockResponse()
         const next = mockNext()
+
         const seasonDetails = {
             _id: '60741060d14008bd0efff9d5',
-            status: 'upcoming',
             grades: [],
             name: 'Summer 2020/2021',
             league: '611a8a661fb4c81d84a5512c',
@@ -107,7 +107,6 @@ describe('Unit Testing: createGrade in seasonController', () => {
 
         req.season = new Season({
             _id: '60741060d14008bd0efff9d5',
-            status: 'upcoming',
             grades: [],
             name: 'Summer 2020/2021',
             league: '611a8a661fb4c81d84a5512c',
@@ -152,15 +151,13 @@ describe('Unit Testing: createGrade in seasonController', () => {
 })
 
 describe('Unit Testing: updateSeason in seasonController', () => {
-    test('Updating a season with valid seasonName, seasonStart, seasonFinish and seasonStatus \
-         should update the season', async () => {
+    test('Updating a season with valid seasonName, seasonStart, seasonFinish should update the season', async () => {
         const req = mockRequest()
         const res = mockResponse()
         const next = mockNext()
 
         const seasonDetails = {
             _id: '60741060d14008bd0efff9d5',
-            status: 'upcoming',
             grades: [],
             name: 'Summer 2020/2021',
             league: '611a8a661fb4c81d84a5512c',
@@ -172,9 +169,8 @@ describe('Unit Testing: updateSeason in seasonController', () => {
 
         req.body = {
             seasonName: 'Summer 2020/2021 Part 2',
-            seasonStart: '2021-09-12T12:23:34.944Z',
-            seasonFinish: '2021-09-14T12:23:34.944Z',
-            seasonStatus: 'completed'
+            seasonStart: '2021-08-13T12:23:34.944Z',
+            seasonFinish: '2021-08-16T12:23:34.944Z',
         }
 
         const expectedSeason = new Season({
@@ -182,7 +178,7 @@ describe('Unit Testing: updateSeason in seasonController', () => {
             name: req.body.seasonName, 
             dateStart: new Date(req.body.seasonStart), 
             dateFinish: new Date(req.body.seasonFinish), 
-            status: req.body.seasonStatus 
+            status: 'completed'
         })
 
         Season.findOneAndUpdate = jest.fn().mockResolvedValue(expectedSeason)
@@ -204,14 +200,14 @@ describe('Unit Testing: updateSeason in seasonController', () => {
         expect(res.json).toHaveBeenCalledWith(actualRes.json)
     })
 
-    test('Updating a season with valid seasonName and seasonStatus but not dates should update the season dynamically', async () => {
+    test('Updating a season with valid seasonName and seasonStart but not seasonFinish should \
+        update the season dynamically', async () => {
         const req = mockRequest()
         const res = mockResponse()
         const next = mockNext()
 
         const seasonDetails = {
             _id: '60741060d14008bd0efff9d5',
-            status: 'upcoming',
             grades: [],
             name: 'Summer 2020/2021',
             league: '611a8a661fb4c81d84a5512c',
@@ -223,13 +219,13 @@ describe('Unit Testing: updateSeason in seasonController', () => {
 
         req.body = {
             seasonName: 'Summer 2020/2021 Part 2',
-            seasonStatus: 'completed'
+            seasonStart: '2021-08-13T12:23:34.944Z'
         }
 
         const expectedSeason = new Season({
             ...seasonDetails, 
             name: req.body.seasonName, 
-            status: req.body.seasonStatus 
+            dateStart: new Date(req.body.seasonStart)
         })
 
         Season.findOneAndUpdate = jest.fn().mockResolvedValue(expectedSeason)

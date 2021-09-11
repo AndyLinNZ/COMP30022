@@ -55,7 +55,7 @@ describe('Integration Testing: finding seasons', () => {
 
         expect(res.statusCode).toBe(200)
         expect(res.body.success).toBe(true)
-        expect(res.body.data.status).toBe('upcoming')
+        expect(res.body.data.status).toBe('completed')
         expect(res.body.data.grades).toStrictEqual([])
         expect(res.body.data.name).toBe(testSeason.name)
         expect(res.body.data.dateStart).toBe(testSeason.seasonStart)

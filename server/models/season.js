@@ -33,7 +33,7 @@ const seasonSchema = new mongoose.Schema({
 
 seasonSchema.virtual('status').get(function() {
   if (this.dateFinish <= Date.now()) return 'completed'
-  if (this.dateFinish > Date.now() > this.dateStart) return 'progress'
+  if (this.dateFinish > Date.now() && Date.now() > this.dateStart) return 'progress'
   return 'upcoming'
 })
 

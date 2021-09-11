@@ -54,7 +54,7 @@ async function getAllSeasonGrades(req, res, next) {
 
 async function updateSeason(req, res, next) {
     try {
-        let { seasonName, seasonStart, seasonFinish, seasonStatus } = req.body
+        let { seasonName, seasonStart, seasonFinish } = req.body
 		
         const updateQuery = {}
         if (seasonName) updateQuery.name = seasonName
