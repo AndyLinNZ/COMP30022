@@ -14,9 +14,6 @@ setupTestEnv('dribblrDB-grade-test', env, setupOptions)
 const testTeam = {
     name: 'jdubz'
 }
-const testPlayer = {
-    name: 'joshua dubar is a player'
-}
 beforeAll(async () => {
     // add new test league object to database
     const newTeam = new Team({
@@ -27,11 +24,7 @@ beforeAll(async () => {
     })
     const team = await newTeam.save()
 
-    const newPlayer = new Player(testPlayer)
-    const player = await newPlayer.save()
-
     env.team0_id = team._id.toString()
-    env.player0_id = player._id.toString()
 })
 
 describe('Integration Testing: creating teams', () => {
@@ -85,7 +78,7 @@ describe('Integration Testing: adding players to a team', () => {
         const res = await request.post(`/api/team/${env.team0_id}/player`)
             .set('Authorization', `Bearer ${env.auth_tokens[1][1]}`)
             .send({
-                playerIds: [env.player0_id]
+                playerNames: ['nooo']
             })
 
         expect(res.statusCode).toBe(403)
@@ -98,7 +91,7 @@ describe('Integration Testing: adding players to a team', () => {
         const res = await request.post(`/api/team/1337/player`)
             .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
             .send({
-                playerIds: [env.player0_id]
+                playerNames: ['joshua']
             })
             
         expect(res.statusCode).toBe(404)
@@ -107,28 +100,18 @@ describe('Integration Testing: adding players to a team', () => {
         
     })
 
-    test('Adding nonexistent players into team should return an error', async () => {
-        const res = await request.post(`/api/team/${env.team0_id}/player`)
-            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
-            .send({
-                playerIds: ['1337']
-            })
-
-        expect(res.statusCode).toBe(404)
-        expect(res.body.success).toBe(false)
-        expect(res.body.error).toBe('Some players do not exist')
-    })
-
     test('Team admin should be able to add a player to a team', async () => {
         const res = await request.post(`/api/team/${env.team0_id}/player`)
             .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
             .send({
-                playerIds: [env.player0_id]
+                playerNames: ['joshua']
             })
 
         expect(res.statusCode).toBe(200)
         expect(res.body.success).toBe(true)
-        expect(res.body.data).toStrictEqual([env.player0_id])
+        expect(res.body.data.length).toBe(1)
+
+        env.player0_id = res.body.data[0]
     })
 })
 
