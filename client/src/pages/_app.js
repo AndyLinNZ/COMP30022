@@ -3,6 +3,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { QueryClientProvider, QueryClient } from 'react-query'
 import { theme } from 'theme'
 import ProtectedRoute from 'components/ProtectedRoute'
+import '../../styles/globals.css'
 
 const queryClient = new QueryClient()
 

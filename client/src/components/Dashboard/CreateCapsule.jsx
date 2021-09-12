@@ -2,9 +2,8 @@ import { AddIcon } from '@chakra-ui/icons'
 import { Flex, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { appPaths } from 'utils/constants'
 
-const AddLeagueCapsule = () => {
+const CreateCapsule = ({ heading }) => {
     const router = useRouter()
     return (
         <Flex
@@ -19,7 +18,7 @@ const AddLeagueCapsule = () => {
                 boxShadow: '0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);',
             }}
             bg="greyBg"
-            onClick={() => router.push(appPaths.DASHBOARD_CREATE_LEAGUE_PATH)}
+            onClick={() => router.push(window.location.pathname + '/create')}
         >
             <Flex
                 pos="absolute"
@@ -37,10 +36,10 @@ const AddLeagueCapsule = () => {
             </Flex>
 
             <Text pos="absolute" top="50%" left="5rem" transform="translateY(-50%)" color="white">
-                CREATE A NEW LEAGUE
+                {heading}
             </Text>
         </Flex>
     )
 }
 
-export default AddLeagueCapsule
+export default CreateCapsule
