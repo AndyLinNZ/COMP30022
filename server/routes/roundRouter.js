@@ -11,6 +11,7 @@ const roundRouter = express.Router()
 
 // GET
 roundRouter.get('/:roundId', getLeagueGradeSeason, roundController.getRound)
+roundRouter.get('/:roundId/game/:gameId', getLeagueGradeSeason, getGameDocument, roundController.getRoundGame)
 
 // POST
 roundRouter.post(
