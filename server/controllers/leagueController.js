@@ -1,11 +1,13 @@
 const League = require('../models/league')
 const Season = require('../models/season')
 const User = require('../models/user')
-const { allValidUserIds } = require('./utils')
+const { formatOrderByStatus } = require('./responseFormatters')
+const { allValidDocumentIds } = require('./utils')
 
 async function createLeague(req, res, next) {
     try {
         let { leagueName, organisationName } = req.body
+
         const newLeague = new League({
             name: leagueName,
             organisation: organisationName,
@@ -60,7 +62,7 @@ async function getAllLeagueSeasons(req, res, next) {
 
         return res.status(200).json({
             success: true,
-            data: league.seasons,
+            data: league.seasons.sort(formatOrderByStatus()),
         })
     } catch (err) {
         console.log(err)
@@ -68,10 +70,10 @@ async function getAllLeagueSeasons(req, res, next) {
     }
 }
 
-// TODO: validation on name and dates
 async function createLeagueSeason(req, res, next) {
     try {
         let { seasonName, seasonStart, seasonFinish } = req.body
+
         const newSeason = new Season({
             name: seasonName,
             dateStart: seasonStart,
@@ -96,7 +98,7 @@ async function createLeagueSeason(req, res, next) {
 
 async function createLeagueAdmins(req, res, next) {
     try {
-        if (!await allValidUserIds(req.body.adminIds)) {
+        if (!await allValidDocumentIds(req.body.adminIds, User)) {
             return next({ status: 404, message: 'Some users do not exist' })
         }
 
@@ -128,7 +130,7 @@ async function createLeagueAdmins(req, res, next) {
 
 async function deleteLeagueAdmins(req, res, next) {
     try {
-        if (!await allValidUserIds(req.body.adminIds)) {
+        if (!await allValidDocumentIds(req.body.adminIds, User)) {
             return next({ status: 404, message: 'Some users do not exist' })
         }
 
@@ -144,9 +146,7 @@ async function deleteLeagueAdmins(req, res, next) {
 
         const league = await League.findOneAndUpdate(
             { _id: req.league._id },
-            {
-                $pull: { admins: { $in: toDeleteLeagueAdmins } },
-            },
+            { $pull: { admins: { $in: toDeleteLeagueAdmins } } },
             { new: true }
         )
 

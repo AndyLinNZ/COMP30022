@@ -41,7 +41,9 @@ const playerStatSchema = new mongoose.Schema({
         type: Number,
     },
     minutesPlayed: {
-        type: Date,
+        type: Number,
+        max: 60,
+        min: 0
     },
 })
 

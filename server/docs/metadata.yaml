@@ -15,3 +15,5 @@ tags:
     description: 'Everything about grade, including grade teams.'
   - name: 'Team'
     description: 'Everything about teams.'
+  - name: 'Round'
+    description: 'Everything about rounds.'

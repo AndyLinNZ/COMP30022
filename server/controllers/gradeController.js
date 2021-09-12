@@ -1,9 +1,23 @@
+const Round = require('../models/round')
+const Grade = require('../models/grade')
+
 async function getGrade(req, res, next) {
     try {
         return res.status(200).json({
             success: true,
             data: req.grade,
         })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
+async function deleteGrade(req, res, next) {
+    try {
+        await Grade.deleteOne({ _id: req.grade._id })
+
+        return res.status(204).send()
     } catch (err) {
         console.log(err)
         return next(err)
@@ -47,8 +61,27 @@ async function addTeamToGrade(req, res, next) {
     }
 }
 
+async function createRound(req, res, next) {
+    try {
+        const newRound = new Round({ grade: req.grade._id })
+        const round = await newRound.save()
+        req.grade.fixture.push(round._id)
+        await req.grade.save()
+
+        return res.status(201).json({
+            success: true,
+            data: round,
+        })
+    } catch(err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
 module.exports = {
     getGrade,
     getAllGradeTeams,
     addTeamToGrade,
+    createRound,
+    deleteGrade,
 }

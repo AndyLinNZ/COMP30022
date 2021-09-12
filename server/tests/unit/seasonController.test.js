@@ -15,7 +15,6 @@ describe('Unit Testing: getAllSeasonGrades in seasonController', () => {
 
         const seasonDetails = {
             _id: '60741060d14008bd0efff9d5',
-            status: 'upcoming',
             grades: ['611ba1c73dc3af241c95e7e2'],
             name: 'Summer 2020/2021',
             league: '611a8a661fb4c81d84a5512c',
@@ -40,6 +39,7 @@ describe('Unit Testing: getAllSeasonGrades in seasonController', () => {
         // We expect execPopulate to populate the grades array with the full document
         const populatedObj = {
             ...seasonDetails,
+            status: 'completed',
             grades: expectedGrades,
         }
 
@@ -66,9 +66,9 @@ describe('Unit Testing: getAllSeasonGrades in seasonController', () => {
         const req = mockRequest()
         const res = mockResponse()
         const next = mockNext()
+
         const seasonDetails = {
             _id: '60741060d14008bd0efff9d5',
-            status: 'upcoming',
             grades: [],
             name: 'Summer 2020/2021',
             league: '611a8a661fb4c81d84a5512c',
@@ -107,7 +107,6 @@ describe('Unit Testing: createGrade in seasonController', () => {
 
         req.season = new Season({
             _id: '60741060d14008bd0efff9d5',
-            status: 'upcoming',
             grades: [],
             name: 'Summer 2020/2021',
             league: '611a8a661fb4c81d84a5512c',
@@ -149,68 +148,102 @@ describe('Unit Testing: createGrade in seasonController', () => {
         expect(res.json).toHaveBeenCalledTimes(1)
         expect(res.json).toHaveBeenCalledWith(actualRes.json)
     })
+})
 
-    test('Creating grade with invalid gender should return Invalid gender error', async () => {
+describe('Unit Testing: updateSeason in seasonController', () => {
+    test('Updating a season with valid seasonName, seasonStart, seasonFinish should update the season', async () => {
         const req = mockRequest()
         const res = mockResponse()
         const next = mockNext()
 
-        req.season = new Season({
+        const seasonDetails = {
             _id: '60741060d14008bd0efff9d5',
-            status: 'upcoming',
             grades: [],
             name: 'Summer 2020/2021',
             league: '611a8a661fb4c81d84a5512c',
             dateStart: '2021-08-12T12:23:34.944Z',
             dateFinish: '2021-08-14T12:23:34.944Z',
             __v: 0,
-        })
+        }
+        req.season = new Season(seasonDetails)
 
         req.body = {
-            gradeName: 'jdubz',
-            gradeGender: 'joshuaSandwich',
-            gradeDifficulty: 'A',
+            seasonName: 'Summer 2020/2021 Part 2',
+            seasonStart: '2021-08-13T12:23:34.944Z',
+            seasonFinish: '2021-08-16T12:23:34.944Z',
         }
 
-        await seasonController.createGrade(req, res, next)
+        const expectedSeason = new Season({
+            ...seasonDetails, 
+            name: req.body.seasonName, 
+            dateStart: new Date(req.body.seasonStart), 
+            dateFinish: new Date(req.body.seasonFinish), 
+            status: 'completed'
+        })
 
-        const actualNext = {
-            status: 400,
-            message: 'Invalid gender',
+        Season.findOneAndUpdate = jest.fn().mockResolvedValue(expectedSeason)
+
+        await seasonController.updateSeason(req, res, next)
+
+        const actualRes = {
+            status: 200,
+            json: {
+                success: true,
+                data: expectedSeason,
+            },
         }
 
-        expect(next).toHaveBeenCalledWith(actualNext)
+        expect(next).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledTimes(1)
+        expect(res.status).toHaveBeenCalledWith(actualRes.status)
+        expect(res.json).toHaveBeenCalledTimes(1)
+        expect(res.json).toHaveBeenCalledWith(actualRes.json)
     })
 
-    test('Creating grade with invalid difficulty should return Invalid difficulty error', async () => {
+    test('Updating a season with valid seasonName and seasonStart but not seasonFinish should \
+        update the season dynamically', async () => {
         const req = mockRequest()
         const res = mockResponse()
         const next = mockNext()
 
-        req.season = new Season({
+        const seasonDetails = {
             _id: '60741060d14008bd0efff9d5',
-            status: 'upcoming',
             grades: [],
             name: 'Summer 2020/2021',
             league: '611a8a661fb4c81d84a5512c',
             dateStart: '2021-08-12T12:23:34.944Z',
             dateFinish: '2021-08-14T12:23:34.944Z',
             __v: 0,
-        })
+        }
+        req.season = new Season(seasonDetails)
 
         req.body = {
-            gradeName: 'jdubz',
-            gradeGender: 'male',
-            gradeDifficulty: 'joshua',
+            seasonName: 'Summer 2020/2021 Part 2',
+            seasonStart: '2021-08-13T12:23:34.944Z'
         }
 
-        await seasonController.createGrade(req, res, next)
+        const expectedSeason = new Season({
+            ...seasonDetails, 
+            name: req.body.seasonName, 
+            dateStart: new Date(req.body.seasonStart)
+        })
 
-        const actualNext = {
-            status: 400,
-            message: 'Invalid difficulty',
+        Season.findOneAndUpdate = jest.fn().mockResolvedValue(expectedSeason)
+
+        await seasonController.updateSeason(req, res, next)
+
+        const actualRes = {
+            status: 200,
+            json: {
+                success: true,
+                data: expectedSeason,
+            },
         }
 
-        expect(next).toHaveBeenCalledWith(actualNext)
+        expect(next).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledTimes(1)
+        expect(res.status).toHaveBeenCalledWith(actualRes.status)
+        expect(res.json).toHaveBeenCalledTimes(1)
+        expect(res.json).toHaveBeenCalledWith(actualRes.json)
     })
 })

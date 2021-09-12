@@ -31,6 +31,11 @@ const gradeSchema = new mongoose.Schema({
         ref: 'Season',
         required: true,
     },
+    fixture: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Round',
+    }]
 })
 
+gradeSchema.index({ season: 1, name: 1 }, { unique: true })
 module.exports = mongoose.model('Grade', gradeSchema)

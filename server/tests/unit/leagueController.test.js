@@ -150,7 +150,7 @@ describe('Unit Testing: getAllLeagueSeasons in leagueController', () => {
         const expectedSeasons = [
             {
                 _id: '611b9bea1f374212cc10bb59',
-                status: 'upcoming',
+                status: 'completed',
                 grades: [],
                 name: 'Summer 2020/2021',
                 league: '611a8a661fb4c81d84a5512c',
@@ -250,7 +250,7 @@ describe('Unit Testing: createLeagueSeason in leagueController', () => {
             league: '611bbfe2aaa94829988d0b18',
             grades: [],
             __v: 0,
-            status: 'upcoming',
+            status: 'completed',
         })
 
         League.prototype.save = jest.fn().mockImplementationOnce()

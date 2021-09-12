@@ -30,11 +30,7 @@ describe('Unit Testing: getUserDetails in userController', () => {
         ]
         const expectedTeams = [
             {
-                totalPoints: 0,
-                totalWins: 0,
-                totalLosses: 0,
-                totalDraws: 0,
-                gameResults: [],
+                games: [],
                 _id: '611ba6a199599722e4d01c38',
                 name: 'jdubz team',
                 grades: [],

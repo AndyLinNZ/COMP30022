@@ -4,16 +4,25 @@ const series = require('middleware-flow').series
 const League = require('../models/league')
 const Season = require('../models/season')
 const Grade = require('../models/grade')
+const Round = require('../models/round')
 const Team = require('../models/team')
+const Game = require('../models/game')
 
 const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 
-// this middleware checks the request parameters for a league id, grade id, or season id
-// and appropriately populates req.league, req.grade and req.season
+// this middleware checks the request parameters for a round id, grade id,
+// season id, or league id and appropriately populates req.round, req.season,
+// req.grade and req.round
 // or returns an error otherwise (if not found, or if params not sent in request)
 async function getLeagueGradeSeason(req, res, next) {
-    if (req.params.gradeId) {
-        const gradeId = req.params.gradeId
+    if(req.params.roundId) {
+        const roundId = req.params.roundId
+        var round = ObjectId.isValid(roundId) ? await Round.findById(roundId) : null
+        if(!round) return res.status(404).json({ success: false, error: 'Round does not exist' })
+        req.round = round
+    }
+    var gradeId = req.params.gradeId || req.round?.grade._id
+    if (gradeId) {
         var grade = ObjectId.isValid(gradeId) ? await Grade.findById(gradeId) : null
         if(!grade) return res.status(404).json({ success: false, error: 'Grade does not exist' })
         req.grade = grade
@@ -24,7 +33,7 @@ async function getLeagueGradeSeason(req, res, next) {
         if(!season) return res.status(404).json({ success: false, error: 'Season does not exist' })
         req.season = season
     }
-    var leagueId = req.params.leagueId || req.season?.league._id
+    var leagueId = req.params.leagueId || req.season?.league._id || req.body.leagueId
     if (leagueId) {
         var league = ObjectId.isValid(leagueId) ? await League.findById(leagueId) : null
         if(!league) return res.status(404).json({ success: false, error: 'League does not exist' })
@@ -35,13 +44,19 @@ async function getLeagueGradeSeason(req, res, next) {
 }
 
 // this middleware gets a team document and populates req.team
-// right now it's not specific to just a teamController, because grades and most likely other
-// controllers like gameResults and players will need to end up using this as well
 async function getTeamDocument(req, res, next) {
     const teamId = req.params.teamId ? req.params.teamId : req.body.teamId
     const team = ObjectId.isValid(teamId) ? await Team.findById(teamId) : null
     if (!team) return res.status(404).json({ success: false, error: 'Team does not exist' })
     req.team = team
+    return next()
+}
+
+async function getGameDocument(req, res, next) {
+    const gameId = req.params.gameId ? req.params.gameId : req.body.gameId
+    const game = ObjectId.isValid(gameId) ? await Game.findById(gameId) : null
+    if (!game) return res.status(404).json({ success: false, error: 'Game does not exist' })
+    req.game = game
     return next()
 }
 
@@ -76,7 +91,7 @@ async function _ensureTeamAdmin(req, res, next) {
         if (req.team.admin.equals(req.user._id)) {
             next()
         } else {
-            return res.status(403).json({ success: false, error: 'User is not an admin' })
+            return res.status(403).json({ success: false, error: 'User is not a team admin' })
         }
     } catch (err) {
         console.log(err)
@@ -91,6 +106,7 @@ const ensureTeamAdmin = series(getTeamDocument, _ensureTeamAdmin)
 module.exports = {
     ensureAuthenticated,
     getTeamDocument,
+    getGameDocument,
     getLeagueGradeSeason,
     ensureLeagueCreator,
     ensureLeagueAdmin,
