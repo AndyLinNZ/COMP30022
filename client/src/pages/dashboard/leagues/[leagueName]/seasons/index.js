@@ -7,7 +7,6 @@ import { getLeagueFromUser } from 'utils'
 
 const index = () => {
     const { seasons } = useGetAllLeagueSeasons()
-    console.log(seasons)
     const { user } = useUserDetails()
     const league = getLeagueFromUser(user)
 

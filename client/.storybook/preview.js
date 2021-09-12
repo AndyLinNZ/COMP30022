@@ -1,6 +1,6 @@
 import { ChakraProvider, CSSReset } from '@chakra-ui/react'
 import React from 'react'
-import { theme } from '../theme'
+import { theme } from '../src/theme'
 
 export const parameters = {
     controls: { expanded: true },

@@ -12,6 +12,7 @@ export const isLoggedIn = () => {
     return !!(isBrowser() && window.localStorage.getItem('token'))
 }
 
+// TODO: what if there are 2 leagues with the same name?
 export const getLeagueFromUser = (user) => {
     return user?.leagues?.find(({ name }) => name === router.query.leagueName)
 }

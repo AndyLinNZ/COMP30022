@@ -1,4 +1,3 @@
-import router from 'next/router'
 import axiosInstance from './axios'
 
 export const registerUser = async (user) => {

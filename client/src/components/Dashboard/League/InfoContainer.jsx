@@ -1,13 +1,12 @@
-import { EditIcon } from '@chakra-ui/icons'
 import { Flex, HStack, Text, Box } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { getHumanReadableDate } from 'utils'
+import { Status } from '.'
 
 const InfoContainer = ({ season, path }) => {
     const router = useRouter()
-    const { name, dateStart, dateFinish } = season
-    console.log(getHumanReadableDate(dateStart))
+    const { name, dateStart, dateFinish, status } = season
     return (
         <HStack w="100%">
             <Flex
@@ -22,23 +21,25 @@ const InfoContainer = ({ season, path }) => {
                     boxShadow: '0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);',
                 }}
                 onClick={() => router.push(window.location.pathname + `/${path}`)}
+                paddingX="1rem"
             >
-                <HStack fontSize="1.25rem">
+                <Box
+                    fontSize="1.25rem"
+                    w="100%"
+                    display="grid"
+                    gridTemplateColumns="1fr 1fr 1fr"
+                    alignItems="center"
+                >
                     <Text>{name}</Text>
                     <HStack>
                         <Text>{getHumanReadableDate(dateStart)}</Text>
                         <Box>-</Box>
                         <Text>{getHumanReadableDate(dateFinish)}</Text>
                     </HStack>
-                </HStack>
-
-                <EditIcon
-                    fontSize="1.25rem"
-                    pos="absolute"
-                    top="50%"
-                    right="1.5rem"
-                    transform="translateY(-50%)"
-                />
+                    <Box justifySelf="flex-end">
+                        <Status status={status} />
+                    </Box>
+                </Box>
             </Flex>
         </HStack>
     )
