@@ -6,6 +6,7 @@ const leagueRouter = require('./leagueRouter')
 const seasonRouter = require('./seasonRouter')
 const gradeRouter = require('./gradeRouter')
 const roundRouter = require('./roundRouter')
+const gameRouter = require('./gameRouter')
 const teamRouter = require('./teamRouter')
 
 // routes
@@ -15,6 +16,7 @@ router.use('/league', leagueRouter)
 router.use('/season', seasonRouter)
 router.use('/grade', gradeRouter)
 router.use('/round', roundRouter)
+router.use('/game', gameRouter)
 router.use('/team', teamRouter)
 
 // general error handling
