@@ -6,7 +6,7 @@ const Team = require('../../models/team')
 const Round = require('../../models/round')
 const Game = require('../../models/game')
 const Player = require('../../models/player')
-const PlayerStat = require('../models/playerStat')
+const PlayerStat = require('../../models/playerStat')
 const supertest = require('supertest')
 const initApp = require('../../app')
 const app = initApp()
@@ -16,7 +16,7 @@ const env = {}
 const setupOptions = { createDefaultUsers: true }
 setupTestEnv('dribblrDB-grade-test', env, setupOptions)
 
-// set up test game
+// set up test materials
 const testLeague = {
     leagueName: 'Joshua Basketball Association',
     organisationName: 'JoshuaDubar'
@@ -47,7 +47,7 @@ const testGame = {
     dateStart: '2021-08-12T10:00:00.000Z',
     dateFinish: '2021-08-12T11:00:00.000Z',
     locationName: 'Josh Dubz Stadium',
-    location: [-22.56, 14,5],
+    location: [-22.22, 33.33],
 }
 
 beforeAll(async () => {
@@ -134,28 +134,34 @@ beforeAll(async () => {
     // add the new game as a game to the round's fixture
     round.games.push[game._id]
 
+    env.game0_id = game._id.toString()
+    env.team1_id = team1._id.toString()
+    env.team2_id = team2._id.toString()
+
 })
 
-// TO CHANGE
 describe('Integration Testing: finding games', () => {
     test('Should be able to find an existent game', async () => {
-        const res = await request.get(`/api/game/${env.league0_id}`)
+        const res = await request.get(`/api/game/${env.game0_id}`)
 
         expect(res.statusCode).toBe(200)
         expect(res.body.success).toBe(true)
-        expect(res.body.data.admins).toStrictEqual([env.auth_tokens[0][0]])
-        expect(res.body.data.seasons).toStrictEqual([])
-        expect(res.body.data.name).toBe('Joshua Basketball Association')
-        expect(res.body.data.organisation).toBe('JoshuaDubar')
-        expect(res.body.data.creator).toBe(env.auth_tokens[0][0])
+        expect(res.body.data.dateStart).toBe(testGame.dateStart)
+        expect(res.body.data.dateFinish).toBe(testGame.dateFinish)
+        expect(res.body.data.round).toBe(env.game0_id_id)
+        expect(res.body.data.locationName).toBe('Josh Dubz Stadium')
+        // how to check location coordinates?
+        expect(res.body.data.location).toStrictEqual([-22.22, 33.33])
+        expect(res.body.data.team1.team).toBe(env.team1_id)
+        expect(res.body.data.team2.team).toBe(env.team2_id)
     })
 
     test('Finding a league with a nonexistent id should return an error', async () => {
-        const res = await request.get(`/api/league/${env.auth_tokens[0][0]}`)
+        const res = await request.get(`/api/game/${env.auth_tokens[0][0]}`)
 
         expect(res.statusCode).toBe(404)
         expect(res.body.success).toBe(false)
-        expect(res.body.error).toBe('League does not exist')
+        expect(res.body.error).toBe('Game does not exist')
     })
 
     test('Finding a league with an invalid MongoDB object id should return an error', async () => {
@@ -163,6 +169,6 @@ describe('Integration Testing: finding games', () => {
 
         expect(res.statusCode).toBe(404)
         expect(res.body.success).toBe(false)
-        expect(res.body.error).toBe('League does not exist')
+        expect(res.body.error).toBe('Game does not exist')
     })
 })
