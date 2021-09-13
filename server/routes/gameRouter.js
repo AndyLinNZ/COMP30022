@@ -2,23 +2,21 @@ const express = require('express')
 const {
     getLeagueGradeSeason,
     ensureAuthenticated,
-    ensureLeagueAdmin,
-    getGameDocument
+    ensureLeagueAdmin
 } = require('./utils')
 const gameController = require('../controllers/gameController.js')
 
 const gameRouter = express.Router()
 
 // GET
-gameRouter.get('/:gameId', getLeagueGradeSeason, getGameDocument, gameController.getGame)
+gameRouter.get('/:gameId', getLeagueGradeSeason, gameController.getGame)
 
 // PATCH
 gameRouter.patch(
-    '//:gameId',
+    '/:gameId',
     ensureAuthenticated,
     ensureLeagueAdmin,
-    getGameDocument,
-    gameController.getGame
+    gameController.updateGame
 )
 
 module.exports = gameRouter

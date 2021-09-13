@@ -62,7 +62,7 @@ async function getAllLeagueSeasons(req, res, next) {
 
         return res.status(200).json({
             success: true,
-            data: league.seasons.sort(formatOrderByStatus()),
+            data: formatOrderByStatus(league.seasons),
         })
     } catch (err) {
         console.log(err)

@@ -1,9 +1,6 @@
 const { ObjectId } = require('mongoose').Types
-const Team = require('../models/team')
-const Game = require('../models/game')
 const Player = require('../models/player')
 const PlayerStat = require('../models/playerStat')
-const Round = require('../models/round')
 
 async function getGame(req, res, next) {
     try {
@@ -15,7 +12,6 @@ async function getGame(req, res, next) {
         console.log(err)
         return next(err)
     }
-
 }
 
 async function updateGame(req, res, next) {
@@ -26,11 +22,11 @@ async function updateGame(req, res, next) {
         await req.game.execPopulate('team2.playersStats')
         await updatePlayersStats(req.game.team1.playersStats, team1, next)
         await updatePlayersStats(req.game.team2.playersStats, team2, next)
-        await req.game.save()
+        const game = await req.game.save()
 
         return res.status(200).json({
             success: true,
-            data: req.game,
+            data: game,
         })
 
     } catch (err) {
@@ -53,7 +49,7 @@ async function updatePlayersStats(oldPlayersStats, team, next) {
 
         // otherwise, create new playerStats document and add it
         let playerStats = team[player_id]
-        Object.assign(playerStats, { "playerId": player_id })
+        Object.assign(playerStats, { 'playerId': player_id })
         const playerStat = new PlayerStat(playerStats)
         await playerStat.save()
         oldPlayersStats.push(playerStat)

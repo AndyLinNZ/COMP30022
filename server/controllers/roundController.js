@@ -1,8 +1,6 @@
 const { ObjectId } = require('mongoose').Types
 const Team = require('../models/team')
 const Game = require('../models/game')
-const Player = require('../models/player')
-const PlayerStat = require('../models/playerStat')
 const Round = require('../models/round')
 
 async function getRound(req, res, next) {
@@ -66,13 +64,11 @@ async function createGame(req, res, next) {
             success: true,
             data: game,
         })
-        
     } catch (err) {
         console.log(err)
         return next(err)
     }
 }
-
 
 module.exports = {
     getRound,

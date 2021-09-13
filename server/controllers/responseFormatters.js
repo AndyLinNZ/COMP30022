@@ -13,13 +13,13 @@ const formatUserResp = (userDoc) => {
     return { ...details, leagues, teams }
 }
 
-const formatOrderByStatus = () => {
+const formatOrderByStatus = (doc) => {
     const sortingOrder = {
-        'progress': 1,
+        'active': 1,
         'upcoming': 2,
         'completed': 3
     }
-    return (a, b) => {           
+    return doc.sort((a, b) => {           
         const first = sortingOrder[a.status]
         const second = sortingOrder[b.status]
 
@@ -27,9 +27,9 @@ const formatOrderByStatus = () => {
         if (first < second) result = -1
         else if (first > second) result = 1
         // Compare by dates instead
-        else result = a.dateStart < b.dateStart ? 1 : -1
+        else result = a.dateStart < b.dateStart ? -1 : 1
         return result
-    }
+    })
 }
 
 module.exports = {

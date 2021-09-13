@@ -2,6 +2,7 @@ const gradeController = require('../../controllers/gradeController')
 const Season = require('../../models/season')
 const Grade = require('../../models/grade')
 const Team = require('../../models/team')
+const Round = require('../../models/round')
 const { mockRequest, mockResponse, mockNext } = require('./test-utils')
 
 beforeEach(() => {
@@ -26,11 +27,7 @@ describe('Unit Testing: getAllGradeTeams in gradeController', () => {
 
         const expectedTeams = [
             {
-                totalPoints: 0,
-                totalWins: 0,
-                totalLosses: 0,
-                totalDraws: 0,
-                gameResults: [],
+                games: [],
                 admin: '611a8a311fb4c81d84a55126',
                 _id: '611ba6a199599722e4d01c38',
                 name: 'jdubz team',
@@ -248,5 +245,47 @@ describe('Unit Testing: deleteGrade in gradeController', () => {
         expect(next).not.toHaveBeenCalled()
         expect(res.status).toHaveBeenCalledTimes(1)
         expect(res.status).toHaveBeenCalledWith(204)
+    })
+})
+
+describe('Unit Testing: createRound in gradeController', () => {
+    test('Creating a round with valid gradeId should create a round', async () => {
+        const req = mockRequest()
+        const res = mockResponse()
+        const next = mockNext()
+
+        const gradeDetails = {
+            _id: '612788ed698aac7c50c3d3b6',
+            name: 'jdubz grade',
+            gender: 'male',
+            difficulty: 'A',
+            season: '60741060d14008bd0efff9d5',
+            teams: ['611ba6a199599722e4d01c38'],
+        }
+        req.grade = new Grade(gradeDetails)
+
+        const expectedRound = new Round({
+            grade: gradeDetails._id,
+            date: '2021-08-12T12:23:34.944Z'
+        })
+
+        Round.prototype.save = jest.fn().mockResolvedValue(expectedRound)
+        Grade.prototype.save = jest.fn().mockImplementationOnce()
+
+        await gradeController.createRound(req, res, next)
+
+        const actualRes = {
+            status: 201,
+            json: {
+                success: true,
+                data: expectedRound
+            }
+        }
+
+        expect(next).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledTimes(1)
+        expect(res.status).toHaveBeenCalledWith(actualRes.status)
+        expect(res.json).toHaveBeenCalledTimes(1)
+        expect(res.json).toHaveBeenCalledWith(actualRes.json)
     })
 })
