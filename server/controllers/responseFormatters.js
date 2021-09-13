@@ -15,7 +15,7 @@ const formatUserResp = (userDoc) => {
 
 const formatOrderByStatus = (doc) => {
     const sortingOrder = {
-        'progress': 1,
+        'active': 1,
         'upcoming': 2,
         'completed': 3
     }
