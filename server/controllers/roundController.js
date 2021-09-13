@@ -43,6 +43,7 @@ async function createRoundGame(req, res, next) {
         const newGame = new Game({
             dateStart: start,
             dateFinish: finish,
+            round: req.round,
             team1: {
                 team: team1_id,
             },
