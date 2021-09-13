@@ -52,10 +52,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericErrorResponse'
+                success:
+                  type: boolean
+                token:
+                  type: string
               example:
                 success: true
-                message: 'Registration successful'
+                token: "eyJ..."
         '400':
           description: 'Invalid request.'
           content:

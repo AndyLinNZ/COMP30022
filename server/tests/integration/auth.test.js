@@ -97,7 +97,7 @@ test('Registration with valid request data should succeed', async () => {
 
     expect(res.statusCode).toBe(201)
     expect(res.body.success).toBe(true)
-    expect(res.body.message).toBe('Registration successful')
+    expect(res.body.token).toBeTruthy()
 })
 
 test('Registration with existing email should fail', async () => {
