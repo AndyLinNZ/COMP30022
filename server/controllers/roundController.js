@@ -17,6 +17,20 @@ async function getRound(req, res, next) {
     }
 }
 
+async function getRoundGame(req, res, next) {
+
+    try {
+        return res.status(200).json({
+            success: true,
+            data: req.game,
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+
+}
+
 async function createRoundGame(req, res, next) {
     try {
         let { start, finish, venue_name, game_location, team1_id, team2_id } = req.body
@@ -117,6 +131,7 @@ async function updatePlayersStats(oldPlayersStats, team, next) {
 
 module.exports = {
     getRound,
+    getRoundGame,
     createRoundGame,
     updateRoundGame,
 }
