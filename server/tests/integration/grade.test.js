@@ -226,3 +226,42 @@ describe('Integration Testing: deleting a grade', () => {
         expect(res.statusCode).toBe(204)
     })
 })
+
+describe('Integration Testing: creating a round', () => {
+    test('Should not be able to create round for an invalid grade', async () => {
+        const res = await request.post('/api/grade/badgradeid/round')
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send({
+                date: '2021-08-12T00:00:00.000Z',
+            })
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Grade does not exist')
+    })
+
+    test('User should not be able to create round if they are not league admin', async () => {
+        const res = await request.post(`/api/grade/${env.grade0_id}/round`)
+            .set('Authorization', `Bearer ${env.auth_tokens[2][1]}`)
+            .send({
+                date: '2021-08-12T00:00:00.000Z',
+            })
+
+        expect(res.statusCode).toBe(403)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('User is not an admin')
+    })
+
+    test('League admin should be able to create round', async () => {
+        const res = await request.post(`/api/grade/${env.grade0_id}/round`)
+            .set('Authorization', `Bearer ${env.auth_tokens[1][1]}`)
+            .send({
+                date: '2021-08-12T00:00:00.000Z',
+            })
+
+        expect(res.statusCode).toBe(201)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data.games).toStrictEqual([])
+        expect(res.body.data.grade).toBe(env.grade0_id)
+    })
+})
