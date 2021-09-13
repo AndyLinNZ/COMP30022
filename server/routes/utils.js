@@ -10,13 +10,19 @@ const Game = require('../models/game')
 
 const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 
-// this middleware checks the request parameters for a round id, grade id,
+// this middleware checks the request parameters for a game id, round id, grade id,
 // season id, or league id and appropriately populates req.round, req.season,
 // req.grade and req.round
 // or returns an error otherwise (if not found, or if params not sent in request)
 async function getLeagueGradeSeason(req, res, next) {
-    if(req.params.roundId) {
-        const roundId = req.params.roundId
+    if(req.params.gameId) {
+        const gameId = req.params.gameId
+        var game = ObjectId.isValid(gameId) ? await Round.findById(gameId) : null
+        if(!game) return res.status(404).json({ success: false, error: 'Game does not exist' })
+        req.game = game
+    }
+    var roundId = req.params.roundId || req.game?.round._id
+    if(roundId) {
         var round = ObjectId.isValid(roundId) ? await Round.findById(roundId) : null
         if(!round) return res.status(404).json({ success: false, error: 'Round does not exist' })
         req.round = round
