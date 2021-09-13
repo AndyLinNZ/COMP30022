@@ -12,7 +12,7 @@ const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 
 // this middleware checks the request parameters for a game id, round id, grade id,
 // season id, or league id and appropriately populates req.round, req.season,
-// req.grade and req.round
+// req.grade, req.round and req.game
 // or returns an error otherwise (if not found, or if params not sent in request)
 async function getLeagueGradeSeason(req, res, next) {
     if(req.params.gameId) {
@@ -55,14 +55,6 @@ async function getTeamDocument(req, res, next) {
     const team = ObjectId.isValid(teamId) ? await Team.findById(teamId) : null
     if (!team) return res.status(404).json({ success: false, error: 'Team does not exist' })
     req.team = team
-    return next()
-}
-
-async function getGameDocument(req, res, next) {
-    const gameId = req.params.gameId ? req.params.gameId : req.body.gameId
-    const game = ObjectId.isValid(gameId) ? await Game.findById(gameId) : null
-    if (!game) return res.status(404).json({ success: false, error: 'Game does not exist' })
-    req.game = game
     return next()
 }
 
@@ -112,7 +104,6 @@ const ensureTeamAdmin = series(getTeamDocument, _ensureTeamAdmin)
 module.exports = {
     ensureAuthenticated,
     getTeamDocument,
-    getGameDocument,
     getLeagueGradeSeason,
     ensureLeagueCreator,
     ensureLeagueAdmin,

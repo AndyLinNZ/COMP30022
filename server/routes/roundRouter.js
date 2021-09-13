@@ -3,7 +3,6 @@ const {
     getLeagueGradeSeason,
     ensureAuthenticated,
     ensureLeagueAdmin,
-    getGameDocument
 } = require('./utils')
 const roundController = require('../controllers/roundController.js')
 
