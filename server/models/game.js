@@ -60,7 +60,7 @@ const gameSchema = new mongoose.Schema({
 
 gameSchema.virtual('status').get(function() {
   if (this.dateFinish <= Date.now()) return 'completed'
-  if (this.dateFinish > Date.now() && Date.now() > this.dateStart) return 'progress'
+  if (this.dateFinish > Date.now() && Date.now() > this.dateStart) return 'active'
   return 'upcoming'
 })
 
