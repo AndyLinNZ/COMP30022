@@ -1,23 +1,15 @@
 const express = require('express')
 const router = express.Router()
-const authRouter = require('./authRouter')
-const userRouter = require('./userRouter')
-const leagueRouter = require('./leagueRouter')
-const seasonRouter = require('./seasonRouter')
-const gradeRouter = require('./gradeRouter')
-const roundRouter = require('./roundRouter')
-const gameRouter = require('./gameRouter')
-const teamRouter = require('./teamRouter')
 
 // routes
-router.use('/auth', authRouter)
-router.use('/user', userRouter)
-router.use('/league', leagueRouter)
-router.use('/season', seasonRouter)
-router.use('/grade', gradeRouter)
-router.use('/round', roundRouter)
-router.use('/game', gameRouter)
-router.use('/team', teamRouter)
+router.use('/auth', require('./authRouter'))
+router.use('/user',  require('./userRouter'))
+router.use('/league', require('./leagueRouter'))
+router.use('/season', require('./seasonRouter'))
+router.use('/grade', require('./gradeRouter'))
+router.use('/round', require('./roundRouter'))
+router.use('/game', require('./gameRouter'))
+router.use('/team', require('./teamRouter'))
 
 // general error handling
 router.use((err, req, res, _) => {
