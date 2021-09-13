@@ -5,6 +5,7 @@ const Grade = require('../../models/grade')
 const Team = require('../../models/team')
 const Round = require('../../models/round')
 const Game = require('../../models/game')
+const Player = require('../../models/player')
 const supertest = require('supertest')
 const initApp = require('../../app')
 const app = initApp()
@@ -133,10 +134,52 @@ beforeAll(async () => {
     round.games.push[game._id]
     await round.save()
 
+    // add 2 new player objects to database
+    const newPlayer1 = new Player({
+        name: 'joshua1',
+        team: team1._id,
+    })
+    const player1 = await newPlayer1.save()
+
+    const newPlayer2 = new Player({
+        name: 'joshua2',
+        team: team2._id,
+    })
+    const player2 = await newPlayer2.save()
+
+    team1.players.push(player1._id)
+    team2.players.push(player2._id)
+    await team1.save()
+    await team2.save()
+
+    const team1_updateDetails = {}
+    team1_updateDetails[player1._id] = { points: 69, assists: 3 }
+    const team2_updateDetails = {}
+    team2_updateDetails[player2._id] = { points: 44, assists: 0 }
+
+    const updateGameDetails = {
+        team1: team1_updateDetails,
+        team2: team2_updateDetails,
+    }
+
+    const team1_updateDetails2 = {}
+    team1_updateDetails2[player1._id] = { points: 123 }
+    const team2_updateDetails2 = {}
+    team2_updateDetails2[player2._id] = { assists: 10 }
+
+    const updateGameDetails2 = {
+        team1: team1_updateDetails2,
+        team2: team2_updateDetails2,
+    }
+
     env.game0_id = game._id.toString()
     env.round0_id = round._id.toString()
     env.team1_id = team1._id.toString()
     env.team2_id = team2._id.toString()
+    env.player1_id = player1._id.toString()
+    env.player2_id = player2._id.toString()
+    env.test_update_game_details = updateGameDetails
+    env.test_update_game_details2 = updateGameDetails2
 })
 
 describe('Integration Testing: finding games', () => {
@@ -169,5 +212,65 @@ describe('Integration Testing: finding games', () => {
         expect(res.statusCode).toBe(404)
         expect(res.body.success).toBe(false)
         expect(res.body.error).toBe('Game does not exist')
+    })
+})
+
+describe('Integration Testing: updating games', () => {
+    test('Updating a game with an invalid game id should return an error', async () => {
+        const res = await request.patch(`/api/game/${env.auth_tokens[0][0]}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send(env.test_update_game_details)
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Game does not exist')
+    })
+
+    test('User should not be able to update a game if they are not league admin', async () => {
+        const res = await request.patch(`/api/game/${env.game0_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[2][1]}`)
+            .send(env.test_update_game_details)
+
+        expect(res.statusCode).toBe(403)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('User is not an admin')
+    })
+
+    test('League admin should be able to update a game', async () => {
+        const res = await request.patch(`/api/game/${env.game0_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send(env.test_update_game_details)
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data._id).toBe(env.game0_id)
+        expect(res.body.data.team1.team).toBe(env.team1_id)
+        expect(res.body.data.team2.team).toBe(env.team2_id)
+        expect(res.body.data.team1.playersStats.length).toBe(1)
+        expect(res.body.data.team2.playersStats.length).toBe(1)
+        expect(res.body.data.team1.playersStats[0].playerId).toBe(env.player1_id)
+        expect(res.body.data.team2.playersStats[0].playerId).toBe(env.player2_id)
+        expect(res.body.data.team1.playersStats[0].points).toBe(env.test_update_game_details.team1[env.player1_id].points)
+        expect(res.body.data.team2.playersStats[0].points).toBe(env.test_update_game_details.team2[env.player2_id].points)
+        expect(res.body.data.team1.playersStats[0].assists).toBe(env.test_update_game_details.team1[env.player1_id].assists)
+        expect(res.body.data.team2.playersStats[0].assists).toBe(env.test_update_game_details.team2[env.player2_id].assists)
+    })
+
+    test('Updating a game with existing results should properly update the results', async () => {
+        const res = await request.patch(`/api/game/${env.game0_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send(env.test_update_game_details2)
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data._id).toBe(env.game0_id)
+        expect(res.body.data.team1.team).toBe(env.team1_id)
+        expect(res.body.data.team2.team).toBe(env.team2_id)
+        expect(res.body.data.team1.playersStats.length).toBe(1)
+        expect(res.body.data.team2.playersStats.length).toBe(1)
+        expect(res.body.data.team1.playersStats[0].playerId).toBe(env.player1_id)
+        expect(res.body.data.team2.playersStats[0].playerId).toBe(env.player2_id)
+        expect(res.body.data.team1.playersStats[0].points).toBe(env.test_update_game_details2.team1[env.player1_id].points)
+        expect(res.body.data.team2.playersStats[0].assists).toBe(env.test_update_game_details2.team2[env.player2_id].assists)
     })
 })

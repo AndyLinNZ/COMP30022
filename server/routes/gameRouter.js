@@ -16,7 +16,7 @@ gameRouter.patch(
     '/:gameId',
     ensureAuthenticated,
     ensureLeagueAdmin,
-    gameController.getGame
+    gameController.updateGame
 )
 
 module.exports = gameRouter
