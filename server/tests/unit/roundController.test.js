@@ -39,7 +39,8 @@ describe('Unit Testing: createGame in roundController', () => {
                 playersStats: []
             },
             locationName: req.body.venue_name,
-            location: req.body.game_location
+            location: req.body.game_location,
+            round: '612788ed698aac7c50c3d377'
         })
 
         req.grade = new Grade({
