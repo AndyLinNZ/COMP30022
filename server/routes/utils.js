@@ -17,7 +17,7 @@ const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 async function getLeagueGradeSeason(req, res, next) {
     if(req.params.gameId) {
         const gameId = req.params.gameId
-        var game = ObjectId.isValid(gameId) ? await Round.findById(gameId) : null
+        var game = ObjectId.isValid(gameId) ? await Game.findById(gameId) : null
         if(!game) return res.status(404).json({ success: false, error: 'Game does not exist' })
         req.game = game
     }
