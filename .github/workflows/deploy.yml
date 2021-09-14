@@ -24,7 +24,7 @@ jobs:
       - name: Build with Cloud Build
         working-directory: ./server
         run: |-
-          gcloud builds submit --quiet --config ./server/cloudbuild.yaml
+          gcloud builds submit --quiet --config ./cloudbuild.yaml
 
       - name: Deploy on Cloud Run
         working-directory: ./server
