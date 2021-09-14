@@ -29,4 +29,4 @@ jobs:
       - name: Deploy on Cloud Run
         working-directory: ./server
         run: |-
-          gcloud run deploy --set-env-vars "MONGO_CONNECTION_URI=${{ secrets.MONGO_CONNECTION_URI }},JWT_SECRET=${{ secrets.JWT_SECRET }}" dribblr --image gcr.io/$PROJECT_ID/dribblr
+          gcloud run deploy --set-env-vars "MONGO_CONNECTION_URI=${{ secrets.MONGO_CONNECTION_URI }},JWT_SECRET=${{ secrets.JWT_SECRET }}" dribblr --image gcr.io/${{ secrets.GCP_PROJECT }}/dribblr --min-instances 1
