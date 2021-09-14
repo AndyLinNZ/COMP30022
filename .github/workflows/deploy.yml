@@ -22,9 +22,11 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT }}
 
       - name: Build with Cloud Build
+        working-directory: ./server
         run: |-
           gcloud builds submit --quiet --config ./server/cloudbuild.yaml
 
       - name: Deploy on Cloud Run
+        working-directory: ./server
         run: |-
           gcloud run deploy --set-env-vars "MONGO_CONNECTION_URI=${{ secrets.MONGO_CONNECTION_URI }},JWT_SECRET=${{ secrets.JWT_SECRET }}" dribblr --image gcr.io/$PROJECT_ID/dribblr --min-instances 1
