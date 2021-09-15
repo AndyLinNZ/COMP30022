@@ -17,7 +17,7 @@ function registerUser(req, res, next) {
     if (!req.body.lastName) return next({ message: 'Missing "lastName" field' })
 
     let { email, password, firstName, lastName } = req.body
-    User.register(new User({ email, firstName, lastName }), password, (err, _) => {
+    User.register(new User({ email, firstName, lastName }), password, (err, user) => {
         if (err && err.toString().includes('username is already registered')) {
             return next({
                 status: 409,
@@ -28,7 +28,11 @@ function registerUser(req, res, next) {
             return next({ status: 500, message: 'Registration error' })
         }
 
-        return res.status(201).json({ success: true, message: 'Registration successful' })
+        const token = JWT.sign({ userid: user._id }, process.env.JWT_SECRET, {
+            algorithm: 'HS256',
+            expiresIn: '7d',
+        })
+        return res.status(201).json({ success: true, token })
     })
 }
 

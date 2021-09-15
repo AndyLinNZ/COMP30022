@@ -10,6 +10,11 @@ const gameSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
+    round: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Round',
+        required: true,
+    },
     team1: {
         team: {
             type: mongoose.Schema.Types.ObjectId,

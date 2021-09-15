@@ -17,3 +17,5 @@ tags:
     description: 'Everything about teams.'
   - name: 'Round'
     description: 'Everything about rounds.'
+  - name: 'Game'
+    description: 'Everything about games.'
