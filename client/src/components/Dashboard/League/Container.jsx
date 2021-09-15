@@ -4,9 +4,18 @@ import { Stepper } from '.'
 
 const Container = ({ league, children, minH = '375px', w = ['95%', '75%'] }) => {
     return (
-        <VStack pos="absolute" top="50%" left="50%" transform="translate(-50%, -50%)" w={w}>
+        <VStack
+            pos="absolute"
+            top="50%"
+            left="50%"
+            transform="translate(-50%, -50%)"
+            w={w}
+            spacing="0.75rem"
+        >
             <VStack spacing="0.25rem" alignSelf="flex-start">
-                <Text fontSize="3rem">{league?.name}</Text>
+                <Box fontSize="3rem" lineHeight="1">
+                    {league?.name}
+                </Box>
                 <Box
                     alignSelf="flex-start"
                     bg="greyBg"

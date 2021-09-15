@@ -17,12 +17,14 @@ const gameSchema = new mongoose.Schema({
             required: true,
         },
         playersStats: {
-            type: [{
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'PlayerStat',
-                required: true,
-            }],
-            default: []
+            type: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'PlayerStat',
+                    required: true,
+                },
+            ],
+            default: [],
         },
     },
     team2: {
@@ -32,12 +34,14 @@ const gameSchema = new mongoose.Schema({
             required: true,
         },
         playersStats: {
-            type: [{
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'PlayerStat',
-                required: true,
-            }],
-            default: []
+            type: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'PlayerStat',
+                    required: true,
+                },
+            ],
+            default: [],
         },
     },
     locationName: String,
@@ -50,20 +54,20 @@ const gameSchema = new mongoose.Schema({
             type: [Number],
             index: '2dsphere',
         },
+    },
+})
+
+gameSchema.virtual('status').get(function () {
+    if (this.dateFinish <= Date.now()) return 'completed'
+    if (this.dateFinish > Date.now() && Date.now() > this.dateStart) return 'active'
+    return 'upcoming'
+})
+
+gameSchema.pre('validate', function (next) {
+    if (this.dateStart >= this.dateFinish) {
+        this.invalidate('dateFinish', 'Start date must be less than end date.', this.dateFinish)
     }
+    next()
 })
-
-gameSchema.virtual('status').get(function() {
-  if (this.dateFinish <= Date.now()) return 'completed'
-  if (this.dateFinish > Date.now() && Date.now() > this.dateStart) return 'progress'
-  return 'upcoming'
-})
-
-gameSchema.pre('validate', function(next) {
-  if (this.dateStart >= this.dateFinish) {
-    this.invalidate('dateFinish', 'Start date must be less than end date.', this.dateFinish);
-  }
-  next();
-});
 
 module.exports = mongoose.model('Game', gameSchema)

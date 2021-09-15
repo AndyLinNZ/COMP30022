@@ -19,7 +19,7 @@ const statusConfig = {
 const Status = ({ status }) => {
     const config = statusConfig[status]
     return (
-        <Box p="0.25rem 1rem" {...config}>
+        <Box p="0.25rem 1rem" fontSize={['0.875rem', '1rem']} {...config}>
             {status.toUpperCase()}
         </Box>
     )

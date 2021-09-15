@@ -1,10 +1,12 @@
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import { Text, Flex, HStack } from '@chakra-ui/react'
+import { useMediaQuerySSR } from 'hooks'
 import { useRouter } from 'next/router'
 import React from 'react'
 
 const Stepper = () => {
     const [selected, setSelected] = React.useState(1)
+    const isDesktop = useMediaQuerySSR(600)
 
     const steps = [
         {
@@ -38,28 +40,28 @@ const Stepper = () => {
             alignItems="center"
             justifyContent="center"
         >
-            <HStack spacing="2rem">
+            <HStack spacing={['1rem', '2rem']}>
                 {steps.map(({ name, arrow }, index) => (
-                    <HStack key={name} spacing="1rem">
-                        <Flex
-                            bg={selected === index ? 'greyBg' : 'grey'}
-                            color="white"
-                            borderRadius="50%"
-                            width="40px"
-                            height="40px"
-                            alignItems="center"
-                            justifyContent="center"
-                            fontSize="2rem"
-                        >
-                            {index + 1}
-                        </Flex>
-                        <Text fontSize="2rem" color={selected === index ? 'greyBg' : 'grey'}>
-                            {name}
-                        </Text>
+                    <HStack key={name} spacing={['0.25rem', '1rem']} fontSize={['1.25rem', '2rem']}>
+                        {isDesktop && (
+                            <Flex
+                                bg={selected === index ? 'greyBg' : 'grey'}
+                                color="white"
+                                borderRadius="50%"
+                                width="40px"
+                                height="40px"
+                                alignItems="center"
+                                justifyContent="center"
+                            >
+                                {index + 1}
+                            </Flex>
+                        )}
+
+                        <Text color={selected === index ? 'greyBg' : 'grey'}>{name}</Text>
                         {arrow && (
                             <ChevronRightIcon
-                                w={16}
-                                h={16}
+                                w={[12, 16]}
+                                h={[12, 16]}
                                 color={selected === index ? 'greyBg' : 'grey'}
                             />
                         )}
