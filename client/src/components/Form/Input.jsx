@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-    FormControl,
-    FormErrorMessage,
-    FormLabel,
-    Input as ChakraInput,
-} from '@chakra-ui/react'
+import { FormControl, FormErrorMessage, FormLabel, Input as ChakraInput } from '@chakra-ui/react'
 
 const Input = React.forwardRef(
     (
@@ -20,15 +15,10 @@ const Input = React.forwardRef(
         ref
     ) => {
         return (
-            <FormControl
-                isRequired={isRequired}
-                isDisabled={isDisabled}
-                isInvalid={error}
-            >
+            <FormControl isRequired={isRequired} isDisabled={isDisabled} isInvalid={error}>
                 <FormLabel fontSize="1.25rem">{label}</FormLabel>
                 <ChakraInput
-                    // maxW="320px"
-                    w="320px"
+                    minW="320px"
                     size="lg"
                     bg="white"
                     borderRadius="1rem"

@@ -22,3 +22,11 @@ export const getUserDetails = async () => {
 export const createLeague = async (league) => {
     return await axiosInstance.post('/league', league)
 }
+
+export const createLeagueSeason = async (season, leagueId) => {
+    return await axiosInstance.post(`/league/${leagueId}/season`, season)
+}
+
+export const getAllLeagueSeasons = async ({ queryKey }) => {
+    return await axiosInstance.get(`/league/${queryKey[1]}/season`)
+}

@@ -1,7 +1,6 @@
 import React from 'react'
-import { useMediaQuerySSR, useUserDetails } from 'hooks'
-import { Template, Container } from 'components/Dashboard'
-import { TeamCapsule, AddTeamCapsule } from 'components/Dashboard/teams'
+import { useUserDetails } from 'hooks'
+import { Template, Container, Capsule, CreateCapsule } from 'components/Dashboard'
 import { VStack } from '@chakra-ui/react'
 
 const mockTeams = [
@@ -11,8 +10,6 @@ const mockTeams = [
     // { name: 'Sprinting Sandals' },
 ]
 const index = () => {
-    const isDesktop = useMediaQuerySSR(940)
-
     const { user } = useUserDetails()
 
     const heading = user?.firstName ? `${user?.firstName}'s teams` : 'Your teams'
@@ -21,10 +18,10 @@ const index = () => {
         <Template>
             <Container heading={heading}>
                 <VStack spacing="1.25rem">
-                    {mockTeams.map((team, index) => {
-                        return <TeamCapsule key={`${team.name}__${index}`} team={team} />
+                    {mockTeams.map((team) => {
+                        return <Capsule key={team._id} name={team.name} path={team._id} />
                     })}
-                    {mockTeams.length < 4 && <AddTeamCapsule />}
+                    {mockTeams.length < 4 && <CreateCapsule heading="CREATE A NEW TEAM" />}
                 </VStack>
             </Container>
         </Template>

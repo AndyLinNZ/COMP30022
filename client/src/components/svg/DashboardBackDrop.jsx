@@ -7,7 +7,7 @@ function SvgComponent(props) {
             xmlnsXlink="http://www.w3.org/1999/xlink"
             width="100%"
             viewBox="0 0 1920 1080"
-            style={{ marginTop: '-150px' }}
+            style={{ marginTop: '-160px' }}
             {...props}
         >
             <image
