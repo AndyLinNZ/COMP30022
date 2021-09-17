@@ -26,7 +26,9 @@ const Capsule = ({ name, subtext, path, tags }) => {
                 <Text fontWeight="bold">
                     {name}
                 </Text>
-                {subtext ?
+                {subtext &&<Text fontSize="xs" mt="0 !important">
+                        {subtext}
+                    </Text>}
                     <Text fontSize="xs" mt="0 !important">
                         {subtext}
                     </Text>
