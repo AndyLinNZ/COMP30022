@@ -33,7 +33,7 @@ const Capsule = ({ name, subtext, path, tags }) => {
                 : null}
             </VStack>
             <Flex position="absolute" right="4rem" gridGap="14px">
-                {tags?.map(([type, text]) => <Tag id={type} type={type} text={text}/>)}
+                {tags?.map(([type, text]) => <Tag key={type} type={type} text={text}/>)}
             </Flex>
             <EditIcon
                 fontSize="1.25rem"
