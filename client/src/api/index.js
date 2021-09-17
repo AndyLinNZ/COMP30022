@@ -30,3 +30,11 @@ export const createLeagueSeason = async (season, leagueId) => {
 export const getAllLeagueSeasons = async ({ queryKey }) => {
     return await axiosInstance.get(`/league/${queryKey[1]}/season`)
 }
+
+export const editLeague = async (league, leagueId) => {
+    return await axiosInstance.patch(`/league/${leagueId}`, leagueId, league)
+}
+
+export const deleteLeague = async (leagueId) => {
+    return await axiosInstance.delete(`/league/${leagueId}`, leagueId)
+}
