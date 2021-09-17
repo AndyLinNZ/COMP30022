@@ -36,8 +36,8 @@ const index = () => {
     })
 
     const { mutate, isLoading } = useEditLeague({
-        onSuccess: (response) => {
-            router.push(new URL(response?.data?.data?.name, window.location.href).pathname)
+        onSuccess: () => {
+            router.push(appPaths.DASHBOARD_LEAGUES_PATH)
         },
         onError: (error) => {
             console.log(error)
@@ -59,14 +59,14 @@ const index = () => {
                 >
                     <Input
                         label="League name"
-                        defaultValue = {league?.name}
+                        defaultValue={league?.name}
                         error={errors.leagueName?.message}
                         {...register('leagueName')}
                         isRequired
                     />
                     <Input
                         label="Organisation name"
-                        defaultValue = {league?.organisation}
+                        defaultValue={league?.organisation}
                         error={errors.organisationName?.message}
                         {...register('organisationName')}
                         isRequired
