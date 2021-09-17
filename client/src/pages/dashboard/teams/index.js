@@ -3,12 +3,7 @@ import { useUserDetails } from 'hooks'
 import { Template, Container, Capsule, CreateCapsule } from 'components/Dashboard'
 import { VStack } from '@chakra-ui/react'
 
-const mockTeams = [
-    { name: 'Lygon Kangaroos' },
-    { name: 'Authentication Geniuses' },
-    { name: 'Roaring Rhinosaurs' },
-    // { name: 'Sprinting Sandals' },
-]
+
 const index = () => {
     const { user } = useUserDetails()
 
@@ -18,10 +13,17 @@ const index = () => {
         <Template>
             <Container heading={heading}>
                 <VStack spacing="1.25rem">
-                    {mockTeams.map((team) => {
-                        return <Capsule key={team._id} name={team.name} path={team._id} />
+                    {user?.teams?.map((team) => {
+                        const numGrades = team.grades.length
+                        const numPlayers = team.players.length
+                        const numUpcoming = team.games.filter(({ status }) => status == 'upcoming').length
+                        const numCompleted = team.games.filter(({ status }) => status == 'completed').length
+
+                        const gradeText = numGrades ? `Currently registered for ${numGrades} grades` : 'Not registered for any grades'
+                        const tags = [['players', `${numPlayers} players`], ['completed', `${numCompleted} matches completed`], ['upcoming', `${numUpcoming} matches upcoming`]]
+                        return <Capsule key={team._id} name={team.name} subtext={gradeText} path={team._id} tags={tags} />
                     })}
-                    {mockTeams.length < 4 && <CreateCapsule heading="CREATE A NEW TEAM" />}
+                    {user?.teams?.length < 4 && <CreateCapsule heading="CREATE A NEW TEAM" />}
                 </VStack>
             </Container>
         </Template>
