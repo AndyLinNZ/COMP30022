@@ -22,13 +22,6 @@ const Capsule = ({ name, path }) => {
             <Text pos="absolute" top="50%" left="1.5rem" transform="translateY(-50%)">
                 {name}
             </Text>
-            <EditIcon
-                fontSize="1.25rem"
-                pos="absolute"
-                top="50%"
-                right="1.5rem"
-                transform="translateY(-50%)"
-            />
         </Flex>
     )
 }
