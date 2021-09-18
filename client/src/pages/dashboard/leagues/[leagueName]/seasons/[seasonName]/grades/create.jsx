@@ -35,6 +35,7 @@ const create = () => {
 
     const { mutate, isLoading } = useCreateSeasonGrade({
         onSuccess: (response) => {
+            // path should be different but it's a wip so I havent changed this just so I can test if the button works
             router.push(appPaths.DASHBOARD_LEAGUES_PATH)
         },
         onError: (error) => {
