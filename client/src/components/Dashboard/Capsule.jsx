@@ -23,19 +23,22 @@ const Capsule = ({ name, subtext, path, tags }) => {
             onClick={() => router.push(window.location.pathname + `/${path}`)}
         >
             <VStack ml="1.5rem" alignItems="start">
-                <Text fontWeight="bold">
-                    {name}
-                </Text>
-                {subtext &&<Text fontSize="xs" mt="0 !important">
-                        {subtext}
-                    </Text>}
-                    <Text fontSize="xs" mt="0 !important">
-                        {subtext}
-                    </Text>
-                : null}
+                <Text fontWeight="bold">{name}</Text>
+                {subtext && (
+                    <>
+                        <Text fontSize="xs" mt="0 !important">
+                            {subtext}
+                        </Text>
+                        <Text fontSize="xs" mt="0 !important">
+                            {subtext}
+                        </Text>
+                    </>
+                )}
             </VStack>
             <Flex position="absolute" right="4rem" gridGap="14px">
-                {tags?.map(([type, text]) => <Tag key={type} type={type} text={text}/>)}
+                {tags?.map(([type, text]) => (
+                    <Tag key={type} type={type} text={text} />
+                ))}
             </Flex>
             <EditIcon
                 fontSize="1.25rem"
