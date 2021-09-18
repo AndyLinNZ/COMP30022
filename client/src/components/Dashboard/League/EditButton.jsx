@@ -3,7 +3,7 @@ import { IconButton } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-const EditButton = ({ season }) => {
+const EditButton = ({ name }) => {
     const router = useRouter()
     return (
         <IconButton
@@ -12,7 +12,7 @@ const EditButton = ({ season }) => {
             alignSelf="center"
             justifySelf="center"
             cursor="pointer"
-            onClick={() => router.push(`${window.location.pathname}/${season}/edit`)}
+            onClick={() => router.push(`${window.location.pathname}/${name}/edit`)}
             marginLeft="1rem"
         />
     )

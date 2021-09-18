@@ -11,8 +11,7 @@ import { useRouter } from 'next/router'
 import { useUserDetails, useEditLeague, useDeleteLeague } from 'hooks'
 import { getLeagueFromUser } from 'utils'
 
-
-const createLeagueSchema = yup.object().shape({
+const editLeagueSchema = yup.object().shape({
     leagueName: yup
         .string()
         .required("The League's name is required")
@@ -24,18 +23,28 @@ const createLeagueSchema = yup.object().shape({
 
 const index = () => {
     const router = useRouter()
-    const {user} = useUserDetails()
+    const { user } = useUserDetails()
     const league = getLeagueFromUser(user)
 
     const {
         handleSubmit,
         register,
         formState: { errors },
+        reset,
     } = useForm({
-        resolver: yupResolver(createLeagueSchema),
+        resolver: yupResolver(editLeagueSchema),
     })
 
-    const { mutate, isLoading } = useEditLeague({
+    const { mutate: editLeague, editIsLoading } = useEditLeague({
+        onSuccess: () => {
+            router.push(appPaths.DASHBOARD_LEAGUES_PATH)
+        },
+        onError: (error) => {
+            console.log(error)
+        },
+    })
+
+    const { mutate: deleteLeague, deleteIsLoading } = useDeleteLeague({
         onSuccess: () => {
             router.push(appPaths.DASHBOARD_LEAGUES_PATH)
         },
@@ -45,8 +54,15 @@ const index = () => {
     })
 
     const onSubmit = (data) => {
-        mutate(data)
+        editLeague(data)
     }
+
+    React.useEffect(() => {
+        reset({
+            leagueName: league?.name,
+            organisationName: league?.organisation,
+        })
+    }, [league])
 
     return (
         <Template>
@@ -75,13 +91,22 @@ const index = () => {
                         <FormButton onClick={() => router.push(appPaths.DASHBOARD_LEAGUES_PATH)}>
                             Back
                         </FormButton>
-                        
-                        <FormButton type="submit" color="black" bg="orange" isLoading={isLoading}>
+
+                        <FormButton
+                            type="submit"
+                            color="black"
+                            bg="orange"
+                            isLoading={editIsLoading}
+                        >
                             Confirm
                         </FormButton>
                     </HStack>
                     <HStack>
-                        <FormButton bg="red" onClick={() => useDeleteLeague }>
+                        <FormButton
+                            bg="red"
+                            onClick={() => deleteLeague()}
+                            isLoading={deleteIsLoading}
+                        >
                             Delete League
                         </FormButton>
                     </HStack>

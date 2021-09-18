@@ -56,6 +56,40 @@ async function getLeague(req, res, next) {
     }
 }
 
+async function deleteLeague(req, res, next) {
+    try {
+        await League.deleteOne({ _id: req.league._id })
+        return res.status(204).send()
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
+async function updateLeague(req, res, next) {
+    try {
+        let { leagueName, organisationName } = req.body
+
+        const updateQuery = {}
+        if (leagueName) updateQuery.name = leagueName
+        if (organisationName) updateQuery.organisation = organisationName
+
+        const league = await League.findOneAndUpdate(
+            { _id: req.league._id },
+            { $set: updateQuery },
+            { new: true, runValidators: true }
+        )
+
+        return res.status(200).json({
+            success: true,
+            data: league,
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
 async function getAllLeagueSeasons(req, res, next) {
     try {
         const league = await req.league.execPopulate('seasons')
@@ -98,7 +132,7 @@ async function createLeagueSeason(req, res, next) {
 
 async function createLeagueAdmins(req, res, next) {
     try {
-        if (!await allValidDocumentIds(req.body.adminIds, User)) {
+        if (!(await allValidDocumentIds(req.body.adminIds, User))) {
             return next({ status: 404, message: 'Some users do not exist' })
         }
 
@@ -130,7 +164,7 @@ async function createLeagueAdmins(req, res, next) {
 
 async function deleteLeagueAdmins(req, res, next) {
     try {
-        if (!await allValidDocumentIds(req.body.adminIds, User)) {
+        if (!(await allValidDocumentIds(req.body.adminIds, User))) {
             return next({ status: 404, message: 'Some users do not exist' })
         }
 
@@ -165,6 +199,8 @@ module.exports = {
     deleteLeagueAdmins,
     getLeague,
     getAllLeagues,
+    deleteLeague,
+    updateLeague,
     getAllLeagueSeasons,
     createLeague,
     createLeagueSeason,
