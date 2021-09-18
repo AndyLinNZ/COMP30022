@@ -15,6 +15,23 @@ const index = () => {
             <Container heading={heading}>
                 <VStack spacing="1.25rem">
                     {user?.teams?.map((team) => {
+                        const numGrades = team.grades.length
+                        const numPlayers = team.players.length
+                        const numUpcoming = team.games.filter(
+                            ({ status }) => status == 'upcoming'
+                        ).length
+                        const numCompleted = team.games.filter(
+                            ({ status }) => status == 'completed'
+                        ).length
+
+                        const gradeText = numGrades
+                            ? `Currently registered for ${numGrades} grades`
+                            : 'Not registered for any grades'
+                        const tags = [
+                            ['players', `${numPlayers} players`],
+                            ['completed', `${numCompleted} matches completed`],
+                            ['upcoming', `${numUpcoming} matches upcoming`],
+                        ]
                         return (
                             <Box
                                 key={team._id}
@@ -22,7 +39,13 @@ const index = () => {
                                 gridTemplateColumns="12fr 1fr"
                                 w="100%"
                             >
-                                <Capsule key={team._id} name={team.name} path={team._id} />
+                                <Capsule
+                                    key={team._id}
+                                    name={team.name}
+                                    subtext={gradeText}
+                                    path={team._id}
+                                    tags={tags}
+                                />
                                 <EditButton />
                             </Box>
                         )
