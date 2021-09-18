@@ -4,14 +4,9 @@ import { Template, Container, Capsule, CreateCapsule } from 'components/Dashboar
 import { Box, VStack } from '@chakra-ui/react'
 import EditButton from 'components/Dashboard/League/EditButton'
 
-const mockTeams = [
-    { name: 'Lygon Kangaroos' },
-    { name: 'Authentication Geniuses' },
-    { name: 'Roaring Rhinosaurs' },
-    // { name: 'Sprinting Sandals' },
-]
 const index = () => {
     const { user } = useUserDetails()
+    console.log(user)
 
     const heading = user?.firstName ? `${user?.firstName}'s Teams` : 'Your Teams'
 
@@ -19,7 +14,7 @@ const index = () => {
         <Template>
             <Container heading={heading}>
                 <VStack spacing="1.25rem">
-                    {mockTeams.map((team) => {
+                    {user?.teams?.map((team) => {
                         return (
                             <Box
                                 key={team._id}
@@ -32,7 +27,9 @@ const index = () => {
                             </Box>
                         )
                     })}
-                    {mockTeams.length < 4 && <CreateCapsule heading="CREATE A NEW TEAM" />}
+                    {user?.teams?.length < 4 && (
+                        <CreateCapsule heading="CREATE A NEW TEAM" borderRadius="999px" />
+                    )}
                 </VStack>
             </Container>
         </Template>

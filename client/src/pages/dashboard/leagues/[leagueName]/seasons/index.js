@@ -28,7 +28,7 @@ const index = () => {
                             </Box>
                         )
                     })}
-                    <CreateCapsule heading="ADD A NEW SEASON" />
+                    <CreateCapsule heading="ADD A NEW SEASON" borderRadius="1rem" />
                 </VStack>
             </Container>
         </Template>
