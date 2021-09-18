@@ -4,26 +4,22 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Template, Container } from 'components/Dashboard'
 import { HStack, VStack } from '@chakra-ui/react'
-import { DatePicker, FormButton, Input } from 'components/Form'
+import { FormButton, Input } from 'components/Form'
 import { appPaths } from 'utils/constants'
 import { useRouter } from 'next/router'
-import { useCreateLeagueSeason } from 'hooks'
+import { useCreateSeasonGrade } from 'hooks'
+import { Checkbox } from "@chakra-ui/react"
 
-const createSeasonSchema = yup.object().shape({
-    seasonName: yup
+const createGradeSchema = yup.object().shape({
+    gradeName: yup
         .string()
         .required("The Season's name is required")
         .max(20, 'Season Name must be at most 20 characters'),
-    seasonStart: yup.date().default(null).required('The starting date of the seasion is required'),
-    seasonFinish: yup
-        .date()
-        .default(null)
-        .required('The ending date of the season is required')
-        .when(
-            'seasonStart',
-            (seasonStart, yup) =>
-                seasonStart && yup.min(seasonStart, 'End date cannot be before Start date')
-        ),
+    numberOfRounds: yup
+        .number()
+        .typeError("Please enter numbers only")
+        .required("The number of rounds for this game is required")
+        .min(1, 'There must be at least 1 round in the grade'),
 })
 
 const create = () => {
@@ -33,14 +29,13 @@ const create = () => {
         handleSubmit,
         register,
         formState: { errors },
-        control,
     } = useForm({
-        resolver: yupResolver(createSeasonSchema),
+        resolver: yupResolver(createGradeSchema),
     })
 
-    const { mutate, isLoading } = useCreateLeagueSeason({
+    const { mutate, isLoading } = useCreateSeasonGrade({
         onSuccess: (response) => {
-            router.push(new URL(`${response?.data?.data?.name}/grades`, window.location.href).pathname)
+            router.push(appPaths.DASHBOARD_LEAGUES_PATH)
         },
         onError: (error) => {
             console.log(error)
@@ -53,7 +48,7 @@ const create = () => {
 
     return (
         <Template>
-            <Container heading="Create a new Season" minH="unset" w="unset !important">
+            <Container heading="Create a new Grade" minH="unset" w="unset !important">
                 <VStack
                     marginleft={['0', '2rem']}
                     as="form"
@@ -61,29 +56,27 @@ const create = () => {
                     onSubmit={handleSubmit(onSubmit)}
                 >
                     <Input
-                        label="Season name"
-                        placeholder="Season name"
-                        error={errors.seasonName?.message}
-                        {...register('seasonName')}
+                        label="Grade name"
+                        placeholder="Enter your grade name"
+                        error={errors.gradeName?.message}
+                        {...register('gradeName')}
                         isRequired
                         width="100%"
                     />
                     <HStack w="100%">
-                        <DatePicker
-                            control={control}
-                            label="Start date"
-                            name="seasonStart"
+                        <Input
+                            label="Number of rounds"
+                            placeholder="Enter a number"
+                            error={errors.numberOfRounds?.message}
+                            {...register('numberOfRounds')}
                             isRequired
+                            width="50%"
                         />
-                        <DatePicker
-                            control={control}
-                            label="End date"
-                            name="seasonFinish"
-                            isRequired
-                        />
+                        <Checkbox spacing="1rem" size="lg" colorScheme="black">Include Semi Finals and Grand Finals?</Checkbox>
                     </HStack>
+
                     <HStack spacing="0.5rem">
-                        <FormButton onClick={() => router.push(appPaths.DASHBOARD_LEAGUES_PATH)}>
+                        <FormButton onClick={() => router.push((window.location.pathname.split("/")).slice(0, (window.location.pathname.split("/")).length-1).join("/"))}>
                             Back
                         </FormButton>
                         <FormButton type="submit" color="black" bg="orange" isLoading={isLoading}>

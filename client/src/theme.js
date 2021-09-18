@@ -23,6 +23,7 @@ export const theme = extendTheme({
         greyBg: '#707070',
         orange: '#FFBD2D',
         heading: '#15110D',
+        red: '#FC6C6C'
     },
     breakpoints: ['600px', '1024px', '1440px'],
 })
