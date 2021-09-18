@@ -13,12 +13,12 @@ import { Checkbox } from "@chakra-ui/react"
 const createGradeSchema = yup.object().shape({
     gradeName: yup
         .string()
-        .required("The Season's name is required")
-        .max(20, 'Season Name must be at most 20 characters'),
+        .required("The Grade's name is required")
+        .max(20, 'Grade Name must be at most 20 characters'),
     numberOfRounds: yup
         .number()
         .typeError("Please enter numbers only")
-        .required("The number of rounds for this game is required")
+        .required("The number of rounds for this grade is required")
         .min(1, 'There must be at least 1 round in the grade'),
 })
 
