@@ -21,7 +21,7 @@ const roundSchema = new mongoose.Schema({
     teamOnBye: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Team',
-    },
+    }
 })
 
 roundSchema.pre('deleteOne', { document: true, query: false }, async function (next) {
