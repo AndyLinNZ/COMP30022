@@ -1,7 +1,6 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
-import { Spinner } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Template, Container } from 'components/Dashboard'
 import { HStack, VStack } from '@chakra-ui/react'
@@ -75,60 +74,42 @@ const edit = () => {
 
     return (
         <Template>
-            {isLoading || isSuccess ? (
-                <Spinner
-                    thickness="4px"
-                    speed="0.85s"
-                    emptyColor="gray.200"
-                    color="blue.500"
-                    size="xl"
-                    position="absolute"
-                    top="50%"
-                    left="calc(50% - 2rem)"
-                />
-            ) : (
-                <Container heading="Update Season" minH="unset" w="unset !important">
-                    <VStack
-                        marginleft={['0', '2rem']}
-                        as="form"
-                        spacing="2rem"
-                        onSubmit={handleSubmit(onSubmit)}
-                    >
-                        <Input
-                            label="Season name"
-                            placeholder={season?.name}
-                            error={errors.seasonName?.message}
-                            {...register('seasonName')}
-                            width="100%"
+            <Container heading="Update Season" minH="unset" w="unset !important">
+                <VStack
+                    marginleft={['0', '2rem']}
+                    as="form"
+                    spacing="2rem"
+                    onSubmit={handleSubmit(onSubmit)}
+                >
+                    <Input
+                        label="Season name"
+                        placeholder={season?.name}
+                        error={errors.seasonName?.message}
+                        {...register('seasonName')}
+                        width="100%"
+                    />
+                    <HStack w="100%">
+                        <DatePicker
+                            control={control}
+                            label="Start date"
+                            name="seasonStart"
+                            placeHolder={season?.dateStart}
                         />
-                        <HStack w="100%">
-                            <DatePicker
-                                control={control}
-                                label="Start date"
-                                name="seasonStart"
-                                placeHolder={season?.dateStart}
-                            />
-                            <DatePicker
-                                control={control}
-                                label="End date"
-                                name="seasonFinish"
-                                placeHolder={season?.dateFinish}
-                            />
-                        </HStack>
-                        <HStack spacing="0.5rem">
-                            <FormButton onClick={() => router.back()}>Back</FormButton>
-                            <FormButton
-                                type="submit"
-                                color="black"
-                                bg="orange"
-                                isLoading={isLoading}
-                            >
-                                Update
-                            </FormButton>
-                        </HStack>
-                    </VStack>
-                </Container>
-            )}
+                        <DatePicker
+                            control={control}
+                            label="End date"
+                            name="seasonFinish"
+                            placeHolder={season?.dateFinish}
+                        />
+                    </HStack>
+                    <HStack spacing="0.5rem">
+                        <FormButton onClick={() => router.back()}>Back</FormButton>
+                        <FormButton type="submit" color="black" bg="orange" isLoading={isLoading}>
+                            Update
+                        </FormButton>
+                    </HStack>
+                </VStack>
+            </Container>
         </Template>
     )
 }

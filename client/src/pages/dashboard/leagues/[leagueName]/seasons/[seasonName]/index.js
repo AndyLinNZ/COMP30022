@@ -27,7 +27,7 @@ const index = () => {
                                 w="100%"
                             >
                                 <InfoContainer season={season} path={season._id} />
-                                <EditButton season={season} />
+                                <EditButton name={season?.name} />
                             </Box>
                         )
                     })}
