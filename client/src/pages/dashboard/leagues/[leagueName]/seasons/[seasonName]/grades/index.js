@@ -1,8 +1,8 @@
 import React from 'react'
 import { useGetAllSeasonGrades, useUserDetails } from 'hooks'
 import { Template, CreateCapsule } from 'components/Dashboard'
-import { Box, VStack } from '@chakra-ui/react'
-import { Container, InfoContainer } from 'components/Dashboard/League'
+import { Box, VStack, Text } from '@chakra-ui/react'
+import { Container, GradeContainer } from 'components/Dashboard/League'
 import { getSeasonFromUser, getLeagueFromUser } from 'utils'
 import EditButton from 'components/Dashboard/League/EditButton'
 
@@ -26,7 +26,7 @@ const index = () => {
                                 w="100%"
                             >
                                 <GradeContainer grade={grade} path={grade.name} />
-                                <EditButton />
+                                <EditButton name={grade.name}/>
                             </Box>
                         )
                     })}
