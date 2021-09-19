@@ -31,10 +31,15 @@ const gradeSchema = new mongoose.Schema({
         ref: 'Season',
         required: true,
     },
-    fixture: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Round',
-    }]
+    fixture: {
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Round',
+            },
+        ],
+        default: [],
+    }
 })
 
 gradeSchema.index({ season: 1, name: 1 }, { unique: true })
