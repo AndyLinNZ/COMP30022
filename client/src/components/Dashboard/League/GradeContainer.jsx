@@ -7,7 +7,7 @@ import { Status } from '.'
 const GradeContainer = ({ grade, path }) => {
     const router = useRouter()
     const isDesktop = useMediaQuerySSR(860)
-    const { name, teams, fixture } = grade
+    const { name, difficulty, gender, teams, fixture } = grade
     return isDesktop ? (
         <Flex
             w="100%"
@@ -27,16 +27,16 @@ const GradeContainer = ({ grade, path }) => {
                 fontSize="1.25rem"
                 w="100%"
                 display="grid"
-                gridTemplateColumns="1fr 1fr 1fr"
+                gridTemplateColumns="1fr 0.6fr"
                 alignItems="center"
             >
-                <Text>{name}</Text>
+                <Text>{name} ({gender} {difficulty})</Text>
 
                 <HStack>
-                    <Box p="0.25rem 1rem" fontSize={['0.875rem', '1rem']} bg="#D5D5D5" color="greyText">
+                    <Box justifySelf="flex-end" p="0.25rem 1rem" fontSize={['0.875rem', '1rem']} bg="darkGrey" color="greyText">
                         {fixture.length + " ROUND(S) ADDED"}
                     </Box>
-                    <Box p="0.25rem 1rem" fontSize={['0.875rem', '1rem']} bg="black">
+                    <Box justifySelf="flex-end" p="0.25rem 1rem" fontSize={['0.875rem', '1rem']} bg="greyText.500" color="white">
                         {teams.length + " TEAM(S) ASSIGNED"}
                     </Box>
                 </HStack>
@@ -70,9 +70,6 @@ const GradeContainer = ({ grade, path }) => {
                     </Box>
                 </HStack>
             </VStack>
-            <Box alignSelf="center" marginTop="0.5rem">
-                <Status status={status} />
-            </Box>
         </Flex>
     )
 }
