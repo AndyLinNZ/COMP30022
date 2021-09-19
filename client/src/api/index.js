@@ -34,3 +34,19 @@ export const getAllLeagueSeasons = async ({ queryKey }) => {
 export const editSeason = async (season, seasonId) => {
     return await axiosInstance.patch(`/season/${seasonId}`, season)
 }
+
+export const editLeague = async (league, leagueId) => {
+    return await axiosInstance.patch(`/league/${leagueId}`, league)
+}
+
+export const deleteLeague = async (leagueId) => {
+    return await axiosInstance.delete(`/league/${leagueId}`)
+}
+
+export const getAllSeasonGrades = async ({ queryKey }) => {
+    return await axiosInstance.get(`/league/${queryKey[2]}/season/${queryKey[1]}/grade`)
+}
+
+export const createSeasonGrade = async (grade, seasonId, leagueId) => {
+    return await axiosInstance.post(`/league/${leagueId}/season/${seasonId}/grade`, grade)
+}

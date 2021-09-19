@@ -29,7 +29,21 @@ leagueRouter.post(
     leagueController.createLeagueAdmins
 )
 
+// UPDATE
+leagueRouter.patch(
+    '/:leagueId',
+    ensureAuthenticated,
+    ensureLeagueAdmin,
+    leagueController.updateLeague
+)
+
 // DELETE
+leagueRouter.delete(
+    '/:leagueId',
+    ensureAuthenticated,
+    ensureLeagueCreator,
+    leagueController.deleteLeague
+)
 leagueRouter.delete(
     '/:leagueId/admin',
     ensureAuthenticated,

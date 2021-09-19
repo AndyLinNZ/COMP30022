@@ -9,7 +9,7 @@ import { appPaths } from 'utils/constants'
 import { useRouter } from 'next/router'
 import { useCreateLeagueSeason } from 'hooks'
 
-const createLeagueSchema = yup.object().shape({
+const createSeasonSchema = yup.object().shape({
     seasonName: yup
         .string()
         .required("The Season's name is required")
@@ -35,12 +35,12 @@ const create = () => {
         formState: { errors },
         control,
     } = useForm({
-        resolver: yupResolver(createLeagueSchema),
+        resolver: yupResolver(createSeasonSchema),
     })
 
     const { mutate, isLoading } = useCreateLeagueSeason({
         onSuccess: (response) => {
-            router.push(new URL(response?.data?.data?.name, window.location.href).pathname)
+            router.push(new URL(`${response?.data?.data?.name}/grades`, window.location.href).pathname)
         },
         onError: (error) => {
             console.log(error)

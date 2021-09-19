@@ -40,13 +40,6 @@ const Capsule = ({ name, subtext, path, tags }) => {
                     <Tag key={type} type={type} text={text} />
                 ))}
             </Flex>
-            <EditIcon
-                fontSize="1.25rem"
-                pos="absolute"
-                top="50%"
-                right="1.5rem"
-                transform="translateY(-50%)"
-            />
         </Flex>
     )
 }
