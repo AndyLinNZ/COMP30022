@@ -3,27 +3,40 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Template, Container } from 'components/Dashboard'
-import { HStack, VStack } from '@chakra-ui/react'
+import { HStack, VStack, Select, FormControl, FormLabel } from '@chakra-ui/react'
 import { FormButton, Input } from 'components/Form'
 import { appPaths } from 'utils/constants'
 import { useRouter } from 'next/router'
 import { useCreateSeasonGrade } from 'hooks'
 import { Checkbox } from "@chakra-ui/react"
+import { Controller } from 'react-hook-form'
 
 const createGradeSchema = yup.object().shape({
     gradeName: yup
         .string()
         .required("The Grade's name is required")
         .max(20, 'Grade Name must be at most 20 characters'),
-    numberOfRounds: yup
-        .number()
-        .typeError("Please enter numbers only")
-        .required("The number of rounds for this grade is required")
-        .min(1, 'There must be at least 1 round in the grade'),
+    // numberOfRounds: yup
+    //     .number()
+    //     .typeError("Please enter numbers only")
+    //     .required("The number of rounds for this grade is required")
+    //     .min(1, 'There must be at least 1 round in the grade'),
+    gradeDifficulty: yup
+        .string()
+        .required("The Grade's difficulty is required")
+        .max(1, 'Grade Name must be at most 1 character'),
+    gradeGender: yup
+        .string()
+        .required("The Grade's gender is required")
+        .max(6, 'Grade Name must be at most 6 characters'),
 })
 
 const create = () => {
     const router = useRouter()
+
+    const [gradeGender, setGradeGender] = React.useState("mixed")
+    const [gradeDifficulty, setGradeDifficulty] = React.useState("C")
+    
 
     const {
         handleSubmit,
@@ -35,8 +48,7 @@ const create = () => {
 
     const { mutate, isLoading } = useCreateSeasonGrade({
         onSuccess: (response) => {
-            // path should be different but it's a wip so I havent changed this just so I can test if the button works
-            router.push(appPaths.DASHBOARD_LEAGUES_PATH)
+            router.push(new URL(`${response?.data?.data?.name}/rounds`, window.location.href).pathname)
         },
         onError: (error) => {
             console.log(error)
@@ -46,6 +58,7 @@ const create = () => {
     const onSubmit = (data) => {
         mutate(data)
     }
+
 
     return (
         <Template>
@@ -64,16 +77,57 @@ const create = () => {
                         isRequired
                         width="100%"
                     />
+
                     <HStack w="100%">
+
                         <Input
-                            label="Number of rounds"
-                            placeholder="Enter a number"
-                            error={errors.numberOfRounds?.message}
-                            {...register('numberOfRounds')}
+                            label="Grade gender"
+                            placeholder="Enter your grade gender"
+                            error={errors.gradeGender?.message}
+                            {...register('gradeGender')}
                             isRequired
-                            width="50%"
+                            width="100%"
                         />
-                        <Checkbox spacing="1rem" size="lg" colorScheme="black">Include Semi Finals and Grand Finals?</Checkbox>
+
+                        <Input
+                            label="Grade difficulty"
+                            placeholder="Enter your grade difficulty"
+                            error={errors.gradeDifficulty?.message}
+                            {...register('gradeDifficulty')}
+                            isRequired
+                            width="100%"
+                        />
+
+                        <FormControl id="gender" isRequired label="Grade Gender" size="lg">
+                            <FormLabel fontSize="1.25rem">Grade Gender</FormLabel>
+                            <Select 
+                                value={gradeGender} 
+                                placeholder="Select a grade gender" 
+                                size="lg" 
+                                onChange={e => setGradeGender(e.target.value)}
+                            >
+                                <option value="male">male</option>
+                                <option value="female">female</option>
+                                <option value="mixed">mixed</option>
+                            </Select>
+                        </FormControl>
+
+                        <FormControl id="difficulty" isRequired>
+                            <FormLabel fontSize="1.25rem">Grade Difficulty</FormLabel>
+                            <Select 
+                                value={gradeDifficulty} 
+                                placeholder="Select a grade difficulty" 
+                                size="lg" 
+                                onChange={e => setGradeDifficulty(e.target.value)}
+                            >
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                                <option value="E">E</option>
+                            </Select>
+                        </FormControl>
+
                     </HStack>
 
                     <HStack spacing="0.5rem">
