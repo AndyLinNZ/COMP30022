@@ -65,6 +65,14 @@ async function setupLeagues() {
         await newLeague.save()
         leagueIID.objId = newLeague._id.toString()
         logger.info(`league ${leagueIID.name} created: ${leagueIID.objId}`)
+
+        // update the league admins
+        await Promise.all(details.admins.map(async (userId) => {
+            await User.findOneAndUpdate(
+                { _id: userId },
+                { $push: { leagues: leagueIID.objId } }
+            )
+        }))
     }))
 }
 
@@ -118,6 +126,12 @@ async function setupTeams() {
                 { $push: { teams: teamIID.objId } }
             )
         }))
+
+        // update the team admin
+        await User.findOneAndUpdate(
+            { _id: details.admin },
+            { $push: { teams: teamIID.objId } }
+        )
     }))
 }
 
