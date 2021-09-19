@@ -104,7 +104,12 @@ const edit = () => {
                     </HStack>
                     <HStack spacing="0.5rem">
                         <FormButton onClick={() => router.back()}>Back</FormButton>
-                        <FormButton type="submit" color="black" bg="orange" isLoading={isLoading}>
+                        <FormButton
+                            type="submit"
+                            color="black"
+                            bg="orange"
+                            isLoading={isLoading || isSuccess}
+                        >
                             Update
                         </FormButton>
                     </HStack>
