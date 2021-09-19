@@ -8,6 +8,7 @@ import { DatePicker, FormButton, Input } from 'components/Form'
 import { useRouter } from 'next/router'
 import { useUserDetails, useEditSeason } from 'hooks'
 import { getSeasonFromUser } from 'utils'
+import moment from 'moment'
 
 const editSeasonSchema = yup.object().shape({
     seasonName: yup.string().max(20, 'Season Name must be at most 20 characters'),
@@ -93,13 +94,13 @@ const edit = () => {
                             control={control}
                             label="Start date"
                             name="seasonStart"
-                            placeHolder={season?.dateStart}
+                            placeHolder={moment(season?.dateStart).format('DD/MM/YYYY')}
                         />
                         <DatePicker
                             control={control}
                             label="End date"
                             name="seasonFinish"
-                            placeHolder={season?.dateFinish}
+                            placeHolder={moment(season?.dateFinish).format('DD/MM/YYYY')}
                         />
                     </HStack>
                     <HStack spacing="0.5rem">

@@ -26,7 +26,7 @@ const DatePicker = ({
                             onChange={onChange}
                             onBlur={onBlur}
                             selected={value}
-                            placeholder={placeHolder}
+                            placeholderText={placeHolder}
                             dateFormat="dd/MM/yyyy"
                         />
                         <FormErrorMessage pos="absolute" fontSize="0.75rem" color="greyText.500">
