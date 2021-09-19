@@ -279,7 +279,7 @@ describe('Unit Testing: createRound in gradeController', () => {
             json: {
                 success: true,
                 data: expectedRound
-            },
+            }
         }
 
         expect(next).not.toHaveBeenCalled()
