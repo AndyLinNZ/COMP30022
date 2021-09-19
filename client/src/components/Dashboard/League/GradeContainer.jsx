@@ -62,10 +62,10 @@ const GradeContainer = ({ grade, path }) => {
             <VStack fontSize="1.25rem" w="100%" alignItems="flex-start" spacing={0}>
                 <Text>{name}</Text>
                 <HStack>
-                    <Box p="0.25rem 1rem" fontSize={['0.875rem', '1rem']} bg="#D5D5D5" color="greyText">
+                    <Box p="0.25rem 1rem" fontSize={['0.875rem', '1rem']} bg="darkGrey" color="greyText">
                         {fixture.length + " ROUND(S) ADDED"}
                     </Box>
-                    <Box p="0.25rem 1rem" fontSize={['0.875rem', '1rem']} bg="black">
+                    <Box p="0.25rem 1rem" fontSize={['0.875rem', '1rem']} bg="greyText.500" color="white">
                         {teams.length + " TEAM(S) ASSIGNED"}
                     </Box>
                 </HStack>
