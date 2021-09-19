@@ -25,13 +25,10 @@ components:
           type: Date
         seasonFinish:
           type: Date
-        seasonStatus:
-          type: String
       example:
         seasonName: Summer 2020/2021 jdubz
         seasonStart: '2021-09-12T12:23:34.944Z'
         seasonFinish: '2021-09-12T12:23:34.944Z'
-        seasonStatus: completed
 
     SeasonNotFoundResponse:
       allOf:
@@ -78,7 +75,7 @@ paths:
     patch:
       tags:
         - 'Season'
-      summary: 'Update seasonName, seasonStart, seasonFinish or seasonStatus by id.'
+      summary: 'Update seasonName, seasonStart or seasonFinish by id.'
       description: 'This can only be done by a logged in user and the creator of the league of the season.'
       parameters:
       - name: 'seasonId'

@@ -31,6 +31,7 @@ const gameSchema = new mongoose.Schema({
             ],
             default: [],
         },
+        totalPoints: Number
     },
     team2: {
         team: {
@@ -48,6 +49,7 @@ const gameSchema = new mongoose.Schema({
             ],
             default: [],
         },
+        totalPoints: Number
     },
     locationName: String,
     location: {
