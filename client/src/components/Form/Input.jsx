@@ -1,12 +1,46 @@
 import React from 'react'
 import { FormControl, FormErrorMessage, FormLabel, Input as ChakraInput } from '@chakra-ui/react'
 
+const RenderInput = ({type, placeholder, label, ref, }) => {
+    switch (type) {
+
+        case 'text': 
+            return (
+                <ChakraInput
+                    minW="320px"
+                    size="lg"
+                    bg="white"
+                    borderRadius="1rem"
+                    placeholder={placeholder}
+                    label={label}
+                    type={type}
+                    color="black"
+                    ref={ref}
+                    {...props}
+                />
+            )
+
+        case 'select':
+            return (
+                <Select 
+                    placeholder="Select a grade gender" 
+                    size="lg" 
+                    error={errors.gradeGender?.message}
+                    {...register('gradeGender')}
+                > {children} </Select>
+            )
+
+    }
+
+}
+
+
 const Input = React.forwardRef(
     (
         {
             placeholder = 'Enter input',
             label = '',
-            type = undefined,
+            type = 'text',
             error = '',
             isDisabled = false,
             isRequired = false,

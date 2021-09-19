@@ -80,31 +80,13 @@ const create = () => {
 
                     <HStack w="100%">
 
-                        <Input
-                            label="Grade gender"
-                            placeholder="Enter your grade gender"
-                            error={errors.gradeGender?.message}
-                            {...register('gradeGender')}
-                            isRequired
-                            width="100%"
-                        />
-
-                        <Input
-                            label="Grade difficulty"
-                            placeholder="Enter your grade difficulty"
-                            error={errors.gradeDifficulty?.message}
-                            {...register('gradeDifficulty')}
-                            isRequired
-                            width="100%"
-                        />
-
                         <FormControl id="gender" isRequired label="Grade Gender" size="lg">
                             <FormLabel fontSize="1.25rem">Grade Gender</FormLabel>
                             <Select 
-                                value={gradeGender} 
                                 placeholder="Select a grade gender" 
                                 size="lg" 
-                                onChange={e => setGradeGender(e.target.value)}
+                                error={errors.gradeGender?.message}
+                                {...register('gradeGender')}
                             >
                                 <option value="male">male</option>
                                 <option value="female">female</option>
@@ -115,10 +97,10 @@ const create = () => {
                         <FormControl id="difficulty" isRequired>
                             <FormLabel fontSize="1.25rem">Grade Difficulty</FormLabel>
                             <Select 
-                                value={gradeDifficulty} 
                                 placeholder="Select a grade difficulty" 
                                 size="lg" 
-                                onChange={e => setGradeDifficulty(e.target.value)}
+                                error={errors.gradeDifficulty?.message}
+                                {...register('gradeDifficulty')}
                             >
                                 <option value="A">A</option>
                                 <option value="B">B</option>
