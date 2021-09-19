@@ -238,7 +238,7 @@ describe('Unit Testing: deleteGrade in gradeController', () => {
         }
         req.grade = new Grade(gradeDetails)
 
-        Grade.deleteOne = jest.fn().mockImplementationOnce()
+        Grade.prototype.deleteOne = jest.fn().mockImplementationOnce()
 
         await gradeController.deleteGrade(req, res, next)
 
@@ -266,7 +266,7 @@ describe('Unit Testing: createRound in gradeController', () => {
 
         const expectedRound = new Round({
             grade: gradeDetails._id,
-            date: '2021-08-12T12:23:34.944Z'
+            date: '2021-08-12T12:23:34.944Z',
         })
 
         Round.prototype.save = jest.fn().mockResolvedValue(expectedRound)
@@ -278,8 +278,8 @@ describe('Unit Testing: createRound in gradeController', () => {
             status: 201,
             json: {
                 success: true,
-                data: expectedRound
-            }
+                data: expectedRound,
+            },
         }
 
         expect(next).not.toHaveBeenCalled()

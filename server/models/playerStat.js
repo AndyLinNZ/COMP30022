@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Player = require('./player')
 
 const playerStatSchema = new mongoose.Schema({
     playerId: {
@@ -43,8 +44,14 @@ const playerStatSchema = new mongoose.Schema({
     minutesPlayed: {
         type: Number,
         max: 60,
-        min: 0
+        min: 0,
     },
+})
+
+playerStatSchema.pre('deleteOne', { document: true, query: false }, async function (next) {
+    await this.execPopulate('playerId')
+    await this.playerId.deleteOne({ _id: this.playerId._id })
+    next()
 })
 
 module.exports = mongoose.model('PlayerStat', playerStatSchema)

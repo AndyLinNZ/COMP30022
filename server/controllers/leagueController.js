@@ -58,7 +58,7 @@ async function getLeague(req, res, next) {
 
 async function deleteLeague(req, res, next) {
     try {
-        await League.deleteOne({ _id: req.league._id })
+        await req.league.deleteOne({ _id: req.league._id })
         return res.status(204).send()
     } catch (err) {
         console.log(err)

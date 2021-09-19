@@ -43,5 +43,11 @@ seasonSchema.pre('validate', function (next) {
     next()
 })
 
+seasonSchema.pre('deleteOne', { document: true, query: false }, async function (next) {
+    await this.execPopulate('grades')
+    await Promise.all(this.grades.map(async (grade) => await grade.deleteOne({ _id: grade._id })))
+    next()
+})
+
 seasonSchema.index({ league: 1, name: 1 }, { unique: true })
 module.exports = mongoose.model('Season', seasonSchema)
