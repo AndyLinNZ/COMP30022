@@ -15,6 +15,7 @@ const index = () => {
         <Template>
             <Container league={league}>
                 <VStack spacing="1.25rem">
+                    <CreateCapsule heading="ADD A NEW SEASON" />
                     {seasons?.map((season) => {
                         return (
                             <Box
@@ -28,7 +29,6 @@ const index = () => {
                             </Box>
                         )
                     })}
-                    <CreateCapsule heading="ADD A NEW SEASON" />
                 </VStack>
             </Container>
         </Template>
