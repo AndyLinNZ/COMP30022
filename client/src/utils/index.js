@@ -18,9 +18,10 @@ export const getLeagueFromUser = (user) => {
 }
 
 export const getSeasonFromUser = (user) => {
-    const league = getLeagueFromUser(user)
-    return league?.seasons?.find(({ season_name }) => season_name === router.query.seasonName)
+    const leagues = getLeagueFromUser(user)
+    return leagues?.seasons.find(({ name }) => name === router.query.seasonName)
 }
+
 export const getHumanReadableDate = (dateStr) =>
     new Intl.DateTimeFormat('en', {
         year: 'numeric',

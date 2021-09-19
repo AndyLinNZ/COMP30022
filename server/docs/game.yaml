@@ -115,10 +115,15 @@ paths:
                         playerId: 613c5cbea0a3d4e46b70d821
                         points: 69
                         assists: 3
+                    totalPoints: 69
+                  team2:
+                    team: 613c5ccea0a3d4e46b70d826
+                    playerStats:
                       - _id: 613c61a5c9138b8534eacfa3
                         playerId: 613c5ccea0a3d4e46b70d826
                         points: 44
                         assists: 0
+                    totalPoints: 44
         '404':
           description: 'Team does not exist.'
           content:
