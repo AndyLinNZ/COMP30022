@@ -30,18 +30,28 @@ const GradeContainer = ({ grade, path }) => {
                 gridTemplateColumns="1fr 0.6fr"
                 alignItems="center"
             >
-                <Text>{name} ({gender} {difficulty})</Text>
+                <Text>
+                    {name} ({gender} {difficulty})
+                </Text>
 
-                <HStack>
-                    <Box justifySelf="flex-end" p="0.25rem 1rem" fontSize={['0.875rem', '1rem']} bg="darkGrey" color="greyText">
-                        {fixture.length + " ROUND(S) ADDED"}
+                <HStack justifyContent="flex-end">
+                    <Box
+                        p="0.25rem 1rem"
+                        fontSize={['0.875rem', '1rem']}
+                        bg="darkGrey"
+                        color="greyText"
+                    >
+                        {fixture.length + ' ROUND(S) ADDED'}
                     </Box>
-                    <Box justifySelf="flex-end" p="0.25rem 1rem" fontSize={['0.875rem', '1rem']} bg="greyText.500" color="white">
-                        {teams.length + " TEAM(S) ASSIGNED"}
+                    <Box
+                        p="0.25rem 1rem"
+                        fontSize={['0.875rem', '1rem']}
+                        bg="greyText.500"
+                        color="white"
+                    >
+                        {teams.length + ' TEAM(S) ASSIGNED'}
                     </Box>
                 </HStack>
-
-
             </Box>
         </Flex>
     ) : (
@@ -62,11 +72,21 @@ const GradeContainer = ({ grade, path }) => {
             <VStack fontSize="1.25rem" w="100%" alignItems="flex-start" spacing={0}>
                 <Text>{name}</Text>
                 <HStack>
-                    <Box p="0.25rem 1rem" fontSize={['0.875rem', '1rem']} bg="darkGrey" color="greyText">
-                        {fixture.length + " ROUND(S) ADDED"}
+                    <Box
+                        p="0.25rem 1rem"
+                        fontSize={['0.875rem', '1rem']}
+                        bg="darkGrey"
+                        color="greyText"
+                    >
+                        {fixture.length + ' ROUND(S) ADDED'}
                     </Box>
-                    <Box p="0.25rem 1rem" fontSize={['0.875rem', '1rem']} bg="greyText.500" color="white">
-                        {teams.length + " TEAM(S) ASSIGNED"}
+                    <Box
+                        p="0.25rem 1rem"
+                        fontSize={['0.875rem', '1rem']}
+                        bg="greyText.500"
+                        color="white"
+                    >
+                        {teams.length + ' TEAM(S) ASSIGNED'}
                     </Box>
                 </HStack>
             </VStack>

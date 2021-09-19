@@ -1,39 +1,23 @@
 import React from 'react'
-import { FormControl, FormErrorMessage, FormLabel, Input as ChakraInput } from '@chakra-ui/react'
+import {
+    FormControl,
+    FormErrorMessage,
+    FormLabel,
+    Input as ChakraInput,
+    Select,
+} from '@chakra-ui/react'
 
-const RenderInput = ({type, placeholder, label, ref, }) => {
-    switch (type) {
-
-        case 'text': 
-            return (
-                <ChakraInput
-                    minW="320px"
-                    size="lg"
-                    bg="white"
-                    borderRadius="1rem"
-                    placeholder={placeholder}
-                    label={label}
-                    type={type}
-                    color="black"
-                    ref={ref}
-                    {...props}
-                />
-            )
-
-        case 'select':
-            return (
-                <Select 
-                    placeholder="Select a grade gender" 
-                    size="lg" 
-                    error={errors.gradeGender?.message}
-                    {...register('gradeGender')}
-                > {children} </Select>
-            )
-
+const RenderInput = React.forwardRef(({ type, placeholder, label, children, ...props }, ref) => {
+    if (type === 'select') {
+        return (
+            <Select placeholder={placeholder} label={label} type={type} ref={ref} {...props}>
+                {children}
+            </Select>
+        )
     }
 
-}
-
+    return <ChakraInput placeholder={placeholder} label={label} type={type} ref={ref} {...props} />
+})
 
 const Input = React.forwardRef(
     (
@@ -44,6 +28,7 @@ const Input = React.forwardRef(
             error = '',
             isDisabled = false,
             isRequired = false,
+            children,
             ...props
         },
         ref
@@ -51,7 +36,7 @@ const Input = React.forwardRef(
         return (
             <FormControl isRequired={isRequired} isDisabled={isDisabled} isInvalid={error}>
                 <FormLabel fontSize="1.25rem">{label}</FormLabel>
-                <ChakraInput
+                <RenderInput
                     minW="320px"
                     size="lg"
                     bg="white"
@@ -62,7 +47,9 @@ const Input = React.forwardRef(
                     color="black"
                     ref={ref}
                     {...props}
-                />
+                >
+                    {children}
+                </RenderInput>
                 <FormErrorMessage fontSize="0.75rem" color="greyText.500">
                     {error}
                 </FormErrorMessage>
@@ -72,5 +59,6 @@ const Input = React.forwardRef(
 )
 
 Input.displayName = 'Input'
+RenderInput.displayName = 'RenderInput'
 
 export default Input
