@@ -1,10 +1,13 @@
 import React from 'react'
 import { useUserDetails } from 'hooks'
 import { Template, Container, Capsule, CreateCapsule } from 'components/Dashboard'
-import { Box, VStack } from '@chakra-ui/react'
+import { IconButton, Box, VStack } from '@chakra-ui/react'
 import EditButton from 'components/Dashboard/League/EditButton'
+import PersonAddOutlined from '@material-ui/icons/PersonAddOutlined'
+import { useRouter } from 'next/router'
 
 const index = () => {
+    const router = useRouter()
     const { user } = useUserDetails()
     console.log(user)
 
@@ -36,22 +39,39 @@ const index = () => {
                             <Box
                                 key={team._id}
                                 display="grid"
-                                gridTemplateColumns="12fr 1fr"
+                                gridTemplateColumns="12fr 1fr 1fr"
                                 w="100%"
                             >
                                 <Capsule
                                     key={team._id}
                                     name={team.name}
                                     subtext={gradeText}
-                                    path={team._id}
+                                    path={`${team.name}/games`}
                                     tags={tags}
+                                />
+                                <IconButton
+                                    icon={<PersonAddOutlined />}
+                                    size="lg"
+                                    alignSelf="center"
+                                    justifySelf="center"
+                                    cursor="pointer"
+                                    marginLeft="1rem"
+                                    onClick={() =>
+                                        router.push(
+                                            `${window.location.pathname}/${team.name}/games/addPlayer`
+                                        )
+                                    }
                                 />
                                 <EditButton />
                             </Box>
                         )
                     })}
                     {user?.teams?.length < 4 && (
-                        <CreateCapsule heading="CREATE A NEW TEAM" borderRadius="999px" />
+                        <CreateCapsule
+                            heading="CREATE A NEW TEAM"
+                            borderRadius="999px"
+                            buttonNum={2}
+                        />
                     )}
                 </VStack>
             </Container>

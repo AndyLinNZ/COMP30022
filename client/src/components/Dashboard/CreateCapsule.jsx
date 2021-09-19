@@ -4,12 +4,13 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import EditButton from 'components/Dashboard/League/EditButton'
 
-const CreateCapsule = ({ heading, borderRadius }) => {
+const CreateCapsule = ({ heading, borderRadius, buttonNum }) => {
     const router = useRouter()
+    const buttonNums = {0:"12fr", 1:"12fr 1fr", 2:"12fr 1fr 1fr"}
     return (
         <Box
             display="grid"
-            gridTemplateColumns="12fr 1fr"
+            gridTemplateColumns={buttonNums[buttonNum]}
             w="100%"
         >
             <Flex
@@ -45,9 +46,13 @@ const CreateCapsule = ({ heading, borderRadius }) => {
                     {heading}
                 </Text>
             </Flex>
-            <div style={{visibility: "hidden" }}>
-                <EditButton />
-            </div>
+            {[...Array(buttonNum).keys()].map((num) => {
+                return (
+                    <div style={{visibility: "hidden" }}>
+                        <EditButton />
+                    </div>
+                )
+            })}
         </Box>
     )
 }

@@ -28,9 +28,6 @@ const Capsule = ({ name, subtext, path, tags }) => {
                         <Text fontSize="xs" mt="0 !important">
                             {subtext}
                         </Text>
-                        <Text fontSize="xs" mt="0 !important">
-                            {subtext}
-                        </Text>
                     </>
                 )}
             </VStack>

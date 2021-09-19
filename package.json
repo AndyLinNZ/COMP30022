@@ -22,5 +22,8 @@
         "eslint-plugin-jest": "^24.4.0",
         "eslint-plugin-react": "^7.24.0",
         "prettier": "^2.3.2"
+    },
+    "dependencies": {
+        "@material-ui/icons": "^4.11.2"
     }
 }

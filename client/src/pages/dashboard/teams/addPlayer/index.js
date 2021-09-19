@@ -8,13 +8,13 @@ import Input from 'components/Form/Input'
 import FormButton from 'components/Form/FormButton'
 import { appPaths } from 'utils/constants'
 import { useRouter } from 'next/router'
-import { useCreateTeam } from 'hooks'
+import { useAddPlayerToTeam } from 'hooks'
 
-const createTeamSchema = yup.object().shape({
-    teamName: yup
+const addPlayerSchema = yup.object().shape({
+    playerName: yup
         .string()
-        .required("The Team's name is required")
-        .max(20, 'Team Name must be at most 20 characters'),
+        .required("The Player's name is required")
+        .max(20, 'Player Name must be at most 20 characters'),
 })
 
 const index = () => {
@@ -25,14 +25,12 @@ const index = () => {
         register,
         formState: { errors },
     } = useForm({
-        resolver: yupResolver(createTeamSchema),
+        resolver: yupResolver(addPlayerSchema),
     })
 
-    const { mutate, isLoading } = useCreateTeam({
+    const { mutate, isLoading } = useAddPlayerToTeam({
         onSuccess: (response) => {
-            router.push(
-                new URL(`${response?.data?.data?.name}/games`, window.location.href).pathname
-            )
+            router.push(new URL(`${response?.data?.data?.name}`, window.location.href).pathname)
         },
         onError: (error) => {
             console.log(error)
@@ -45,7 +43,7 @@ const index = () => {
 
     return (
         <Template>
-            <Container heading="Create a new Team" minH="unset" w="unset !important">
+            <Container heading="Add a Player" minH="unset" w="unset !important">
                 <VStack
                     marginleft={['0', '2rem']}
                     as="form"
@@ -53,10 +51,10 @@ const index = () => {
                     onSubmit={handleSubmit(onSubmit)}
                 >
                     <Input
-                        label="Team name"
-                        placeholder="Team name"
-                        error={errors.teamName?.message}
-                        {...register('teamName')}
+                        label="Player name"
+                        placeholder="Player name"
+                        error={errors.playerName?.message}
+                        {...register('playerName')}
                         isRequired
                     />
                     <HStack spacing="0.5rem">
@@ -64,9 +62,12 @@ const index = () => {
                             Back
                         </FormButton>
                         <FormButton type="submit" color="black" bg="orange" isLoading={isLoading}>
-                            Create
+                            Add
                         </FormButton>
                     </HStack>
+                    <FormButton type="confirm" color="black" bg="orange" isLoading={isLoading}>
+                        Confirm
+                    </FormButton>
                 </VStack>
             </Container>
         </Template>

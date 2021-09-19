@@ -34,7 +34,11 @@ const index = () => {
                         )
                     })}
                     {user?.leagues?.length < 4 && (
-                        <CreateCapsule heading="CREATE A NEW LEAGUE" borderRadius="999px" />
+                        <CreateCapsule
+                            heading="CREATE A NEW LEAGUE"
+                            borderRadius="999px"
+                            buttonNum={1}
+                        />
                     )}
                 </VStack>
             </Container>
