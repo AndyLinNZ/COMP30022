@@ -12,7 +12,7 @@ const EditButton = ({ season }) => {
             alignSelf="center"
             justifySelf="center"
             cursor="pointer"
-            onClick={() => router.push(`${window.location.pathname}/${season}/edit`)}
+            onClick={() => router.push(`${window.location.pathname}/${season?.name}/edit`)}
             marginLeft="1rem"
         />
     )

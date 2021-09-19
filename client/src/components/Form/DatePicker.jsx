@@ -4,7 +4,13 @@ import { Controller } from 'react-hook-form'
 import 'react-datepicker/dist/react-datepicker.css'
 import { FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react'
 
-const DatePicker = ({ control, label, isRequired, name = 'DatePicker' }) => {
+const DatePicker = ({
+    control,
+    label,
+    isRequired,
+    name = 'DatePicker',
+    placeHolder = 'DD/MM/YYYY',
+}) => {
     return (
         <Controller
             control={control}
@@ -20,7 +26,8 @@ const DatePicker = ({ control, label, isRequired, name = 'DatePicker' }) => {
                             onChange={onChange}
                             onBlur={onBlur}
                             selected={value}
-                            placeholderText="DD/MM/YYYY"
+                            placeholder={placeHolder}
+                            dateFormat="dd/MM/yyyy"
                         />
                         <FormErrorMessage pos="absolute" fontSize="0.75rem" color="greyText.500">
                             {error?.message}
