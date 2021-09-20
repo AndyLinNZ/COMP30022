@@ -32,7 +32,7 @@ const LoginForm = () => {
             router.push(appPaths.DASHBOARD_TEAMS_PATH)
         },
         onError: (error) => {
-            var errMsg = error.response.data.error
+            const errMsg = error.response?.data?.error || 'Error logging in'
             toast({
                 render: () => <Toast title={errMsg} type="error" />,
                 position: 'top',
