@@ -247,3 +247,29 @@ describe('Unit Testing: updateSeason in seasonController', () => {
         expect(res.json).toHaveBeenCalledWith(actualRes.json)
     })
 })
+
+describe('Unit Testing: deleteSeason in seasonController', () => {
+    test('Deleting season with valid seasonId should delete the season', async () => {
+        const req = mockRequest()
+        const res = mockResponse()
+        const next = mockNext()
+
+        req.season = new Season({
+            _id: '60741060d14008bd0efff9d5',
+            grades: [],
+            name: 'Summer 2020/2021',
+            league: '611a8a661fb4c81d84a5512c',
+            dateStart: '2021-08-12T12:23:34.944Z',
+            dateFinish: '2021-08-14T12:23:34.944Z',
+            __v: 0,
+        })
+
+        Season.prototype.deleteOne = jest.fn().mockImplementationOnce()
+
+        await seasonController.deleteSeason(req, res, next)
+
+        expect(next).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledTimes(1)
+        expect(res.status).toHaveBeenCalledWith(204)
+    })
+})

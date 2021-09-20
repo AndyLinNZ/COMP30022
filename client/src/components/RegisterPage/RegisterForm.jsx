@@ -3,11 +3,12 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FormButton, Input } from 'components/Form'
-import { Text, VStack } from '@chakra-ui/react'
+import { Text, VStack, useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { appPaths } from 'utils/constants'
 import { useRegister } from 'hooks'
 import { isBrowser, isLoggedIn } from 'utils'
+import Toast from 'components/Toast'
 
 const registerSchema = yup.object().shape({
     firstName: yup.string().required('First name is required'),
@@ -25,6 +26,8 @@ const registerSchema = yup.object().shape({
 
 const RegisterForm = () => {
     const router = useRouter()
+    const toast = useToast()
+
     const {
         handleSubmit,
         register,
@@ -39,7 +42,12 @@ const RegisterForm = () => {
             router.push(appPaths.DASHBOARD_TEAMS_PATH)
         },
         onError: (error) => {
-            console.log(error)
+            const errMsg = error.response?.data?.error || 'Error registering'
+            toast({
+                render: () => <Toast title={errMsg} type="error" />,
+                position: 'top',
+                duration: 5000,
+            })
         },
     })
 

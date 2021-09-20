@@ -1,12 +1,12 @@
 import { useMutation } from 'react-query'
-import { createSeasonGrade } from 'api'
+import { deleteSeason } from 'api'
 import useUserDetails from './useUserDetails'
 import { getSeasonFromUser } from 'utils'
 
-const useCreateSeasonGrade = (options = {}) => {
+const useDeleteSeason = (options = {}) => {
     const { user } = useUserDetails()
     const seasonId = getSeasonFromUser(user)?._id
-    return useMutation((data) => createSeasonGrade(data, seasonId), options)
+    return useMutation(() => deleteSeason(seasonId), options)
 }
 
-export default useCreateSeasonGrade
+export default useDeleteSeason

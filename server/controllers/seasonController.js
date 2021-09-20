@@ -13,6 +13,16 @@ async function getSeason(req, res, next) {
     }
 }
 
+async function deleteSeason(req, res, next) {
+    try {
+        await req.season.deleteOne({ _id: req.season._id })
+        return res.status(204).send()
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
 async function createGrade(req, res, next) {
     try {
         let { gradeName, gradeGender, gradeDifficulty } = req.body
@@ -55,7 +65,7 @@ async function getAllSeasonGrades(req, res, next) {
 async function updateSeason(req, res, next) {
     try {
         let { seasonName, seasonStart, seasonFinish } = req.body
-		
+
         const updateQuery = {}
         if (seasonName) updateQuery.name = seasonName
         if (seasonStart) updateQuery.dateStart = seasonStart
@@ -66,7 +76,7 @@ async function updateSeason(req, res, next) {
             { $set: updateQuery },
             { new: true, runValidators: true }
         )
-		
+
         return res.status(200).json({
             success: true,
             data: season,
@@ -81,5 +91,6 @@ module.exports = {
     getSeason,
     createGrade,
     getAllSeasonGrades,
-    updateSeason
+    updateSeason,
+    deleteSeason
 }

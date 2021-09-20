@@ -15,7 +15,7 @@ async function getGrade(req, res, next) {
 
 async function deleteGrade(req, res, next) {
     try {
-        await Grade.deleteOne({ _id: req.grade._id })
+        await req.grade.deleteOne({ _id: req.grade._id })
 
         return res.status(204).send()
     } catch (err) {
@@ -73,7 +73,7 @@ async function createRound(req, res, next) {
             success: true,
             data: round,
         })
-    } catch(err) {
+    } catch (err) {
         console.log(err)
         return next(err)
     }

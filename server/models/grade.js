@@ -39,7 +39,7 @@ const gradeSchema = new mongoose.Schema({
             },
         ],
         default: [],
-    }
+    },
 })
 
 gradeSchema.pre('deleteOne', { document: true, query: false }, async function (next) {

@@ -77,4 +77,20 @@ gameSchema.pre('validate', function (next) {
     next()
 })
 
+gameSchema.pre('deleteOne', { document: true, query: false }, async function (next) {
+    await this.execPopulate('team1.playersStats')
+    await this.execPopulate('team2.playersStats')
+    await Promise.all(
+        this.team1.playersStats.map(
+            async (playerStat) => await playerStat.deleteOne({ _id: playerStat._id })
+        )
+    )
+    await Promise.all(
+        this.team2.playersStats.map(
+            async (playerStat) => await playerStat.deleteOne({ _id: playerStat._id })
+        )
+    )
+    next()
+})
+
 module.exports = mongoose.model('Game', gameSchema)

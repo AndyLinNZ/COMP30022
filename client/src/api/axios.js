@@ -29,8 +29,10 @@ axiosInstance.interceptors.response.use(
     (response) => {
         return response
     },
-    async (error) => {
-        if (isBrowser() && error.config.status === 401) {
+    (error) => {
+        // all api routes except /auth/login and /auth/register
+        // will send "Unauthorized" in the body
+        if (isBrowser() && error.config.status === 401 && error.response.data == 'Unauthorized') {
             window.localStorage.removeItem('token')
 
             window.location = '/login'
