@@ -1,17 +1,21 @@
 import { EditIcon } from '@chakra-ui/icons'
 import { Flex, Box, VStack, IconButton, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
+import { useMediaQuerySSR } from 'hooks'
 import React from 'react'
 
 import Tag from 'components/Dashboard/Tag'
 
 const Capsule = ({ name, subtext, path, tags }) => {
     const router = useRouter()
+    const isDesktop = useMediaQuerySSR(940)
+
     return (
         <Flex
             w="100%"
-            h="70px"
-            borderRadius="999px"
+            h={isDesktop ? "70px" : "100%"}
+            padding={isDesktop ? "" : "8px 2px"}
+            borderRadius={isDesktop ? "999px" : "24px"}
             border="2px solid grey"
             pos="relative"
             cursor="pointer"
@@ -31,12 +35,25 @@ const Capsule = ({ name, subtext, path, tags }) => {
                         </Text>
                     </>
                 )}
+                {!isDesktop && (
+                    <>
+                        <Flex gridGap="4px" flexWrap="wrap">
+                            {tags?.map(([type, text]) => (
+                                <Tag key={type} type={type} text={text} />
+                            ))}
+                        </Flex>
+                    </>
+                )}
             </VStack>
-            <Flex position="absolute" right="4rem" gridGap="14px">
-                {tags?.map(([type, text]) => (
-                    <Tag key={type} type={type} text={text} />
-                ))}
-            </Flex>
+            {isDesktop && (
+                <>
+                    <Flex position="absolute" right="4rem" gridGap="14px">
+                        {tags?.map(([type, text]) => (
+                            <Tag key={type} type={type} text={text} />
+                        ))}
+                    </Flex>
+                </>
+            )}
         </Flex>
     )
 }
