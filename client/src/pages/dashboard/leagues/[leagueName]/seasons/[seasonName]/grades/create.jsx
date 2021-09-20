@@ -5,21 +5,21 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Template, Container } from 'components/Dashboard'
 import { HStack, VStack } from '@chakra-ui/react'
 import { FormButton, Input } from 'components/Form'
-import { appPaths } from 'utils/constants'
 import { useRouter } from 'next/router'
 import { useCreateSeasonGrade } from 'hooks'
-import { Checkbox } from "@chakra-ui/react"
 
 const createGradeSchema = yup.object().shape({
     gradeName: yup
         .string()
         .required("The Grade's name is required")
         .max(20, 'Grade Name must be at most 20 characters'),
-    numberOfRounds: yup
-        .number()
-        .typeError("Please enter numbers only")
-        .required("The number of rounds for this grade is required")
-        .min(1, 'There must be at least 1 round in the grade'),
+    // numberOfRounds: yup
+    //     .number()
+    //     .typeError("Please enter numbers only")
+    //     .required("The number of rounds for this grade is required")
+    //     .min(1, 'There must be at least 1 round in the grade'),
+    gradeDifficulty: yup.string().required("The Grade's difficulty is required"),
+    gradeGender: yup.string().required("The Grade's gender is required"),
 })
 
 const create = () => {
@@ -33,10 +33,11 @@ const create = () => {
         resolver: yupResolver(createGradeSchema),
     })
 
-    const { mutate, isLoading } = useCreateSeasonGrade({
+    const { mutate, isLoading, isSuccess } = useCreateSeasonGrade({
         onSuccess: (response) => {
-            // path should be different but it's a wip so I havent changed this just so I can test if the button works
-            router.push(appPaths.DASHBOARD_LEAGUES_PATH)
+            router.push(
+                new URL(`${response?.data?.data?._id}/rounds`, window.location.href).pathname
+            )
         },
         onError: (error) => {
             console.log(error)
@@ -64,23 +65,56 @@ const create = () => {
                         isRequired
                         width="100%"
                     />
+
                     <HStack w="100%">
                         <Input
-                            label="Number of rounds"
-                            placeholder="Enter a number"
-                            error={errors.numberOfRounds?.message}
-                            {...register('numberOfRounds')}
+                            label="Grade gender"
+                            type="select"
+                            placeholder="Select a grade gender"
                             isRequired
-                            width="50%"
-                        />
-                        <Checkbox spacing="1rem" size="lg" colorScheme="black">Include Semi Finals and Grand Finals?</Checkbox>
+                            error={errors.gradeGender?.message}
+                            {...register('gradeGender')}
+                        >
+                            <option value="male">male</option>
+                            <option value="female">female</option>
+                            <option value="mixed">mixed</option>
+                        </Input>
+
+                        <Input
+                            label="Level"
+                            type="select"
+                            placeholder="Select a grade level"
+                            isRequired
+                            error={errors.gradeDifficulty?.message}
+                            {...register('gradeDifficulty')}
+                        >
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                        </Input>
                     </HStack>
 
                     <HStack spacing="0.5rem">
-                        <FormButton onClick={() => router.push((window.location.pathname.split("/")).slice(0, (window.location.pathname.split("/")).length-1).join("/"))}>
+                        <FormButton
+                            onClick={() =>
+                                router.push(
+                                    window.location.pathname
+                                        .split('/')
+                                        .slice(0, window.location.pathname.split('/').length - 1)
+                                        .join('/')
+                                )
+                            }
+                        >
                             Back
                         </FormButton>
-                        <FormButton type="submit" color="black" bg="orange" isLoading={isLoading}>
+                        <FormButton
+                            type="submit"
+                            color="black"
+                            bg="orange"
+                            isLoading={isLoading || isSuccess}
+                        >
                             Create
                         </FormButton>
                     </HStack>
