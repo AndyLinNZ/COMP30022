@@ -44,9 +44,9 @@ export const deleteLeague = async (leagueId) => {
 }
 
 export const getAllSeasonGrades = async ({ queryKey }) => {
-    return await axiosInstance.get(`/league/${queryKey[2]}/season/${queryKey[1]}/grade`)
+    return await axiosInstance.get(`/season/${queryKey[1]}/grade`)
 }
 
-export const createSeasonGrade = async (grade, seasonId, leagueId) => {
-    return await axiosInstance.post(`/league/${leagueId}/season/${seasonId}/grade`, grade)
+export const createSeasonGrade = async (grade, seasonId) => {
+    return await axiosInstance.post(`/season/${seasonId}/grade`, grade)
 }

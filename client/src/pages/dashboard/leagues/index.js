@@ -21,8 +21,8 @@ const index = () => {
                                 gridTemplateColumns="12fr 1fr"
                                 w="100%"
                             >
-                                <Capsule name={league.name} path={`${league.name}/seasons`} />
-                                <EditButton name={league.name} />
+                                <Capsule name={league.name} path={`${league._id}/seasons`} />
+                                <EditButton name={league._id} />
                             </Box>
                         )
                     })}

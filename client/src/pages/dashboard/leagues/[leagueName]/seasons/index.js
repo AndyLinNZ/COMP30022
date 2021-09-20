@@ -24,8 +24,8 @@ const index = () => {
                                 gridTemplateColumns="12fr 1fr"
                                 w="100%"
                             >
-                                <InfoContainer season={season} path={`${season.name}/grades`} />
-                                <EditButton name={season.name} />
+                                <InfoContainer season={season} path={`${season._id}/grades`} />
+                                <EditButton name={season._id} />
                             </Box>
                         )
                     })}
