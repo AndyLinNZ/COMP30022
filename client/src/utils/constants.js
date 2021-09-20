@@ -10,4 +10,7 @@ export const appPaths = {
     DASHBOARD_CREATE_LEAGUE_PATH: '/dashboard/leagues/create',
     DASHBOARD_PROFILE_PATH: '/dashboard/profile',
     LOG_OUT_PATH: '/logout',
+    LEAGUE_PATH: '/league',
+    LEAGUE_SEASON_PATH: '/league/[leagueId]/seasons',
+    LEAGUE_GRADE_PATH: '/league/[leagueId]/seasons/[seasonId]/grade',
 }

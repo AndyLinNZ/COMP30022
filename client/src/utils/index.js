@@ -21,7 +21,7 @@ export const getSeasonFromUser = (user) => {
     return leagues?.seasons.find(({ _id }) => _id === router.query.seasonName)
 }
 
-export const getHumanReadableDate = (dateStr) =>
+export const getHumanReadableDate = (dateStr = '1970-01-01') =>
     new Intl.DateTimeFormat('en', {
         year: 'numeric',
         month: 'short',

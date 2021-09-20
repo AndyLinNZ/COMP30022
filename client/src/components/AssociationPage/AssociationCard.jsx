@@ -3,10 +3,12 @@ import React from 'react'
 import BasketballIcon from 'components/svg/BasketballIcon'
 import ActiveSeasonLabel from './ActiveSeasonLabel'
 import { useMediaQuerySSR } from 'hooks'
+import { useRouter } from 'next/router'
+import { appPaths } from 'utils/constants'
 
-const AssociationCard = ({ name, org, activeSeasons, icon }) => {
+const AssociationCard = ({ name, org, activeSeasons, icon, id }) => {
     const isDesktop = useMediaQuerySSR(1024)
-
+    const router = useRouter()
     return isDesktop ? (
         <Box
             bg="white"
@@ -25,6 +27,7 @@ const AssociationCard = ({ name, org, activeSeasons, icon }) => {
             _hover={{
                 boxShadow: '0 15px 30px rgba(0,0,0,0.1), 0 20px 20px rgba(0,0,0,0.12);',
             }}
+            onClick={() => router.push(`${appPaths.LEAGUE_PATH}/${id}/seasons`)}
         >
             <Box pos="absolute" top="-25%">
                 <Avatar src={icon} size="xl" bg="grey" border="2px solid black" />

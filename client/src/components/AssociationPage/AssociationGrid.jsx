@@ -27,6 +27,7 @@ const AssociationGrid = ({ leagues, inSeason, upcomingSeason }) => {
                         org={organisation}
                         activeSeasons={seasons.length}
                         icon={null}
+                        id={_id}
                     />
                 </GridItem>
             ))}

@@ -2,10 +2,12 @@ import { useQuery } from 'react-query'
 import { getAllLeagueSeasons } from 'api'
 import { extractData, getLeagueFromUser } from 'utils'
 import useUserDetails from './useUserDetails'
+import { useRouter } from 'next/router'
 
 const useGetAllLeagueSeasons = (options = {}) => {
+    const router = useRouter()
     const { user } = useUserDetails()
-    const leagueId = getLeagueFromUser(user)?._id
+    const leagueId = router.query?.leagueId || getLeagueFromUser(user)?._id
     const { data, isLoading, error } = useQuery(['seasons', leagueId], getAllLeagueSeasons, options)
     const seasons = extractData(data)
     return { seasons, isLoading, error }
