@@ -41,12 +41,24 @@ beforeAll(async () => {
     })
     const season = await newSeason.save()
 
+    // add a second season object to be deleted
+    const secondSeason = new Season({
+        name: 'joshua second season',
+        dateStart: testSeason.seasonStart,
+        dateFinish: testSeason.seasonFinish,
+        league: league._id,
+        grades: []
+    })
+    const season2 = await secondSeason.save()
+
     // add the new season as a season to the league
     league.seasons.push(season._id)
+    league.seasons.push(season2._id)
     await league.save()
 
     env.league0_id = league._id.toString()
     env.season0_id = season._id.toString()
+    env.season1_id = season2._id.toString()
 })
 
 describe('Integration Testing: finding seasons', () => {
@@ -147,5 +159,32 @@ describe('Integration Testing: finding grades for a season', () => {
         expect(res.statusCode).toBe(404)
         expect(res.body.success).toBe(false)
         expect(res.body.error).toBe('Season does not exist')
+    })
+})
+
+describe('Integration Testing: deleting a season', () => {
+    test('Deleting a season with a nonexistent id should return an error', async () => {
+        const res = await request.delete(`/api/season/aaaabbbbcccc`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Season does not exist')
+    })
+
+    test('Deleting a season with an invalid MongoDB object id should return an error', async () => {
+        const res = await request.delete(`/api/season/1337`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Season does not exist')
+    })
+
+    test('Should be able to delete a season with valid id', async () => {
+        const res = await request.delete(`/api/season/${env.season1_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+
+        expect(res.statusCode).toBe(204)
     })
 })
