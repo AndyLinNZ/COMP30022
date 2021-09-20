@@ -3,11 +3,12 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FormButton, Input } from 'components/Form'
-import { Text, VStack } from '@chakra-ui/react'
+import { Text, VStack, useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { appPaths } from 'utils/constants'
 import { useLogin } from 'hooks'
 import { isBrowser, isLoggedIn } from 'utils'
+import Toast from 'components/Toast'
 
 const loginSchema = yup.object().shape({
     email: yup.string().required('Please enter your email'),
@@ -16,6 +17,7 @@ const loginSchema = yup.object().shape({
 
 const LoginForm = () => {
     const router = useRouter()
+    const toast = useToast()
 
     const {
         handleSubmit,
@@ -30,12 +32,16 @@ const LoginForm = () => {
             router.push(appPaths.DASHBOARD_TEAMS_PATH)
         },
         onError: (error) => {
-            console.log(error)
+            var errMsg = error.response.data.error
+            toast({
+                render: () => <Toast title={errMsg} type="error" />,
+                position: 'top',
+                duration: 5000,
+            })
         },
     })
 
     const onSubmit = (data) => {
-        console.log(data)
         loginUser(data)
     }
 
