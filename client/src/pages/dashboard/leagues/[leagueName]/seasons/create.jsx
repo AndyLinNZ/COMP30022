@@ -38,9 +38,11 @@ const create = () => {
         resolver: yupResolver(createSeasonSchema),
     })
 
-    const { mutate, isLoading } = useCreateLeagueSeason({
+    const { mutate, isLoading, isSuccess } = useCreateLeagueSeason({
         onSuccess: (response) => {
-            router.push(new URL(`${response?.data?.data?._id}/grades`, window.location.href).pathname)
+            router.push(
+                new URL(`${response?.data?.data?._id}/grades`, window.location.href).pathname
+            )
         },
         onError: (error) => {
             console.log(error)
@@ -86,7 +88,12 @@ const create = () => {
                         <FormButton onClick={() => router.push(appPaths.DASHBOARD_LEAGUES_PATH)}>
                             Back
                         </FormButton>
-                        <FormButton type="submit" color="black" bg="orange" isLoading={isLoading}>
+                        <FormButton
+                            type="submit"
+                            color="black"
+                            bg="orange"
+                            isLoading={isLoading || isSuccess}
+                        >
                             Create
                         </FormButton>
                     </HStack>

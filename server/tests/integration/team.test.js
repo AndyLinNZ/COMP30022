@@ -15,7 +15,7 @@ const testTeam = {
     name: 'jdubz'
 }
 beforeAll(async () => {
-    // add new test league object to database
+    // add new test team object to database
     const newTeam = new Team({
         ...testTeam,
         admin: env.auth_tokens[0][0],

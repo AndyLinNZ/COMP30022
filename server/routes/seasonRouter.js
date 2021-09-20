@@ -19,4 +19,7 @@ seasonRouter.post(
 // UPDATE
 seasonRouter.patch('/:seasonId', ensureAuthenticated, ensureLeagueAdmin, seasonController.updateSeason)
 
+// DELETE
+seasonRouter.delete('/:seasonId', ensureAuthenticated, ensureLeagueAdmin, seasonController.deleteSeason)
+
 module.exports = seasonRouter

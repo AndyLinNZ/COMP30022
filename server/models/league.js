@@ -36,5 +36,13 @@ const leagueSchema = new mongoose.Schema({
     },
 })
 
+leagueSchema.pre('deleteOne', { document: true, query: false }, async function (next) {
+    await this.execPopulate('seasons')
+    await Promise.all(
+        this.seasons.map(async (season) => await season.deleteOne({ _id: season._id }))
+    )
+    next()
+})
+
 leagueSchema.index({ name: 1, organisation: 1 }, { unique: true })
 module.exports = mongoose.model('League', leagueSchema)
