@@ -50,3 +50,7 @@ export const getAllSeasonGrades = async ({ queryKey }) => {
 export const createSeasonGrade = async (grade, seasonId) => {
     return await axiosInstance.post(`/season/${seasonId}/grade`, grade)
 }
+
+export const deleteSeason = async (seasonId) => {
+    return await axiosInstance.delete(`/season/${seasonId}`)
+}

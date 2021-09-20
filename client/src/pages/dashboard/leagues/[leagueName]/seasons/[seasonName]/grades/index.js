@@ -25,7 +25,7 @@ const index = () => {
                                 gridTemplateColumns="12fr 1fr"
                                 w="100%"
                             >
-                                <GradeContainer grade={grade} path={grade.name} />
+                                <GradeContainer grade={grade} path={grade._id} />
                                 <EditButton name={grade.name}/>
                             </Box>
                         )
