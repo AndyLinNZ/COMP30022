@@ -52,7 +52,7 @@ const edit = () => {
         isSuccess,
     } = useEditSeason({
         onSuccess: (response) => {
-            router.push(new URL(newSeasonUrl(response?.data?.data?.name)))
+            router.push(new URL(newSeasonUrl(response?.data?.data?._id)))
         },
         onError: (error) => {
             console.log(error)
