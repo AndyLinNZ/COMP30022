@@ -36,7 +36,7 @@ const create = () => {
     const { mutate, isLoading, isSuccess } = useCreateSeasonGrade({
         onSuccess: (response) => {
             router.push(
-                new URL(`${response?.data?.data?.name}/rounds`, window.location.href).pathname
+                new URL(`${response?.data?.data?._id}/rounds`, window.location.href).pathname
             )
         },
         onError: (error) => {
