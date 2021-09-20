@@ -40,7 +40,7 @@ const create = () => {
 
     const { mutate, isLoading } = useCreateLeagueSeason({
         onSuccess: (response) => {
-            router.push(new URL(`${response?.data?.data?.name}/grades`, window.location.href).pathname)
+            router.push(new URL(`${response?.data?.data?._id}/grades`, window.location.href).pathname)
         },
         onError: (error) => {
             console.log(error)
