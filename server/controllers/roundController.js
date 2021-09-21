@@ -15,6 +15,16 @@ async function getRound(req, res, next) {
     }
 }
 
+async function deleteRound(req, res, next) {
+    try {
+        await req.round.deleteOne({ _id: req.round._id })
+        return res.status(204).send()
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
 async function createGame(req, res, next) {
     try {
         let { start, finish, venue_name, game_location, team1_id, team2_id } = req.body
@@ -72,5 +82,6 @@ async function createGame(req, res, next) {
 
 module.exports = {
     getRound,
+    deleteRound,
     createGame,
 }
