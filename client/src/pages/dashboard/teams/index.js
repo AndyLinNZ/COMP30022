@@ -29,7 +29,7 @@ const index = () => {
                                 gridTemplateColumns="12fr 1fr"
                                 w="100%"
                             >
-                                <Capsule key={team._id} name={team.name} subtext={gradeText} path={`${team.name}`} tags={tags} />
+                                <Capsule name={team.name} subtext={gradeText} path={`${team.name}`} tags={tags} />
                                 <EditButton name={team.name} />
                             </Box>
                         )
