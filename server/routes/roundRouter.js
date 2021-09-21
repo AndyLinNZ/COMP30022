@@ -19,4 +19,12 @@ roundRouter.post(
     roundController.createGame
 )
 
+// DELETE
+roundRouter.delete(
+    '/:roundId',
+    ensureAuthenticated,
+    ensureLeagueAdmin,
+    roundController.deleteRound
+)
+
 module.exports = roundRouter

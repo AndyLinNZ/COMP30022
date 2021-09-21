@@ -130,11 +130,11 @@ paths:
         '204':
           description: 'Successfully deleted a season.'
         '403':
-          description: 'User is not the creator for this league.'
+          description: 'User is not an admin for this league.'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserNotCreatorResponse'
+                $ref: '#/components/schemas/UserNotAdminResponse'
         '404':
           description: 'Season does not exist.'
           content:
