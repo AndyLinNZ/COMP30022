@@ -22,7 +22,7 @@ const style = {
 
 const Tag = ({ type, text }) => {
     return (
-        <Box borderRadius="4px" p="0.25rem 1rem" fontSize={['0.875rem', '1rem']} {...style[type]}>
+        <Box borderRadius="4px" p="0.25rem 1rem" fontSize={['0.675rem', '0.9rem']} {...style[type]}>
             {text.toUpperCase()}
         </Box>
     )
