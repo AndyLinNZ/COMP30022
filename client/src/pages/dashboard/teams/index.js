@@ -1,6 +1,7 @@
 import React from 'react'
 import { useUserDetails } from 'hooks'
 import { Template, Container, Capsule, CreateCapsule } from 'components/Dashboard'
+import { EditIcon } from '@chakra-ui/icons'
 import { IconButton, Box, VStack } from '@chakra-ui/react'
 import EditButton from 'components/Dashboard/League/EditButton'
 import PersonAddOutlined from '@material-ui/icons/PersonAddOutlined'
@@ -62,7 +63,19 @@ const index = () => {
                                         )
                                     }
                                 />
-                                <EditButton />
+                                <IconButton
+                                    icon={<EditIcon />}
+                                    size="lg"
+                                    alignSelf="center"
+                                    justifySelf="center"
+                                    cursor="pointer"
+                                    onClick={() =>
+                                        router.push(
+                                            `${window.location.pathname}/${team.name}/games/edit`
+                                        )
+                                    }
+                                    marginLeft="1rem"
+                                />
                             </Box>
                         )
                     })}

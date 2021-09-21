@@ -28,19 +28,6 @@ const addPlayer = () => {
         resolver: yupResolver(addPlayerSchema),
     })
 
-    const { mutate, isLoading } = useAddPlayerToTeam({
-        onSuccess: (response) => {
-            router.push(new URL(`${response?.data?.data?.name}`, window.location.href).pathname)
-        },
-        onError: (error) => {
-            console.log(error)
-        },
-    })
-
-    const onSubmit = (data) => {
-        mutate(data)
-    }
-
     return (
         <Template>
             <Container heading="Add a Player" minH="unset" w="unset !important">
@@ -48,7 +35,6 @@ const addPlayer = () => {
                     marginleft={['0', '2rem']}
                     as="form"
                     spacing="2rem"
-                    onSubmit={handleSubmit(onSubmit)}
                 >
                     <Input
                         label="Player name"
@@ -61,7 +47,7 @@ const addPlayer = () => {
                         <FormButton onClick={() => router.push(appPaths.DASHBOARD_TEAMS_PATH)}>
                             Back
                         </FormButton>
-                        <FormButton type="submit" color="black" bg="orange" isLoading={isLoading}>
+                        <FormButton type="submit" color="black" bg="orange">
                             Add
                         </FormButton>
                     </HStack>

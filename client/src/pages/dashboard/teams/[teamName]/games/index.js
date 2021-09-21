@@ -2,7 +2,7 @@ import React from 'react'
 import { useGetAllLeagueSeasons, useUserDetails } from 'hooks'
 import { Template, CreateCapsule } from 'components/Dashboard'
 import { Box, VStack } from '@chakra-ui/react'
-import { Container, InfoContainer } from 'components/Dashboard/League'
+import { Container } from 'components/Dashboard'
 import { getLeagueFromUser } from 'utils'
 import EditButton from 'components/Dashboard/League/EditButton'
 
