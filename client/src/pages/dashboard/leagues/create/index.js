@@ -34,7 +34,7 @@ const index = () => {
     const { mutate, isLoading } = useCreateLeague({
         onSuccess: (response) => {
             router.push(
-                new URL(`${response?.data?.data?.name}/seasons`, window.location.href).pathname
+                new URL(`${response?.data?.data?._id}/seasons`, window.location.href).pathname
             )
         },
         onError: (error) => {

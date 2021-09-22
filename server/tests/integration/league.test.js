@@ -1,12 +1,27 @@
 const setupTestEnv = require('./test-utils')
 const supertest = require('supertest')
 const initApp = require('../../app')
+const League = require('../../models/league')
 const app = initApp()
 const request = supertest(app)
 
 const env = {}
 const setupOptions = { createDefaultUsers: true }
 setupTestEnv('dribblrDB-league-test', env, setupOptions)
+
+beforeAll(async () => {
+    // add new test league object to database
+    const newLeague = new League({
+        admins: [env.auth_tokens[0][0]],
+        seasons: [],
+        name: 'Joshua Basketball Association',
+        organisation: 'JoshuaDubar',
+        creator: env.auth_tokens[0][0]
+    })
+    const league = await newLeague.save()
+
+    env.league0_id = league._id.toString()
+})
 
 describe('Integration Testing: creating leagues', () => {
     test('Logged in user should be able to create a league', async () => {
@@ -225,5 +240,32 @@ describe('Integration Testing: adding/remove admins from league', () => {
         expect(res.statusCode).toBe(404)
         expect(res.body.success).toBe(false)
         expect(res.body.error).toBe('Some users do not exist')
+    })
+})
+
+describe('Integration Testing: deleting a league', () => {
+    test('Deleting a league with a nonexistent id should return an error', async () => {
+        const res = await request.delete(`/api/league/aaaabbbbcccc`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('League does not exist')
+    })
+
+    test('Deleting a league with an invalid MongoDB object id should return an error', async () => {
+        const res = await request.delete(`/api/league/1337`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('League does not exist')
+    })
+
+    test('Should be able to delete a league with valid id', async () => {
+        const res = await request.delete(`/api/league/${env.league0_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+
+        expect(res.statusCode).toBe(204)
     })
 })

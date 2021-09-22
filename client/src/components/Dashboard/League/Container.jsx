@@ -35,6 +35,7 @@ const Container = ({ league, children, minH = '375px', w = ['95%', '75%'] }) => 
                 boxShadow="0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);"
                 padding="1rem"
                 minH={minH}
+                maxH="390px"
                 overflowY="scroll"
             >
                 {children}

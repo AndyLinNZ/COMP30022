@@ -47,6 +47,16 @@ components:
         success: false
         error: 'League does not exist'
 
+    LeagueChange:
+      properties:
+        leagueName:
+          type: string
+        organisationName:
+          type: string
+      example:
+        leagueName: Josh Dubz League
+        organsationName: King Josh Association
+
 paths:
   /league:
     get:
@@ -138,6 +148,78 @@ paths:
                   organisation: JoshuaDubar
                   creator: 22222b222222bb2222b22222
                   __v: 0
+        '404':
+          description: 'League does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeagueNotFoundResponse'
+
+    patch:
+      tags:
+        - 'League'
+      summary: 'Update name, organisation by id.'
+      description: 'This can only be done by a logged in user and the creator of the league of the season.'
+      parameters:
+      - name: 'leagueId'
+        in: 'path'
+        description: 'ID of league to patch.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeagueChange'
+      responses:
+        '200':
+          description: 'Successfully updated a league.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  _id: 11111a111111aa1111a11111
+                  admins: 
+                    - 22222b222222bb2222b22222
+                  seasons: []
+                  name: King Joshua Association
+                  organisation: JoshuaDubarKing
+                  creator: 22222b222222bb2222b22222
+                  __v: 0
+        '404':
+          description: 'League does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeagueNotFoundResponse'
+
+    delete:
+      tags:
+        - 'League'
+      summary: 'Delete league by id.'
+      parameters:
+      - name: 'leagueId'
+        in: 'path'
+        description: 'ID of league to delete.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []  
+      responses:
+        '204':
+          description: 'Successfully deleted a league.'
+        '403':
+          description: 'User is not the creator for this league.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotCreatorResponse'
         '404':
           description: 'League does not exist.'
           content:

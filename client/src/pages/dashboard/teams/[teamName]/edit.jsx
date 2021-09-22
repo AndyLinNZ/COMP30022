@@ -8,9 +8,10 @@ import Input from 'components/Form/Input'
 import FormButton from 'components/Form/FormButton'
 import { appPaths } from 'utils/constants'
 import { useRouter } from 'next/router'
-import { useCreateTeam } from 'hooks'
+import { useUserDetails, useCreateTeam } from 'hooks'
+import { getTeamFromUser } from 'utils'
 
-const createTeamSchema = yup.object().shape({
+const editTeamSchema = yup.object().shape({
     teamName: yup
         .string()
         .required("The Team's name is required")
@@ -19,13 +20,16 @@ const createTeamSchema = yup.object().shape({
 
 const edit = () => {
     const router = useRouter()
+    const { user } = useUserDetails()
+    const team = getTeamFromUser(user)
 
     const {
         handleSubmit,
         register,
         formState: { errors },
+        reset
     } = useForm({
-        resolver: yupResolver(createTeamSchema),
+        resolver: yupResolver(editTeamSchema),
     })
 
     const { mutate, isLoading } = useCreateTeam({
@@ -54,7 +58,7 @@ const edit = () => {
                 >
                     <Input
                         label="Team name"
-                        placeholder="Team name"
+                        defaultValue={team?.name}
                         error={errors.teamName?.message}
                         {...register('teamName')}
                         isRequired
@@ -64,7 +68,14 @@ const edit = () => {
                             Back
                         </FormButton>
                         <FormButton type="submit" color="black" bg="orange" isLoading={isLoading}>
-                            Create
+                            Confirm
+                        </FormButton>
+                    </HStack>
+                    <HStack>
+                        <FormButton
+                            bg="red"
+                        >
+                            Delete Team
                         </FormButton>
                     </HStack>
                 </VStack>

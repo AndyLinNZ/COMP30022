@@ -25,7 +25,7 @@ describe('Unit Testing: getAllLeagues in leagueController', () => {
             },
             {
                 _id: '611bbfe2aaa94829988d0b18',
-                admin: ['611a8a311fb4c81d84a55126'],
+                admins: ['611a8a311fb4c81d84a55126'],
                 seasons: [],
                 name: 'Joshua Basketball Association',
                 organisation: 'JoshuaDubar',
@@ -97,7 +97,7 @@ describe('Unit Testing: createLeague in leagueController', () => {
 
         const leagueDetails = {
             _id: '611bbfe2aaa94829988d0b18',
-            admin: ['611a8a311fb4c81d84a55126'],
+            admins: ['611a8a311fb4c81d84a55126'],
             seasons: [],
             name: 'Joshua Basketball Association',
             organisation: 'JoshuaDubar',
@@ -229,7 +229,7 @@ describe('Unit Testing: createLeagueSeason in leagueController', () => {
 
         req.league = new League({
             _id: '611bbfe2aaa94829988d0b18',
-            admin: ['611a8a311fb4c81d84a55126'],
+            admins: ['611a8a311fb4c81d84a55126'],
             seasons: [],
             name: 'Joshua Basketball Association',
             organisation: 'JoshuaDubar',
@@ -281,7 +281,7 @@ describe('Unit Testing: createLeagueAdmins in leagueController', () => {
 
         const leagueDetails = {
             _id: '611bbfe2aaa94829988d0b18',
-            admin: ['611a8a311fb4c81d84a55126'],
+            admins: ['611a8a311fb4c81d84a55126'],
             seasons: [],
             name: 'Joshua Basketball Association',
             organisation: 'JoshuaDubar',
@@ -341,7 +341,7 @@ describe('Unit Testing: createLeagueAdmins in leagueController', () => {
 
         const leagueDetails = {
             _id: '611bbfe2aaa94829988d0b18',
-            admin: ['611a8a311fb4c81d84a55126', '611a8ba31fb4c81d84a5513b'],
+            admins: ['611a8a311fb4c81d84a55126', '611a8ba31fb4c81d84a5513b'],
             seasons: [],
             name: 'Joshua Basketball Association',
             organisation: 'JoshuaDubar',
@@ -397,7 +397,7 @@ describe('Unit Testing: createLeagueAdmins in leagueController', () => {
 
         req.league = new League({
             _id: '611bbfe2aaa94829988d0b18',
-            admin: ['611a8a311fb4c81d84a55126'],
+            admins: ['611a8a311fb4c81d84a55126'],
             seasons: [],
             name: 'Joshua Basketball Association',
             organisation: 'JoshuaDubar',
@@ -430,7 +430,7 @@ describe('Unit Testing: deleteLeagueAdmins in leagueController', () => {
 
         const leagueDetails = {
             _id: '611bbfe2aaa94829988d0b18',
-            admin: ['611a8a311fb4c81d84a55126', '611a8ba31fb4c81d84a5513b'],
+            admins: ['611a8a311fb4c81d84a55126', '611a8ba31fb4c81d84a5513b'],
             seasons: [],
             name: 'Joshua Basketball Association',
             organisation: 'JoshuaDubar',
@@ -489,7 +489,7 @@ describe('Unit Testing: deleteLeagueAdmins in leagueController', () => {
 
         const leagueDetails = {
             _id: '611bbfe2aaa94829988d0b18',
-            admin: ['611a8a311fb4c81d84a55126'],
+            admins: ['611a8a311fb4c81d84a55126'],
             seasons: [],
             name: 'Joshua Basketball Association',
             organisation: 'JoshuaDubar',
@@ -545,7 +545,7 @@ describe('Unit Testing: deleteLeagueAdmins in leagueController', () => {
 
         req.league = new League({
             _id: '611bbfe2aaa94829988d0b18',
-            admin: ['611a8a311fb4c81d84a55126'],
+            admins: ['611a8a311fb4c81d84a55126'],
             seasons: [],
             name: 'Joshua Basketball Association',
             organisation: 'JoshuaDubar',
@@ -568,5 +568,31 @@ describe('Unit Testing: deleteLeagueAdmins in leagueController', () => {
         }
 
         expect(next).toHaveBeenCalledWith(actualNext)
+    })
+})
+
+describe('Unit Testing: deleteLeague in leagueController', () => {
+    test('Deleting league with valid leagueId should delete the league', async () => {
+        const req = mockRequest()
+        const res = mockResponse()
+        const next = mockNext()
+
+        req.league = new League({
+            _id: '611bbfe2aaa94829988d0b18',
+            admins: ['611a8a311fb4c81d84a55126'],
+            seasons: [],
+            name: 'Joshua Basketball Association',
+            organisation: 'JoshuaDubar',
+            creator: '611a8a311fb4c81d84a55126',
+            __v: 0
+        })
+
+        League.prototype.deleteOne = jest.fn().mockImplementationOnce()
+
+        await leagueController.deleteLeague(req, res, next)
+
+        expect(next).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledTimes(1)
+        expect(res.status).toHaveBeenCalledWith(204)
     })
 })

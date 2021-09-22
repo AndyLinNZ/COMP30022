@@ -31,10 +31,21 @@ const gradeSchema = new mongoose.Schema({
         ref: 'Season',
         required: true,
     },
-    fixture: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Round',
-    }]
+    fixture: {
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Round',
+            },
+        ],
+        default: [],
+    },
+})
+
+gradeSchema.pre('deleteOne', { document: true, query: false }, async function (next) {
+    await this.execPopulate('fixture')
+    await Promise.all(this.fixture.map(async (round) => await round.deleteOne({ _id: round._id })))
+    next()
 })
 
 gradeSchema.index({ season: 1, name: 1 }, { unique: true })

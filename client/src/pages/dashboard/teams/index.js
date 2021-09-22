@@ -44,7 +44,6 @@ const index = () => {
                                 w="100%"
                             >
                                 <Capsule
-                                    key={team._id}
                                     name={team.name}
                                     subtext={gradeText}
                                     path={`${team.name}/games`}
@@ -59,23 +58,11 @@ const index = () => {
                                     marginLeft="1rem"
                                     onClick={() =>
                                         router.push(
-                                            `${window.location.pathname}/${team.name}/games/addPlayer`
+                                            `${window.location.pathname}/${team.name}/addPlayer`
                                         )
                                     }
                                 />
-                                <IconButton
-                                    icon={<EditIcon />}
-                                    size="lg"
-                                    alignSelf="center"
-                                    justifySelf="center"
-                                    cursor="pointer"
-                                    onClick={() =>
-                                        router.push(
-                                            `${window.location.pathname}/${team.name}/games/edit`
-                                        )
-                                    }
-                                    marginLeft="1rem"
-                                />
+                                <EditButton name={team.name} />
                             </Box>
                         )
                     })}

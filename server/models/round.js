@@ -24,4 +24,10 @@ const roundSchema = new mongoose.Schema({
     }
 })
 
+roundSchema.pre('deleteOne', { document: true, query: false }, async function (next) {
+    await this.execPopulate('games')
+    await Promise.all(this.games.map(async (game) => await game.deleteOne({ _id: game._id })))
+    next()
+})
+
 module.exports = mongoose.model('Round', roundSchema)

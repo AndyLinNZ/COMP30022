@@ -25,13 +25,10 @@ components:
           type: Date
         seasonFinish:
           type: Date
-        seasonStatus:
-          type: String
       example:
         seasonName: Summer 2020/2021 jdubz
         seasonStart: '2021-09-12T12:23:34.944Z'
         seasonFinish: '2021-09-12T12:23:34.944Z'
-        seasonStatus: completed
 
     SeasonNotFoundResponse:
       allOf:
@@ -78,7 +75,7 @@ paths:
     patch:
       tags:
         - 'Season'
-      summary: 'Update seasonName, seasonStart, seasonFinish or seasonStatus by id.'
+      summary: 'Update seasonName, seasonStart or seasonFinish by id.'
       description: 'This can only be done by a logged in user and the creator of the league of the season.'
       parameters:
       - name: 'seasonId'
@@ -111,6 +108,33 @@ paths:
                   dateStart: '2021-08-12T12:23:34.944Z'
                   dateFinish: '2021-08-14T12:23:34.944Z'
                   __v: 0
+        '404':
+          description: 'Season does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeasonNotFoundResponse'
+    delete:
+      tags:
+        - 'Season'
+      summary: 'Delete season by id.'
+      parameters:
+      - name: 'seasonId'
+        in: 'path'
+        description: 'ID of season to delete.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []  
+      responses:
+        '204':
+          description: 'Successfully deleted a season.'
+        '403':
+          description: 'User is not an admin for this league.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotAdminResponse'
         '404':
           description: 'Season does not exist.'
           content:

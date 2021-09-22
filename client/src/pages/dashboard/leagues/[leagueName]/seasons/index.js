@@ -15,6 +15,7 @@ const index = () => {
         <Template>
             <Container league={league}>
                 <VStack spacing="1.25rem">
+                    <CreateCapsule heading="ADD A NEW SEASON" borderRadius="1rem" buttonNum={1} />
                     {seasons?.map((season) => {
                         return (
                             <Box
@@ -23,12 +24,11 @@ const index = () => {
                                 gridTemplateColumns="12fr 1fr"
                                 w="100%"
                             >
-                                <InfoContainer season={season} path={season._id} />
-                                <EditButton />
+                                <InfoContainer season={season} path={`${season._id}/grades`} />
+                                <EditButton name={season._id} />
                             </Box>
                         )
                     })}
-                    <CreateCapsule heading="ADD A NEW SEASON" borderRadius="1rem" buttonNum={1} />
                 </VStack>
             </Container>
         </Template>
