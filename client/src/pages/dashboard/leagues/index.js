@@ -13,6 +13,13 @@ const index = () => {
         <Template>
             <Container heading={heading}>
                 <VStack spacing="1.25rem">
+                    {user?.leagues?.length < 4 && (
+                        <CreateCapsule
+                            heading="CREATE A NEW LEAGUE"
+                            borderRadius="999px"
+                            buttonNum={1}
+                        />
+                    )}
                     {user?.leagues?.map((league) => {
                         return (
                             <Box
@@ -26,13 +33,6 @@ const index = () => {
                             </Box>
                         )
                     })}
-                    {user?.leagues?.length < 4 && (
-                        <CreateCapsule
-                            heading="CREATE A NEW LEAGUE"
-                            borderRadius="999px"
-                            buttonNum={1}
-                        />
-                    )}
                 </VStack>
             </Container>
         </Template>

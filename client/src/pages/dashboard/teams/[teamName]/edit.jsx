@@ -8,14 +8,14 @@ import Input from 'components/Form/Input'
 import FormButton from 'components/Form/FormButton'
 import { appPaths } from 'utils/constants'
 import { useRouter } from 'next/router'
-import { useUserDetails, useCreateTeam } from 'hooks'
+import { useUserDetails, useEditTeam } from 'hooks'
 import { getTeamFromUser } from 'utils'
 
 const editTeamSchema = yup.object().shape({
     teamName: yup
         .string()
         .required("The Team's name is required")
-        .max(20, 'Team Name must be at most 20 characters'),
+        .max(20, "Team Name must be at most 20 characters"),
 })
 
 const edit = () => {
@@ -32,11 +32,9 @@ const edit = () => {
         resolver: yupResolver(editTeamSchema),
     })
 
-    const { mutate, isLoading } = useCreateTeam({
-        onSuccess: (response) => {
-            router.push(
-                new URL(`${response?.data?.data?.name}/games`, window.location.href).pathname
-            )
+    const { mutate: editTeam, editIsLoading } = useEditTeam({
+        onSuccess: () => {
+            router.push(appPaths.DASHBOARD_TEAMS_PATH)
         },
         onError: (error) => {
             console.log(error)
@@ -44,8 +42,14 @@ const edit = () => {
     })
 
     const onSubmit = (data) => {
-        mutate(data)
+        editTeam(data)
     }
+
+    React.useEffect(() => {
+        reset({
+            teamName: team?.name
+        })
+    }, [team])
 
     return (
         <Template>
@@ -67,14 +71,12 @@ const edit = () => {
                         <FormButton onClick={() => router.push(appPaths.DASHBOARD_TEAMS_PATH)}>
                             Back
                         </FormButton>
-                        <FormButton type="submit" color="black" bg="orange" isLoading={isLoading}>
+                        <FormButton type="submit" color="black" bg="orange" isLoading={editIsLoading}>
                             Confirm
                         </FormButton>
                     </HStack>
                     <HStack>
-                        <FormButton
-                            bg="red"
-                        >
+                        <FormButton bg="red">
                             Delete Team
                         </FormButton>
                     </HStack>

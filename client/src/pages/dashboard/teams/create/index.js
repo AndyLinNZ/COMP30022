@@ -30,7 +30,9 @@ const index = () => {
 
     const { mutate, isLoading } = useCreateTeam({
         onSuccess: (response) => {
-            router.push(appPaths.DASHBOARD_TEAMS_PATH)
+            router.push(
+                new URL(`${response?.data?.data?._id}/games`, window.location.href).pathname
+            )
         },
         onError: (error) => {
             console.log(error)

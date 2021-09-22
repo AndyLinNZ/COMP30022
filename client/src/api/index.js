@@ -27,6 +27,10 @@ export const createTeam = async (team) => {
     return await axiosInstance.post('/team', team)
 }
 
+export const editTeam = async (team, teamId) => {
+    return await axiosInstance.patch(`/team/${teamId}`, team)
+}
+
 export const addPlayerToTeam = async (player) => {
     return await axiosInstance.post(`/team/${teamId}/player`, player)
 }
