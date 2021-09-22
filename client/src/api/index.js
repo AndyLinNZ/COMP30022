@@ -1,4 +1,4 @@
-import { isBrowser, isLoggedIn } from 'utils'
+import { isLoggedIn } from 'utils'
 import axiosInstance from './axios'
 
 export const registerUser = async (user) => {

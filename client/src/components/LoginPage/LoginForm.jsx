@@ -7,7 +7,7 @@ import { Text, VStack, useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { appPaths } from 'utils/constants'
 import { useLogin } from 'hooks'
-import { isBrowser, isLoggedIn } from 'utils'
+import { isLoggedIn } from 'utils'
 import Toast from 'components/Toast'
 
 const loginSchema = yup.object().shape({
