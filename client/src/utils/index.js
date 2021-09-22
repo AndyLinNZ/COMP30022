@@ -13,16 +13,16 @@ export const isLoggedIn = () => {
 }
 
 export const getLeagueFromUser = (user) => {
-    return user?.leagues?.find(({ _id }) => _id === router.query.leagueName)
+    return user?.leagues?.find(({ _id }) => _id === router.query.leagueId)
 }
 
 export const getTeamFromUser = (user) => {
-    return user?.teams?.find(({ _id }) => _id === router.query.teamName)
+    return user?.teams?.find(({ _id }) => _id === router.query.teamId)
 }
 
 export const getSeasonFromUser = (user) => {
     const leagues = getLeagueFromUser(user)
-    return leagues?.seasons.find(({ _id }) => _id === router.query.seasonName)
+    return leagues?.seasons.find(({ _id }) => _id === router.query.seasonId)
 }
 
 export const getHumanReadableDate = (dateStr) =>

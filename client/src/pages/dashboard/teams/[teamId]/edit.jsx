@@ -32,7 +32,7 @@ const edit = () => {
         resolver: yupResolver(editTeamSchema),
     })
 
-    const { mutate: editTeam, editIsLoading } = useEditTeam({
+    const { mutate: editTeam, editIsLoading, editIsSuccess } = useEditTeam({
         onSuccess: () => {
             router.push(appPaths.DASHBOARD_TEAMS_PATH)
         },
@@ -71,7 +71,7 @@ const edit = () => {
                         <FormButton onClick={() => router.push(appPaths.DASHBOARD_TEAMS_PATH)}>
                             Back
                         </FormButton>
-                        <FormButton type="submit" color="black" bg="orange" isLoading={editIsLoading}>
+                        <FormButton type="submit" color="black" bg="orange" isLoading={editIsLoading || editIsSuccess}>
                             Confirm
                         </FormButton>
                     </HStack>
