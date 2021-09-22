@@ -37,6 +37,7 @@ const Container = ({ league, children, minH = '375px', w = ['95%', '75%'] }) => 
                 minH={minH}
                 maxH="390px"
                 overflowY="scroll"
+                pos="relative"
             >
                 {children}
             </Box>
