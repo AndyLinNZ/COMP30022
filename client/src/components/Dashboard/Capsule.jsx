@@ -1,4 +1,3 @@
-import { EditIcon } from '@chakra-ui/icons'
 import { Flex, Box, VStack, IconButton, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useMediaQuerySSR } from 'hooks'

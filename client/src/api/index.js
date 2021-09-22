@@ -23,6 +23,18 @@ export const createLeague = async (league) => {
     return await axiosInstance.post('/league', league)
 }
 
+export const createTeam = async (team) => {
+    return await axiosInstance.post('/team', team)
+}
+
+export const editTeam = async (team, teamId) => {
+    return await axiosInstance.patch(`/team/${teamId}`, team)
+}
+
+export const addPlayerToTeam = async (player) => {
+    return await axiosInstance.post(`/team/${teamId}/player`, player)
+}
+
 export const createLeagueSeason = async (season, leagueId) => {
     return await axiosInstance.post(`/league/${leagueId}/season`, season)
 }
