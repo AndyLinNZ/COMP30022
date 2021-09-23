@@ -52,4 +52,4 @@ function NotFound() {
     )
 }
 
-module.exports = NotFound
+export default NotFound
