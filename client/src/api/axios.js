@@ -36,6 +36,8 @@ axiosInstance.interceptors.response.use(
             window.localStorage.removeItem('token')
 
             window.location = '/login'
+        } else if (error.response.status === 404) {
+            window.location = '/404'
         } else {
             return Promise.reject(error)
         }

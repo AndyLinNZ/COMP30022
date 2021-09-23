@@ -48,7 +48,7 @@ const CreateCapsule = ({ heading, borderRadius, buttonNum }) => {
             </Flex>
             {[...Array(buttonNum).keys()].map((num) => {
                 return (
-                    <div style={{visibility: "hidden" }}>
+                    <div key={num} style={{visibility: "hidden" }}>
                         <EditButton />
                     </div>
                 )
