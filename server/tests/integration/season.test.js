@@ -181,6 +181,16 @@ describe('Integration Testing: deleting a season', () => {
         expect(res.body.error).toBe('Season does not exist')
     })
 
+    test('A user should not be able to delete a season if they are not a league admin', async () => {
+        const res = await request.delete(`/api/season/${env.season0_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[2][1]}`)
+
+        expect(res.statusCode).toBe(403)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('User is not an admin')
+    })
+
+
     test('Should be able to delete a season with valid id', async () => {
         const res = await request.delete(`/api/season/${env.season1_id}`)
             .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)

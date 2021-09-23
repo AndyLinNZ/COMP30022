@@ -38,12 +38,35 @@ async function getTeam(req, res, next) {
     }
 }
 
+async function updateTeam(req, res, next) {
+    try {
+        let { teamName } = req.body
+
+        const updateQuery = {}
+        if (teamName) updateQuery.name = teamName
+
+        const team = await Team.findOneAndUpdate(
+            { _id: req.team._id },
+            { $set: updateQuery },
+            { new: true, runValidators: true }
+        )
+
+        return res.status(200).json({
+            success: true,
+            data: team,
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
 async function addPlayerToTeam(req, res, next) {
-   try {
+    try {
         var newPlayers = await Promise.all(
             req.body.playerNames.map(async (playerName) => {
                 const newPlayer = new Player({
-                    name: playerName
+                    name: playerName,
                 })
                 const player = await newPlayer.save()
                 return player
@@ -58,7 +81,7 @@ async function addPlayerToTeam(req, res, next) {
 
         return res.status(200).json({
             success: true,
-            data: team.players
+            data: team.players,
         })
     } catch (err) {
         console.log(err)
@@ -68,16 +91,13 @@ async function addPlayerToTeam(req, res, next) {
 
 async function deletePlayersFromTeam(req, res, next) {
     try {
-        if (!await allValidDocumentIds(req.body.playerIds, Player)) {
+        if (!(await allValidDocumentIds(req.body.playerIds, Player))) {
             return next({ status: 404, message: 'Some players do not exist' })
         }
 
         var toDeletePlayers = await Promise.all(
             req.body.playerIds.map(async (playerId) => {
-                const player = await Player.findOneAndUpdate(
-                    { _id: playerId },
-                    { team: null }
-                )
+                const player = await Player.findOneAndUpdate({ _id: playerId }, { team: null })
                 return player
             })
         )
@@ -90,7 +110,7 @@ async function deletePlayersFromTeam(req, res, next) {
 
         return res.status(200).json({
             success: true,
-            data: team.players
+            data: team.players,
         })
     } catch (err) {
         console.log(err)
@@ -101,6 +121,7 @@ async function deletePlayersFromTeam(req, res, next) {
 module.exports = {
     createTeam,
     getTeam,
+    updateTeam,
     addPlayerToTeam,
     deletePlayersFromTeam,
 }

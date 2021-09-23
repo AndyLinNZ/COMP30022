@@ -155,3 +155,26 @@ describe('Unit Testing: createGame in roundController', () => {
         expect(next).toHaveBeenCalledWith(actualNext)
     })
 })
+
+
+describe('Unit Testing: deleteRound in roundController', () => {
+    test('Deleting round with valid roundId should delete the season', async () => {
+        const req = mockRequest()
+        const res = mockResponse()
+        const next = mockNext()
+
+        req.round = new Round({
+            _id: '60741060d14008bd0efff9d5',
+            grade: '60741060d14008bd0efaaaaa',
+            dateStart: '2021-08-12T12:23:34.944Z',
+        })
+
+        Round.prototype.deleteOne = jest.fn().mockImplementationOnce()
+
+        await roundController.deleteRound(req, res, next)
+
+        expect(next).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledTimes(1)
+        expect(res.status).toHaveBeenCalledWith(204)
+    })
+})

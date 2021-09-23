@@ -1,31 +1,32 @@
 import React from 'react'
-import { useGetAllLeagueSeasons, useUserDetails } from 'hooks'
+import { useGetAllSeasonGrades, useUserDetails } from 'hooks'
 import { Template, CreateCapsule } from 'components/Dashboard'
-import { Box, VStack } from '@chakra-ui/react'
-import { Container, InfoContainer } from 'components/Dashboard/League'
-import { getLeagueFromUser } from 'utils'
+import { Box, VStack, Text } from '@chakra-ui/react'
+import { Container, GradeContainer } from 'components/Dashboard/League'
+import { getSeasonFromUser, getLeagueFromUser } from 'utils'
 import EditButton from 'components/Dashboard/League/EditButton'
 
 const index = () => {
-    const { seasons } = useGetAllLeagueSeasons()
+    const { grades } = useGetAllSeasonGrades()
     const { user } = useUserDetails()
+    const season = getSeasonFromUser(user)
     const league = getLeagueFromUser(user)
 
     return (
         <Template>
             <Container league={league}>
                 <VStack spacing="1.25rem">
-                    <CreateCapsule heading="ADD A NEW SEASON" />
-                    {seasons?.map((season) => {
+                    <CreateCapsule heading="ADD A NEW GRADE" borderRadius="1rem" buttonNum={1} />
+                    {grades?.map((grade) => {
                         return (
                             <Box
-                                key={season._id}
+                                key={grade._id}
                                 display="grid"
                                 gridTemplateColumns="12fr 1fr"
                                 w="100%"
                             >
-                                <InfoContainer season={season} path={`${season._id}/grades`} />
-                                <EditButton name={season._id} />
+                                <GradeContainer grade={grade} path={grade._id} />
+                                <EditButton name={grade.name} />
                             </Box>
                         )
                     })}

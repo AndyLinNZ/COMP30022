@@ -196,3 +196,39 @@ describe('Integration Testing: creating games', () => {
     })
 
 })
+
+describe('Integration Testing: deleting a round', () => {
+    test('Deleting a round with a nonexistent id should return an error', async () => {
+        const res = await request.delete(`/api/round/aaaabbbbcccc`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Round does not exist')
+    })
+
+    test('Deleting a round with an invalid MongoDB object id should return an error', async () => {
+        const res = await request.delete(`/api/round/1337`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Round does not exist')
+    })
+
+    test('A user should not be able to delete a round if they are not a league admin', async () => {
+        const res = await request.delete(`/api/round/${env.round0_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[2][1]}`)
+
+        expect(res.statusCode).toBe(403)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('User is not an admin')
+    })
+
+    test('Should be able to delete a round with valid id', async () => {
+        const res = await request.delete(`/api/round/${env.round0_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+
+        expect(res.statusCode).toBe(204)
+    })
+})

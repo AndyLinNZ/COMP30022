@@ -7,12 +7,19 @@ import EditButton from 'components/Dashboard/League/EditButton'
 const index = () => {
     const { user } = useUserDetails()
 
-    const heading = user?.firstName ? `${user?.firstName}'s leagues` : 'Your leagues'
+    const heading = user?.firstName ? `${user?.firstName}'s Leagues` : 'Your Leagues'
 
     return (
         <Template>
             <Container heading={heading}>
                 <VStack spacing="1.25rem">
+                    {user?.leagues?.length < 4 && (
+                        <CreateCapsule
+                            heading="CREATE A NEW LEAGUE"
+                            borderRadius="999px"
+                            buttonNum={1}
+                        />
+                    )}
                     {user?.leagues?.map((league) => {
                         return (
                             <Box
@@ -26,7 +33,6 @@ const index = () => {
                             </Box>
                         )
                     })}
-                    {user?.leagues?.length < 4 && <CreateCapsule heading="CREATE A NEW LEAGUE" />}
                 </VStack>
             </Container>
         </Template>
