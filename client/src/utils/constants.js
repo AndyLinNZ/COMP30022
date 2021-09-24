@@ -12,5 +12,5 @@ export const appPaths = {
     LOG_OUT_PATH: '/logout',
     LEAGUE_PATH: '/league',
     LEAGUE_SEASON_PATH: '/league/[leagueId]/seasons',
-    LEAGUE_GRADE_PATH: '/league/[leagueId]/seasons/[seasonId]/grade',
+    LEAGUE_GRADE_PATH: '/league/[leagueId]/seasons/[seasonId]/grades',
 }

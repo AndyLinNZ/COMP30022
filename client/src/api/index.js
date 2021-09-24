@@ -16,10 +16,7 @@ export const login = async (user) => {
 }
 
 export const getUserDetails = async () => {
-    if (isLoggedIn()) {
-        const data = await axiosInstance.get('/user/details')
-        return data
-    }
+    return await axiosInstance.get('/user/details')
 }
 
 export const createLeague = async (league) => {
@@ -34,9 +31,9 @@ export const editTeam = async (team, teamId) => {
     return await axiosInstance.patch(`/team/${teamId}`, team)
 }
 
-export const addPlayerToTeam = async (player) => {
-    return await axiosInstance.post(`/team/${teamId}/player`, player)
-}
+// export const addPlayerToTeam = async (player) => {
+//     return await axiosInstance.post(`/team/${teamId}/player`, player)
+// }
 
 export const createLeagueSeason = async (season, leagueId) => {
     return await axiosInstance.post(`/league/${leagueId}/season`, season)
