@@ -1,5 +1,12 @@
 components:
   schemas:
+    UserNotTeamAdminResponse:
+      allOf:
+        - $ref: '#/components/schemas/GenericErrorResponse'
+      example:
+        success: false
+        error: 'User is not a team admin'
+
     TeamRegistration:
       properties:
         teamName:
@@ -28,7 +35,13 @@ components:
       example:
         playerIds:
           - "66666f666666ff6666f66666"
-
+    
+    TeamChange:
+      properties:
+        teamName:
+          type: string
+      example:
+        teamname: jdubz average team
 
 paths:
   /team:
@@ -96,6 +109,54 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TeamNotFoundResponse'
+    patch:
+      tags:
+        - 'Team'
+      summary: 'Update teamName by id.'
+      description: 'This can only be done by a logged in user and the team admin.'
+      parameters:
+      - name: 'teamId'
+        in: 'path'
+        description: 'ID of team to patch.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamChange'
+      responses:
+        '200':
+          description: 'Successfully updated a team.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  games: []
+                  players: []
+                  admin: 11111a111111aa1111a11111
+                  _id: 55555e555555ee5555e55555
+                  name: jdubz average team
+                  grades: []
+                  __v: 0
+        '403':
+          description: 'User is not a team admin.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotTeamAdminResponse'
+        '404':
+          description: 'Team does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamNotFoundResponse'
 
   /team/{teamId}/player:
     post:
@@ -128,6 +189,18 @@ paths:
                 success: true
                 data:
                   - "613c2ff0160d49222703633a"
+        '403':
+          description: 'User is not a team admin.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotTeamAdminResponse'
+        '404':
+          description: 'Team does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamNotFoundResponse'
 
     delete:
       tags:
@@ -159,6 +232,12 @@ paths:
                 success: true
                 data:
                   - 66666f666666ff6666f66666
+        '403':
+          description: 'User is not a team admin.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotTeamAdminResponse'
         '404':
           description: 'Some of the players in the playerIds array do not exist or team does not exist.'
           content:
@@ -171,7 +250,6 @@ paths:
                     success: false
                     error: 'Some players do not exist'
                 TeamNotFound:
-                  value:
-                    success: false
-                    error: 'Team does not exist'
+                  schema:
+                    $ref: '#/components/schemas/TeamNotFoundResponse'
                 

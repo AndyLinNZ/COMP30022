@@ -24,7 +24,17 @@ beforeAll(async () => {
     })
     const team = await newTeam.save()
 
+    // add new test team object to database to be deleted
+    const secondTeam = new Team({
+        name: 'Joshua Dubar Team',
+        admin: env.auth_tokens[0][0],
+        grades: [],
+        players: []
+    })
+    const team2 = await secondTeam.save()
+
     env.team0_id = team._id.toString()
+    env.team1_id = team2._id.toString()
 })
 
 describe('Integration Testing: creating teams', () => {
@@ -162,5 +172,42 @@ describe('Integration Testing: Deleting players from a team', () => {
         expect(res.statusCode).toBe(200)
         expect(res.body.success).toBe(true)
         expect(res.body.data).toStrictEqual([])
+    })
+})
+
+describe('Integration Testing: updating a team', () => {
+    test('Updating a team with a nonexistent id should return an error', async () => {
+        const res = await request.patch(`/api/team/aaaabbbbcccc`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Team does not exist')
+    })
+
+    test('A user should not be able to update a team if they are not the team admin', async () => {
+        const res = await request.patch(`/api/team/${env.team0_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[2][1]}`)
+
+        expect(res.statusCode).toBe(403)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('User is not a team admin')
+    })
+
+
+    test('Should be able to update a team with valid id for just teamName', async () => {
+       const res = await request.patch(`/api/team/${env.team1_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send({
+                teamName: 'Joshua Dubar Average Team'
+            })
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data.admin).toStrictEqual(env.auth_tokens[0][0])
+        expect(res.body.data.players).toStrictEqual([])
+        expect(res.body.data.games).toStrictEqual([])
+        expect(res.body.data.grades).toStrictEqual([])
+        expect(res.body.data.name).toBe('Joshua Dubar Average Team')
     })
 })

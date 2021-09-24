@@ -596,3 +596,96 @@ describe('Unit Testing: deleteLeague in leagueController', () => {
         expect(res.status).toHaveBeenCalledWith(204)
     })
 })
+
+describe('Unit Testing: updateLeague in leagueController', () => {
+    test('Updating a league with valid leagueName and organisationName should update the league', async () => {
+        const req = mockRequest()
+        const res = mockResponse()
+        const next = mockNext()
+
+        const leagueDetails = {
+            _id: '611bbfe2aaa94829988d0b18',
+            admins: ['611a8a311fb4c81d84a55126'],
+            seasons: [],
+            name: 'Joshua Basketball Association',
+            organisation: 'JoshuaDubar',
+            creator: '611a8a311fb4c81d84a55126',
+            __v: 0
+        }
+        req.league = new League(leagueDetails)
+
+        req.body = {
+            leagueName: 'Josh League',
+            organisationName: 'Josh Org',
+        }
+
+        const expectedLeague = new League({
+            ...leagueDetails, 
+            name: req.body.leagueName,
+            organisaiton: req.body.organisationName
+        })
+
+        League.findOneAndUpdate = jest.fn().mockResolvedValue(expectedLeague)
+
+        await leagueController.updateLeague(req, res, next)
+
+        const actualRes = {
+            status: 200,
+            json: {
+                success: true,
+                data: expectedLeague,
+            },
+        }
+
+        expect(next).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledTimes(1)
+        expect(res.status).toHaveBeenCalledWith(actualRes.status)
+        expect(res.json).toHaveBeenCalledTimes(1)
+        expect(res.json).toHaveBeenCalledWith(actualRes.json)
+    })
+
+    test('Updating a league with valid leagueName but not organisationName should \
+        update the league dynamically', async () => {
+        const req = mockRequest()
+        const res = mockResponse()
+        const next = mockNext()
+
+        const leagueDetails = {
+            _id: '611bbfe2aaa94829988d0b18',
+            admins: ['611a8a311fb4c81d84a55126'],
+            seasons: [],
+            name: 'Joshua Basketball Association',
+            organisation: 'JoshuaDubar',
+            creator: '611a8a311fb4c81d84a55126',
+            __v: 0
+        }
+        req.league = new League(leagueDetails)
+
+        req.body = {
+            leagueName: 'Josh League'
+        }
+
+        const expectedLeague = new League({
+            ...leagueDetails, 
+            name: req.body.leagueName,
+        })
+
+        League.findOneAndUpdate = jest.fn().mockResolvedValue(expectedLeague)
+
+        await leagueController.updateLeague(req, res, next)
+
+        const actualRes = {
+            status: 200,
+            json: {
+                success: true,
+                data: expectedLeague,
+            },
+        }
+
+        expect(next).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledTimes(1)
+        expect(res.status).toHaveBeenCalledWith(actualRes.status)
+        expect(res.json).toHaveBeenCalledTimes(1)
+        expect(res.json).toHaveBeenCalledWith(actualRes.json)
+    })
+})
