@@ -1,8 +1,8 @@
 import React from 'react'
 import { useGetAllLeagueSeasons, useLeague } from 'hooks'
 import { Template } from 'components/Dashboard'
-import { VStack, Text } from '@chakra-ui/react'
-import { Container, InfoContainer } from 'components/Dashboard/League'
+import { VStack, Text, Spinner } from '@chakra-ui/react'
+import { Container, InfoContainer } from 'components'
 
 const index = () => {
     const { seasons } = useGetAllLeagueSeasons()

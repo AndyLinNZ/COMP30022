@@ -15,10 +15,10 @@ const editLeagueSchema = yup.object().shape({
     leagueName: yup
         .string()
         .required("The League's name is required")
-        .max(20, "League Name must be at most 20 characters"),
+        .max(20, 'League Name must be at most 20 characters'),
     organisationName: yup
         .string()
-        .required("Please enter the name of the Organisation running this League"),
+        .required('Please enter the name of the Organisation running this League'),
 })
 
 const index = () => {
