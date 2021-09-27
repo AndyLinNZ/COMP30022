@@ -108,6 +108,12 @@ paths:
                   dateStart: '2021-08-12T12:23:34.944Z'
                   dateFinish: '2021-08-14T12:23:34.944Z'
                   __v: 0
+        '403':
+          description: 'User is not an admin for this league.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotAdminResponse'
         '404':
           description: 'Season does not exist.'
           content:

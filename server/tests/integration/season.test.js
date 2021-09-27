@@ -51,14 +51,26 @@ beforeAll(async () => {
     })
     const season2 = await secondSeason.save()
 
+    // add a third season object to be updated
+    const thirdSeason = new Season({
+        name: 'joshua third season',
+        dateStart: testSeason.seasonStart,
+        dateFinish: testSeason.seasonFinish,
+        league: league._id,
+        grades: []
+    })
+    const season3 = await thirdSeason.save()
+
     // add the new season as a season to the league
     league.seasons.push(season._id)
     league.seasons.push(season2._id)
+    league.seasons.push(season3._id)
     await league.save()
 
     env.league0_id = league._id.toString()
     env.season0_id = season._id.toString()
     env.season1_id = season2._id.toString()
+    env.season2_id = season3._id.toString()
 })
 
 describe('Integration Testing: finding seasons', () => {
@@ -196,5 +208,77 @@ describe('Integration Testing: deleting a season', () => {
             .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
 
         expect(res.statusCode).toBe(204)
+    })
+})
+
+describe('Integration Testing: updating a season', () => {
+    test('Updating a season with a nonexistent id should return an error', async () => {
+        const res = await request.patch(`/api/season/aaaabbbbcccc`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Season does not exist')
+    })
+
+    test('A user should not be able to update a season if they are not a league admin', async () => {
+        const res = await request.patch(`/api/season/${env.season0_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[2][1]}`)
+
+        expect(res.statusCode).toBe(403)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('User is not an admin')
+    })
+
+
+    test('Should be able to update a season with valid id for just seasonName', async () => {
+        const res = await request.patch(`/api/season/${env.season2_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send({
+                seasonName: 'Joshua Dubar Average Season'
+            })
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data.status).toBe('completed')
+        expect(res.body.data.grades).toStrictEqual([])
+        expect(res.body.data.name).toBe('Joshua Dubar Average Season')
+        expect(res.body.data.dateStart).toBe(testSeason.seasonStart)
+        expect(res.body.data.dateFinish).toBe(testSeason.seasonFinish)
+    })
+
+    test('Should be able to update a season with valid id for both seasonStart and seasonFinish', async () => {
+        const res = await request.patch(`/api/season/${env.season2_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send({
+                seasonStart: '2021-08-13T12:23:34.944Z',
+                seasonFinish: '2090-08-12T12:23:34.944Z'
+            })
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data.status).toBe('active')
+        expect(res.body.data.grades).toStrictEqual([])
+        expect(res.body.data.name).toBe('Joshua Dubar Average Season') // same season's name was updated in prev test
+        expect(res.body.data.dateStart).toBe('2021-08-13T12:23:34.944Z')
+        expect(res.body.data.dateFinish).toBe('2090-08-12T12:23:34.944Z')
+    })
+
+    test('Should be able to update a season with valid id for all of seasonName, seasonStart and seasonFinish', async () => {
+        const res = await request.patch(`/api/season/${env.season2_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send({
+                seasonName: 'Joshua Dubar Average Season xd',
+                seasonStart: '2021-08-13T12:23:34.944Z',
+                seasonFinish: '2090-08-12T12:23:34.944Z'
+            })
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data.status).toBe('active')
+        expect(res.body.data.grades).toStrictEqual([])
+        expect(res.body.data.name).toBe('Joshua Dubar Average Season xd')
+        expect(res.body.data.dateStart).toBe('2021-08-13T12:23:34.944Z')
+        expect(res.body.data.dateFinish).toBe('2090-08-12T12:23:34.944Z')
     })
 })
