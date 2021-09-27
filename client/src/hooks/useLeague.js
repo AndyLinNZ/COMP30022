@@ -3,7 +3,7 @@ import { getLeague } from 'api'
 import { extractData } from 'utils'
 import { useRouter } from 'next/router'
 
-const useLeagues = (options = {}) => {
+const useLeague = (options = {}) => {
     const router = useRouter()
     const leagueId = router.query.leagueId
     const { data, isLoading, error } = useQuery(['league', leagueId], getLeague, options)
@@ -11,4 +11,4 @@ const useLeagues = (options = {}) => {
     return { league, isLoading, error }
 }
 
-export default useLeagues
+export default useLeague

@@ -5,9 +5,10 @@ import AssociationCard from 'components/AssociationPage/AssociationCard'
 const AssociationGrid = ({ leagues, inSeason, upcomingSeason }) => {
     const displayLeagues = React.useMemo(() => {
         return leagues?.filter(({ seasons }) => {
-            if (inSeason && seasons.length >= 1) return true
-            if (!inSeason && seasons.length === 0) return true
-            if (upcomingSeason && seasons.length === 0) return true
+            if (inSeason && seasons.some((season) => season.status === 'active')) return true
+            if (!inSeason && seasons.some((season) => season.status !== 'active')) return true
+            if (upcomingSeason && seasons.some((season) => season.status === 'upcoming'))
+                return true
             return false
         })
     }, [leagues, inSeason, upcomingSeason])
@@ -25,7 +26,9 @@ const AssociationGrid = ({ leagues, inSeason, upcomingSeason }) => {
                     <AssociationCard
                         name={name}
                         org={organisation}
-                        activeSeasons={seasons.length}
+                        activeSeasons={
+                            seasons.filter((season) => season.status === 'active').length
+                        }
                         icon={null}
                         id={_id}
                     />
