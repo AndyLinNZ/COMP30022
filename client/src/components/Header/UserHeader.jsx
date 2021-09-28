@@ -16,10 +16,9 @@ const UserHeader = ({ isHome = false }) => {
     return isLoggedIn() ? (
         <Flex
             as="nav"
-            w={['100%', '78%']}
+            w={isDesktop ? '78%' : '100%'}
             bg="transparent"
             fontSize="1.5rem"
-            justifyContent="flex-end"
             pos="absolute"
             left="50%"
             transform="translateX(-50%)"
@@ -27,9 +26,8 @@ const UserHeader = ({ isHome = false }) => {
         >
             {!isHome && (
                 <Box
-                    pos="absolute"
-                    left="1rem"
-                    top={['1rem', 0]}
+                    marginTop={['1rem', 0]}
+                    marginLeft={['1rem', 0]}
                     cursor="pointer"
                     onClick={() => router.push(appPaths.HOME_PATH)}
                 >
@@ -37,7 +35,7 @@ const UserHeader = ({ isHome = false }) => {
                 </Box>
             )}
 
-            <Box pos="relative" top="1rem" right="1rem" zIndex="dropdown">
+            <Box pos="absolute" top="1rem" right="1rem" zIndex="dropdown">
                 <HeaderDropdown />
             </Box>
         </Flex>
