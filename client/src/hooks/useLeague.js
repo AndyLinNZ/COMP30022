@@ -6,7 +6,10 @@ import { useRouter } from 'next/router'
 const useLeague = (options = {}) => {
     const router = useRouter()
     const leagueId = router.query.leagueId
-    const { data, isLoading, error } = useQuery(['league', leagueId], getLeague, options)
+    const { data, isLoading, error } = useQuery(['league', leagueId], getLeague, {
+        ...options,
+        enabled: !!leagueId,
+    })
     const league = extractData(data)
     return { league, isLoading, error }
 }
