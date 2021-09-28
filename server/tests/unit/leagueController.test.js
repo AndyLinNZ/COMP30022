@@ -36,7 +36,7 @@ describe('Unit Testing: getAllLeagues in leagueController', () => {
 
         League.find = jest.fn().mockResolvedValue(allLeagues)
         League.find.mockImplementationOnce(() => ({
-            lean: jest.fn().mockReturnValue(allLeagues),
+            populate: jest.fn().mockReturnValue(allLeagues),
         }))
 
         await leagueController.getAllLeagues(req, res, next)
@@ -63,7 +63,7 @@ describe('Unit Testing: getAllLeagues in leagueController', () => {
 
         League.find = jest.fn().mockResolvedValue([])
         League.find.mockImplementationOnce(() => ({
-            lean: jest.fn().mockReturnValue([]),
+            populate: jest.fn().mockReturnValue([]),
         }))
 
         await leagueController.getAllLeagues(req, res, next)
@@ -584,7 +584,7 @@ describe('Unit Testing: deleteLeague in leagueController', () => {
             name: 'Joshua Basketball Association',
             organisation: 'JoshuaDubar',
             creator: '611a8a311fb4c81d84a55126',
-            __v: 0
+            __v: 0,
         })
 
         League.prototype.deleteOne = jest.fn().mockImplementationOnce()
@@ -610,7 +610,7 @@ describe('Unit Testing: updateLeague in leagueController', () => {
             name: 'Joshua Basketball Association',
             organisation: 'JoshuaDubar',
             creator: '611a8a311fb4c81d84a55126',
-            __v: 0
+            __v: 0,
         }
         req.league = new League(leagueDetails)
 
@@ -620,9 +620,9 @@ describe('Unit Testing: updateLeague in leagueController', () => {
         }
 
         const expectedLeague = new League({
-            ...leagueDetails, 
+            ...leagueDetails,
             name: req.body.leagueName,
-            organisaiton: req.body.organisationName
+            organisaiton: req.body.organisationName,
         })
 
         League.findOneAndUpdate = jest.fn().mockResolvedValue(expectedLeague)
@@ -657,16 +657,16 @@ describe('Unit Testing: updateLeague in leagueController', () => {
             name: 'Joshua Basketball Association',
             organisation: 'JoshuaDubar',
             creator: '611a8a311fb4c81d84a55126',
-            __v: 0
+            __v: 0,
         }
         req.league = new League(leagueDetails)
 
         req.body = {
-            leagueName: 'Josh League'
+            leagueName: 'Josh League',
         }
 
         const expectedLeague = new League({
-            ...leagueDetails, 
+            ...leagueDetails,
             name: req.body.leagueName,
         })
 

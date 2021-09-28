@@ -12,9 +12,9 @@ const Capsule = ({ name, subtext, path, tags }) => {
     return (
         <Flex
             w="100%"
-            h={isDesktop ? "70px" : "100%"}
-            padding={isDesktop ? "" : "8px 2px"}
-            borderRadius={isDesktop ? "999px" : "24px"}
+            h={isDesktop ? '70px' : '100%'}
+            padding={isDesktop ? '' : '8px 2px'}
+            borderRadius={isDesktop ? '999px' : '24px'}
             border="2px solid grey"
             pos="relative"
             cursor="pointer"

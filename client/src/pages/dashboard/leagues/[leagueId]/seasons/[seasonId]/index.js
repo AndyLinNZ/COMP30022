@@ -1,32 +1,34 @@
 import React from 'react'
-import { useGetAllSeasonGrades, useUserDetails } from 'hooks'
+import { useGetAllLeagueSeasons, useUserDetails } from 'hooks'
 import { Template, CreateCapsule } from 'components/Dashboard'
-import { Box, VStack, Text } from '@chakra-ui/react'
-import { Container, GradeContainer } from 'components'
-import { getSeasonFromUser, getLeagueFromUser } from 'utils'
+import { Box, VStack } from '@chakra-ui/react'
+import { Container, InfoContainer } from 'components'
+import { getLeagueFromUser } from 'utils'
 import EditButton from 'components/Dashboard/League/EditButton'
 
+/**
+ * TODO: /season page. This should be the one to view grades. I only set this page up to test the new URL
+ */
 const index = () => {
-    const { grades } = useGetAllSeasonGrades()
+    const { seasons } = useGetAllLeagueSeasons()
     const { user } = useUserDetails()
-    const season = getSeasonFromUser(user)
     const league = getLeagueFromUser(user)
 
     return (
         <Template>
-            <Container league={league}>
+            <Container league={league?.season}>
                 <VStack spacing="1.25rem">
-                    <CreateCapsule heading="ADD A NEW GRADE" borderRadius="1rem" buttonNum={1} />
-                    {grades?.map((grade) => {
+                    <CreateCapsule heading="ADD A NEW GRADE" />
+                    {seasons?.map((season) => {
                         return (
                             <Box
-                                key={grade._id}
+                                key={season._id}
                                 display="grid"
                                 gridTemplateColumns="12fr 1fr"
                                 w="100%"
                             >
-                                <GradeContainer grade={grade} path={grade._id} />
-                                <EditButton name={grade.name} />
+                                <InfoContainer season={season} path={season._id} />
+                                <EditButton name={season?._id} />
                             </Box>
                         )
                     })}

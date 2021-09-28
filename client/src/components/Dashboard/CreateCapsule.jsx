@@ -6,13 +6,9 @@ import EditButton from 'components/Dashboard/League/EditButton'
 
 const CreateCapsule = ({ heading, borderRadius, buttonNum }) => {
     const router = useRouter()
-    const buttonNums = {0:"12fr", 1:"12fr 1fr", 2:"12fr 1fr 1fr"}
+    const buttonNums = { 0: '12fr', 1: '12fr 1fr', 2: '12fr 1fr 1fr' }
     return (
-        <Box
-            display="grid"
-            gridTemplateColumns={buttonNums[buttonNum]}
-            w="100%"
-        >
+        <Box display="grid" gridTemplateColumns={buttonNums[buttonNum]} w="100%">
             <Flex
                 w="100%"
                 h="70px"
@@ -42,15 +38,21 @@ const CreateCapsule = ({ heading, borderRadius, buttonNum }) => {
                     <AddIcon fontSize="1.25rem" color="greyBg" />
                 </Flex>
 
-                <Text pos="absolute" top="50%" left="5rem" transform="translateY(-50%)" color="white">
+                <Text
+                    pos="absolute"
+                    top="50%"
+                    left="5rem"
+                    transform="translateY(-50%)"
+                    color="white"
+                >
                     {heading}
                 </Text>
             </Flex>
             {[...Array(buttonNum).keys()].map((num) => {
                 return (
-                    <div style={{visibility: "hidden" }}>
+                    <Box visibility="hidden" key={num}>
                         <EditButton />
-                    </div>
+                    </Box>
                 )
             })}
         </Box>

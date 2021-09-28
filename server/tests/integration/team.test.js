@@ -196,7 +196,7 @@ describe('Integration Testing: updating a team', () => {
 
 
     test('Should be able to update a team with valid id for just teamName', async () => {
-       const res = await request.patch(`/api/team/${env.team1_id}`)
+        const res = await request.patch(`/api/team/${env.team1_id}`)
             .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
             .send({
                 teamName: 'Joshua Dubar Average Team'

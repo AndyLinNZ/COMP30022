@@ -75,15 +75,15 @@ describe('Unit Testing: updateGame in gameController', () => {
             team1: {
                 ...gameDetails.team1,
                 playerStats: [{
-                        playerId: '613b1a98c541333f1490ce10',
-                        ...req.body.team1['613b1a98c541333f1490ce10'],
+                    playerId: '613b1a98c541333f1490ce10',
+                    ...req.body.team1['613b1a98c541333f1490ce10'],
                 }],
             },
             team2: {
                 ...gameDetails.team2,
                 playerStats: [{
-                        playerId: '613b1ad2c541333f1490ce22',
-                        ...req.body.team2['613b1ad2c541333f1490ce22'],
+                    playerId: '613b1ad2c541333f1490ce22',
+                    ...req.body.team2['613b1ad2c541333f1490ce22'],
                 }],
             },
         })
@@ -150,8 +150,8 @@ describe('Unit Testing: updateGame in gameController', () => {
             team2: {
                 ...gameDetails.team2,
                 playerStats: [{
-                        playerId: '613b1ad2c541333f1490ce22',
-                        ...req.body.team2['613b1ad2c541333f1490ce22'],
+                    playerId: '613b1ad2c541333f1490ce22',
+                    ...req.body.team2['613b1ad2c541333f1490ce22'],
                 }],
             },
         })

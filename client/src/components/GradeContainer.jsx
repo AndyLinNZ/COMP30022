@@ -2,7 +2,6 @@ import { Flex, HStack, Text, Box, VStack } from '@chakra-ui/react'
 import { useMediaQuerySSR } from 'hooks'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { Status } from '.'
 
 const GradeContainer = ({ grade, path }) => {
     const router = useRouter()

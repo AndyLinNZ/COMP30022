@@ -8,7 +8,7 @@ import Input from 'components/Form/Input'
 import FormButton from 'components/Form/FormButton'
 import { appPaths } from 'utils/constants'
 import { useRouter } from 'next/router'
-import { useAddPlayerToTeam } from 'hooks'
+// import { useAddPlayerToTeam } from 'hooks'
 
 const addPlayerSchema = yup.object().shape({
     playerName: yup
@@ -31,11 +31,7 @@ const addPlayer = () => {
     return (
         <Template>
             <Container heading="Add a Player" minH="unset" w="unset !important">
-                <VStack
-                    marginleft={['0', '2rem']}
-                    as="form"
-                    spacing="2rem"
-                >
+                <VStack marginleft={['0', '2rem']} as="form" spacing="2rem">
                     <Input
                         label="Player name"
                         placeholder="Player name"

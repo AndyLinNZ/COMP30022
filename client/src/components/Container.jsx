@@ -1,6 +1,6 @@
 import { Box, Flex, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
-import { Stepper } from '.'
+import { Stepper } from './Dashboard/League'
 
 const Container = ({ league, children, minH = '375px', w = ['95%', '75%'] }) => {
     return (
@@ -37,6 +37,7 @@ const Container = ({ league, children, minH = '375px', w = ['95%', '75%'] }) => 
                 minH={minH}
                 maxH="390px"
                 overflowY="scroll"
+                pos="relative"
             >
                 {children}
             </Box>
