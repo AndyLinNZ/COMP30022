@@ -40,10 +40,53 @@ paths:
                 data:
                   difficulty: E
                   gender: female
-                  teams: []
+                  teams:
+                    - _id: 6153e84a72b2dec03665a11b
+                      admin: 6153e84872b2dec03665a105
+                      games:
+                        - 6153e84d72b2dec03665a140
+                      grades:
+                        - 6153e84a72b2dec03665a118
+                      name: John's BBallers
+                      players:
+                        - 6153e84b72b2dec03665a123
+                        - 6153e84b72b2dec03665a124
+                    - _id: 6153e84a72b2dec03665a11c
+                      admin: 6153e84872b2dec03665a106
+                      games:
+                        - 6153e84d72b2dec03665a140
+                      grades:
+                        - 6153e84a72b2dec03665a118
+                      name: Jane's BBallers
+                      players:
+                        - 6153e84b72b2dec03665a126
+                        - 6153e84b72b2dec03665a127
                   _id: 44444d444444dd4444d44444
                   name: Joshua Dubar Grade
                   season: 33333c333333cc3333c33333
+                  fixture:
+                    - _id: 6153e84c72b2dec03665a132
+                      date: 2021-09-29T04:15:04.709Z
+                      games: []
+                  ladder:
+                    - rank: 1
+                      team:
+                        id: 6153e84a72b2dec03665a11c
+                        name: Jane's BBallers
+                      keyStats:
+                        draws: 0
+                        losses: 0
+                        wins: 1
+                        totalPoints: 3
+                    - rank: 2
+                      team:
+                        id: 6153e84a72b2dec03665a11b
+                        name: John's BBallers
+                      keyStats:
+                        draws: 0
+                        losses: 1
+                        wins: 0
+                        totalPoints: 0
                   __v: 0
         '404':
           description: 'Grade does not exist.'
