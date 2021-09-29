@@ -14,7 +14,6 @@ const AssociationGrid = ({ leagues, inSeason, upcomingSeason }) => {
             return valid
         })
     }, [leagues, inSeason, upcomingSeason])
-    console.log(leagues)
     return (
         <SimpleGrid
             columns={[1, 2, 3]}

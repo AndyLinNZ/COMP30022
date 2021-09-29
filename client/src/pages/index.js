@@ -1,7 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
 import { Flex, Box, Checkbox, Text } from '@chakra-ui/react'
-import HomeHeader from 'components/Header/HomeHeader'
 import HeroBackDrop from 'components/svg/HeroBackDrop'
 import HeroBackDropMobile from 'components/svg/HeroBackDropMobile'
 import AssociationSearch from 'components/AssociationPage/AssociationSearch'
@@ -9,7 +8,6 @@ import AssociationGrid from 'components/AssociationPage/AssociationGrid'
 import Logo from 'components/svg/Logo'
 import { useLeagues, useMediaQuerySSR } from 'hooks'
 import Footer from 'components/Footer'
-import { isLoggedIn } from 'utils'
 import UserHeader from 'components/Header/UserHeader'
 
 export default function Home() {
@@ -40,7 +38,7 @@ export default function Home() {
                     <HeroBackDropMobile />
                 </>
             )}
-            {isLoggedIn() ? <UserHeader isHome /> : <HomeHeader />}
+            <UserHeader isHome />
             <Flex
                 pos="absolute"
                 left="50%"
