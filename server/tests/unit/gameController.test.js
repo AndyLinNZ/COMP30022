@@ -9,7 +9,7 @@ beforeEach(() => {
     jest.restoreAllMocks()
 })
 
-describe('Unit Testing: updateGame in gameController', () => {
+describe('Unit Testing: updateGamePlayerStats in gameController', () => {
     beforeEach(() => {
         this.exampleReqBody = {
             team1: {
@@ -92,7 +92,7 @@ describe('Unit Testing: updateGame in gameController', () => {
         PlayerStat.prototype.save = jest.fn().mockImplementation()
         Game.prototype.save = jest.fn().mockResolvedValue(expectedGame)
 
-        await gameController.updateGame(req, res, next)
+        await gameController.updateGamePlayerStats(req, res, next)
 
         const actualRes = {
             status: 200,
@@ -160,7 +160,7 @@ describe('Unit Testing: updateGame in gameController', () => {
         PlayerStat.prototype.save = jest.fn().mockImplementation()
         Game.prototype.save = jest.fn().mockResolvedValue(expectedGame)
 
-        await gameController.updateGame(req, res, next)
+        await gameController.updateGamePlayerStats(req, res, next)
 
         const actualRes = {
             status: 200,
