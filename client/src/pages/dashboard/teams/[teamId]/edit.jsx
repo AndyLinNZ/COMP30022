@@ -42,6 +42,7 @@ const edit = () => {
     })
 
     const onSubmit = (data) => {
+        console.log(data)
         editTeam(data)
     }
 
