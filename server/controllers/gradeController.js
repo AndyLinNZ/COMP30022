@@ -1,5 +1,4 @@
-const Round = require('../models/round')
-const Grade = require('../models/grade')
+const { _createRound } = require('./utils')
 const { calculateGradeLadder } = require('./utils')
 
 async function getGrade(req, res, next) {
@@ -89,11 +88,7 @@ async function addTeamToGrade(req, res, next) {
 
 async function createRound(req, res, next) {
     try {
-        let { date } = req.body
-        const newRound = new Round({ grade: req.grade._id, date: date })
-        const round = await newRound.save()
-        req.grade.fixture.push(round._id)
-        await req.grade.save()
+        const round = await _createRound(req.grade, next)
 
         return res.status(201).json({
             success: true,
