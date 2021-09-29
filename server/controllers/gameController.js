@@ -1,6 +1,7 @@
 const { ObjectId } = require('mongoose').Types
 const Player = require('../models/player')
 const PlayerStat = require('../models/playerStat')
+const { calculateTotalPoints } = require('./utils')
 
 async function getGame(req, res, next) {
     try {
@@ -58,12 +59,6 @@ async function updatePlayersStats(oldPlayersStats, team, next) {
         })
     )
     return allPlayerStats
-}
-
-function calculateTotalPoints(allStats) {
-    return allStats
-        .map((playerStat) => playerStat.points)
-        .reduce((prevPoint, nextPoint) => prevPoint + nextPoint)
 }
 
 module.exports = {
