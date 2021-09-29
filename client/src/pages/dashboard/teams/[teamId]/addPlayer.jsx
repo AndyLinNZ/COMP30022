@@ -18,7 +18,6 @@ const addPlayerSchema = yup.object().shape({
             .string()
             .required("The Player's name is required")
             .max(20, 'Player Name must be at most 20 characters')
-            .min(1, 'You must provide a Player Name')
         })
     )
 })
@@ -73,7 +72,7 @@ const addPlayer = () => {
                             bg="white"
                             borderRadius="1rem"
                             placeholder="Player name"
-                            error={errors.playerNames?.message}
+                            error={errors.playerNames?.[index]?.playerName?.message}
                             {...register(`playerNames.${index}.playerName`)}
                           />
                           <FormButton type="button" onClick={() => remove(index)}>
