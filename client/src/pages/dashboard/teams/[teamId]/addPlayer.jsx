@@ -1,5 +1,5 @@
 import React from 'react'
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Template, Container } from 'components/Dashboard'
@@ -15,11 +15,11 @@ const addPlayerSchema = yup.object().shape({
     playerNames: yup.array().of(
         yup.object().shape({
             playerName: yup
-            .string()
-            .required("The Player's name is required")
-            .max(20, 'Player Name must be at most 20 characters')
+                .string()
+                .required("The Player's name is required")
+                .max(20, 'Player Name must be at most 20 characters'),
         })
-    )
+    ),
 })
 
 const addPlayer = () => {
@@ -27,7 +27,11 @@ const addPlayer = () => {
     const { user } = useUserDetails()
     const team = getTeamFromUser(user)
 
-    const { mutate: addPlayerToTeam, isLoading, isSuccess } = useAddPlayerToTeam({
+    const {
+        mutate: addPlayerToTeam,
+        isLoading,
+        isSuccess,
+    } = useAddPlayerToTeam({
         onSuccess: () => {
             router.push(appPaths.DASHBOARD_TEAMS_PATH)
         },
@@ -36,19 +40,22 @@ const addPlayer = () => {
         },
     })
 
-    const { register, control, handleSubmit, formState: {errors} } = useForm({
-        resolver: yupResolver(addPlayerSchema)
+    const {
+        register,
+        control,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(addPlayerSchema),
     })
 
-    const { fields, append, remove } = useFieldArray(
-      {
+    const { fields, append, remove } = useFieldArray({
         control,
-        name: "playerNames"
-      }
-    )
+        name: 'playerNames',
+    })
 
     const onSubmit = (data) => {
-        console.log("data", data)
+        console.log('data', data)
         addPlayerToTeam(data)
     }
 
@@ -61,43 +68,52 @@ const addPlayer = () => {
                     spacing="2rem"
                     onSubmit={handleSubmit(onSubmit)}
                 >
-                  <Stack spacing={3}>
-                    <FormLabel fontSize="1.25rem">New players to add</FormLabel>
-                    {fields.map((item, index) => {
-                      return (   
-                        <HStack key={item.id} spacing="0.5rem" align="center">               
-                          <Input
-                            minW="320px"
-                            size="sm"
-                            bg="white"
-                            borderRadius="1rem"
-                            placeholder="Player name"
-                            error={errors.playerNames?.[index]?.playerName?.message}
-                            {...register(`playerNames.${index}.playerName`)}
-                          />
-                          <FormButton type="button" onClick={() => remove(index)}>
-                            Delete
-                          </FormButton>
-                        </HStack>
-                      )
-                    })}
-                  </Stack>
-                  <HStack spacing="0.5rem">
-                    <FormButton onClick={() => router.push(appPaths.DASHBOARD_TEAMS_PATH)}>
-                        Back
-                    </FormButton>
-                    <FormButton type="button" color="black" bg="lightgray"
-                      onClick={() => {
-                        append({playerName: ""});
-                    }}>
-                        Add
-                    </FormButton>
-                  </HStack>
-                  <HStack>
-                    <FormButton type="submit" color="black" bg="orange" isLoading={isLoading || isSuccess}>
-                        Confirm
-                    </FormButton>
-                  </HStack>
+                    <Stack spacing={3}>
+                        <FormLabel fontSize="1.25rem">New players to add</FormLabel>
+                        {fields.map((item, index) => {
+                            return (
+                                <HStack key={item.id} spacing="0.5rem" align="center">
+                                    <Input
+                                        minW="320px"
+                                        size="sm"
+                                        bg="white"
+                                        borderRadius="1rem"
+                                        placeholder="Player name"
+                                        error={errors.playerNames?.[index]?.playerName?.message}
+                                        {...register(`playerNames.${index}.playerName`)}
+                                    />
+                                    <FormButton type="button" onClick={() => remove(index)}>
+                                        Delete
+                                    </FormButton>
+                                </HStack>
+                            )
+                        })}
+                    </Stack>
+                    <HStack spacing="0.5rem">
+                        <FormButton onClick={() => router.push(appPaths.DASHBOARD_TEAMS_PATH)}>
+                            Back
+                        </FormButton>
+                        <FormButton
+                            type="button"
+                            color="black"
+                            bg="lightgray"
+                            onClick={() => {
+                                append({ playerName: '' })
+                            }}
+                        >
+                            Add
+                        </FormButton>
+                    </HStack>
+                    <HStack>
+                        <FormButton
+                            type="submit"
+                            color="black"
+                            bg="orange"
+                            isLoading={isLoading || isSuccess}
+                        >
+                            Confirm
+                        </FormButton>
+                    </HStack>
                 </VStack>
             </Container>
         </Template>
