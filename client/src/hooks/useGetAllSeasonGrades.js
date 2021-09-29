@@ -1,12 +1,15 @@
 import { useQuery } from 'react-query'
 import { getAllSeasonGrades } from 'api'
-import { extractData, getSeasonFromUser } from 'utils'
-import useUserDetails from './useUserDetails'
+import { extractData } from 'utils'
+import { useRouter } from 'next/router'
 
 const useGetAllSeasonGrades = (options = {}) => {
-    const { user } = useUserDetails()
-    const seasonId = getSeasonFromUser(user)?._id
-    const { data, isLoading, error } = useQuery(['grades', seasonId], getAllSeasonGrades, options)
+    const router = useRouter()
+    const seasonId = router.query?.seasonId
+    const { data, isLoading, error } = useQuery(['grades', seasonId], getAllSeasonGrades, {
+        ...options,
+        enabled: !!seasonId,
+    })
     const grades = extractData(data)
     return { grades, isLoading, error }
 }

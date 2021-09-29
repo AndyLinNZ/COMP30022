@@ -15,7 +15,7 @@ const editTeamSchema = yup.object().shape({
     teamName: yup
         .string()
         .required("The Team's name is required")
-        .max(20, "Team Name must be at most 20 characters"),
+        .max(20, 'Team Name must be at most 20 characters'),
 })
 
 const edit = () => {

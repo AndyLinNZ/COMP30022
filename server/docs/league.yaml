@@ -192,6 +192,12 @@ paths:
                   organisation: JoshuaDubarKing
                   creator: 22222b222222bb2222b22222
                   __v: 0
+        '403':
+          description: 'User is not an admin for this league.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotAdminResponse'
         '404':
           description: 'League does not exist.'
           content:

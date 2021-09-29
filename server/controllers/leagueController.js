@@ -32,7 +32,7 @@ async function createLeague(req, res, next) {
 
 async function getAllLeagues(_, res, next) {
     try {
-        const leagues = await League.find().lean()
+        const leagues = await League.find().populate('seasons')
 
         return res.status(200).json({
             success: true,

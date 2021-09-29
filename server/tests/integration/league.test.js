@@ -9,18 +9,35 @@ const env = {}
 const setupOptions = { createDefaultUsers: true }
 setupTestEnv('dribblrDB-league-test', env, setupOptions)
 
+// set up test league
+const testLeague = {
+    leagueName: 'Joshua Basketball League',
+    organisationName: 'JoshuaDubar'
+}
 beforeAll(async () => {
-    // add new test league object to database
+    // add new test league object to database to be deleted
     const newLeague = new League({
         admins: [env.auth_tokens[0][0]],
         seasons: [],
-        name: 'Joshua Basketball Association',
-        organisation: 'JoshuaDubar',
+        name: testLeague.leagueName,
+        organisation: testLeague.organisationName,
         creator: env.auth_tokens[0][0]
     })
     const league = await newLeague.save()
 
-    env.league0_id = league._id.toString()
+    // add new test league object to database to be updated
+    const secondLeague = new League({
+        admins: [env.auth_tokens[0][0]],
+        seasons: [],
+        name: testLeague.leagueName,
+        organisation: 'JoshuaDubarOrg',
+        creator: env.auth_tokens[0][0]
+    })
+    const league2 = await secondLeague.save()
+
+    // env.league0_id will be created in the first integration test
+    env.league1_id = league._id.toString()
+    env.league2_id = league2._id.toString()
 })
 
 describe('Integration Testing: creating leagues', () => {
@@ -263,9 +280,63 @@ describe('Integration Testing: deleting a league', () => {
     })
 
     test('Should be able to delete a league with valid id', async () => {
-        const res = await request.delete(`/api/league/${env.league0_id}`)
+        const res = await request.delete(`/api/league/${env.league1_id}`)
             .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
 
         expect(res.statusCode).toBe(204)
+    })
+})
+
+describe('Integration Testing: updating a league', () => {
+    test('Updating a league with a nonexistent id should return an error', async () => {
+        const res = await request.patch(`/api/league/aaaabbbbcccc`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('League does not exist')
+    })
+
+    test('A user should not be able to update a league if they are not a league admin', async () => {
+        const res = await request.patch(`/api/league/${env.league0_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[2][1]}`)
+
+        expect(res.statusCode).toBe(403)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('User is not an admin')
+    })
+
+
+    test('Should be able to update a league with valid id for just leagueName', async () => {
+        const res = await request.patch(`/api/league/${env.league2_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send({
+                leagueName: 'Joshua Dubar Average League'
+            })
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data.admins).toStrictEqual([env.auth_tokens[0][0]])
+        expect(res.body.data.seasons).toStrictEqual([])
+        expect(res.body.data.name).toBe('Joshua Dubar Average League')
+        expect(res.body.data.organisation).toBe('JoshuaDubarOrg')
+        expect(res.body.data.creator).toBe(env.auth_tokens[0][0])
+    })
+
+    test('Should be able to update a league with valid id for all of leagueName and organisationName', async () => {
+        const res = await request.patch(`/api/league/${env.league2_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send({
+                leagueName: 'Joshua Dubar Average League',
+                organisationName: 'New Joshy Org'
+            })
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data.admins).toStrictEqual([env.auth_tokens[0][0]])
+        expect(res.body.data.seasons).toStrictEqual([])
+        expect(res.body.data.name).toBe('Joshua Dubar Average League')
+        expect(res.body.data.organisation).toBe('New Joshy Org')
+        expect(res.body.data.creator).toBe(env.auth_tokens[0][0])
     })
 })

@@ -1,3 +1,4 @@
+import { isLoggedIn } from 'utils'
 import axiosInstance from './axios'
 
 export const registerUser = async (user) => {
@@ -15,8 +16,7 @@ export const login = async (user) => {
 }
 
 export const getUserDetails = async () => {
-    const data = await axiosInstance.get('/user/details')
-    return data
+    return await axiosInstance.get('/user/details')
 }
 
 export const createLeague = async (league) => {
@@ -65,4 +65,12 @@ export const createSeasonGrade = async (grade, seasonId) => {
 
 export const deleteSeason = async (seasonId) => {
     return await axiosInstance.delete(`/season/${seasonId}`)
+}
+
+export const getAllleagues = async () => {
+    return await axiosInstance.get('/league')
+}
+
+export const getLeague = async ({ queryKey }) => {
+    return await axiosInstance.get(`/league/${queryKey[1]}`)
 }

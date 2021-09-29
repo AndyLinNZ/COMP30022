@@ -3,7 +3,7 @@ import { useMediaQuerySSR } from 'hooks'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { getHumanReadableDate } from 'utils'
-import { Status } from '.'
+import { Status } from './Dashboard/League'
 
 const InfoContainer = ({ season, path }) => {
     const router = useRouter()
