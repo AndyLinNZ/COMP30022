@@ -12,7 +12,9 @@ import HomeHeader from './HomeHeader'
 const UserHeader = ({ isHome = false }) => {
     const isDesktop = useMediaQuerySSR(1024)
     const router = useRouter()
+    const hideLogo = router.pathname === '/'
 
+    console.log(hideLogo)
     return isLoggedIn() ? (
         <Flex
             as="nav"
@@ -24,16 +26,15 @@ const UserHeader = ({ isHome = false }) => {
             transform="translateX(-50%)"
             zIndex="dropdown"
         >
-            {!isHome && (
-                <Box
-                    marginTop={['1rem', 0]}
-                    marginLeft={['1rem', 0]}
-                    cursor="pointer"
-                    onClick={() => router.push(appPaths.HOME_PATH)}
-                >
-                    {isDesktop ? <Logo width="300" /> : <CircleLogo />}
-                </Box>
-            )}
+            <Box
+                marginTop={['1rem', 0]}
+                marginLeft={['1rem', 0]}
+                cursor="pointer"
+                onClick={() => router.push(appPaths.HOME_PATH)}
+                visibility={hideLogo ? 'hidden' : undefined}
+            >
+                {isDesktop ? <Logo width="300" /> : <CircleLogo />}
+            </Box>
 
             <Box pos="absolute" top="1rem" right="1rem" zIndex="dropdown">
                 <HeaderDropdown />
