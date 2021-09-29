@@ -28,9 +28,6 @@ const testGrade = {
     difficulty: 'E',
     gender: 'female',
 }
-const testRound = {
-    date: '2021-08-11T00:00:00.000Z',
-}
 const testTeam1 = {
     name: 'jdubz1'
 }
@@ -78,7 +75,6 @@ beforeAll(async () => {
 
     // add a new round object to database
     const newRound = new Round({
-        ...testRound,
         grade: grade._id,
     })
     const round = await newRound.save()
@@ -135,7 +131,6 @@ describe('Integration Testing: finding rounds', () => {
         expect(res.body.success).toBe(true)
         expect(res.body.data._id).toBe(env.round0_id)
         expect(res.body.data.games).toStrictEqual([])
-        expect(res.body.data.date).toBe(testRound.date)
         expect(res.body.data.grade).toBe(env.grade0_id)
     })
 

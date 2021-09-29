@@ -88,6 +88,7 @@ paths:
                 data:
                   games: []
                   grade: 6138a18dbe9bc3b701dec788
+                  teamsOnBye: []
                   _id: 613c51ca9ba1acc1926855e8
         '404':
           description: 'Round does not exist.'

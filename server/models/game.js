@@ -8,7 +8,6 @@ const gameSchema = new mongoose.Schema({
     },
     dateFinish: {
         type: Date,
-        required: true,
     },
     round: {
         type: mongoose.Schema.Types.ObjectId,
