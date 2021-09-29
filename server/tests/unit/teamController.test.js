@@ -34,7 +34,7 @@ describe('Unit Testing: createTeam in teamController', () => {
             grades: [],
             players: [],
             games: [],
-            __v: 0
+            __v: 0,
         })
 
         User.prototype.save = jest.fn().mockImplementationOnce()
@@ -65,7 +65,7 @@ describe('Unit Testing: addPlayerToTeam in teamController', () => {
 
         const playerDetails = {
             name: 'joshua dubar player',
-            _id: '613472896ef0dc42247c6520'
+            _id: '613472896ef0dc42247c6520',
         }
 
         const teamDetails = {
@@ -97,7 +97,9 @@ describe('Unit Testing: addPlayerToTeam in teamController', () => {
         const expectedTeam = new Team({ ...teamDetails, players: ['613472896ef0dc42247c6520'] })
 
         Player.prototype.save = jest.fn().mockResolvedValue(new Player(playerDetails))
-        Player.findOneAndUpdate = jest.fn().mockResolvedValue(new Player({ ...playerDetails, team: '6131e8b7f69a130fa021f6fd' }))
+        Player.findOneAndUpdate = jest
+            .fn()
+            .mockResolvedValue(new Player({ ...playerDetails, team: '6131e8b7f69a130fa021f6fd' }))
         Team.findOneAndUpdate = jest.fn().mockResolvedValue(expectedTeam)
 
         await teamController.addPlayerToTeam(req, res, next)
@@ -136,12 +138,12 @@ describe('Unit Testing: updateTeam in teamController', () => {
         req.team = new Team(teamDetails)
 
         req.body = {
-            teamName: 'Joshua Dubar Second Team'
+            teamName: 'Joshua Dubar Second Team',
         }
 
         const expectedTeam = new Team({
             ...teamDetails,
-            name: req.body.teamName
+            name: req.body.teamName,
         })
 
         Team.findOneAndUpdate = jest.fn().mockResolvedValue(expectedTeam)

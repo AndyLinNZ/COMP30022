@@ -72,7 +72,6 @@ const addPlayer = () => {
     })
 
     const onSubmit = (data) => {
-        console.log('data', data)
         addPlayerToTeam(data)
     }
 
