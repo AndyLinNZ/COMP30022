@@ -31,3 +31,10 @@ export const getHumanReadableDate = (dateStr = '1970-01-01') =>
         month: 'short',
         day: 'numeric',
     }).format(new Date(dateStr))
+
+export const createErrorMessage = (errMsg, pairingText, defaultText) => {
+    if (errMsg === 'Input pairing not unique.') {
+        return pairingText
+    }
+    return defaultText
+}

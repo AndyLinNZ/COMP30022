@@ -1,13 +1,16 @@
 import React from 'react'
+import Head from 'next/head'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Template, Container } from 'components/Dashboard'
-import { HStack, VStack } from '@chakra-ui/react'
+import { HStack, VStack, useToast } from '@chakra-ui/react'
 import { DatePicker, FormButton, Input } from 'components/Form'
 import { appPaths } from 'utils/constants'
 import { useRouter } from 'next/router'
 import { useCreateLeagueSeason } from 'hooks'
+import { Toast } from 'components'
+import { createErrorMessage } from 'utils'
 
 const createSeasonSchema = yup.object().shape({
     seasonName: yup
@@ -28,7 +31,7 @@ const createSeasonSchema = yup.object().shape({
 
 const create = () => {
     const router = useRouter()
-
+    const toast = useToast()
     const {
         handleSubmit,
         register,
@@ -45,7 +48,21 @@ const create = () => {
             )
         },
         onError: (error) => {
-            console.log(error)
+            const errMsg = error.response?.data?.error
+            toast({
+                render: () => (
+                    <Toast
+                        title={createErrorMessage(
+                            errMsg,
+                            'This League already has a Season with this name',
+                            'Error creating Season'
+                        )}
+                        type="error"
+                    />
+                ),
+                position: 'top',
+                duration: 5000,
+            })
         },
     })
 
@@ -55,6 +72,9 @@ const create = () => {
 
     return (
         <Template>
+            <Head>
+                <title>Dribblr | Create a Season</title>
+            </Head>
             <Container heading="Create a new Season" minH="unset" w="unset !important">
                 <VStack
                     marginleft={['0', '2rem']}
