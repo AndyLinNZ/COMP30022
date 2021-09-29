@@ -1,11 +1,37 @@
 const Round = require('../models/round')
 const Grade = require('../models/grade')
+const { calculateGradeLadder } = require('./utils')
 
 async function getGrade(req, res, next) {
     try {
+        const populateQuery = [
+            'teams',
+            {
+                path: 'fixture',
+                populate: {
+                    path: 'games',
+                    model: 'Game',
+                    populate: [
+                        {
+                            path: 'team1.playersStats',
+                            model: 'PlayerStat',
+                        },
+                        {
+                            path: 'team2.playersStats',
+                            model: 'PlayerStat',
+                        },
+                    ],
+                },
+            },
+        ]
+        const grade = await req.grade.execPopulate(populateQuery)
+
+        const ladder = calculateGradeLadder(grade)
+        grade.ladder = ladder
+
         return res.status(200).json({
             success: true,
-            data: req.grade,
+            data: grade,
         })
     } catch (err) {
         console.log(err)
