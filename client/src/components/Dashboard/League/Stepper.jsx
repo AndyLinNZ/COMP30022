@@ -1,6 +1,5 @@
-import { ChevronRightIcon } from '@chakra-ui/icons'
-import { Text, Flex, HStack } from '@chakra-ui/react'
-import { FormButton } from 'components/Form'
+import { ChevronRightIcon, ArrowBackIcon } from '@chakra-ui/icons'
+import { Text, Flex, HStack, IconButton } from '@chakra-ui/react'
 import { useMediaQuerySSR } from 'hooks'
 import { useRouter } from 'next/router'
 import React from 'react'
@@ -43,15 +42,18 @@ const Stepper = () => {
             alignItems="center"
             justifyContent="center"
         >
-            {isDesktop && (
-                <FormButton
+            {isDesktop ? (
+                <IconButton
+                    icon={<ArrowBackIcon />}
+                    size="md"
+                    boxSize={6}
+                    alignSelf="center"
+                    justifySelf="center"
                     position="absolute"
-                    left="2rem"
-                    width="55px"
-                    fontWeight="bold"
-                    fontSize="1rem"
-                    bg="empty"
-                    color="greyBg"
+                    left="0rem"
+                    transform="translateX(-40%)"
+                    color="white"
+                    bg="greyBg"
                     onClick={() =>
                         router.push(
                             window.location.pathname
@@ -60,10 +62,27 @@ const Stepper = () => {
                                 .join('/')
                         )
                     }
-                >
-                    {`< 
-                    BACK`}
-                </FormButton>
+                />
+            ) : (
+                <IconButton
+                    icon={<ArrowBackIcon />}
+                    size="xs"
+                    alignSelf="center"
+                    justifySelf="center"
+                    position="absolute"
+                    left="0rem"
+                    transform="translateX(-40%)"
+                    color="white"
+                    bg="greyBg"
+                    onClick={() =>
+                        router.push(
+                            window.location.pathname
+                                .split('/')
+                                .slice(0, window.location.pathname.split('/').length - 2)
+                                .join('/')
+                        )
+                    }
+                />
             )}
             <HStack spacing={['1rem', '2rem']}>
                 {steps.map(({ name, arrow }, index) => (
