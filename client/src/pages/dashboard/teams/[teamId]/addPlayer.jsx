@@ -9,7 +9,7 @@ import Input from 'components/Form/Input'
 import FormButton from 'components/Form/FormButton'
 import { appPaths } from 'utils/constants'
 import { useRouter } from 'next/router'
-import { useUserDetails, useAddPlayerToTeam } from 'hooks'
+import { useUserDetails, useAddPlayerToTeam, useMediaQuerySSR } from 'hooks'
 import { getTeamFromUser, createErrorMessage } from 'utils'
 import { Toast } from 'components'
 
@@ -28,6 +28,7 @@ const addPlayer = () => {
     const router = useRouter()
     const { user } = useUserDetails()
     const team = getTeamFromUser(user)
+    const isDesktop = useMediaQuerySSR(900)
 
     const toast = useToast()
     const {
@@ -93,7 +94,7 @@ const addPlayer = () => {
                             return (
                                 <HStack key={item.id} spacing="0.5rem" align="center">
                                     <Input
-                                        minW="320px"
+                                        minW={isDesktop ? '320px' : '160px'}
                                         size="sm"
                                         bg="white"
                                         borderRadius="1rem"
