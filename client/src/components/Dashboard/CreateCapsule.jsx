@@ -1,13 +1,11 @@
 import { AddIcon } from '@chakra-ui/icons'
 import { Box, Flex, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import { useMediaQuerySSR } from 'hooks'
 import React from 'react'
 import EditButton from 'components/Dashboard/League/EditButton'
 
 const CreateCapsule = ({ heading, borderRadius, buttonNum }) => {
     const router = useRouter()
-    const isDesktop = useMediaQuerySSR(940)
     const buttonNums = { 0: '12fr', 1: '12fr 1fr', 2: '12fr 1fr 1fr' }
 
     return (
@@ -15,7 +13,7 @@ const CreateCapsule = ({ heading, borderRadius, buttonNum }) => {
             <Flex
                 w="100%"
                 h="70px"
-                borderRadius={isDesktop ? borderRadius : '24px'}
+                borderRadius={['24px', borderRadius]}
                 border="2px solid grey"
                 pos="relative"
                 cursor="pointer"

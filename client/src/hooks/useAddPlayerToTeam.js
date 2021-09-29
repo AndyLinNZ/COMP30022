@@ -1,11 +1,10 @@
 import { useMutation } from 'react-query'
-import useUserDetails from './useUserDetails'
-import { getTeamFromUser } from 'utils'
 import { addPlayerToTeam } from 'api'
+import { useRouter } from 'next/router'
 
 const useAddPlayerToTeam = (options = {}) => {
-    const { user } = useUserDetails()
-    const teamId = getTeamFromUser(user)?._id
+    const router = useRouter()
+    const teamId = router.query.teamId
     return useMutation((data) => addPlayerToTeam(data, teamId), options)
 }
 

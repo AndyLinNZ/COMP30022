@@ -42,48 +42,26 @@ const Stepper = () => {
             alignItems="center"
             justifyContent="center"
         >
-            {isDesktop ? (
-                <IconButton
-                    icon={<ArrowBackIcon />}
-                    size="md"
-                    boxSize={6}
-                    alignSelf="center"
-                    justifySelf="center"
-                    position="absolute"
-                    left="0rem"
-                    transform="translateX(-40%)"
-                    color="white"
-                    bg="greyBg"
-                    onClick={() =>
-                        router.push(
-                            window.location.pathname
-                                .split('/')
-                                .slice(0, window.location.pathname.split('/').length - 2)
-                                .join('/')
-                        )
-                    }
-                />
-            ) : (
-                <IconButton
-                    icon={<ArrowBackIcon />}
-                    size="xs"
-                    alignSelf="center"
-                    justifySelf="center"
-                    position="absolute"
-                    left="0rem"
-                    transform="translateX(-40%)"
-                    color="white"
-                    bg="greyBg"
-                    onClick={() =>
-                        router.push(
-                            window.location.pathname
-                                .split('/')
-                                .slice(0, window.location.pathname.split('/').length - 2)
-                                .join('/')
-                        )
-                    }
-                />
-            )}
+            <IconButton
+                icon={<ArrowBackIcon />}
+                size={isDesktop ? 'md' : 'xs'}
+                boxSize={isDesktop ? 6 : null}
+                alignSelf="center"
+                justifySelf="center"
+                position="absolute"
+                left="0rem"
+                transform="translateX(-40%)"
+                color="white"
+                bg="greyBg"
+                onClick={() =>
+                    router.push(
+                        window.location.pathname
+                            .split('/')
+                            .slice(0, window.location.pathname.split('/').length - 2)
+                            .join('/')
+                    )
+                }
+            />
             <HStack spacing={['1rem', '2rem']}>
                 {steps.map(({ name, arrow }, index) => (
                     <HStack key={name} spacing={['0.25rem', '1rem']} fontSize={['1.25rem', '2rem']}>

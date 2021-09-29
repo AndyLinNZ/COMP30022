@@ -24,7 +24,7 @@ const addPlayerSchema = yup.object().shape({
     ),
 })
 
-const addPlayer = () => {
+const add = () => {
     const router = useRouter()
     const { user } = useUserDetails()
     const team = getTeamFromUser(user)
@@ -140,4 +140,4 @@ const addPlayer = () => {
     )
 }
 
-export default addPlayer
+export default add
