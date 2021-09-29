@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import { useGetAllLeagueSeasons, useLeague } from 'hooks'
 import { Template } from 'components/Dashboard'
 import { VStack, Text, Spinner } from '@chakra-ui/react'
@@ -10,6 +11,9 @@ const index = () => {
 
     return (
         <Template>
+            <Head>
+                <title>Dribblr | {league?.name || 'League'}</title>
+            </Head>
             <Container league={league}>
                 {(!seasons || seasons.length === 0) && (
                     <Text

@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import { useGetAllLeagueSeasons, useUserDetails } from 'hooks'
 import { Template, CreateCapsule } from 'components/Dashboard'
 import { Box, VStack } from '@chakra-ui/react'
@@ -16,6 +17,9 @@ const index = () => {
 
     return (
         <Template>
+            <Head>
+                <title>Dribblr | {league?.name || 'League'}</title>
+            </Head>
             <Container league={league?.season}>
                 <VStack spacing="1.25rem">
                     <CreateCapsule heading="ADD A NEW GRADE" />

@@ -1,5 +1,6 @@
 import React from 'react'
 import { useForm, useFieldArray } from 'react-hook-form'
+import Head from 'next/head'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Template, Container } from 'components/Dashboard'
@@ -61,6 +62,9 @@ const addPlayer = () => {
 
     return (
         <Template>
+            <Head>
+                <title>Dribblr | Add a Player</title>
+            </Head>
             <Container heading={`Add Players to ${team?.name}`} minH="unset" w="unset !important">
                 <VStack
                     marginleft={['0', '2rem']}

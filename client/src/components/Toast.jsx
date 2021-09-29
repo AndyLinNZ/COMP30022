@@ -4,7 +4,7 @@ import { Box, HStack, Text } from '@chakra-ui/react'
 import ErrorIcon from 'components/svg/ErrorIcon'
 
 const Icon = ({ type }) => {
-    if(type == 'error') {
+    if (type == 'error') {
         return <ErrorIcon />
     }
 
@@ -23,5 +23,8 @@ const Toast = ({ title, type }) => {
         </Box>
     )
 }
+
+Toast.displayName = 'Toast'
+Icon.displayName = 'ToastIcon'
 
 export default Toast

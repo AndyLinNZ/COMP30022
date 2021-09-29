@@ -1,14 +1,16 @@
 import React from 'react'
+import Head from 'next/head'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Template, Container } from 'components/Dashboard'
-import { HStack, VStack } from '@chakra-ui/react'
+import { HStack, VStack, useToast } from '@chakra-ui/react'
 import { DatePicker, FormButton, Input } from 'components/Form'
 import { appPaths } from 'utils/constants'
 import { useRouter } from 'next/router'
 import { useUserDetails, useCreateLeagueSeason } from 'hooks'
-import { getLeagueFromUser } from 'utils'
+import { getLeagueFromUser, createErrorMessage } from 'utils'
+import { Toast } from 'components'
 
 const createSeasonSchema = yup.object().shape({
     seasonName: yup
@@ -32,6 +34,7 @@ const create = () => {
     const { user } = useUserDetails()
     const league = getLeagueFromUser(user)
 
+    const toast = useToast()
     const {
         handleSubmit,
         register,
@@ -48,7 +51,21 @@ const create = () => {
             )
         },
         onError: (error) => {
-            console.log(error)
+            const errMsg = error.response?.data?.error
+            toast({
+                render: () => (
+                    <Toast
+                        title={createErrorMessage(
+                            errMsg,
+                            'This League already has a Season with this name',
+                            'Error creating Season'
+                        )}
+                        type="error"
+                    />
+                ),
+                position: 'top',
+                duration: 5000,
+            })
         },
     })
 
@@ -58,7 +75,14 @@ const create = () => {
 
     return (
         <Template>
-            <Container heading={`Add a Season to ${league?.name}`} minH="unset" w="unset !important">
+            <Head>
+                <title>Dribblr | Create a Season</title>
+            </Head>
+            <Container
+                heading={`Add a Season to ${league?.name}`}
+                minH="unset"
+                w="unset !important"
+            >
                 <VStack
                     marginleft={['0', '2rem']}
                     as="form"
@@ -88,12 +112,16 @@ const create = () => {
                         />
                     </HStack>
                     <HStack spacing="0.5rem">
-                        <FormButton onClick={() => router.push(
+                        <FormButton
+                            onClick={() =>
+                                router.push(
                                     window.location.pathname
                                         .split('/')
                                         .slice(0, window.location.pathname.split('/').length - 1)
                                         .join('/')
-                                )}>
+                                )
+                            }
+                        >
                             Back
                         </FormButton>
                         <FormButton

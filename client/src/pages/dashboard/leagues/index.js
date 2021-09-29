@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import { useUserDetails } from 'hooks'
 import { Template, Container, Capsule, CreateCapsule } from 'components/Dashboard'
 import { Box, VStack } from '@chakra-ui/react'
@@ -11,6 +12,9 @@ const index = () => {
 
     return (
         <Template>
+            <Head>
+                <title>Dribblr | Leagues</title>
+            </Head>
             <Container heading={heading}>
                 <VStack spacing="1.25rem">
                     {user?.leagues?.length < 4 && (
