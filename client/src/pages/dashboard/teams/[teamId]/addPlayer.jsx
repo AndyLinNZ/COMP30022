@@ -55,7 +55,6 @@ const addPlayer = () => {
 
     return (
         <Template>
-<<<<<<< HEAD
             <Container heading={`Add Players to ${team?.name}`} minH="unset" w="unset !important">
                 <VStack
                     marginleft={['0', '2rem']}
@@ -100,25 +99,6 @@ const addPlayer = () => {
                         Confirm
                     </FormButton>
                   </HStack>
-=======
-            <Container heading="Add a Player" minH="unset" w="unset !important">
-                <VStack marginleft={['0', '2rem']} as="form" spacing="2rem">
-                    <Input
-                        label="Player name"
-                        placeholder="Player name"
-                        error={errors.playerName?.message}
-                        {...register('playerName')}
-                        isRequired
-                    />
-                    <HStack spacing="0.5rem">
-                        <FormButton onClick={() => router.push(appPaths.DASHBOARD_TEAMS_PATH)}>
-                            Back
-                        </FormButton>
-                        <FormButton type="submit" color="black" bg="orange">
-                            Add
-                        </FormButton>
-                    </HStack>
->>>>>>> f7b14b0446ad3e2c6be34a13ec6981a212df57d1
                 </VStack>
             </Container>
         </Template>
