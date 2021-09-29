@@ -1,10 +1,13 @@
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import { Text, Flex, HStack } from '@chakra-ui/react'
+import { FormButton } from 'components/Form'
 import { useMediaQuerySSR } from 'hooks'
 import { useRouter } from 'next/router'
 import React from 'react'
 
 const Stepper = () => {
+    const router = useRouter()
+
     const [selected, setSelected] = React.useState(1)
     const isDesktop = useMediaQuerySSR(600)
 
@@ -40,6 +43,28 @@ const Stepper = () => {
             alignItems="center"
             justifyContent="center"
         >
+            {isDesktop && (
+                <FormButton
+                    position="absolute"
+                    left="2rem"
+                    width="55px"
+                    fontWeight="bold"
+                    fontSize="1rem"
+                    bg="empty"
+                    color="greyBg"
+                    onClick={() =>
+                        router.push(
+                            window.location.pathname
+                                .split('/')
+                                .slice(0, window.location.pathname.split('/').length - 2)
+                                .join('/')
+                        )
+                    }
+                >
+                    {`< 
+                    BACK`}
+                </FormButton>
+            )}
             <HStack spacing={['1rem', '2rem']}>
                 {steps.map(({ name, arrow }, index) => (
                     <HStack key={name} spacing={['0.25rem', '1rem']} fontSize={['1.25rem', '2rem']}>

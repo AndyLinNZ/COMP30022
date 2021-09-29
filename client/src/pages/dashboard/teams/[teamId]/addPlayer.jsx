@@ -62,7 +62,7 @@ const addPlayer = () => {
                     onSubmit={handleSubmit(onSubmit)}
                 >
                   <Stack spacing={3}>
-                    <FormLabel fontSize="1.25rem">Players to add</FormLabel>
+                    <FormLabel fontSize="1.25rem">New players to add</FormLabel>
                     {fields.map((item, index) => {
                       return (   
                         <HStack key={item.id} spacing="0.5rem" align="center">               
