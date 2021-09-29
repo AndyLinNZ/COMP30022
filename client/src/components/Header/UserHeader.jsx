@@ -14,7 +14,6 @@ const UserHeader = ({ isHome = false }) => {
     const router = useRouter()
     const hideLogo = router.pathname === '/'
 
-    console.log(hideLogo)
     return isLoggedIn() ? (
         <Flex
             as="nav"
