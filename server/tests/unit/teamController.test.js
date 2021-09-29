@@ -91,7 +91,7 @@ describe('Unit Testing: addPlayerToTeam in teamController', () => {
         req.user = new User(user)
 
         req.body = {
-            playerNames: ['joshua dubar player'],
+            playerNames: [{ playerName: 'joshua dubar player' }],
         }
 
         const expectedTeam = new Team({ ...teamDetails, players: ['613472896ef0dc42247c6520'] })

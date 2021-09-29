@@ -90,7 +90,7 @@ describe('Integration Testing: adding players to a team', () => {
             .post(`/api/team/${env.team0_id}/player`)
             .set('Authorization', `Bearer ${env.auth_tokens[1][1]}`)
             .send({
-                playerNames: ['nooo'],
+                playerNames: [{ playerName: 'nooo' }],
             })
 
         expect(res.statusCode).toBe(403)
@@ -103,7 +103,7 @@ describe('Integration Testing: adding players to a team', () => {
             .post(`/api/team/1337/player`)
             .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
             .send({
-                playerNames: ['joshua'],
+                playerNames: [{ playerName: 'joshua' }],
             })
 
         expect(res.statusCode).toBe(404)
@@ -116,7 +116,7 @@ describe('Integration Testing: adding players to a team', () => {
             .post(`/api/team/${env.team0_id}/player`)
             .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
             .send({
-                playerNames: ['joshua'],
+                playerNames: [{ playerName: 'joshua' }],
             })
 
         expect(res.statusCode).toBe(200)
