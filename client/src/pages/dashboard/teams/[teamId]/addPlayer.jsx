@@ -4,13 +4,14 @@ import Head from 'next/head'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Template, Container } from 'components/Dashboard'
-import { HStack, VStack, FormLabel, Stack } from '@chakra-ui/react'
+import { HStack, VStack, FormLabel, Stack, useToast } from '@chakra-ui/react'
 import Input from 'components/Form/Input'
 import FormButton from 'components/Form/FormButton'
 import { appPaths } from 'utils/constants'
 import { useRouter } from 'next/router'
 import { useUserDetails, useAddPlayerToTeam } from 'hooks'
-import { getTeamFromUser } from 'utils'
+import { getTeamFromUser, createErrorMessage } from 'utils'
+import { Toast } from 'components'
 
 const addPlayerSchema = yup.object().shape({
     playerNames: yup.array().of(
@@ -28,6 +29,7 @@ const addPlayer = () => {
     const { user } = useUserDetails()
     const team = getTeamFromUser(user)
 
+    const toast = useToast()
     const {
         mutate: addPlayerToTeam,
         isLoading,
@@ -37,7 +39,21 @@ const addPlayer = () => {
             router.push(appPaths.DASHBOARD_TEAMS_PATH)
         },
         onError: (error) => {
-            console.log(error)
+            const errMsg = error.response?.data?.error
+            toast({
+                render: () => (
+                    <Toast
+                        title={createErrorMessage(
+                            errMsg,
+                            'Unable to add Players with the same name as existing Players',
+                            'Error adding Players'
+                        )}
+                        type="error"
+                    />
+                ),
+                position: 'top',
+                duration: 5000,
+            })
         },
     })
 
