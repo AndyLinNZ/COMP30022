@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -30,6 +31,9 @@ const addPlayer = () => {
 
     return (
         <Template>
+            <Head>
+                <title>Dribblr | Add a Player</title>
+            </Head>
             <Container heading="Add a Player" minH="unset" w="unset !important">
                 <VStack marginleft={['0', '2rem']} as="form" spacing="2rem">
                     <Input

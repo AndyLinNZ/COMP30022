@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import { useGetAllSeasonGrades, useLeague } from 'hooks'
 import { Template } from 'components/Dashboard'
 import { Box, VStack, Text } from '@chakra-ui/react'
@@ -10,6 +11,9 @@ const index = () => {
 
     return (
         <Template>
+            <Head>
+                <title>Dribblr | {league?.name || 'League'} - Grades</title>
+            </Head>
             <Container league={league}>
                 <VStack spacing="1.25rem">
                     {(!grades || grades.length === 0) && (
