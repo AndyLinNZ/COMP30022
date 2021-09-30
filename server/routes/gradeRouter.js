@@ -4,6 +4,7 @@ const {
     ensureAuthenticated,
     ensureLeagueAdmin,
     getTeamDocument,
+    validateFixture
 } = require('./utils')
 const gradeController = require('../controllers/gradeController.js')
 
@@ -26,6 +27,12 @@ gradeRouter.post(
     ensureAuthenticated,
     ensureLeagueAdmin,
     gradeController.createRound
+)
+gradeRouter.post(
+    '/:gradeId/fixture',
+    ensureAuthenticated,
+    validateFixture,
+    gradeController.createFixture
 )
 
 // DELETE

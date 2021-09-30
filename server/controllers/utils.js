@@ -106,7 +106,7 @@ function calculateTeamGradeStats(grade, teamid) {
 function calculateTotalPoints(allStats) {
     return allStats
         .map((playerStat) => playerStat.points)
-        .reduce((prevPoint, nextPoint) => prevPoint + nextPoint)
+        .reduce((prevPoint, nextPoint) => prevPoint + nextPoint, 0)
 }
 
 async function _createGame(team1Id, team2Id, start, finish, round, locationName, location, next) {

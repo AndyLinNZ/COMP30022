@@ -33,22 +33,15 @@ const testGrade = {
 const testTeam1 = {
     name: 'jdubz1'
 }
-
 const testTeam2 = {
     name: 'josh2'
 }
-
-const testRound = {
-    date: '2021-08-12T10:00:00.000Z',
-}
-
 const testGame = {
     dateStart: '2021-08-12T10:00:00.000Z',
     dateFinish: '2021-08-12T11:00:00.000Z',
     locationName: 'Josh Dubz Stadium',
     location: { type: 'Point', coordinates: [-22.22, 33.33] },
 }
-
 beforeAll(async () => {
     // add new test league object to database
     const newLeague = new League({
@@ -108,7 +101,6 @@ beforeAll(async () => {
 
     // add a new round object to database
     const newRound = new Round({
-        ...testRound,
         grade: grade._id
     })
     const round = await newRound.save()

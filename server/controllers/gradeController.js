@@ -1,5 +1,12 @@
-const { _createRound } = require('./utils')
+const { _createRound, _createGame } = require('./utils')
 const { calculateGradeLadder } = require('./utils')
+const {
+    TeamNode,
+    teamDocsToGoOnBye,
+    ejectNextDateAndLocation,
+    ejectNextTeamNode,
+} = require('../services/generateFixture')
+const Round = require('../models/round')
 
 async function getGrade(req, res, next) {
     try {
@@ -100,10 +107,60 @@ async function createRound(req, res, next) {
     }
 }
 
+async function createFixture(req, res, next) {
+    try {
+        const { teams, grade, body: { numRounds, datesAndLocations } } = req
+
+        const numGames = Math.min(Math.floor(teams.length / 2), datesAndLocations.length)
+        const allTeams = teams.map((team) => new TeamNode(team._id))
+
+        for (let i = 0; i < numRounds; i++) {
+            const newRound = await _createRound(grade, next)
+            for (let j = 0; j < numGames; j++) {
+                const team = ejectNextTeamNode(allTeams)
+                const opponent = team.nextTeamToPlay(allTeams)
+
+                team.playTeam(opponent)
+                opponent.playTeam(team)
+
+                const { location, locationName, dateStart, dateFinish } =
+                    ejectNextDateAndLocation(datesAndLocations)
+
+                await _createGame(
+                    team.teamId,
+                    opponent.teamId,
+                    dateStart,
+                    dateFinish,
+                    newRound,
+                    locationName,
+                    location,
+                    next
+                )
+            }
+            const round = await Round.findById(newRound._id)
+            await round.execPopulate('games')
+
+            const teamsOnBye = teamDocsToGoOnBye(round.games, teams)
+            round.teamsOnBye = round.teamsOnBye.concat(teamsOnBye)
+            await round.save()
+        }
+
+        await grade.execPopulate('fixture')
+        return res.status(201).json({
+            success: true,
+            data: grade,
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
 module.exports = {
     getGrade,
     getAllGradeTeams,
     addTeamToGrade,
     createRound,
     deleteGrade,
+    createFixture,
 }
