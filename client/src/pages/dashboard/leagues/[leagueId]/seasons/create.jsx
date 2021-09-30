@@ -8,9 +8,9 @@ import { HStack, VStack, useToast } from '@chakra-ui/react'
 import { DatePicker, FormButton, Input } from 'components/Form'
 import { appPaths } from 'utils/constants'
 import { useRouter } from 'next/router'
-import { useCreateLeagueSeason } from 'hooks'
+import { useUserDetails, useCreateLeagueSeason } from 'hooks'
+import { getLeagueFromUser, createErrorMessage } from 'utils'
 import { Toast } from 'components'
-import { createErrorMessage } from 'utils'
 
 const createSeasonSchema = yup.object().shape({
     seasonName: yup
@@ -31,6 +31,9 @@ const createSeasonSchema = yup.object().shape({
 
 const create = () => {
     const router = useRouter()
+    const { user } = useUserDetails()
+    const league = getLeagueFromUser(user)
+
     const toast = useToast()
     const {
         handleSubmit,
@@ -75,7 +78,11 @@ const create = () => {
             <Head>
                 <title>Dribblr | Create a Season</title>
             </Head>
-            <Container heading="Create a new Season" minH="unset" w="unset !important">
+            <Container
+                heading={`Add a Season to ${league?.name}`}
+                minH="unset"
+                w="unset !important"
+            >
                 <VStack
                     marginleft={['0', '2rem']}
                     as="form"
@@ -105,7 +112,16 @@ const create = () => {
                         />
                     </HStack>
                     <HStack spacing="0.5rem">
-                        <FormButton onClick={() => router.push(appPaths.DASHBOARD_LEAGUES_PATH)}>
+                        <FormButton
+                            onClick={() =>
+                                router.push(
+                                    window.location.pathname
+                                        .split('/')
+                                        .slice(0, window.location.pathname.split('/').length - 1)
+                                        .join('/')
+                                )
+                            }
+                        >
                             Back
                         </FormButton>
                         <FormButton
