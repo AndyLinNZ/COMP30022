@@ -10,7 +10,7 @@ import { EmailIcon } from '@chakra-ui/icons'
 const AssociationCard = ({ name, org, activeSeasons, icon, id, creator }) => {
     const isDesktop = useMediaQuerySSR(1024)
     const router = useRouter()
-    console.log(creator)
+
     return isDesktop ? (
         <Box
             bg="white"
