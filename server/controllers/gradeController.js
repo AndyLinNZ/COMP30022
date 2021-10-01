@@ -148,7 +148,7 @@ async function createFixture(req, res, next) {
         await grade.execPopulate('fixture')
         return res.status(201).json({
             success: true,
-            data: grade,
+            data: grade.fixture
         })
     } catch (err) {
         console.log(err)

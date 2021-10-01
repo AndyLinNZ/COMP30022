@@ -69,6 +69,10 @@ async function _validateFixture(req, res, next) {
     if (req.grade.fixture.length !== 0) {
         return res.status(400).json({ success: false, error: 'This grade already has a fixture' })
     }
+    // Check we have at least 2 teams for the fixture
+    if (teamIds.length < 2) {
+        return res.status(400).json({ success: false, error: 'Need at least 2 teams' })
+    }
     // Check valid teams
     if (!(await allValidDocumentIds(teamIds, Team))) {
         return res.status(404).json({ success: false, error: 'Some team does not exist' })
@@ -90,11 +94,11 @@ async function _validateFixture(req, res, next) {
     }
     // Check number of rounds can fit within season
     if (dateStart.setDate(dateStart.getDate() + numRounds * 7) > dateFinish) {
-        return res.status(400).json({ success: false, error: 'Number of rounds cannot fit within the season' })
+        return res.status(400).json({ success: false, error: 'numRounds cannot fit within the season' })
     }
 
     req.teams = await Promise.all(teamIds.map(async (teamId) => await Team.findById(teamId)))
-    next()
+    return next()
 }
 
 async function _ensureLeagueAdmin(req, res, next) {
