@@ -16,6 +16,26 @@ components:
             points: 44
             assists: 0
 
+    GameChange:
+      properties:
+        newLocationName:
+          type: string
+        newLocation:
+          type: 'Point'
+        newStart:
+          type: Date
+        newFinish:
+          type: Date
+      example:
+        newLocationName: Summer 2020/2021 jdubz
+        newLocation: 
+          coordinates:
+            - 123.456
+            - 88.666
+          type: 'Point'
+        newStart: '2021-09-12T12:23:34.944Z'
+        newFinish: '2021-09-12T12:23:34.944Z'
+
 
 paths:
   /game/{gameId}:
@@ -140,7 +160,7 @@ paths:
                     success: false
                     error: 'Player does not exist'
 
-  /game/{gameId}:
+  /game/{gameId}/details:
     patch:
       tags:
         - 'Game'
@@ -159,7 +179,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GameUpdate'
+              $ref: '#/components/schemas/GameChange'
       responses:
         '200':
           description: 'Successfully updated game.'
