@@ -1,14 +1,16 @@
-import { Avatar, Box, Text } from '@chakra-ui/react'
+import { Avatar, Box, Text, Tooltip } from '@chakra-ui/react'
 import React from 'react'
 import BasketballIcon from 'components/svg/BasketballIcon'
 import ActiveSeasonLabel from './ActiveSeasonLabel'
 import { useMediaQuerySSR } from 'hooks'
 import { useRouter } from 'next/router'
 import { appPaths } from 'utils/constants'
+import { EmailIcon } from '@chakra-ui/icons'
 
-const AssociationCard = ({ name, org, activeSeasons, icon, id }) => {
+const AssociationCard = ({ name, org, activeSeasons, icon, id, creator }) => {
     const isDesktop = useMediaQuerySSR(1024)
     const router = useRouter()
+
     return isDesktop ? (
         <Box
             bg="white"
@@ -27,7 +29,10 @@ const AssociationCard = ({ name, org, activeSeasons, icon, id }) => {
             _hover={{
                 boxShadow: '0 15px 30px rgba(0,0,0,0.1), 0 20px 20px rgba(0,0,0,0.12);',
             }}
-            onClick={() => router.push(`${appPaths.LEAGUE_PATH}/${id}/seasons`)}
+            onClick={() =>
+                router.push(`${appPaths.LEAGUE_PATH}/${id}/seasons
+            `)
+            }
         >
             <Box pos="absolute" top="-25%">
                 <Avatar src={icon} size="xl" bg="grey" border="2px solid black" />
@@ -41,6 +46,11 @@ const AssociationCard = ({ name, org, activeSeasons, icon, id }) => {
             </Box>
             <Box pos="absolute" bottom="2" right="2">
                 <BasketballIcon />
+            </Box>
+            <Box pos="absolute" top="1" left="2">
+                <Tooltip label={creator.email} fontSize="sm" placement="top" bg="greyBg">
+                    <EmailIcon fontSize="1.5rem" color="greyBg" />
+                </Tooltip>
             </Box>
         </Box>
     ) : (

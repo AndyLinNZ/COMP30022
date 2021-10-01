@@ -22,7 +22,12 @@ describe('Unit Testing: getUserDetails in userController', () => {
             {
                 _id: '612b9bdf0ea7e4540fc2b30f',
                 admins: ['612b9bc70ea7e4540fc2b30a'],
-                creator: '612b9bc70ea7e4540fc2b30a',
+                creator: {
+                    _id: '612b9bc70ea7e4540fc2b30a',
+                    email: 'john.smith@example.com',
+                    firstName: 'John',
+                    lastName: 'Smith',
+                },
                 name: 'Joshua Basketball Association',
                 organisation: 'JoshuaDubar',
                 seasons: [],
