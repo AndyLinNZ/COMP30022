@@ -7,9 +7,9 @@ import { Template, Container } from 'components/Dashboard'
 import { HStack, VStack, useToast } from '@chakra-ui/react'
 import { FormButton, Input } from 'components/Form'
 import { useRouter } from 'next/router'
-import { useCreateSeasonGrade } from 'hooks'
+import { useUserDetails, useCreateSeasonGrade } from 'hooks'
+import { getSeasonFromUser, createErrorMessage } from 'utils'
 import { Toast } from 'components'
-import { createErrorMessage } from 'utils'
 
 const createGradeSchema = yup.object().shape({
     gradeName: yup
@@ -22,6 +22,9 @@ const createGradeSchema = yup.object().shape({
 
 const create = () => {
     const router = useRouter()
+    const { user } = useUserDetails()
+    const season = getSeasonFromUser(user)
+
     const toast = useToast()
     const {
         handleSubmit,
@@ -65,7 +68,7 @@ const create = () => {
             <Head>
                 <title>Dribblr | Create a Grade</title>
             </Head>
-            <Container heading="Create a new Grade" minH="unset" w="unset !important">
+            <Container heading={`Add a Grade to ${season?.name}`} minH="unset" w="unset !important">
                 <VStack
                     marginleft={['0', '2rem']}
                     as="form"

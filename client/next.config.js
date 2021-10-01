@@ -6,6 +6,11 @@ module.exports = {
                 destination: '/dashboard/teams',
                 permanent: true,
             },
+            {
+                source: '/league',
+                destination: '/',
+                permanent: true,
+            },
         ]
     },
 }

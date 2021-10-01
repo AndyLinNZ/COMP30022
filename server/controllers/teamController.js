@@ -64,7 +64,7 @@ async function updateTeam(req, res, next) {
 async function addPlayerToTeam(req, res, next) {
     try {
         var newPlayers = await Promise.all(
-            req.body.playerNames.map(async (playerName) => {
+            req.body.playerNames.map(async ({ playerName }) => {
                 const newPlayer = new Player({
                     name: playerName,
                 })

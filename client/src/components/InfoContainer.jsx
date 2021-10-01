@@ -53,7 +53,7 @@ const InfoContainer = ({ season, path }) => {
             _hover={{
                 boxShadow: '0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);',
             }}
-            onClick={() => router.push(window.location.pathname + `/${path}/grades`)}
+            onClick={() => router.push(window.location.pathname + `/${path}`)}
             padding="1rem"
             flexDir="column"
         >

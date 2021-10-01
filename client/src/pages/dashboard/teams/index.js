@@ -66,9 +66,7 @@ const index = () => {
                                     cursor="pointer"
                                     marginLeft="1rem"
                                     onClick={() =>
-                                        router.push(
-                                            `${window.location.pathname}/${team._id}/addPlayer`
-                                        )
+                                        router.push(`${window.location.pathname}/${team._id}/add`)
                                     }
                                 />
                                 <EditButton name={team._id} />
