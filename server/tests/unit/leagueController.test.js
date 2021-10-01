@@ -20,8 +20,12 @@ describe('Unit Testing: getAllLeagues in leagueController', () => {
                 seasons: ['611b9bea1f374212cc10bb59'],
                 name: 'Joshua Basketball Association',
                 organisation: 'JoshuaDubar',
-                creator: '611a8a311fb4c81d84a55126',
-                __v: 8,
+                creator: {
+                    _id: '611a8a311fb4c81d84a55126',
+                    email: 'john.smith@example.com',
+                    firstName: 'John',
+                    lastName: 'Smith',
+                },
             },
             {
                 _id: '611bbfe2aaa94829988d0b18',
@@ -29,8 +33,12 @@ describe('Unit Testing: getAllLeagues in leagueController', () => {
                 seasons: [],
                 name: 'Joshua Basketball Association',
                 organisation: 'JoshuaDubar',
-                creator: '611a8a311fb4c81d84a55126',
-                __v: 0,
+                creator: {
+                    _id: '611a8a311fb4c81d84a55126',
+                    email: 'john.smith@example.com',
+                    firstName: 'John',
+                    lastName: 'Smith',
+                },
             },
         ]
 
@@ -102,7 +110,6 @@ describe('Unit Testing: createLeague in leagueController', () => {
             name: 'Joshua Basketball Association',
             organisation: 'JoshuaDubar',
             creator: '611a8a311fb4c81d84a55126',
-            __v: 0,
         }
 
         req.body = {
@@ -143,7 +150,6 @@ describe('Unit Testing: getAllLeagueSeasons in leagueController', () => {
             name: 'Joshua Basketball Association',
             organisation: 'JoshuaDubar',
             creator: '611a8a311fb4c81d84a55126',
-            __v: 8,
         }
         req.league = new League(leagueDetails)
 
@@ -156,7 +162,6 @@ describe('Unit Testing: getAllLeagueSeasons in leagueController', () => {
                 league: '611a8a661fb4c81d84a5512c',
                 dateStart: '2021-08-12T12:23:34.944Z',
                 dateFinish: '2021-08-14T12:23:34.944Z',
-                __v: 0,
             },
         ]
 
