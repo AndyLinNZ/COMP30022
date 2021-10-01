@@ -18,7 +18,7 @@ class TeamNode {
     }
     // Private method to find next team to play from adjacency list based on least amount of times played
     #nextTeamFromPlayedTeams() {
-        return this.played.sort((t1, t2) => t2.times - t1.times)[0].team
+        return [...this.played].sort((t1, t2) => t1.times - t2.times)[0].team
     }
     // Given an array of Teams, find any team from the Nodes list that this current Node hasen't played
     #teamsNotPlayed(teams) {
@@ -36,7 +36,7 @@ class TeamNode {
 
 // Returns the TeamNode thats played the least amount of games
 function ejectNextTeamNode(teams) {
-    return teams.sort((t1, t2) => t1.gamesPlayed() - t2.gamesPlayed())[0]
+    return [...teams].sort((t1, t2) => t1.gamesPlayed() - t2.gamesPlayed())[0]
 }
 
 // Returns all teams that have not played a game

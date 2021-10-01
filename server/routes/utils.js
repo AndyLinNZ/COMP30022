@@ -63,23 +63,32 @@ async function getTeamDocument(req, res, next) {
 // it will also check if the given number of rounds fit can fit within a season
 async function _validateFixture(req, res, next) {
     const { dateStart, dateFinish } = req.season
+    const { teamIds, numRounds, datesAndLocations } = req.body
     // Check valid teams
-    if (!(await allValidDocumentIds(req.body.teamIds, Team))) {
+    if (!(await allValidDocumentIds(teamIds, Team))) {
         return res.status(404).json({ success: false, error: 'Some team does not exist' })
     }
     // Check team is added to grade
-    req.body.teamIds.forEach(team => {
-        if (!req.grade.teams.includes(team)) {
-            console.log(team)
-            return res.status(400).json({ success: false, error: 'Team is not added to grade' })
-        }
-    })
+    const notAdded = teamIds.some((team) => !req.grade.teams.includes(team))
+    if (notAdded) {
+        return res.status(400).json({ success: false, error: 'Team is not added to grade' })
+    }
+    // Check we have dates and locations
+    const noDateOrLocations = !datesAndLocations || datesAndLocations.length === 0 ||
+        datesAndLocations.some((dl) => !dl.dateStart || !dl.dateFinish || !dl.locationName || !dl.location)
+    if (noDateOrLocations) {
+        return res.status(400).json({ success: false, error: 'Dates and locations are invalid' })
+    }
+    // Check we have valid numRounds
+    if (!numRounds || numRounds <= 0) {
+        return res.status(400).json({ success: false, error: 'numRounds is invalid' })
+    }
     // Check number of rounds can fit within season
-    if (dateStart.setDate(dateStart.getDate() + req.body.numRounds * 7) > dateFinish) {
+    if (dateStart.setDate(dateStart.getDate() + numRounds * 7) > dateFinish) {
         return res.status(400).json({ success: false, error: 'Number of rounds cannot fit within the season' })
     }
 
-    req.teams = await Promise.all(req.body.teamIds.map(async (teamId) => await Team.findById(teamId)))
+    req.teams = await Promise.all(teamIds.map(async (teamId) => await Team.findById(teamId)))
     next()
 }
 
