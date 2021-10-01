@@ -141,13 +141,13 @@ async function _createGame(team1Id, team2Id, start, finish, round, locationName,
         )
 
         // add the game to the round
-        await Round.findOneAndUpdate(
+        const newRound = await Round.findOneAndUpdate(
             { _id: round._id },
             { $addToSet: { games: game } },
             { new: true },
         )
 
-        return game
+        return { game: game, round: newRound }
     } catch (err) {
         console.log(err)
         return next(err)

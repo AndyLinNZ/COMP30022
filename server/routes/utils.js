@@ -60,10 +60,15 @@ async function getTeamDocument(req, res, next) {
 }
 
 // this middleware checks if the given teamIds are actual documents, and if so, populate them
-// it will also check if the given number of rounds fit can fit within a season
+// it will check the req parameters and some grade checks
 async function _validateFixture(req, res, next) {
     const { dateStart, dateFinish } = req.season
     const { teamIds, numRounds, datesAndLocations } = req.body
+
+    // Check there is no existing fixture yet
+    if (req.grade.fixture.length !== 0) {
+        return res.status(400).json({ success: false, error: 'This grade already has a fixture' })
+    }
     // Check valid teams
     if (!(await allValidDocumentIds(teamIds, Team))) {
         return res.status(404).json({ success: false, error: 'Some team does not exist' })

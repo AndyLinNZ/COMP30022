@@ -115,7 +115,7 @@ async function createFixture(req, res, next) {
         const allTeams = teams.map((team) => new TeamNode(team._id))
 
         for (let i = 0; i < numRounds; i++) {
-            const newRound = await _createRound(grade, next)
+            var round = await _createRound(grade, next)
             for (let j = 0; j < numGames; j++) {
                 const team = ejectNextTeamNode(allTeams)
                 const opponent = team.nextTeamToPlay(allTeams)
@@ -126,18 +126,18 @@ async function createFixture(req, res, next) {
                 const { location, locationName, dateStart, dateFinish } =
                     ejectNextDateAndLocation(datesAndLocations)
 
-                await _createGame(
+                const { round: newRound } = await _createGame(
                     team.teamId,
                     opponent.teamId,
                     dateStart,
                     dateFinish,
-                    newRound,
+                    round,
                     locationName,
                     location,
                     next
                 )
+                round = newRound
             }
-            const round = await Round.findById(newRound._id)
             await round.execPopulate('games')
 
             const teamsOnBye = teamDocsToGoOnBye(round.games, teams)

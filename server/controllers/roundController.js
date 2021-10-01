@@ -33,7 +33,7 @@ async function createGame(req, res, next) {
 
         if (!team1 || !team2) return next({ status: 404, message: 'Team does not exist' })
 
-        const game = await _createGame(team1_id, team2_id, start, finish, req.round, venue_name, game_location, next)
+        const { game } = await _createGame(team1_id, team2_id, start, finish, req.round, venue_name, game_location, next)
 
         return res.status(201).json({
             success: true,
