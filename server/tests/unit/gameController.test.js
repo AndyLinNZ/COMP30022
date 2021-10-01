@@ -177,3 +177,72 @@ describe('Unit Testing: updateGame in gameController', () => {
         expect(res.json).toHaveBeenCalledWith(actualRes.json)
     })
 })
+
+describe('Unit Testing: updateGameDateLocation in gameController', () => {
+    test('Updating a season with valid newLocationName, newLocation, newStart and newFinish should update the game', async () => {
+        const req = mockRequest()
+        const res = mockResponse()
+        const next = mockNext()
+
+        const gameDetails = {
+            dateStart: new Date('2021-08-12T10:00:00.000Z'),
+            dateFinish: new Date('2021-08-14T10:00:00.000Z'),
+            team1: {
+                team: '6131e8b7f69a130fa021f6fd',
+                playersStats: [],
+            },
+            team2: {
+                team: '6131e8b7f69a130fa021f6fe',
+                playersStats: [],
+            },
+            locationName: 'Joshua SENPAl Stadium',
+            location: {
+                type: 'Point',
+                coordinates: [123.456, 88.666],
+            },
+            round: '612788ed698aac7c50c3d377',
+        }
+        req.game = new Game(gameDetails)
+
+        req.round = new Round({
+            _id: '612788ed698aac7c50c3d377',
+            grade: '612788ed698aac7c50c3d3b6',
+        })
+
+        req.body = {
+            newLocationName: 'Josh Dubz New Stadium',
+            newLocation: {
+                type: 'Point',
+                coordinates: [22.33, 44.555]
+            },
+            newStart: '2021-08-13T12:23:34.944Z',
+            newFinish: '2021-08-16T12:23:34.944Z'
+        }
+
+        const expectedGame = new Game({
+            ...gameDetails,
+            dateStart: new Date(req.body.newStart),
+            dateFinish: new Date(req.body.newFinish),
+            locationName: req.body.newLocationName,
+            location: req.body.newLocation,
+        })
+
+        Game.findOneAndUpdate = jest.fn().mockResolvedValue(expectedGame)
+
+        await gameController.updateGameDateLocation(req, res, next)
+
+        const actualRes = {
+            status: 200,
+            json: {
+                success: true,
+                data: expectedGame,
+            },
+        }
+
+        expect(next).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledTimes(1)
+        expect(res.status).toHaveBeenCalledWith(actualRes.status)
+        expect(res.json).toHaveBeenCalledTimes(1)
+        expect(res.json).toHaveBeenCalledWith(actualRes.json)
+    })
+})
