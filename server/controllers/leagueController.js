@@ -1,7 +1,7 @@
 const League = require('../models/league')
 const Season = require('../models/season')
 const User = require('../models/user')
-const { formatOrderByStatus } = require('./responseFormatters')
+const { formatOrderByStatus, formatLeagueResp } = require('./responseFormatters')
 const { allValidDocumentIds } = require('./utils')
 
 async function createLeague(req, res, next) {
@@ -33,10 +33,9 @@ async function createLeague(req, res, next) {
 async function getAllLeagues(_, res, next) {
     try {
         const leagues = await League.find().populate(['seasons', 'creator'])
-
         return res.status(200).json({
             success: true,
-            data: leagues,
+            data: leagues.map(formatLeagueResp),
         })
     } catch (err) {
         console.log(err)

@@ -1,7 +1,11 @@
 const { pick } = require('./utils')
 
-const formatLeagueResp = (leagueDoc) =>
-    pick(leagueDoc, ['_id', 'name', 'organisation', 'creator', 'admins', 'seasons'])
+const formatLeagueResp = (leagueDoc) => {
+    const creator = pick(leagueDoc.creator, ['_id', 'email', 'firstName', 'lastName'])
+    const league = pick(leagueDoc, ['_id', 'name', 'organisation', 'creator', 'admins', 'seasons'])
+    return { ...league, creator }
+}
+
 
 const formatTeamResp = (teamDoc) =>
     pick(teamDoc, ['_id', 'name', 'totalWins', 'totalDraws', 'totalLosses', 'totalPoints', 'grades', 'players', 'games'])
