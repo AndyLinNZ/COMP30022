@@ -1,4 +1,7 @@
 const { ObjectId } = require('mongoose').Types
+const Team = require('../models/team')
+const Game = require('../models/game')
+const Round = require('../models/round')
 
 // returns true if all items in arr are valid object ids
 const allValidObjectIds = (arr) => arr.every(ObjectId.isValid)
@@ -7,7 +10,7 @@ const allValidObjectIds = (arr) => arr.every(ObjectId.isValid)
 // or if any of them do not correspond to a document of docType
 // in the database. returns true otherwise
 const allValidDocumentIds = async (ids, docType) => {
-    if(!allValidObjectIds(ids)) return Promise.resolve(false)
+    if (!allValidObjectIds(ids)) return Promise.resolve(false)
     const docs = await docType.find({
         _id: { $in: ids.map(ObjectId) }
     })
@@ -41,11 +44,11 @@ function calculateGradeLadder(grade) {
     rankings.sort((t1, t2) => t2.keyStats.totalPoints - t1.keyStats.totalPoints)
 
     // assign ranks (teams with same points get the same rank)
-    if(rankings.length > 0) {
+    if (rankings.length > 0) {
         var prevRank = 1
         var prevTotalPoints = rankings[0].keyStats.totalPoints
         rankings.forEach((ranking) => {
-            if(ranking.keyStats.totalPoints < prevTotalPoints) {
+            if (ranking.keyStats.totalPoints < prevTotalPoints) {
                 prevRank += 1
                 prevTotalPoints = ranking.keyStats.totalPoints
             }
@@ -71,27 +74,27 @@ function calculateTeamGradeStats(grade, teamid) {
             var thisTeam = null
             var oppTeam = null
 
-            if(game.team1.team.toString() == teamid.toString()) {
+            if (game.team1.team.toString() == teamid.toString()) {
                 thisTeam = game.team1
                 oppTeam = game.team2
             }
-            if(game.team2.team.toString() == teamid.toString()) {
+            if (game.team2.team.toString() == teamid.toString()) {
                 thisTeam = game.team2
                 oppTeam = game.team1
             }
 
-            if(!thisTeam || !oppTeam) return
+            if (!thisTeam || !oppTeam) return
 
             var thisTeamPoints = calculateTotalPoints(thisTeam.playersStats)
             var oppTeamPoints = calculateTotalPoints(oppTeam.playersStats)
 
-            if(thisTeamPoints > oppTeamPoints) {
+            if (thisTeamPoints > oppTeamPoints) {
                 keyStats['wins'] += 1
                 keyStats['totalPoints'] += 3
-            } else if(thisTeamPoints == oppTeamPoints) {
+            } else if (thisTeamPoints == oppTeamPoints) {
                 keyStats['draws'] += 1
                 keyStats['totalPoints'] += 1
-            } else if(thisTeamPoints < oppTeamPoints) {
+            } else if (thisTeamPoints < oppTeamPoints) {
                 keyStats['losses'] += 1
             }
         })
@@ -103,7 +106,66 @@ function calculateTeamGradeStats(grade, teamid) {
 function calculateTotalPoints(allStats) {
     return allStats
         .map((playerStat) => playerStat.points)
-        .reduce((prevPoint, nextPoint) => prevPoint + nextPoint)
+        .reduce((prevPoint, nextPoint) => prevPoint + nextPoint, 0)
+}
+
+async function _createGame(team1Id, team2Id, start, finish, round, locationName, location, next) {
+    try {
+        const newGame = new Game({
+            dateStart: start,
+            dateFinish: finish,
+            round: round,
+            team1: {
+                team: team1Id,
+            },
+            team2: {
+                team: team2Id,
+            },
+            locationName: locationName,
+            location: location
+        })
+
+        const game = await newGame.save()
+
+        // adding game to team's details
+        await Team.findOneAndUpdate(
+            { _id: team1Id },
+            { $addToSet: { games: game } },
+            { new: true },
+        )
+
+        await Team.findOneAndUpdate(
+            { _id: team2Id },
+            { $addToSet: { games: game } },
+            { new: true },
+        )
+
+        // add the game to the round
+        const newRound = await Round.findOneAndUpdate(
+            { _id: round._id },
+            { $addToSet: { games: game } },
+            { new: true },
+        )
+
+        return { game: game, round: newRound }
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
+async function _createRound(grade, next) {
+    try {
+        const newRound = new Round({ grade: grade._id })
+        const round = await newRound.save()
+        grade.fixture.push(round._id)
+        await grade.save()
+
+        return round
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
 }
 
 module.exports = {
@@ -111,4 +173,6 @@ module.exports = {
     pick,
     calculateTotalPoints,
     calculateGradeLadder,
+    _createGame,
+    _createRound
 }

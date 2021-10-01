@@ -16,7 +16,7 @@ const seasonTextConfig = (seasons) => {
         }
     } else {
         return {
-            text: 'NO SEASONS',
+            text: 'NO ACTIVE SEASONS',
             bg: 'inactiveSeasonBg',
             color: 'inactiveSeasonColor',
         }
@@ -26,13 +26,7 @@ const ActiveSeasonLabel = ({ activeSeasons }) => {
     const { text, ...colors } = seasonTextConfig(activeSeasons)
 
     return (
-        <Text
-            {...colors}
-            borderRadius="5px"
-            py="0.125rem"
-            px="0.5rem"
-            fontSize="0.75rem"
-        >
+        <Text {...colors} borderRadius="5px" py="0.125rem" px="0.5rem" fontSize="0.75rem">
             {text}
         </Text>
     )
