@@ -32,7 +32,11 @@ const UserHeader = ({ isHome = false }) => {
                 onClick={() => router.push(appPaths.HOME_PATH)}
                 visibility={hideLogo ? 'hidden' : undefined}
             >
-                {isDesktop ? <Logo width="300" /> : <CircleLogo />}
+                {isDesktop ? (
+                    <Logo width="300" cursor="pointer" />
+                ) : (
+                    <CircleLogo cursor="pointer" />
+                )}
             </Box>
 
             <Box pos="absolute" top="1rem" right="1rem" zIndex="dropdown">

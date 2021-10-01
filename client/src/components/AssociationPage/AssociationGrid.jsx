@@ -22,7 +22,7 @@ const AssociationGrid = ({ leagues, inSeason, upcomingSeason }) => {
             justifyContent="center"
             columnGap={'2rem'}
         >
-            {displayLeagues?.map(({ name, organisation, seasons, _id }) => (
+            {displayLeagues?.map(({ name, organisation, seasons, _id, creator }) => (
                 <GridItem key={_id} display="flex" alignItems="center" justifyContent="center">
                     <AssociationCard
                         name={name}
@@ -32,6 +32,7 @@ const AssociationGrid = ({ leagues, inSeason, upcomingSeason }) => {
                         }
                         icon={null}
                         id={_id}
+                        creator={creator}
                     />
                 </GridItem>
             ))}
