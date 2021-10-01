@@ -541,12 +541,7 @@ describe('Integration Testing: creating a fixture for a grade', () => {
                 numRounds: 2,
                 datesAndLocations: [{
                     "dateStart": "2021-09-11T12:23:34.944Z",
-                    "dateFinish": "2021-09-11T12:23:35.944Z",
                     "locationName": "Joshua Dubar Sports Centre",
-                    "location": {
-                        "type": "Point",
-                        "coordinates": [144.96305759999998, -37.8136276]
-                    }
                 }]
             })
 
