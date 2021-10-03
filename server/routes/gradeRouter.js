@@ -13,6 +13,8 @@ const gradeRouter = express.Router()
 // GET
 gradeRouter.get('/:gradeId', getLeagueGradeSeason, gradeController.getGrade)
 gradeRouter.get('/:gradeId/team', getLeagueGradeSeason, gradeController.getAllGradeTeams)
+gradeRouter.get('/:gradeId/round/:roundNum', getLeagueGradeSeason, gradeController.getRound)
+
 
 // POST
 gradeRouter.post(

@@ -6,7 +6,25 @@ const {
     ejectNextDateAndLocation,
     ejectNextTeamNode,
 } = require('../services/generateFixture')
-const Round = require('../models/round')
+
+async function getRound(req, res, next) {
+    try {
+        const grade = await req.grade.execPopulate('fixture')
+        const roundNum = (parseInt(req.params.roundNum) || 0) - 1
+        if (roundNum < 0 || roundNum >= grade.fixture.length) {
+            next({ status: 400, message: 'Invalid round number' })
+        }
+
+        const round = await grade.fixture[roundNum].execPopulate('games')
+        return res.status(200).json({
+            success: true,
+            data: round,
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
 
 async function getGrade(req, res, next) {
     try {
@@ -157,6 +175,7 @@ async function createFixture(req, res, next) {
 }
 
 module.exports = {
+    getRound,
     getGrade,
     getAllGradeTeams,
     addTeamToGrade,
