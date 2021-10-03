@@ -38,6 +38,19 @@ async function getTeam(req, res, next) {
     }
 }
 
+async function getAllTeams(req, res, next) {
+    try {
+        const teams = await Team.find()
+        return res.status(200).json({
+            success: true,
+            data: teams
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
 async function updateTeam(req, res, next) {
     try {
         let { teamName } = req.body
@@ -121,6 +134,7 @@ async function deletePlayersFromTeam(req, res, next) {
 module.exports = {
     createTeam,
     getTeam,
+    getAllTeams,
     updateTeam,
     addPlayerToTeam,
     deletePlayersFromTeam,

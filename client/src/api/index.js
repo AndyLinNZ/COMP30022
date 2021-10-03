@@ -74,3 +74,7 @@ export const getAllleagues = async () => {
 export const getLeague = async ({ queryKey }) => {
     return await axiosInstance.get(`/league/${queryKey[1]}`)
 }
+
+export const getAllTeams = async () => {
+    return await axiosInstance.get(`/team`)
+}
