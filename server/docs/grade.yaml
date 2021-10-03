@@ -74,6 +74,14 @@ components:
         success: false
         error: 'Grade does not exist'
 
+    InvalidRoundIndexResponse:
+      allOf:
+        - $ref: '#/components/schemas/GenericErrorResponse'
+      example:
+        success: false
+        error: 'Invalid round number'
+
+
 paths:
   /grade/{gradeId}:
     get:
@@ -179,6 +187,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GradeNotFoundResponse'
+
+
+  /grade/{gradeId}/round/{roundNum}:
+    get:
+      tags:
+        - 'Grade'
+      summary: 'Find round by number, starting from 1.'
+      parameters:
+      - name: 'gradeId'
+        in: 'path'
+        description: 'ID of the grade.'
+        required: true
+        type: 'string'
+      - name: 'roundNum'
+        in: 'path'
+        description: 'Index of round to return.'
+        required: true
+        type: 'string'
+      responses:
+        '200':
+          description: 'Successfully found a round.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  games: []
+                  grade: 6138a18dbe9bc3b701dec788
+                  teamsOnBye: []
+                  _id: 613c51ca9ba1acc1926855e8
+        '404':
+          description: 'Invalid round number.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidRoundIndexResponse'
+
 
   /grade/{gradeId}/team:
     get:
