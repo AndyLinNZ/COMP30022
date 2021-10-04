@@ -11,11 +11,13 @@ const formatTeamResp = (teamDoc) =>
     pick(teamDoc, ['_id', 'name', 'totalWins', 'totalDraws', 'totalLosses', 'totalPoints', 'grades', 'players', 'games'])
 
 const formatUserResp = (userDoc) => {
-    var leagues = userDoc.leagues.map(formatLeagueResp)
-    var teams = userDoc.teams.map(formatTeamResp)
-    var details = pick(userDoc, ['_id', 'email', 'firstName', 'lastName'])
+    const leagues = userDoc.leagues.map(formatLeagueResp)
+    const teams = userDoc.teams.map(formatTeamResp)
+    const details = formatUserDetailsResp(userDoc)
     return { ...details, leagues, teams }
 }
+
+const formatUserDetailsResp = (userDoc) => pick(userDoc, ['_id', 'email', 'firstName', 'lastName'])
 
 const formatOrderByStatus = (doc) => {
     const sortingOrder = {
@@ -40,5 +42,6 @@ module.exports = {
     formatLeagueResp,
     formatTeamResp,
     formatUserResp,
-    formatOrderByStatus
+    formatUserDetailsResp,
+    formatOrderByStatus,
 }
