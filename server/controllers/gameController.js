@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongoose').Types
 const Player = require('../models/player')
+const Game = require('../models/game')
 const PlayerStat = require('../models/playerStat')
 const { calculateTotalPoints } = require('./utils')
 
@@ -15,7 +16,7 @@ async function getGame(req, res, next) {
     }
 }
 
-async function updateGame(req, res, next) {
+async function updateGamePlayerStats(req, res, next) {
     try {
         let { team1, team2 } = req.body
 
@@ -61,7 +62,38 @@ async function updatePlayersStats(oldPlayersStats, team, next) {
     return allPlayerStats
 }
 
+async function updateGameDateLocation(req, res, next){
+
+    try {
+
+        let { newLocationName, newLocation, newStart, newFinish } = req.body
+
+        const updateQuery = {}
+        if (newLocationName) updateQuery.locationName = newLocationName
+        if (newLocation) updateQuery.location = newLocation
+        if (newStart) updateQuery.dateStart = newStart
+        if (newFinish) updateQuery.dateFinish = newFinish
+
+        const game = await Game.findOneAndUpdate(
+            { _id: req.game._id },
+            { $set: updateQuery },
+            { new: true, runValidators: true }
+        )
+
+        return res.status(200).json({
+            success: true,
+            data: game,
+        })
+
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+
+}
+
 module.exports = {
     getGame,
-    updateGame,
+    updateGameDateLocation,
+    updateGamePlayerStats,
 }

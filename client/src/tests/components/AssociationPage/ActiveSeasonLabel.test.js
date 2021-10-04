@@ -3,13 +3,13 @@ import { render } from 'utils/test-utils'
 import ActiveSeasonLabel from 'components/AssociationPage/ActiveSeasonLabel'
 
 describe('Footer', () => {
-    test('"NO SEASONS" when no prop is passed in', () => {
+    test('"NO ACTIVE SEASONS" when no prop is passed in', () => {
         const { getByText } = render(<ActiveSeasonLabel />)
-        expect(getByText('NO SEASONS')).toBeInTheDocument()
+        expect(getByText('NO ACTIVE SEASONS')).toBeInTheDocument()
     })
-    test('"NO SEASONS" when 0 is passed in', () => {
+    test('"NO ACTIVE SEASONS" when 0 is passed in', () => {
         const { getByText } = render(<ActiveSeasonLabel activeSeasons={0} />)
-        expect(getByText('NO SEASONS')).toBeInTheDocument()
+        expect(getByText('NO ACTIVE SEASONS')).toBeInTheDocument()
     })
     test('"ACTIVE SEASON" when 1 is passed in', () => {
         const { getByText } = render(<ActiveSeasonLabel activeSeasons={1} />)

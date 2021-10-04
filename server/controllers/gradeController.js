@@ -1,6 +1,30 @@
-const Round = require('../models/round')
-const Grade = require('../models/grade')
+const { _createRound, _createGame } = require('./utils')
 const { calculateGradeLadder } = require('./utils')
+const {
+    TeamNode,
+    teamDocsToGoOnBye,
+    ejectNextDateAndLocation,
+    ejectNextTeamNode,
+} = require('../services/generateFixture')
+
+async function getRound(req, res, next) {
+    try {
+        const grade = await req.grade.execPopulate('fixture')
+        const roundNum = (parseInt(req.params.roundNum) || 0) - 1
+        if (roundNum < 0 || roundNum >= grade.fixture.length) {
+            next({ status: 400, message: 'Invalid round number' })
+        }
+
+        const round = await grade.fixture[roundNum].execPopulate('games')
+        return res.status(200).json({
+            success: true,
+            data: round,
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
 
 async function getGrade(req, res, next) {
     try {
@@ -89,11 +113,7 @@ async function addTeamToGrade(req, res, next) {
 
 async function createRound(req, res, next) {
     try {
-        let { date } = req.body
-        const newRound = new Round({ grade: req.grade._id, date: date })
-        const round = await newRound.save()
-        req.grade.fixture.push(round._id)
-        await req.grade.save()
+        const round = await _createRound(req.grade, next)
 
         return res.status(201).json({
             success: true,
@@ -105,10 +125,61 @@ async function createRound(req, res, next) {
     }
 }
 
+async function createFixture(req, res, next) {
+    try {
+        const { teams, grade, body: { numRounds, datesAndLocations } } = req
+
+        const numGames = Math.min(Math.floor(teams.length / 2), datesAndLocations.length)
+        const allTeams = teams.map((team) => new TeamNode(team._id))
+
+        for (let i = 0; i < numRounds; i++) {
+            var round = await _createRound(grade, next)
+            for (let j = 0; j < numGames; j++) {
+                const team = ejectNextTeamNode(allTeams)
+                const opponent = team.nextTeamToPlay(allTeams)
+
+                team.playTeam(opponent)
+                opponent.playTeam(team)
+
+                const { location, locationName, dateStart, dateFinish } =
+                    ejectNextDateAndLocation(datesAndLocations)
+
+                const { round: newRound } = await _createGame(
+                    team.teamId,
+                    opponent.teamId,
+                    dateStart,
+                    dateFinish,
+                    round,
+                    locationName,
+                    location,
+                    next
+                )
+                round = newRound
+            }
+            await round.execPopulate('games')
+
+            const teamsOnBye = teamDocsToGoOnBye(round.games, teams)
+            round.teamsOnBye = round.teamsOnBye.concat(teamsOnBye)
+            await round.save()
+        }
+
+        await grade.execPopulate('fixture')
+        return res.status(201).json({
+            success: true,
+            data: grade.fixture
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
 module.exports = {
+    getRound,
     getGrade,
     getAllGradeTeams,
     addTeamToGrade,
     createRound,
     deleteGrade,
+    createFixture,
 }

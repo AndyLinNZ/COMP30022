@@ -33,22 +33,15 @@ const testGrade = {
 const testTeam1 = {
     name: 'jdubz1'
 }
-
 const testTeam2 = {
     name: 'josh2'
 }
-
-const testRound = {
-    date: '2021-08-12T10:00:00.000Z',
-}
-
 const testGame = {
     dateStart: '2021-08-12T10:00:00.000Z',
     dateFinish: '2021-08-12T11:00:00.000Z',
     locationName: 'Josh Dubz Stadium',
     location: { type: 'Point', coordinates: [-22.22, 33.33] },
 }
-
 beforeAll(async () => {
     // add new test league object to database
     const newLeague = new League({
@@ -108,7 +101,6 @@ beforeAll(async () => {
 
     // add a new round object to database
     const newRound = new Round({
-        ...testRound,
         grade: grade._id
     })
     const round = await newRound.save()
@@ -157,7 +149,7 @@ beforeAll(async () => {
     const team2_updateDetails = {}
     team2_updateDetails[player2._id] = { points: 44, assists: 0 }
 
-    const updateGameDetails = {
+    const updateGamePlayerStatsDetails = {
         team1: team1_updateDetails,
         team2: team2_updateDetails,
     }
@@ -167,10 +159,12 @@ beforeAll(async () => {
     const team2_updateDetails2 = {}
     team2_updateDetails2[player2._id] = { assists: 10 }
 
-    const updateGameDetails2 = {
+    const updateGamePlayerStatsDetails2 = {
         team1: team1_updateDetails2,
         team2: team2_updateDetails2,
     }
+
+    
 
     env.game0_id = game._id.toString()
     env.round0_id = round._id.toString()
@@ -178,8 +172,8 @@ beforeAll(async () => {
     env.team2_id = team2._id.toString()
     env.player1_id = player1._id.toString()
     env.player2_id = player2._id.toString()
-    env.test_update_game_details = updateGameDetails
-    env.test_update_game_details2 = updateGameDetails2
+    env.test_update_game_details = updateGamePlayerStatsDetails
+    env.test_update_game_details2 = updateGamePlayerStatsDetails2
 })
 
 describe('Integration Testing: finding games', () => {
@@ -217,7 +211,7 @@ describe('Integration Testing: finding games', () => {
 
 describe('Integration Testing: updating games', () => {
     test('Updating a game with an invalid game id should return an error', async () => {
-        const res = await request.patch(`/api/game/${env.auth_tokens[0][0]}`)
+        const res = await request.patch(`/api/game/${env.auth_tokens[0][0]}/playerStats`)
             .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
             .send(env.test_update_game_details)
 
@@ -227,7 +221,7 @@ describe('Integration Testing: updating games', () => {
     })
 
     test('User should not be able to update a game if they are not league admin', async () => {
-        const res = await request.patch(`/api/game/${env.game0_id}`)
+        const res = await request.patch(`/api/game/${env.game0_id}/playerStats`)
             .set('Authorization', `Bearer ${env.auth_tokens[2][1]}`)
             .send(env.test_update_game_details)
 
@@ -237,7 +231,7 @@ describe('Integration Testing: updating games', () => {
     })
 
     test('League admin should be able to update a game', async () => {
-        const res = await request.patch(`/api/game/${env.game0_id}`)
+        const res = await request.patch(`/api/game/${env.game0_id}/playerStats`)
             .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
             .send(env.test_update_game_details)
 
@@ -257,7 +251,7 @@ describe('Integration Testing: updating games', () => {
     })
 
     test('Updating a game with existing results should properly update the results', async () => {
-        const res = await request.patch(`/api/game/${env.game0_id}`)
+        const res = await request.patch(`/api/game/${env.game0_id}/playerStats`)
             .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
             .send(env.test_update_game_details2)
 
@@ -272,5 +266,71 @@ describe('Integration Testing: updating games', () => {
         expect(res.body.data.team2.playersStats[0].playerId).toBe(env.player2_id)
         expect(res.body.data.team1.playersStats[0].points).toBe(env.test_update_game_details2.team1[env.player1_id].points)
         expect(res.body.data.team2.playersStats[0].assists).toBe(env.test_update_game_details2.team2[env.player2_id].assists)
+    })
+})
+
+describe('Integration Testing: updating dates and location of a game', () => {
+    test('Updating a game with an invalid game id should return an error', async () => {
+        const res = await request.patch(`/api/game/${env.auth_tokens[0][0]}/details`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send(env.test_update_game_details)
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Game does not exist')
+    })
+
+    test('User should not be able to update the dates and location of a game if they are not league admin', async () => {
+        const res = await request.patch(`/api/game/${env.game0_id}/details`)
+            .set('Authorization', `Bearer ${env.auth_tokens[2][1]}`)
+            .send(env.test_update_game_details)
+
+        expect(res.statusCode).toBe(403)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('User is not an admin')
+    })
+
+    test('League admin should be able to update the location of a game with valid id', async () => {
+        const res = await request.patch(`/api/game/${env.game0_id}/details`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send({
+                newLocationName: 'Joshua Dubz New Stadium',
+                newLocation: {
+                    type: 'Point',
+                    coordinates: [22.33, 44.555]
+                },
+            })
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data._id).toBe(env.game0_id)
+        expect(res.body.data.locationName).toBe('Joshua Dubz New Stadium')
+        expect(res.body.data.location.type).toBe('Point')
+        expect(res.body.data.location.coordinates).toStrictEqual([22.33, 44.555])
+        expect(res.body.data.dateStart).toBe(testGame.dateStart)
+        expect(res.body.data.dateFinish).toBe(testGame.dateFinish)
+    })
+
+    test('League admin should be able to update the dates and location of a game with valid id', async () => {
+        const res = await request.patch(`/api/game/${env.game0_id}/details`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send({
+                newStart: '2021-08-12T12:23:34.944Z',
+                newFinish: '2090-08-13T12:23:34.944Z',
+                newLocationName: 'Joshua Dubz New Stadium',
+                newLocation: {
+                    type: 'Point',
+                    coordinates: [22.33, 44.555]
+                },
+            })
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data._id).toBe(env.game0_id)
+        expect(res.body.data.locationName).toBe('Joshua Dubz New Stadium')
+        expect(res.body.data.location.type).toBe('Point')
+        expect(res.body.data.location.coordinates).toStrictEqual([22.33, 44.555])
+        expect(res.body.data.dateStart).toBe('2021-08-12T12:23:34.944Z')
+        expect(res.body.data.dateFinish).toBe('2090-08-13T12:23:34.944Z')
     })
 })

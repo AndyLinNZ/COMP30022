@@ -2,7 +2,7 @@ import { Box, Flex, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { Stepper } from './Dashboard/League'
 
-const Container = ({ league, children, minH = '375px', w = ['95%', '75%'] }) => {
+const Container = ({ league, children, minH = '375px', w = ['95%', '75%'], stepperLoc }) => {
     return (
         <VStack
             pos="absolute"
@@ -26,7 +26,7 @@ const Container = ({ league, children, minH = '375px', w = ['95%', '75%'] }) => 
                     {league?.organisation}
                 </Box>
             </VStack>
-            <Stepper />
+            <Stepper stepperLoc={stepperLoc} />
             <Box
                 h="100%"
                 w="100%"

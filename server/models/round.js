@@ -1,9 +1,6 @@
 const mongoose = require('mongoose')
 
 const roundSchema = new mongoose.Schema({
-    date: {
-        type: Date,
-    },
     grade: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Grade',
@@ -18,9 +15,14 @@ const roundSchema = new mongoose.Schema({
         ],
         default: [],
     },
-    teamOnBye: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Team',
+    teamsOnBye: {
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Team',
+            },
+        ],
+        default: [],
     }
 })
 
