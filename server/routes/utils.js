@@ -7,6 +7,7 @@ const Grade = require('../models/grade')
 const Round = require('../models/round')
 const Team = require('../models/team')
 const Game = require('../models/game')
+const { allValidDocumentIds } = require('../controllers/utils')
 
 const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 
@@ -58,6 +59,48 @@ async function getTeamDocument(req, res, next) {
     return next()
 }
 
+// this middleware checks if the given teamIds are actual documents, and if so, populate them
+// it will check the req parameters and some grade checks
+async function _validateFixture(req, res, next) {
+    const { dateStart, dateFinish } = req.season
+    const { teamIds, numRounds, datesAndLocations } = req.body
+
+    // Check there is no existing fixture yet
+    if (req.grade.fixture.length !== 0) {
+        return res.status(400).json({ success: false, error: 'This grade already has a fixture' })
+    }
+    // Check we have at least 2 teams for the fixture
+    if (teamIds.length < 2) {
+        return res.status(400).json({ success: false, error: 'Need at least 2 teams' })
+    }
+    // Check valid teams
+    if (!(await allValidDocumentIds(teamIds, Team))) {
+        return res.status(404).json({ success: false, error: 'Some team does not exist' })
+    }
+    // Check team is added to grade
+    const notAdded = teamIds.some((team) => !req.grade.teams.includes(team))
+    if (notAdded) {
+        return res.status(400).json({ success: false, error: 'Team is not added to grade' })
+    }
+    // Check date and location. NB: Excluded check for location coordinates and game dateFinish
+    const noDateOrLocations = !datesAndLocations || datesAndLocations.length === 0 ||
+        datesAndLocations.some((dl) => !dl.dateStart || !dl.locationName)
+    if (noDateOrLocations) {
+        return res.status(400).json({ success: false, error: 'Dates and locations are invalid' })
+    }
+    // Check we have valid numRounds
+    if (!numRounds || numRounds <= 0) {
+        return res.status(400).json({ success: false, error: 'numRounds is invalid' })
+    }
+    // Check number of rounds can fit within season
+    if (dateStart.setDate(dateStart.getDate() + numRounds * 7) > dateFinish) {
+        return res.status(400).json({ success: false, error: 'numRounds cannot fit within the season' })
+    }
+
+    req.teams = await Promise.all(teamIds.map(async (teamId) => await Team.findById(teamId)))
+    return next()
+}
+
 async function _ensureLeagueAdmin(req, res, next) {
     try {
         if (req.league.admins.includes(req.user._id)) {
@@ -100,6 +143,7 @@ async function _ensureTeamAdmin(req, res, next) {
 const ensureLeagueAdmin = series(getLeagueGradeSeason, _ensureLeagueAdmin)
 const ensureLeagueCreator = series(getLeagueGradeSeason, _ensureLeagueCreator)
 const ensureTeamAdmin = series(getTeamDocument, _ensureTeamAdmin)
+const validateFixture = series(ensureLeagueAdmin, _validateFixture)
 
 module.exports = {
     ensureAuthenticated,
@@ -108,4 +152,5 @@ module.exports = {
     ensureLeagueCreator,
     ensureLeagueAdmin,
     ensureTeamAdmin,
+    validateFixture
 }

@@ -1,4 +1,35 @@
 components:
+  examples:
+    FixtureExists:
+      value:
+        success: false
+        error: This grade already has a fixture
+
+    TeamsNotEnough:
+      value:
+        success: false
+        error: Need at least 2 teams
+
+    TeamNotInGrade:
+      value:
+        success: false
+        error: Team is not added to grade
+
+    InvalidDateLocation:
+      value:
+        success: false
+        error: Dates and locations are invalid
+    
+    InvalidNumRounds:
+      value:
+        success: false
+        error: numRounds is invalid
+    
+    NumRoundsRangeError:
+      value:
+        success: false
+        error: numRounds cannot fit within the season
+
   schemas:
     TeamAddition:
       properties:
@@ -8,6 +39,33 @@ components:
         - teamId
       example:
         teamId: 55555e555555ee5555e55555
+    
+    FixtureAddition:
+      properties:
+        teamIds:
+          type: array
+        numRounds:
+          type: integer
+        datesAndLocations:
+          type: array
+      required:
+        - teamIds
+        - numRounds
+        - datesAndLocations
+      example:
+        teamIds: 
+          - 55555e555555ee5555e55555
+          - 6155d80d017d461164e690d1
+        numRounds: 1
+        datesAndLocations:
+          - dateStart: '2021-09-11T12:23:34.944Z'
+            dateFinish: '2021-09-11T12:23:50.944Z'
+            locationName: josh Dubar sports centre
+            location: 
+              type: 'Point'
+              coordinates:
+                - 123.456
+                - 88.666
 
     GradeNotFoundResponse:
       allOf:
@@ -66,7 +124,7 @@ paths:
                   season: 33333c333333cc3333c33333
                   fixture:
                     - _id: 6153e84c72b2dec03665a132
-                      date: 2021-09-29T04:15:04.709Z
+                      date: '2021-09-29T04:15:04.709Z'
                       games: []
                   ladder:
                     - rank: 1
@@ -243,3 +301,70 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GradeNotFoundResponse'
+  
+  /grade/{gradeId}/fixture:
+    post:
+      tags:
+        - 'Grade'
+      summary: 'Add a fixture to a grade'
+      description: 'This can only be done by a logged in user and a league admin of the grade.'
+      parameters:
+      - name: 'gradeId'
+        in: 'path'
+        description: 'ID of the grade.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FixtureAddition'
+      responses:
+        '201':
+          description: 'Successfully created a fixture for the grade.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  - games: [6156dae78b967e42349517c2]
+                    teamsOnBye: []
+                    _id: 6156dae78b967e42349517bf
+                    grade: 613c32222222222193333331
+                    __v: 0
+        '400':
+          description: 'Validation errors from the request.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorResponse'
+              examples:
+                FixtureExists:
+                  $ref: '#/components/examples/FixtureExists'
+                TeamsNotEnough:
+                  $ref: '#/components/examples/TeamsNotEnough'
+                TeamNotInGrade:
+                  $ref: '#/components/examples/TeamNotInGrade'
+                InvalidDateLocation:
+                  $ref: '#/components/examples/InvalidDateLocation'
+                InvalidNumRounds:
+                  $ref: '#/components/examples/InvalidNumRounds'
+                NumRoundsRangeError:
+                  $ref: '#/components/examples/NumRoundsRangeError'
+        '404':
+          description: 'Some team does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamNotFoundResponse'
+        '403':
+          description: 'User is not an admin for this team.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotTeamAdminResponse'

@@ -13,10 +13,10 @@ gameRouter.get('/:gameId', getLeagueGradeSeason, gameController.getGame)
 
 // PATCH
 gameRouter.patch(
-    '/:gameId',
+    '/:gameId/playerStats',
     ensureAuthenticated,
     ensureLeagueAdmin,
-    gameController.updateGame
+    gameController.updateGamePlayerStats
 )
 
 gameRouter.patch(

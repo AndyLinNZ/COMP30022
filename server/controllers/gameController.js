@@ -16,7 +16,7 @@ async function getGame(req, res, next) {
     }
 }
 
-async function updateGame(req, res, next) {
+async function updateGamePlayerStats(req, res, next) {
     try {
         let { team1, team2 } = req.body
 
@@ -94,6 +94,6 @@ async function updateGameDateLocation(req, res, next){
 
 module.exports = {
     getGame,
-    updateGame,
-    updateGameDateLocation
+    updateGameDateLocation,
+    updateGamePlayerStats,
 }

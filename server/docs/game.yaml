@@ -88,10 +88,11 @@ paths:
                     success: false
                     error: 'Game does not exist'
 
+  /game/{gameId}/playerStats:
     patch:
       tags:
         - 'Game'
-      summary: 'Update a game.'
+      summary: 'Update the playerStats of a game.'
       description: 'This can only be done by a logged in user and a league admin.'
       parameters:
       - name: 'gameId'

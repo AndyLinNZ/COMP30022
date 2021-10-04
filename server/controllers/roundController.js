@@ -1,7 +1,6 @@
 const { ObjectId } = require('mongoose').Types
 const Team = require('../models/team')
-const Game = require('../models/game')
-const Round = require('../models/round')
+const { _createGame } = require('./utils')
 
 async function getRound(req, res, next) {
     try {
@@ -34,41 +33,7 @@ async function createGame(req, res, next) {
 
         if (!team1 || !team2) return next({ status: 404, message: 'Team does not exist' })
 
-        const newGame = new Game({
-            dateStart: start,
-            dateFinish: finish,
-            round: req.round,
-            team1: {
-                team: team1_id,
-            },
-            team2: {
-                team: team2_id,
-            },
-            locationName: venue_name,
-            location: game_location
-        })
-
-        const game = await newGame.save()
-
-        // adding game to team's details
-        await Team.findOneAndUpdate(
-            { _id: team1_id },
-            { $addToSet: { games: game } },
-            { new: true },
-        )
-
-        await Team.findOneAndUpdate(
-            { _id: team2_id },
-            { $addToSet: { games: game } },
-            { new: true },
-        )
-
-        // add the game to the round
-        await Round.findOneAndUpdate(
-            { _id: req.round._id },
-            { $addToSet: { games: game } },
-            { new: true },
-        )
+        const { game } = await _createGame(team1_id, team2_id, start, finish, req.round, venue_name, game_location, next)
 
         return res.status(201).json({
             success: true,

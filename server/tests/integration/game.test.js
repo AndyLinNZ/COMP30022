@@ -33,22 +33,15 @@ const testGrade = {
 const testTeam1 = {
     name: 'jdubz1'
 }
-
 const testTeam2 = {
     name: 'josh2'
 }
-
-const testRound = {
-    date: '2021-08-12T10:00:00.000Z',
-}
-
 const testGame = {
     dateStart: '2021-08-12T10:00:00.000Z',
     dateFinish: '2021-08-12T11:00:00.000Z',
     locationName: 'Josh Dubz Stadium',
     location: { type: 'Point', coordinates: [-22.22, 33.33] },
 }
-
 beforeAll(async () => {
     // add new test league object to database
     const newLeague = new League({
@@ -108,7 +101,6 @@ beforeAll(async () => {
 
     // add a new round object to database
     const newRound = new Round({
-        ...testRound,
         grade: grade._id
     })
     const round = await newRound.save()
@@ -157,7 +149,7 @@ beforeAll(async () => {
     const team2_updateDetails = {}
     team2_updateDetails[player2._id] = { points: 44, assists: 0 }
 
-    const updateGameDetails = {
+    const updateGamePlayerStatsDetails = {
         team1: team1_updateDetails,
         team2: team2_updateDetails,
     }
@@ -167,7 +159,7 @@ beforeAll(async () => {
     const team2_updateDetails2 = {}
     team2_updateDetails2[player2._id] = { assists: 10 }
 
-    const updateGameDetails2 = {
+    const updateGamePlayerStatsDetails2 = {
         team1: team1_updateDetails2,
         team2: team2_updateDetails2,
     }
@@ -180,8 +172,8 @@ beforeAll(async () => {
     env.team2_id = team2._id.toString()
     env.player1_id = player1._id.toString()
     env.player2_id = player2._id.toString()
-    env.test_update_game_details = updateGameDetails
-    env.test_update_game_details2 = updateGameDetails2
+    env.test_update_game_details = updateGamePlayerStatsDetails
+    env.test_update_game_details2 = updateGamePlayerStatsDetails2
 })
 
 describe('Integration Testing: finding games', () => {
@@ -219,7 +211,7 @@ describe('Integration Testing: finding games', () => {
 
 describe('Integration Testing: updating games', () => {
     test('Updating a game with an invalid game id should return an error', async () => {
-        const res = await request.patch(`/api/game/${env.auth_tokens[0][0]}`)
+        const res = await request.patch(`/api/game/${env.auth_tokens[0][0]}/playerStats`)
             .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
             .send(env.test_update_game_details)
 
@@ -229,7 +221,7 @@ describe('Integration Testing: updating games', () => {
     })
 
     test('User should not be able to update a game if they are not league admin', async () => {
-        const res = await request.patch(`/api/game/${env.game0_id}`)
+        const res = await request.patch(`/api/game/${env.game0_id}/playerStats`)
             .set('Authorization', `Bearer ${env.auth_tokens[2][1]}`)
             .send(env.test_update_game_details)
 
@@ -239,7 +231,7 @@ describe('Integration Testing: updating games', () => {
     })
 
     test('League admin should be able to update a game', async () => {
-        const res = await request.patch(`/api/game/${env.game0_id}`)
+        const res = await request.patch(`/api/game/${env.game0_id}/playerStats`)
             .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
             .send(env.test_update_game_details)
 
@@ -259,7 +251,7 @@ describe('Integration Testing: updating games', () => {
     })
 
     test('Updating a game with existing results should properly update the results', async () => {
-        const res = await request.patch(`/api/game/${env.game0_id}`)
+        const res = await request.patch(`/api/game/${env.game0_id}/playerStats`)
             .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
             .send(env.test_update_game_details2)
 
