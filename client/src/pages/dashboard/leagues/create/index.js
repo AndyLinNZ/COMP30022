@@ -35,7 +35,7 @@ const index = () => {
         resolver: yupResolver(createLeagueSchema),
     })
 
-    const { mutate, isLoading } = useCreateLeague({
+    const { mutate, isLoading, isSuccess } = useCreateLeague({
         onSuccess: (response) => {
             router.push(
                 new URL(`${response?.data?.data?._id}/seasons`, window.location.href).pathname
@@ -94,7 +94,7 @@ const index = () => {
                         <FormButton onClick={() => router.push(appPaths.DASHBOARD_LEAGUES_PATH)}>
                             Back
                         </FormButton>
-                        <FormButton type="submit" color="black" bg="orange" isLoading={isLoading}>
+                        <FormButton type="submit" color="black" bg="orange" isLoading={isLoading || isSuccess}>
                             Create
                         </FormButton>
                     </HStack>
