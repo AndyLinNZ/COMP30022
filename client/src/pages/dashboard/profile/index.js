@@ -21,9 +21,15 @@ const userUpdateSchema = yup.object().shape({
         .required('Last name is required'),
     email: yup
         .string()
+        .email('Incorrect email format')
         .required('email is required'),
     password: yup
-        .string(),
+        .string()
+        .min(8, 'Password must be at least 8 characters long')
+        .matches(
+            /(?=.*[a-zA-Z])(?=.*[0-9])/,
+            'Password must contain at least 1 letter and 1 number'
+        ),
 })
 
 const index = () => {
