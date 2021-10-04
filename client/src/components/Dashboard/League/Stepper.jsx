@@ -4,7 +4,7 @@ import { useMediaQuerySSR } from 'hooks'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-const Stepper = () => {
+const Stepper = ({ stepperLoc }) => {
     const router = useRouter()
 
     const [selected, setSelected] = React.useState(1)
@@ -55,6 +55,7 @@ const Stepper = () => {
                 bg="greyBg"
                 onClick={() =>
                     router.push(
+                        stepperLoc ||
                         window.location.pathname
                             .split('/')
                             .slice(0, window.location.pathname.split('/').length - 2)

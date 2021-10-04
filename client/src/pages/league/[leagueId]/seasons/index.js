@@ -14,7 +14,7 @@ const index = () => {
             <Head>
                 <title>Dribblr | {league?.name || 'League'}</title>
             </Head>
-            <Container league={league}>
+            <Container league={league} stepperLoc="/">
                 {(!seasons || seasons.length === 0) && (
                     <Text
                         fontSize="2rem"
