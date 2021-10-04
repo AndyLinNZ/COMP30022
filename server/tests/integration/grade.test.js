@@ -2,6 +2,7 @@ const setupTestEnv = require('./test-utils')
 const League = require('../../models/league')
 const Season = require('../../models/season')
 const Grade = require('../../models/grade')
+const Round = require('../../models/round')
 const Team = require('../../models/team')
 const supertest = require('supertest')
 const initApp = require('../../app')
@@ -73,6 +74,14 @@ beforeAll(async () => {
         season: season._id
     })
     const grade = await newGrade.save()
+
+    // add a new round object to database
+    const newRound = new Round({
+        grade: grade._id,
+    })
+    const round = await newRound.save()
+    grade.fixture.push(round._id)
+    await grade.save()
 
     // add a test grade object to database but with no teams
     const secondGrade = new Grade({
@@ -181,6 +190,7 @@ beforeAll(async () => {
     env.grade2_id = grade2._id.toString()
     env.grade3_id = grade3._id.toString()
     env.grade4_id = grade4._id.toString()
+    env.round0_id = round._id.toString()
     env.team0_id = team._id.toString()
     env.team1_id = team1._id.toString()
     env.team2_id = team2._id.toString()
@@ -215,6 +225,52 @@ describe('Integration Testing: finding grades', () => {
         expect(res.body.error).toBe('Grade does not exist')
     })
 })
+
+
+describe('Integration Testing: finding rounds', () => {
+    test('Should be able to find a round with valid round number', async () => {
+        const res = await request.get(`/api/grade/${env.grade0_id}/round/1`)
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data._id).toBe(env.round0_id)
+        expect(res.body.data.games).toStrictEqual([])
+        expect(res.body.data.grade).toBe(env.grade0_id)
+    })
+
+    test('Finding a round with a nonexistent grade id should return an error', async () => {
+        const res = await request.get(`/api/grade/aaaabbbbcccc/round/1`)
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Grade does not exist')
+    })
+
+    test('Finding a round with a negative round number should return an error', async () => {
+        const res = await request.get(`/api/grade/${env.grade0_id}/round/-1`)
+
+        expect(res.statusCode).toBe(400)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Invalid round number')
+    })
+
+    test('Finding a round with an out-of-bounds round number should return an error', async () => {
+        const res = await request.get(`/api/grade/${env.grade0_id}/round/2`)
+
+        expect(res.statusCode).toBe(400)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Invalid round number')
+    })
+
+    test('Finding a round with a non-number round number should return an error', async () => {
+        const res = await request.get(`/api/grade/${env.grade0_id}/round/abc`)
+
+        expect(res.statusCode).toBe(400)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Invalid round number')
+    })
+})
+
 
 describe('Integration Testing: finding teams in grades', () => {
     test('Finding teams for a grade with a nonexistent id should return an error', async () => {

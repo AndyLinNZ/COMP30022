@@ -123,34 +123,6 @@ beforeAll(async () => {
     env.test_game_details = testGame
 })
 
-describe('Integration Testing: finding rounds', () => {
-    test('Should be able to find an existent round', async () => {
-        const res = await request.get(`/api/round/${env.round0_id}`)
-
-        expect(res.statusCode).toBe(200)
-        expect(res.body.success).toBe(true)
-        expect(res.body.data._id).toBe(env.round0_id)
-        expect(res.body.data.games).toStrictEqual([])
-        expect(res.body.data.grade).toBe(env.grade0_id)
-    })
-
-    test('Finding a round with a nonexistent id should return an error', async () => {
-        const res = await request.get(`/api/round/aaaabbbbcccc`)
-
-        expect(res.statusCode).toBe(404)
-        expect(res.body.success).toBe(false)
-        expect(res.body.error).toBe('Round does not exist')
-    })
-
-    test('Finding a grade with an invalid MongoDB object id should return an error', async () => {
-        const res = await request.get(`/api/round/1337`)
-
-        expect(res.statusCode).toBe(404)
-        expect(res.body.success).toBe(false)
-        expect(res.body.error).toBe('Round does not exist')
-    })
-})
-
 describe('Integration Testing: creating games', () => {
     test('Should not be able to create game for an invalid round', async () => {
         const res = await request.post('/api/round/badroundid/game')

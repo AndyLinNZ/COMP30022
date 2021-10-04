@@ -2,18 +2,6 @@ const { ObjectId } = require('mongoose').Types
 const Team = require('../models/team')
 const { _createGame } = require('./utils')
 
-async function getRound(req, res, next) {
-    try {
-        return res.status(200).json({
-            success: true,
-            data: req.round,
-        })
-    } catch (err) {
-        console.log(err)
-        return next(err)
-    }
-}
-
 async function deleteRound(req, res, next) {
     try {
         await req.round.deleteOne({ _id: req.round._id })
@@ -46,7 +34,6 @@ async function createGame(req, res, next) {
 }
 
 module.exports = {
-    getRound,
     deleteRound,
     createGame,
 }
