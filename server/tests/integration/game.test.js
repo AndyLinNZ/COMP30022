@@ -164,6 +164,8 @@ beforeAll(async () => {
         team2: team2_updateDetails2,
     }
 
+    
+
     env.game0_id = game._id.toString()
     env.round0_id = round._id.toString()
     env.team1_id = team1._id.toString()
@@ -264,5 +266,71 @@ describe('Integration Testing: updating games', () => {
         expect(res.body.data.team2.playersStats[0].playerId).toBe(env.player2_id)
         expect(res.body.data.team1.playersStats[0].points).toBe(env.test_update_game_details2.team1[env.player1_id].points)
         expect(res.body.data.team2.playersStats[0].assists).toBe(env.test_update_game_details2.team2[env.player2_id].assists)
+    })
+})
+
+describe('Integration Testing: updating dates and location of a game', () => {
+    test('Updating a game with an invalid game id should return an error', async () => {
+        const res = await request.patch(`/api/game/${env.auth_tokens[0][0]}/details`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send(env.test_update_game_details)
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Game does not exist')
+    })
+
+    test('User should not be able to update the dates and location of a game if they are not league admin', async () => {
+        const res = await request.patch(`/api/game/${env.game0_id}/details`)
+            .set('Authorization', `Bearer ${env.auth_tokens[2][1]}`)
+            .send(env.test_update_game_details)
+
+        expect(res.statusCode).toBe(403)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('User is not an admin')
+    })
+
+    test('League admin should be able to update the location of a game with valid id', async () => {
+        const res = await request.patch(`/api/game/${env.game0_id}/details`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send({
+                newLocationName: 'Joshua Dubz New Stadium',
+                newLocation: {
+                    type: 'Point',
+                    coordinates: [22.33, 44.555]
+                },
+            })
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data._id).toBe(env.game0_id)
+        expect(res.body.data.locationName).toBe('Joshua Dubz New Stadium')
+        expect(res.body.data.location.type).toBe('Point')
+        expect(res.body.data.location.coordinates).toStrictEqual([22.33, 44.555])
+        expect(res.body.data.dateStart).toBe(testGame.dateStart)
+        expect(res.body.data.dateFinish).toBe(testGame.dateFinish)
+    })
+
+    test('League admin should be able to update the dates and location of a game with valid id', async () => {
+        const res = await request.patch(`/api/game/${env.game0_id}/details`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send({
+                newStart: '2021-08-12T12:23:34.944Z',
+                newFinish: '2090-08-13T12:23:34.944Z',
+                newLocationName: 'Joshua Dubz New Stadium',
+                newLocation: {
+                    type: 'Point',
+                    coordinates: [22.33, 44.555]
+                },
+            })
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data._id).toBe(env.game0_id)
+        expect(res.body.data.locationName).toBe('Joshua Dubz New Stadium')
+        expect(res.body.data.location.type).toBe('Point')
+        expect(res.body.data.location.coordinates).toStrictEqual([22.33, 44.555])
+        expect(res.body.data.dateStart).toBe('2021-08-12T12:23:34.944Z')
+        expect(res.body.data.dateFinish).toBe('2090-08-13T12:23:34.944Z')
     })
 })
