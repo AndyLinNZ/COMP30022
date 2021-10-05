@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import EditButton from 'components/Dashboard/League/EditButton'
 
-const CreateCapsule = ({ heading, borderRadius, buttonNum, path = '' }) => {
+const CreateCapsule = ({ heading, borderRadius, buttonNum }) => {
     const router = useRouter()
     const buttonNums = { 0: '12fr', 1: '12fr 1fr', 2: '12fr 1fr 1fr' }
 
@@ -22,7 +22,7 @@ const CreateCapsule = ({ heading, borderRadius, buttonNum, path = '' }) => {
                     boxShadow: '0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);',
                 }}
                 bg="greyBg"
-                onClick={() => router.push(window.location.pathname + '/create' + path)}
+                onClick={() => router.push(window.location.pathname + '/create')}
             >
                 <Flex
                     pos="absolute"
