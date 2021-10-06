@@ -90,16 +90,10 @@ async function getAllGradeTeams(req, res, next) {
 
 async function addTeamToGrade(req, res, next) {
     try {
-        const team = req.team
-        // check if team is not in a grade for the season
-        const season = await req.season.execPopulate('grades')
-        if (season.grades.filter((grade) => grade.teams.includes(team._id.toString())).length > 0)
+        if (await checkTeamInGrade(req.team, req.season)) {
             return next({ status: 400, message: 'Team already exists in a grade for the season' })
-
-        team.grades.push(req.grade)
-        await team.save()
-        req.grade.teams.push(team)
-        const grade = await req.grade.save()
+        }
+        const grade = await _addTeamToGrade(req.team, req.grade)
 
         return res.status(200).json({
             success: true,
@@ -129,12 +123,25 @@ async function createFixture(req, res, next) {
     try {
         const { teams, grade, body: { numRounds, datesAndLocations } } = req
 
+        for (const team of teams) {
+            if (await checkTeamInGrade(team, req.season)) {
+                return next({ status: 400, message: 'Team already exists in a grade for the season' })
+            }
+        }
+
+        for (const team of teams) {
+            await _addTeamToGrade(team, grade)
+        }
+
         const numGames = Math.min(Math.floor(teams.length / 2), datesAndLocations.length)
         const allTeams = teams.map((team) => new TeamNode(team._id))
 
-        for (let i = 0; i < numRounds; i++) {
+        // sort dates in place just once before using a priority queue
+        datesAndLocations.sort((dl1, dl2) => new Date(dl1.dateStart) - new Date(dl2.dateStart))
+
+        for (var i = 0; i < numRounds; i++) {
             var round = await _createRound(grade, next)
-            for (let j = 0; j < numGames; j++) {
+            for (var j = 0; j < numGames; j++) {
                 const team = ejectNextTeamNode(allTeams)
                 const opponent = team.nextTeamToPlay(allTeams)
 
@@ -142,7 +149,7 @@ async function createFixture(req, res, next) {
                 opponent.playTeam(team)
 
                 const { location, locationName, dateStart, dateFinish } =
-                    ejectNextDateAndLocation(datesAndLocations)
+                    ejectNextDateAndLocation(datesAndLocations, i)
 
                 const { round: newRound } = await _createGame(
                     team.teamId,
@@ -172,6 +179,18 @@ async function createFixture(req, res, next) {
         console.log(err)
         return next(err)
     }
+}
+
+async function _addTeamToGrade(teamDoc, gradeDoc) {
+    teamDoc.grades.push(gradeDoc)
+    await teamDoc.save()
+    gradeDoc.teams.push(teamDoc)
+    return await gradeDoc.save()
+}
+
+async function checkTeamInGrade(teamDoc, seasonDoc) {
+    const season = await seasonDoc.execPopulate('grades')
+    return season.grades.some((grade) => grade.teams.includes(teamDoc._id))
 }
 
 module.exports = {
