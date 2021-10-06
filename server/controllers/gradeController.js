@@ -90,16 +90,7 @@ async function getAllGradeTeams(req, res, next) {
 
 async function addTeamToGrade(req, res, next) {
     try {
-        const team = req.team
-        // check if team is not in a grade for the season
-        const season = await req.season.execPopulate('grades')
-        if (season.grades.filter((grade) => grade.teams.includes(team._id.toString())).length > 0)
-            return next({ status: 400, message: 'Team already exists in a grade for the season' })
-
-        team.grades.push(req.grade)
-        await team.save()
-        req.grade.teams.push(team)
-        const grade = await req.grade.save()
+        const grade = await _addTeamToGrade(req.team, req.grade, req.season, next)
 
         return res.status(200).json({
             success: true,
@@ -128,6 +119,10 @@ async function createRound(req, res, next) {
 async function createFixture(req, res, next) {
     try {
         const { teams, grade, body: { numRounds, datesAndLocations } } = req
+
+        for (const team of teams) {
+            if (!await _addTeamToGrade(team, grade, req.season, next)) return
+        }
 
         const numGames = Math.min(Math.floor(teams.length / 2), datesAndLocations.length)
         const allTeams = teams.map((team) => new TeamNode(team._id))
@@ -175,6 +170,19 @@ async function createFixture(req, res, next) {
         console.log(err)
         return next(err)
     }
+}
+
+async function _addTeamToGrade(teamDoc, gradeDoc, seasonDoc, next) {
+    // check if team is not in a grade for the season
+    const season = await seasonDoc.execPopulate('grades')
+    if (season.grades.some((grade) => grade.teams.includes(teamDoc._id.toString()))) {
+        return next({ status: 400, message: 'Team already exists in a grade for the season' })
+    }
+
+    teamDoc.grades.push(gradeDoc)
+    await teamDoc.save()
+    gradeDoc.teams.push(teamDoc)
+    return await gradeDoc.save()
 }
 
 module.exports = {

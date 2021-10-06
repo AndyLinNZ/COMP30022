@@ -22,9 +22,11 @@ class TeamNode {
     }
     // Given an array of Teams, find any team from the Nodes list that this current Node hasen't played
     #teamsNotPlayed(teams) {
-        return teams.filter(
-            (t) => !this.played.map((playedTeam) => playedTeam.team).includes(t) && t != this
-        )
+        return [...teams
+            .filter((team) => !this.played
+                .map((playedTeam) => playedTeam.team)
+                .includes(team) && team != this)]
+            .sort((t1, t2) => t1.gamesPlayed() - t2.gamesPlayed())
     }
     // Find the next team to play
     nextTeamToPlay(teams) {
@@ -60,7 +62,7 @@ function ejectNextDateAndLocation(allDatesLocations, week) {
         _dateFinish.setDate(_dateFinish.getDate() + week * 7)
     }
     allDatesLocations.push(allDatesLocations.shift())
-    return { dateStart: _dateStart, dateFinish: _dateFinish, ...eject }
+    return { ...eject, dateStart: _dateStart.toISOString(), dateFinish: _dateFinish?.toISOString() }
 }
 
 module.exports = {

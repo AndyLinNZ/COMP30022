@@ -171,16 +171,32 @@ beforeAll(async () => {
     })
     const team3 = await fourthTeam.save()
 
-    // add the new teams to grade3
-    grade3.teams.push(team._id)
-    grade3.teams.push(team2._id)
-    grade3.teams.push(team3._id)
-    await grade3.save()
+    const fifthTeam = new Team({
+        ...testTeam,
+        name: 'Josh Dubar Team 5',
+        admin: env.auth_tokens[0][0],
+        grades: [],
+        players: []
+    })
+    const team4 = await fifthTeam.save()
 
-    grade4.teams.push(team2._id)
-    grade4.teams.push(team3._id)
-    await grade4.save()
+    const sixthTeam = new Team({
+        ...testTeam,
+        name: 'Josh Dubar Team 6',
+        admin: env.auth_tokens[0][0],
+        grades: [],
+        players: []
+    })
+    const team5 = await sixthTeam.save()
 
+    const seventhTeam = new Team({
+        ...testTeam,
+        name: 'Josh Dubar Team 7',
+        admin: env.auth_tokens[0][0],
+        grades: [],
+        players: []
+    })
+    const team6 = await seventhTeam.save()
 
     env.league0_id = league._id.toString()
     env.season0_id = season._id.toString()
@@ -195,6 +211,9 @@ beforeAll(async () => {
     env.team1_id = team1._id.toString()
     env.team2_id = team2._id.toString()
     env.team3_id = team3._id.toString()
+    env.team4_id = team4._id.toString()
+    env.team5_id = team5._id.toString()
+    env.team6_id = team6._id.toString()
 })
 
 describe('Integration Testing: finding grades', () => {
@@ -413,28 +432,6 @@ describe('Integration Testing: creating a fixture for a grade', () => {
         expect(res.body.error).toBe('Need at least 2 teams')
     })
 
-    test('Creating fixture with teams not in the grade should return an error', async () => {
-        const res = await request.post(`/api/grade/${env.grade4_id}/fixture`)
-            .set('Authorization', `Bearer ${env.auth_tokens[1][1]}`)
-            .send({
-                teamIds: [env.team0_id, env.team2_id],
-                numRounds: 3,
-                datesAndLocations: [{
-                    "dateStart": "2021-09-11T12:23:34.944Z",
-                    "dateFinish": "2021-09-11T12:23:35.944Z",
-                    "locationName": "Joshua Dubar Sports Centre",
-                    "location": {
-                        "type": "Point",
-                        "coordinates": [144.96305759999998, -37.8136276]
-                    }
-                }]
-            })
-
-        expect(res.statusCode).toBe(400)
-        expect(res.body.success).toBe(false)
-        expect(res.body.error).toBe('Team is not added to grade')
-    })
-
     test('Creating fixture with non-existent team should return an error', async () => {
         const res = await request.post(`/api/grade/${env.grade3_id}/fixture`)
             .set('Authorization', `Bearer ${env.auth_tokens[1][1]}`)
@@ -563,7 +560,7 @@ describe('Integration Testing: creating a fixture for a grade', () => {
 
     test('Creating fixture with 2 teams and 1 dateLocation per round with 2 rounds \
          should create a fixture with no teamsOnBye', async () => {
-        const res = await request.post(`/api/grade/${env.grade4_id}/fixture`)
+        const res = await request.post(`/api/grade/${env.grade3_id}/fixture`)
             .set('Authorization', `Bearer ${env.auth_tokens[1][1]}`)
             .send({
                 teamIds: [env.team2_id, env.team3_id],
@@ -590,10 +587,10 @@ describe('Integration Testing: creating a fixture for a grade', () => {
 
     test('Creating fixture with three teams and 1 dateLocation per round with 2 rounds \
          should create a fixture with teamsOnBye', async () => {
-        const res = await request.post(`/api/grade/${env.grade3_id}/fixture`)
+        const res = await request.post(`/api/grade/${env.grade4_id}/fixture`)
             .set('Authorization', `Bearer ${env.auth_tokens[1][1]}`)
             .send({
-                teamIds: [env.team0_id, env.team2_id, env.team3_id],
+                teamIds: [env.team4_id, env.team5_id, env.team6_id],
                 numRounds: 2,
                 datesAndLocations: [{
                     "dateStart": "2021-09-11T12:23:34.944Z",
@@ -614,7 +611,7 @@ describe('Integration Testing: creating a fixture for a grade', () => {
         const res = await request.post(`/api/grade/${env.grade3_id}/fixture`)
             .set('Authorization', `Bearer ${env.auth_tokens[1][1]}`)
             .send({
-                teamIds: [env.team0_id, env.team2_id, env.team3_id],
+                teamIds: [env.team2_id, env.team3_id],
                 numRounds: 2,
                 datesAndLocations: [{
                     "dateStart": "2021-09-11T12:23:34.944Z",
