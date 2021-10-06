@@ -106,10 +106,18 @@ function calculateTeamGradeStats(grade, teamid) {
 function populateGradeGamesTotalPoints(grade) {
     grade.fixture.forEach((round) => {
         round.games.forEach((game) => {
-            const team1TotalPoints = calculateTotalPoints(game.team1.playersStats)
-            const team2TotalPoints = calculateTotalPoints(game.team2.playersStats)
-            game.team1.totalPoints = team1TotalPoints
-            game.team2.totalPoints = team2TotalPoints
+            if (game.team1.playersStats.length == 0) {
+                game.team1.totalPoints = -1
+            } else {
+                const team1TotalPoints = calculateTotalPoints(game.team1.playersStats)
+                game.team1.totalPoints = team1TotalPoints
+            }
+            if (game.team2.playersStats.length == 0) {
+                game.team2.totalPoints = -1
+            } else {
+                const team2TotalPoints = calculateTotalPoints(game.team2.playersStats)
+                game.team2.totalPoints = team2TotalPoints
+            }
         })
     })
 }
