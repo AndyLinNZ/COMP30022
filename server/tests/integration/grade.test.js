@@ -558,6 +558,23 @@ describe('Integration Testing: creating a fixture for a grade', () => {
         expect(res.body.error).toBe('numRounds cannot fit within the season')
     })
 
+    test('Creating fixture with existing team should return an error', async () => {
+        const res = await request.post(`/api/grade/${env.grade3_id}/fixture`)
+            .set('Authorization', `Bearer ${env.auth_tokens[1][1]}`)
+            .send({
+                teamIds: [env.team1_id, env.team2_id],
+                numRounds: 2,
+                datesAndLocations: [{
+                    "dateStart": "2021-09-11T12:23:34.944Z",
+                    "locationName": "Joshua Dubar Sports Centre"
+                }]
+            })
+
+        expect(res.statusCode).toBe(400)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Team already exists in a grade for the season')
+    })
+
     test('Creating fixture with 2 teams and 1 dateLocation per round with 2 rounds \
          should create a fixture with no teamsOnBye', async () => {
         const res = await request.post(`/api/grade/${env.grade3_id}/fixture`)
