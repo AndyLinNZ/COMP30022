@@ -49,10 +49,18 @@ function teamDocsToGoOnBye(games, teams) {
 
 // Returns a date, location and locationName object.
 // Also shifts ejected item to last in array
-function ejectNextDateAndLocation(allDatesLocations) {
+function ejectNextDateAndLocation(allDatesLocations, week) {
     const eject = allDatesLocations[0]
+    const { dateStart, dateFinish } = eject
+    var _dateStart = new Date(dateStart)
+    _dateStart.setDate(_dateStart.getDate() + week * 7)
+    var _dateFinish
+    if (dateFinish) {
+        _dateFinish = new Date(dateFinish)
+        _dateFinish.setDate(_dateFinish.getDate() + week * 7)
+    }
     allDatesLocations.push(allDatesLocations.shift())
-    return eject
+    return { dateStart: _dateStart, dateFinish: _dateFinish, ...eject }
 }
 
 module.exports = {

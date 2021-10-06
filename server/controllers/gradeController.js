@@ -132,9 +132,12 @@ async function createFixture(req, res, next) {
         const numGames = Math.min(Math.floor(teams.length / 2), datesAndLocations.length)
         const allTeams = teams.map((team) => new TeamNode(team._id))
 
-        for (let i = 0; i < numRounds; i++) {
+        // sort dates in place just once before using a priority queue
+        datesAndLocations.sort((dl1, dl2) => new Date(dl1.dateStart) - new Date(dl2.dateStart))
+
+        for (var i = 0; i < numRounds; i++) {
             var round = await _createRound(grade, next)
-            for (let j = 0; j < numGames; j++) {
+            for (var j = 0; j < numGames; j++) {
                 const team = ejectNextTeamNode(allTeams)
                 const opponent = team.nextTeamToPlay(allTeams)
 
@@ -142,7 +145,7 @@ async function createFixture(req, res, next) {
                 opponent.playTeam(team)
 
                 const { location, locationName, dateStart, dateFinish } =
-                    ejectNextDateAndLocation(datesAndLocations)
+                    ejectNextDateAndLocation(datesAndLocations, i)
 
                 const { round: newRound } = await _createGame(
                     team.teamId,
