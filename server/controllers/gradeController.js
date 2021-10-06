@@ -190,7 +190,7 @@ async function _addTeamToGrade(teamDoc, gradeDoc) {
 
 async function checkTeamInGrade(teamDoc, seasonDoc) {
     const season = await seasonDoc.execPopulate('grades')
-    return season.grades.some((grade) => grade.teams.includes(teamDoc._id))
+    return season.grades.some((grade) => grade.teams.includes(teamDoc._id.toString()))
 }
 
 module.exports = {
