@@ -188,8 +188,8 @@ describe('Integration Testing: finding games', () => {
         expect(res.body.data.locationName).toBe('Josh Dubz Stadium')
         expect(res.body.data.location.type).toBe('Point')
         expect(res.body.data.location.coordinates).toStrictEqual([-22.22, 33.33])
-        expect(res.body.data.team1.team).toBe(env.team1_id)
-        expect(res.body.data.team2.team).toBe(env.team2_id)
+        expect(res.body.data.team1.team._id.toString()).toBe(env.team1_id)
+        expect(res.body.data.team2.team._id.toString()).toBe(env.team2_id)
     })
 
     test('Finding a game with a nonexistent id should return an error', async () => {

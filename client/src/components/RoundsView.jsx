@@ -31,7 +31,7 @@ const RoundsView = ({ rounds }) => {
                                     </HStack>
                                 )}
                                 {round.teamsOnBye.map((team) =>
-                                    <ByeContainer team={team}  />
+                                    <ByeContainer key={team._id} team={team}  />
                                 )}
                             </VStack>
                         </TabPanel>

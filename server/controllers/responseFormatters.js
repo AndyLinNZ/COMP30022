@@ -22,6 +22,14 @@ const formatUserResp = (userDoc) => {
 const formatTeamMinimal = (teamDoc) => pick(teamDoc, ['_id', 'name'])
 
 
+const formatGameResp = (gameDoc) => {
+    const details = pick(gameDoc, ['_id', 'round', 'dateStart', 'dateFinish', 'location', 'locationName', 'status'])
+    const team1 = { team: formatTeamMinimal(gameDoc.team1.team), playersStats: gameDoc.team1.playersStats }
+    const team2 = { team: formatTeamMinimal(gameDoc.team2.team), playersStats: gameDoc.team2.playersStats }
+    return { ...details, team1, team2 }
+}
+
+
 const formatGradeResp = (gradeDoc) => {
     const teams = gradeDoc.teams.map(formatTeamMinimal)
     const fixture = []
@@ -70,5 +78,6 @@ module.exports = {
     formatTeamResp,
     formatUserResp,
     formatGradeResp,
+    formatGameResp,
     formatOrderByStatus
 }

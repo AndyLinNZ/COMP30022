@@ -41,7 +41,7 @@ const MatchContainer = ({ game }) => {
                     {team2.team.name}
                 </Text>
                 <Divider orientation="vertical" backgroundColor="gray.600" w="2px" h="75%" justifySelf="end"/>
-                <VStack fontSize="lg" justifySelf="start">
+                <VStack fontSize="lg" justifySelf="start" alignItems="start">
                     <HStack>
                         <ErrorIcon width={24}/> {/* TODO: replace me with proper icon */}
                         <Text>{new Date(dateStart).toLocaleString()}</Text>
@@ -96,7 +96,7 @@ const MatchContainer = ({ game }) => {
                     <Divider orientation="horizontal" backgroundColor="gray.600" h="2px"/>
                 </GridItem>
                 <GridItem colStart={1} rowStart={5}  colSpan={2}alignSelf="start" justifySelf="start">
-                    <VStack fontSize="sm">
+                    <VStack fontSize="sm" alignItems="start">
                         <HStack>
                             <ErrorIcon width={24}/> {/* TODO: replace me with proper icon */}
                             <Text>{new Date(dateStart).toLocaleString()}</Text>

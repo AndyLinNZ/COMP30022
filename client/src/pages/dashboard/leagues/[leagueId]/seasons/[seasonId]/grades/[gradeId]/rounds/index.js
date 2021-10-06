@@ -29,7 +29,7 @@ const index = () => {
 
                     {hasRounds ?
                         <RoundsView rounds={grade.fixture} />
-                    :
+                        :
                         <CreateCapsule heading="GENERATE ROUNDS AND MATCHES" borderRadius="1rem" />
                     }
                 </VStack>
