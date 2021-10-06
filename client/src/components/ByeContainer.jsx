@@ -1,4 +1,4 @@
-import { Flex, VStack, Text, Divider, Grid } from '@chakra-ui/react'
+import { Flex, VStack, Text, Divider, Grid, HStack } from '@chakra-ui/react'
 import { useMediaQuerySSR } from 'hooks'
 import { useRouter } from 'next/router'
 import Tag from 'components/Dashboard/Tag'
@@ -31,7 +31,28 @@ const ByeContainer = ({ team }) => {
                 <Tag type="players" text="bye" />
             </Grid>
         </Flex>
-    ) : <div>no mobile yet</div>
+    ) : 
+        <Flex
+            w="100%"
+            h="100px"
+            borderRadius="1rem"
+            border="2px solid grey"
+            pos="relative"
+            cursor="pointer"
+            transition="box-shadow 0.8s ease"
+            _hover={{
+                boxShadow: '0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);',
+            }}
+            onClick={() => {}}
+            paddingX="1rem"
+        >
+            <HStack w="100%" spacing="50%">
+                <Text fontWeight="bold" fontSize="sm">
+                    {name}
+                </Text>
+                <Tag type="players" text="bye" />
+            </HStack>
+        </Flex>
 }
 
 export default ByeContainer

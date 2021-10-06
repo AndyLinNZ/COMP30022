@@ -2,6 +2,7 @@ import React from 'react'
 import { Tabs, TabList, TabPanels, Tab, TabPanel, Text, Center, VStack, HStack } from "@chakra-ui/react"
 import { MatchContainer, ByeContainer } from 'components'
 import EditButton from 'components/Dashboard/League/EditButton'
+import ErrorIcon from 'components/svg/ErrorIcon'
 
 // if using this for the non-logged in user pages, it might be good to add a
 // "showEditButtons" prop or something to hide the edit buttons
@@ -26,7 +27,7 @@ const RoundsView = ({ rounds }) => {
                                 {round.games.map((game) => 
                                     <HStack key={game._id} w="100%">
                                         <MatchContainer game={game} />
-                                        <EditButton name={game._id} />
+                                        {game.status == 'upcoming' ? <EditButton name={game._id} /> : <ErrorIcon width={48}/>} {/* TODO: replace me with proper icon */}
                                     </HStack>
                                 )}
                                 {round.teamsOnBye.map((team) =>
