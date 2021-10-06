@@ -120,12 +120,13 @@ const index = () => {
                     />
                     <Input
                         label="Password"
+                        type="password"
                         placeholder="Password"
                         error={errors.password?.message}
                         {...register('password')}
                     />
                     <HStack spacing="0.5rem">
-                        <FormButton onClick={() => router.push(appPaths.DASHBOARD_TEAMS_PATH)}>
+                        <FormButton onClick={router.back}>
                             Cancel
                         </FormButton>
                         <FormButton type="submit" color="black" bg="orange" isLoading={isLoading}>
