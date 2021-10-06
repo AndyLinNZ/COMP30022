@@ -1,25 +1,25 @@
 import React from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useUserDetails } from 'hooks'
+import { useGrade, useLeague } from 'hooks'
 import { Template, CreateCapsule } from 'components/Dashboard'
 import { VStack, HStack, Button } from '@chakra-ui/react'
-import { Container } from 'components'
-import { getSeasonFromUser, getLeagueFromUser } from 'utils'
+import { Container, RoundsView } from 'components'
 
 const index = () => {
-    const { user } = useUserDetails()
-    const season = getSeasonFromUser(user)
-    const league = getLeagueFromUser(user)
+    const { grade } = useGrade()
+    const { league } = useLeague()
     const router = useRouter()
+
+    const hasRounds = grade?.fixture?.length > 0
 
     return (
         <Template>
             <Head>
-                <title>Dribblr | {season?.name || 'Season'} - Grades</title>
+                <title>Dribblr | {grade?.name || 'Grade'} - Rounds</title>
             </Head>
             <Container league={league}>
-                <VStack spacing="1.25rem">
+                <VStack spacing="1.25rem" h="100%">
                     <HStack spacing="1rem">
                         <Button bg="greyText.500" color="white">FIXTURE</Button>
                         <Button
@@ -27,7 +27,11 @@ const index = () => {
                         >LADDER</Button>
                     </HStack>
 
-                    <CreateCapsule heading="GENERATE ROUNDS AND MATCHES" borderRadius="1rem" />
+                    {hasRounds ?
+                        <RoundsView rounds={grade.fixture} />
+                    :
+                        <CreateCapsule heading="GENERATE ROUNDS AND MATCHES" borderRadius="1rem" />
+                    }
                 </VStack>
             </Container>
         </Template>
