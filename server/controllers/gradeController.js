@@ -33,28 +33,34 @@ async function getGrade(req, res, next) {
             'teams',
             {
                 path: 'fixture',
-                populate: {
-                    path: 'games',
-                    model: 'Game',
-                    populate: [
-                        {
-                            path: 'team1.team',
-                            model: 'Team',
-                        },
-                        {
-                            path: 'team1.playersStats',
-                            model: 'PlayerStat',
-                        },
-                        {
-                            path: 'team2.team',
-                            model: 'Team',
-                        },
-                        {
-                            path: 'team2.playersStats',
-                            model: 'PlayerStat',
-                        },
-                    ],
-                },
+                populate: [
+                    {
+                        path: 'teamsOnBye',
+                        model: 'Team',
+                    },
+                    {
+                        path: 'games',
+                        model: 'Game',
+                        populate: [
+                            {
+                                path: 'team1.team',
+                                model: 'Team',
+                            },
+                            {
+                                path: 'team1.playersStats',
+                                model: 'PlayerStat',
+                            },
+                            {
+                                path: 'team2.team',
+                                model: 'Team',
+                            },
+                            {
+                                path: 'team2.playersStats',
+                                model: 'PlayerStat',
+                            },
+                        ],
+                    }
+                ],
             },
         ]
         const grade = await req.grade.execPopulate(populateQuery)
