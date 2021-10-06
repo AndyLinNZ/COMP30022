@@ -84,6 +84,7 @@ const janeTeam1 = new InternalId('jane-team-1')
 const lygonKangaroos = new InternalId('lygon-kangaroos')
 const brunswickEmus = new InternalId('brunswick-emus')
 const swinburneBulls = new InternalId('swinburne-bulls')
+const byebyeTeam = new InternalId('bye-bye-team')
 const teams = [
     {
         id: johnTeam1,
@@ -112,6 +113,12 @@ const teams = [
     {
         id: swinburneBulls,
         name: 'Swinburne Bulls',
+        admin: john,
+        grades: [johnGrade1],
+    },
+    {
+        id: byebyeTeam,
+        name: 'Bye Bye Team',
         admin: john,
         grades: [johnGrade1],
     },
@@ -192,10 +199,12 @@ const rounds = [
     {
         id: johnRound1,
         grade: johnGrade1,
+        teamsOnBye: [byebyeTeam],
     },
     {
         id: johnRound2,
         grade: johnGrade1,
+        teamsOnBye: [byebyeTeam],
     }
 ]
 
