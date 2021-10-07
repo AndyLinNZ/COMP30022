@@ -19,6 +19,17 @@ export const getUserDetails = async () => {
     return await axiosInstance.get('/user/details')
 }
 
+export const updateUserDetails = async (details) => {
+    const { firstName, lastName, email, password } = details
+    const data = await axiosInstance.patch('/user/details', {
+        firstName,
+        lastName,
+        email,
+        password,
+    })
+    return data
+}
+
 export const createLeague = async (league) => {
     return await axiosInstance.post('/league', league)
 }

@@ -5,7 +5,6 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        index: true,
     },
     password: {
         type: String,
@@ -45,4 +44,5 @@ userSchema.plugin(passportLocalMongoose, {
     session: false,
 })
 
+userSchema.index({ email: 1 }, { unique: true })
 module.exports = mongoose.model('User', userSchema)

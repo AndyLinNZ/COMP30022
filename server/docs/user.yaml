@@ -1,3 +1,22 @@
+components:
+  schemas:
+    UpdateUser:
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        firstName: John
+        lastName: Doe
+        email: john.doe@example.com
+        password: a good s3cure  P4ssword
+
+
 paths:
   /user/details:
     get:
@@ -33,3 +52,49 @@ paths:
                       players: []
                       name: Joshua SENPAl
                       grades: []
+
+    patch:
+      tags:
+        - 'User'
+      summary: 'Update user details.'
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUser'
+      responses:
+        '200':
+          description: 'Successfully updated user details.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  _id: '612b9bc70ea7e4540fc2b30a'
+                  email: 'john.smith@example.com'
+                  firstName: 'John'
+                  lastName: 'Smith'
+        '400':
+          description: 'Invalid request.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorResponse'
+              examples:
+                invalidEmail:
+                  value:
+                    success: false
+                    error: 'Invalid email'
+                weakPassword:
+                  value:
+                    success: false
+                    error: 'Password is too weak'
+                emailConflict:
+                  value:
+                    success: false
+                    error: 'Email in use by another user'
