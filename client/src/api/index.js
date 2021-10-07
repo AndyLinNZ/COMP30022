@@ -87,7 +87,14 @@ export const getGame = async ({ queryKey }) => {
     return await axiosInstance.get(`/game/${queryKey[1]}`)
 }
 
+export const getTeam = async ({ queryKey }) => {
+    return await axiosInstance.get(`/team/${queryKey[1]}`)
+}
 
 export const editGame = async (game, gameId) => {
     return await axiosInstance.patch(`/game/${gameId}/details`, game)
+}
+
+export const editGameStats = async (stats, gameId) => {
+    return await axiosInstance.patch(`/game/${gameId}/playerStats`, stats)
 }

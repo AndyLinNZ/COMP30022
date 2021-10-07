@@ -28,9 +28,11 @@ async function createTeam(req, res, next) {
 
 async function getTeam(req, res, next) {
     try {
+        const team = await req.team.execPopulate('players')
+
         return res.status(200).json({
             success: true,
-            data: req.team,
+            data: team,
         })
     } catch (err) {
         console.log(err)
