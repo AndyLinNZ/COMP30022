@@ -2,13 +2,33 @@ const { ObjectId } = require('mongoose').Types
 const Player = require('../models/player')
 const Game = require('../models/game')
 const PlayerStat = require('../models/playerStat')
+const { formatGameResp } = require('./responseFormatters')
 const { calculateTotalPoints } = require('./utils')
 
 async function getGame(req, res, next) {
     try {
+        const populateQuery = [
+            {
+                path: 'team1.team',
+                model: 'Team',
+            },
+            {
+                path: 'team1.playersStats',
+                model: 'PlayerStat',
+            },
+            {
+                path: 'team2.team',
+                model: 'Team',
+            },
+            {
+                path: 'team2.playersStats',
+                model: 'PlayerStat',
+            },
+        ]
+        const game = await req.game.execPopulate(populateQuery)
         return res.status(200).json({
             success: true,
-            data: req.game,
+            data: formatGameResp(game),
         })
     } catch (err) {
         console.log(err)

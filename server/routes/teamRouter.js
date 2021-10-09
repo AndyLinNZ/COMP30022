@@ -6,6 +6,7 @@ const teamRouter = express.Router()
 
 // GET
 teamRouter.get('/:teamId', getTeamDocument, teamController.getTeam)
+teamRouter.get('/', teamController.getAllTeams)
 
 // POST
 teamRouter.post('/', ensureAuthenticated, teamController.createTeam)
