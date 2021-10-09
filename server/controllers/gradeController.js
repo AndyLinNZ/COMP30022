@@ -1,5 +1,6 @@
 const { _createRound, _createGame } = require('./utils')
-const { calculateGradeLadder } = require('./utils')
+const { calculateGradeLadder, populateGradeGamesTotalPoints } = require('./utils')
+const { formatGradeResp } = require('./responseFormatters')
 const {
     TeamNode,
     teamDocsToGoOnBye,
@@ -12,7 +13,7 @@ async function getRound(req, res, next) {
         const grade = await req.grade.execPopulate('fixture')
         const roundNum = (parseInt(req.params.roundNum) || 0) - 1
         if (roundNum < 0 || roundNum >= grade.fixture.length) {
-            next({ status: 400, message: 'Invalid round number' })
+            return next({ status: 400, message: 'Invalid round number' })
         }
 
         const round = await grade.fixture[roundNum].execPopulate('games')
@@ -32,30 +33,45 @@ async function getGrade(req, res, next) {
             'teams',
             {
                 path: 'fixture',
-                populate: {
-                    path: 'games',
-                    model: 'Game',
-                    populate: [
-                        {
-                            path: 'team1.playersStats',
-                            model: 'PlayerStat',
-                        },
-                        {
-                            path: 'team2.playersStats',
-                            model: 'PlayerStat',
-                        },
-                    ],
-                },
+                populate: [
+                    {
+                        path: 'teamsOnBye',
+                        model: 'Team',
+                    },
+                    {
+                        path: 'games',
+                        model: 'Game',
+                        populate: [
+                            {
+                                path: 'team1.team',
+                                model: 'Team',
+                            },
+                            {
+                                path: 'team1.playersStats',
+                                model: 'PlayerStat',
+                            },
+                            {
+                                path: 'team2.team',
+                                model: 'Team',
+                            },
+                            {
+                                path: 'team2.playersStats',
+                                model: 'PlayerStat',
+                            },
+                        ],
+                    }
+                ],
             },
         ]
         const grade = await req.grade.execPopulate(populateQuery)
+        populateGradeGamesTotalPoints(grade)
 
         const ladder = calculateGradeLadder(grade)
         grade.ladder = ladder
 
         return res.status(200).json({
             success: true,
-            data: grade,
+            data: formatGradeResp(grade),
         })
     } catch (err) {
         console.log(err)
