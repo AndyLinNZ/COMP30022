@@ -89,3 +89,7 @@ export const getLeague = async ({ queryKey }) => {
 export const getAllTeams = async () => {
     return await axiosInstance.get(`/team`)
 }
+
+export const createFixtures = async (gradeId, data) => {
+    return await axiosInstance.post(`/grade/${gradeId}/fixture`, data)
+}
