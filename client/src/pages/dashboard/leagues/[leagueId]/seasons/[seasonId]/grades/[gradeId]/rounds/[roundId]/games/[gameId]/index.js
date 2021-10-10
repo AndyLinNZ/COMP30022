@@ -82,20 +82,21 @@ const index = () => {
                         <Text justifySelf="center">{game?.team2?.team?.name}</Text>
 
                     </Grid>
+                    <Divider orientation="horizontal" backgroundColor="gray.600" justifySelf="end" align="top"/>
 
 
-                    
+                    <Grid templateColumns="1fr 1fr" gridGap="1rem" alignItems="center" w="100%" justifyItems="center">
+                        <HStack>
+                            <TimeIcon />
+                            <Text>{new Date(game?.dateStart).toLocaleString()} to {new Date(game?.dateFinish).toLocaleString()} </Text>
+                        </HStack>
 
-                    <HStack spacing="1rem">
-                        <TimeIcon />
-                        <Box fontSize="1rem" lineHeight="1">
-                                {new Date(game?.dateStart).toLocaleString()} - {new Date(game?.dateFinish).toLocaleString()} 
-                        </Box>
-                        <StarIcon />
-                        <Box fontSize="1rem" lineHeight="1">
-                                {game?.locationName}
-                        </Box>
-                    </HStack>
+                        <HStack>
+                            <StarIcon />
+                            <Text>{game?.locationName}</Text>
+                        </HStack>
+
+                    </Grid>
                 </VStack>
             </Container>
         </Template>
