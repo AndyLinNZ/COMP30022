@@ -43,16 +43,11 @@ async function getAllTeams(req, res, next) {
     try {
         var teams = await Team.find()
 
-        const gradeId = req.query?.grade
-        if (gradeId && allValidDocumentIds([gradeId], Grade)) {
-            const filteredTeams = teams.filter(team => team.grades.includes(gradeId))
+        if (req.grade) {
             var unwantedTeams = []
-            for (const team of filteredTeams) {
-                await team.execPopulate('grades')
-                for (const grade of team.grades) {
-                    if (await checkTeamInGrade(team, null, grade.season)) {
-                        if (!unwantedTeams.includes(team)) unwantedTeams.push(team)
-                    }
+            for (const team of teams) {
+                if (await checkTeamInGrade(team, req.season)) {
+                    if (!unwantedTeams.includes(team)) unwantedTeams.push(team)
                 }
             }
             teams = teams.filter(team => !unwantedTeams.some(uTeam => uTeam._id == team._id))

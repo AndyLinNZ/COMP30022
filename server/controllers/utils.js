@@ -1,5 +1,4 @@
 const { ObjectId } = require('mongoose').Types
-const Season = require('../models/season')
 const Team = require('../models/team')
 const Game = require('../models/game')
 const Round = require('../models/round')
@@ -189,9 +188,8 @@ async function _createRound(grade, next) {
 }
 
 // returns true if a team is in any grade of a season
-async function checkTeamInGrade(teamDoc, seasonDoc, seasonId = null) {
-    const seasonDoco = seasonId ? await Season.findById(seasonId) : seasonDoc
-    const season = await seasonDoco.execPopulate('grades')
+async function checkTeamInGrade(teamDoc, seasonDoc) {
+    const season = await seasonDoc.execPopulate('grades')
     return season.grades.some((grade) => grade.teams.includes(teamDoc._id.toString()))
 }
 

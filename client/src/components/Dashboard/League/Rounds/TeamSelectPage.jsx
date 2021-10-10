@@ -35,7 +35,7 @@ const GenerateMatchesContainer = ({ children }) => {
 
 const TeamSelectPage = ({ selectedTeams, setSelectedTeams, handleNextPage }) => {
     const router = useRouter()
-    const { teams } = useTeams()
+    const { teams } = useTeams(router.query?.gradeId)
     const [unchosenTeams, setUnchosenTeams] = React.useState([])
     const [displayTeams, setDisplayTeams] = React.useState([])
     const [searchValue, setSearchValue] = React.useState('')
