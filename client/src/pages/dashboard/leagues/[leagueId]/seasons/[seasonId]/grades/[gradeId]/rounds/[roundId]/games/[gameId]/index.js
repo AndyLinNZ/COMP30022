@@ -43,7 +43,7 @@ const index = () => {
                                 BACK
                             </Button>
                         </Box>
-                        <Box w="20%" fontSize="1.1rem" lineHeight="1" pl={15}>
+                        <Box w="20%" fontSize="1.1rem" lineHeight="1" pl={15} color="greyBg">
                             {season?.name}
                         </Box>
                         <ChevronRightIcon
@@ -51,7 +51,7 @@ const index = () => {
                             h={[10, 12]}
                             color={'grey'}
                         />
-                        <Box w="20%" fontSize="1.1rem" lineHeight="1">
+                        <Box w="20%" fontSize="1.1rem" lineHeight="1" color="greyBg">
                             {grade?.name}
                         </Box>
                         {hasStatus && 
@@ -60,40 +60,40 @@ const index = () => {
                             </Box>
                         }
                     </HStack>
-                    <Divider orientation="horizontal" backgroundColor="gray.600" justifySelf="end" align="top"/>
+                    <Divider orientation="horizontal" backgroundColor="gray.500" justifySelf="end" align="top"/>
 
 
                     <Grid templateColumns="3fr 1fr 0.5fr 1fr 3fr" gridGap="1rem" alignItems="center" w="100%" fontWeight="semibold" fontSize="3rem">
-                        <Text justifySelf="center">{game?.team1?.team?.name}</Text>
+                        <Text justifySelf="center" color="greyText.500">{game?.team1?.team?.name}</Text>
 
                         {hasResults ?
-                            <Text justifySelf="end"> {game?.team1?.totalPoints} </Text>
+                            <Text justifySelf="end" color="greyText.500"> {game?.team1?.totalPoints} </Text>
                             :
-                            <MinusIcon justifySelf="end"/>
+                            <MinusIcon justifySelf="end" color="greyText.500"/>
                         }
 
-                        <Divider orientation="vertical" backgroundColor="gray.600" justifySelf="center" align="top"/>
+                        <Divider orientation="vertical" backgroundColor="gray.500" justifySelf="center" align="top"/>
 
                         {hasResults ?
-                            <Text justifySelf="start"> {game?.team2?.totalPoints} </Text>
+                            <Text justifySelf="start" color="greyText.500"> {game?.team2?.totalPoints} </Text>
                             :
-                            <MinusIcon justifySelf="start"/>
+                            <MinusIcon justifySelf="start" color="greyText.500"/>
                         }
-                        <Text justifySelf="center">{game?.team2?.team?.name}</Text>
+                        <Text justifySelf="center" color="greyText.500">{game?.team2?.team?.name}</Text>
 
                     </Grid>
-                    <Divider orientation="horizontal" backgroundColor="gray.600" justifySelf="end" align="top"/>
+                    <Divider orientation="horizontal" backgroundColor="gray.500" justifySelf="end" align="top"/>
 
 
                     <Grid templateColumns="1fr 1fr" gridGap="1rem" alignItems="center" w="100%" justifyItems="center">
                         <HStack>
-                            <TimeIcon />
-                            <Text>{new Date(game?.dateStart).toLocaleString()} to {new Date(game?.dateFinish).toLocaleString()} </Text>
+                            <TimeIcon color="greyText.500"/>
+                            <Text color="greyText.500">From {new Date(game?.dateStart).toLocaleString()} to {new Date(game?.dateFinish).toLocaleString()} </Text>
                         </HStack>
 
                         <HStack>
-                            <StarIcon />
-                            <Text>{game?.locationName}</Text>
+                            <StarIcon color="greyText.500"/>
+                            <Text color="greyText.500">{game?.locationName}</Text>
                         </HStack>
 
                     </Grid>
