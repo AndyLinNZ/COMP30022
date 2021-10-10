@@ -77,11 +77,6 @@ async function _validateFixture(req, res, next) {
     if (!(await allValidDocumentIds(teamIds, Team))) {
         return res.status(404).json({ success: false, error: 'Some team does not exist' })
     }
-    // Check team is added to grade
-    const notAdded = teamIds.some((team) => !req.grade.teams.includes(team))
-    if (notAdded) {
-        return res.status(400).json({ success: false, error: 'Team is not added to grade' })
-    }
     // Check date and location. NB: Excluded check for location coordinates and game dateFinish
     const noDateOrLocations = !datesAndLocations || datesAndLocations.length === 0 ||
         datesAndLocations.some((dl) => !dl.dateStart || !dl.locationName)

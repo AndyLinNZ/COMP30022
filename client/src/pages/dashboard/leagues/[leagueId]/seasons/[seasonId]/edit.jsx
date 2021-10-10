@@ -29,8 +29,10 @@ const editSeasonSchema = yup.object().shape({
 const edit = () => {
     const router = useRouter()
     const toast = useToast()
+
     const { user } = useUserDetails()
     const season = getSeasonFromUser(user)
+
     const [isOpen, setIsOpen] = React.useState(false)
     const onClose = () => setIsOpen(false)
 
@@ -96,13 +98,11 @@ const edit = () => {
     }
 
     React.useEffect(() => {
-        if (season) {
-            reset({
-                seasonName: season?.name,
-                seasonStart: new Date(season.dateStart),
-                seasonFinish: new Date(season.dateFinish),
-            })
-        }
+        reset({
+            seasonName: season?.name,
+            seasonStart: new Date(season.dateStart),
+            seasonFinish: new Date(season.dateFinish),
+        })
     }, [season])
 
     return (

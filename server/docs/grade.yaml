@@ -13,7 +13,7 @@ components:
     TeamNotInGrade:
       value:
         success: false
-        error: Team is not added to grade
+        error: Team already exists in a grade for the season
 
     InvalidDateLocation:
       value:
@@ -80,7 +80,6 @@ components:
       example:
         success: false
         error: 'Invalid round number'
-
 
 paths:
   /grade/{gradeId}:
