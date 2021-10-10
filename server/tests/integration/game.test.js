@@ -164,8 +164,6 @@ beforeAll(async () => {
         team2: team2_updateDetails2,
     }
 
-    
-
     env.game0_id = game._id.toString()
     env.round0_id = round._id.toString()
     env.team1_id = team1._id.toString()
