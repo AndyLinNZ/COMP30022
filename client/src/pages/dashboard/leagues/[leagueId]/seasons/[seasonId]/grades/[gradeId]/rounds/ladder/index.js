@@ -3,11 +3,11 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useGrade, useLeague } from 'hooks'
 import { Template } from 'components/Dashboard'
-import { VStack, HStack, Button } from '@chakra-ui/react'
+import { VStack, HStack, Button, Spinner } from '@chakra-ui/react'
 import { Container, Ladder } from 'components'
 
 const index = () => {
-    const { grade } = useGrade()
+    const { grade, isLoading } = useGrade()
     const { league } = useLeague()
     const router = useRouter()
 
@@ -28,10 +28,27 @@ const index = () => {
                                         .join('/')
                                 )
                             }}
-                        >FIXTURE</Button>
-                        <Button bg="greyText.500" color="white">LADDER</Button>
+                        >
+                            FIXTURE
+                        </Button>
+                        <Button bg="greyText.500" color="white">
+                            LADDER
+                        </Button>
                     </HStack>
-                    <Ladder ladder={grade?.ladder} />
+                    {isLoading ? (
+                        <Spinner
+                            thickness="4px"
+                            speed="0.65s"
+                            emptyColor="gray.200"
+                            color="blue.500"
+                            size="xl"
+                            position="absolute"
+                            top="50%"
+                            left="calc(50% - 1rem)"
+                        />
+                    ) : (
+                        <Ladder ladder={grade?.ladder} />
+                    )}
                 </VStack>
             </Container>
         </Template>
