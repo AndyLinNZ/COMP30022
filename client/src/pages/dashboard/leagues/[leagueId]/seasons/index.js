@@ -15,7 +15,7 @@ const index = () => {
     return (
         <Template>
             <Head>
-                <title>Dribblr | {league?.name || 'Legue'} - Seasons</title>
+                <title>Dribblr | {league?.name || 'League'} - Seasons</title>
             </Head>
             <Container league={league}>
                 <VStack spacing="1.25rem">
