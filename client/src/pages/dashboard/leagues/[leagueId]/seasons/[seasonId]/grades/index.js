@@ -47,7 +47,7 @@ const index = () => {
                                         w="100%"
                                     >
                                         <GradeContainer grade={grade} path={grade._id} />
-                                        <EditButton name={grade.name} />
+                                        <EditButton name={grade._id} /> {/* TODO edit grade */}
                                     </Box>
                                 )
                             })}
