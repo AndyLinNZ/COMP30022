@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useGrade, useLeague, useGame, useSeason } from 'hooks'
 import { Template, CreateCapsule } from 'components/Dashboard'
-import { VStack, HStack, Button } from '@chakra-ui/react'
+import { VStack, HStack, Button, Divider } from '@chakra-ui/react'
 import { Container, RoundsView } from 'components'
 import ActiveSeasonLabel from 'components/AssociationPage/ActiveSeasonLabel'
 import { ArrowBackIcon, TimeIcon, MinusIcon, StarIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
@@ -35,7 +35,7 @@ const index = () => {
                                 color="greyText.500"
                                 _hover={{ bg: "darkGrey" }} 
                                 variant="ghost" 
-                                fontSize="1.25rem"
+                                fontSize="0.9rem"
                                 onClick={() =>
                                     router.back()
                                 }
@@ -43,7 +43,7 @@ const index = () => {
                                 BACK
                             </Button>
                         </Box>
-                        <Box w="20%" fontSize="1rem" lineHeight="1">
+                        <Box w="20%" fontSize="1.1rem" lineHeight="1" pl={15}>
                             {season?.name}
                         </Box>
                         <ChevronRightIcon
@@ -51,18 +51,19 @@ const index = () => {
                             h={[10, 12]}
                             color={'grey'}
                         />
-                        <Box w="20%" fontSize="1rem" lineHeight="1">
+                        <Box w="20%" fontSize="1.1rem" lineHeight="1">
                             {grade?.name}
                         </Box>
                         {hasStatus && 
-                            <Box pos="absolute" top="3" right="3" py={2.5} px={2.5}>
+                            <Box pos="absolute" top="3" right="3" pt={2.5} pr={2.5}>
                                 <Tag type={game.status} text={game.status}/>
                             </Box>
                         }
                     </HStack>
+                    <Divider orientation="horizontal" backgroundColor="gray.600" justifySelf="end" align="top"/>
 
                     <HStack spacing="1rem">
-                        <Box fontSize="1rem" lineHeight="1">
+                        <Box fontSize="1rem" lineHeight="1" fontWeight="semibold">
                                 {game?.team1?.team?.name}
                         </Box>
                         {hasResults ?
