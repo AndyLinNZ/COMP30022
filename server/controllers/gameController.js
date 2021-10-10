@@ -13,12 +13,26 @@ async function getGame(req, res, next) {
                 model: 'Team',
             },
             {
+                path: 'team1.team',
+                populate: {
+                    path: 'players',
+                    model: 'Player',
+                },
+            },
+            {
                 path: 'team1.playersStats',
                 model: 'PlayerStat',
             },
             {
                 path: 'team2.team',
                 model: 'Team',
+            },
+            {
+                path: 'team2.team',
+                populate: {
+                    path: 'players',
+                    model: 'Player',
+                },
             },
             {
                 path: 'team2.playersStats',
