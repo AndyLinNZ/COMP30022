@@ -1,6 +1,7 @@
 const Team = require('../models/team')
+const Grade = require('../models/grade')
 const Player = require('../models/player')
-const { allValidDocumentIds } = require('./utils')
+const { allValidDocumentIds, checkTeamInGrade } = require('./utils')
 
 async function createTeam(req, res, next) {
     try {
@@ -42,7 +43,18 @@ async function getTeam(req, res, next) {
 
 async function getAllTeams(req, res, next) {
     try {
-        const teams = await Team.find()
+        var teams = await Team.find()
+
+        if (req.grade) {
+            var unwantedTeams = []
+            for (const team of teams) {
+                if (await checkTeamInGrade(team, req.season)) {
+                    if (!unwantedTeams.includes(team)) unwantedTeams.push(team)
+                }
+            }
+            teams = teams.filter(team => !unwantedTeams.some(uTeam => uTeam._id == team._id))
+        }
+
         return res.status(200).json({
             success: true,
             data: teams
