@@ -36,33 +36,31 @@ const GenerateMatchesContainer = ({ children }) => {
 const TeamSelectPage = ({ selectedTeams, setSelectedTeams, handleNextPage }) => {
     const router = useRouter()
     const { teams } = useTeams(router.query?.gradeId)
-    const [unchosenTeams, setUnchosenTeams] = React.useState([])
+    const [sortedTeams, setSortedTeams] = React.useState([])
     const [displayTeams, setDisplayTeams] = React.useState([])
     const [searchValue, setSearchValue] = React.useState('')
 
     React.useEffect(() => {
         if (teams) {
-            setUnchosenTeams(sortByTeam(teams))
+            setSortedTeams(sortByTeam(teams))
         }
     }, [teams])
 
     React.useEffect(() => {
-        const temp = unchosenTeams.filter((t) =>
+        const searchedMatches = sortedTeams.filter((t) =>
             t.name.toUpperCase().includes(searchValue.toUpperCase())
         )
-        setDisplayTeams(temp)
-    }, [unchosenTeams, searchValue])
+
+        setDisplayTeams(searchedMatches)
+    }, [sortedTeams, searchValue])
 
     const handleAddTeam = (team) => {
         setSelectedTeams((prev) => sortByTeam([...prev, team]))
-        const temp = unchosenTeams.filter((t) => t.id !== team.id)
-        setUnchosenTeams(temp)
     }
 
     const handleRemoveTeam = (team) => {
         const temp = selectedTeams.filter((t) => t.id !== team.id)
         setSelectedTeams(temp)
-        setUnchosenTeams((prev) => sortByTeam([...prev, team]))
     }
 
     const isHorizontal = useMediaQuerySSR(770)
@@ -82,15 +80,21 @@ const TeamSelectPage = ({ selectedTeams, setSelectedTeams, handleNextPage }) => 
                     />
                 </Box>
                 <VStack w="100%" overflowY="auto">
-                    {displayTeams?.map((team) => (
-                        <Box w="100%" key={team.name}>
-                            <TeamCapsule
-                                name={team.name}
-                                type="add"
-                                onClick={() => handleAddTeam(team)}
-                            />
-                        </Box>
-                    ))}
+                    {displayTeams
+                        ?.filter((t) => {
+                            return !selectedTeams.some((t2) => {
+                                return t2.name === t.name
+                            })
+                        })
+                        ?.map((team) => (
+                            <Box w="100%" key={team.name}>
+                                <TeamCapsule
+                                    name={team.name}
+                                    type="add"
+                                    onClick={() => handleAddTeam(team)}
+                                />
+                            </Box>
+                        ))}
                 </VStack>
             </VStack>
             <VStack w="100%" h={height} pos="relative" alignItems="flex-start">
