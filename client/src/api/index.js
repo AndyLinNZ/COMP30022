@@ -86,7 +86,10 @@ export const getLeague = async ({ queryKey }) => {
     return await axiosInstance.get(`/league/${queryKey[1]}`)
 }
 
-export const getAllTeams = async () => {
+export const getAllTeams = async ({ queryKey }) => {
+    if (queryKey[1]) {
+        return await axiosInstance.get(`/team?grade=${queryKey[1]}`)
+    }
     return await axiosInstance.get(`/team`)
 }
 

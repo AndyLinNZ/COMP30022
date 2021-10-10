@@ -1,5 +1,5 @@
 const { _createRound, _createGame } = require('./utils')
-const { calculateGradeLadder, populateGradeGamesTotalPoints } = require('./utils')
+const { calculateGradeLadder, populateGradeGamesTotalPoints, checkTeamInGrade } = require('./utils')
 const { formatGradeResp } = require('./responseFormatters')
 const {
     TeamNode,
@@ -202,11 +202,6 @@ async function _addTeamToGrade(teamDoc, gradeDoc) {
     await teamDoc.save()
     gradeDoc.teams.push(teamDoc)
     return await gradeDoc.save()
-}
-
-async function checkTeamInGrade(teamDoc, seasonDoc) {
-    const season = await seasonDoc.execPopulate('grades')
-    return season.grades.some((grade) => grade.teams.includes(teamDoc._id.toString()))
 }
 
 module.exports = {
