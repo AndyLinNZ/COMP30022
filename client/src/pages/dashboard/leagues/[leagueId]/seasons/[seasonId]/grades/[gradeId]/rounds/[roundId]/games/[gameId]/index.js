@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useGrade, useLeague, useGame, useSeason } from 'hooks'
 import { Template, CreateCapsule } from 'components/Dashboard'
-import { VStack, HStack, Button, Divider } from '@chakra-ui/react'
+import { VStack, HStack, Button, Divider, Text, Grid } from '@chakra-ui/react'
 import { Container, RoundsView } from 'components'
 import ActiveSeasonLabel from 'components/AssociationPage/ActiveSeasonLabel'
 import { ArrowBackIcon, TimeIcon, MinusIcon, StarIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
@@ -62,26 +62,29 @@ const index = () => {
                     </HStack>
                     <Divider orientation="horizontal" backgroundColor="gray.600" justifySelf="end" align="top"/>
 
-                    <HStack spacing="1rem">
-                        <Box fontSize="1rem" lineHeight="1" fontWeight="semibold">
-                                {game?.team1?.team?.name}
-                        </Box>
+
+                    <Grid templateColumns="3fr 1fr 0.5fr 1fr 3fr" gridGap="1rem" alignItems="center" w="100%" fontWeight="semibold" fontSize="3rem">
+                        <Text justifySelf="center">{game?.team1?.team?.name}</Text>
+
                         {hasResults ?
-                            <Box fontSize="1rem" lineHeight="1">
-                                {game?.team1?.totalPoints}
-                                {game?.team2?.totalPoints}
-                            </Box>
+                            <Text justifySelf="end"> {game?.team1?.totalPoints} </Text>
                             :
-                            <Box fontSize="1rem" lineHeight="1">
-                                <MinusIcon/>
-                                <MinusIcon/>
-                            </Box>
+                            <MinusIcon justifySelf="end"/>
                         }
-                        
-                        <Box fontSize="1rem" lineHeight="1">
-                                {game?.team2?.team?.name}
-                        </Box>
-                    </HStack>
+
+                        <Divider orientation="vertical" backgroundColor="gray.600" justifySelf="center" align="top"/>
+
+                        {hasResults ?
+                            <Text justifySelf="start"> {game?.team2?.totalPoints} </Text>
+                            :
+                            <MinusIcon justifySelf="start"/>
+                        }
+                        <Text justifySelf="center">{game?.team2?.team?.name}</Text>
+
+                    </Grid>
+
+
+                    
 
                     <HStack spacing="1rem">
                         <TimeIcon />
