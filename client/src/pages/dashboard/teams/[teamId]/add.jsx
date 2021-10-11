@@ -4,7 +4,7 @@ import Head from 'next/head'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Template, Container } from 'components/Dashboard'
-import { HStack, VStack, FormLabel, Stack, useToast } from '@chakra-ui/react'
+import { CloseButton, HStack, VStack, FormLabel, Stack, useToast } from '@chakra-ui/react'
 import Input from 'components/Form/Input'
 import FormButton from 'components/Form/FormButton'
 import { appPaths } from 'utils/constants'
@@ -102,9 +102,7 @@ const add = () => {
                                         error={errors.playerNames?.[index]?.playerName?.message}
                                         {...register(`playerNames.${index}.playerName`)}
                                     />
-                                    <FormButton type="button" onClick={() => remove(index)}>
-                                        Delete
-                                    </FormButton>
+                                    <CloseButton size="sm" onClick={() => remove(index)} />
                                 </HStack>
                             )
                         })}
