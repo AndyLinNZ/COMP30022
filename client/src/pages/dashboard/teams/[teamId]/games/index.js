@@ -1,39 +1,35 @@
 import React from 'react'
 import Head from 'next/head'
-import { useUserDetails, useMediaQuerySSR } from 'hooks'
+import { useTeam, useMediaQuerySSR } from 'hooks'
+import { useRouter } from 'next/router'
 import { Template } from 'components/Dashboard'
-import { Box, VStack, HStack } from '@chakra-ui/react'
-import Input from 'components/Form/Input'
+import { List, ListItem, UnorderedList, VStack, HStack, FormLabel } from '@chakra-ui/react'
 import { Container } from 'components/Dashboard'
-import { getTeamFromUser } from 'utils'
 
 const index = () => {
-    const { user } = useUserDetails()
-    const team = getTeamFromUser(user)
-    const isDesktop = useMediaQuerySSR(900)
+    const router = useRouter()
+    const teamId = router.query?.teamId
+    const team = useTeam(teamId)
+    const isDesktop = useMediaQuerySSR(860)
 
-    const heading = team?.name ? `${team?.name}` : 'Team Info'
+    const heading = team?.team?.name ? `${team?.team?.name}` : 'Team Info'
+    const tag = `${team?.team?.players?.length} PLAYERS`
+    const players = team?.team?.players?.map((player) => ` ${player.name}` + '\n')
+    const hover = players?.toString()
 
     return (
         <Template>
             <Head>
-                <title>Dribblr | {team?.name || 'Team Details'}</title>
+                <title>Dribblr | {team?.team?.name || 'Team Details'}</title>
             </Head>
-            <Container heading={heading}>
-                <VStack spacing="1.25rem">
-                    {team?.players.map((playerId) => {
-                        return (
-                            <HStack key={playerId} spacing="0.5rem" align="center">
-                                <Input
-                                    minW={isDesktop ? '320px' : '160px'}
-                                    size="sm"
-                                    bg="white"
-                                    borderRadius="1rem"
-                                    placeholder={playerId}
-                                />
-                            </HStack>
-                        )
-                    })}
+            <Container heading={heading} tag={tag} hover={hover}>
+                <VStack spacing="1.25rem" align="left">
+                    <FormLabel fontSize="1.25rem">Players assigned:</FormLabel>
+                    <UnorderedList>
+                        {team?.team?.players?.map((player) => {
+                            return <ListItem>{player.name}</ListItem>
+                        })}
+                    </UnorderedList>
                 </VStack>
             </Container>
         </Template>
