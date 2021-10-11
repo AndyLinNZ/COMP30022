@@ -4,6 +4,7 @@ import { useMediaQuerySSR } from 'hooks'
 import { VStack, HStack, Button, Divider, Text, Grid, Box } from '@chakra-ui/react'
 import { TimeIcon, MinusIcon, StarIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
 import Tag from 'components/Dashboard/Tag'
+import LocationIcon from 'components/svg/LocationIcon'
 
 const GameContainer = ({season, grade, game}) => {
 
@@ -112,7 +113,7 @@ const GameContainer = ({season, grade, game}) => {
                 </HStack>
 
                 <HStack>
-                    <StarIcon color="greyText.500"/>
+                    <LocationIcon width={24} color="greyText.500"/>
                     <Text color="greyText.500">{game?.locationName}</Text>
                 </HStack>
 

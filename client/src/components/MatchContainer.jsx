@@ -2,6 +2,7 @@ import { Box, Flex, VStack, HStack, Text, Divider, Grid, GridItem } from '@chakr
 import { useMediaQuerySSR } from 'hooks'
 import LocationIcon from 'components/svg/LocationIcon'
 import DateIcon from 'components/svg/DateIcon'
+import { TimeIcon } from '@chakra-ui/icons'
 import Tag from 'components/Dashboard/Tag'
 import React from 'react'
 
@@ -58,7 +59,7 @@ const MatchContainer = ({ game }) => {
                 />
                 <VStack fontSize="lg" justifySelf="start" alignItems="start">
                     <HStack>
-                        <DateIcon width={24} />
+                        <TimeIcon color="greyText.500"/>
                         <Text>{new Date(dateStart).toLocaleString()}</Text>
                     </HStack>
                     <HStack>
@@ -124,7 +125,7 @@ const MatchContainer = ({ game }) => {
                 >
                     <VStack fontSize="sm" alignItems="start">
                         <HStack>
-                            <DateIcon width={24} />
+                            <TimeIcon color="greyText.500"/>
                             <Text>{new Date(dateStart).toLocaleString()}</Text>
                         </HStack>
                         <HStack>
