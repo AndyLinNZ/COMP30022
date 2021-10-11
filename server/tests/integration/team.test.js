@@ -1,6 +1,8 @@
 const setupTestEnv = require('./test-utils')
+const League = require('../../models/league')
+const Season = require('../../models/season')
+const Grade = require('../../models/grade')
 const Team = require('../../models/team')
-const Player = require('../../models/player')
 const supertest = require('supertest')
 const initApp = require('../../app')
 const app = initApp()
@@ -10,19 +12,68 @@ const env = {}
 const setupOptions = { createDefaultUsers: true }
 setupTestEnv('dribblrDB-grade-test', env, setupOptions)
 
-// set up test team
+const testLeague = {
+    leagueName: 'Joshua Basketball Association',
+    organisationName: 'JoshuaDubar'
+}
+const testSeason = {
+    name: 'Summer 2020/2021',
+    seasonStart: '2021-08-12T12:23:34.944Z',
+    seasonFinish: '2021-08-24T12:23:34.944Z'
+}
+const testGrade = {
+    name: 'Joshua Dubar Grade',
+    difficulty: 'E',
+    gender: 'female'
+}
 const testTeam = {
     name: 'jdubz',
 }
 beforeAll(async () => {
+    // add new test league object to database
+    const newLeague = new League({
+        name: testLeague.leagueName,
+        organisation: testLeague.organisationName,
+        creator: env.auth_tokens[0][0],
+        admins: [env.auth_tokens[0][0], env.auth_tokens[1][0]],
+        seasons: []
+    })
+    const league = await newLeague.save()
+
+    // add a new season object to database
+    const newSeason = new Season({
+        name: testSeason.name,
+        dateStart: testSeason.seasonStart,
+        dateFinish: testSeason.seasonFinish,
+        league: league._id,
+        grades: []
+    })
+    const season = await newSeason.save()
+
+    // add the new season as a season to the league
+    league.seasons.push(season._id)
+    await league.save()
+
+    // add a new grade object to database
+    const newGrade = new Grade({
+        ...testGrade,
+        teams: [],
+        season: season._id
+    })
+    const grade = await newGrade.save()
+    season.grades.push(grade._id)
+    await season.save()
+
     // add new test team object to database
     const newTeam = new Team({
         ...testTeam,
         admin: env.auth_tokens[0][0],
-        grades: [],
+        grades: [grade._id],
         players: [],
     })
     const team = await newTeam.save()
+    grade.teams.push(team._id)
+    await grade.save()
 
     // add new test team object to database to be deleted
     const secondTeam = new Team({
@@ -33,6 +84,7 @@ beforeAll(async () => {
     })
     const team2 = await secondTeam.save()
 
+    env.grade0_id = grade._id.toString()
     env.team0_id = team._id.toString()
     env.team1_id = team2._id.toString()
 })
@@ -63,7 +115,7 @@ describe('Integration Testing: finding teams', () => {
         expect(res.body.data.admin).toStrictEqual(env.auth_tokens[0][0])
         expect(res.body.data.players).toStrictEqual([])
         expect(res.body.data.games).toStrictEqual([])
-        expect(res.body.data.grades).toStrictEqual([])
+        expect(res.body.data.grades).toStrictEqual([env.grade0_id])
         expect(res.body.data.name).toBe(testTeam.name)
     })
 
@@ -81,6 +133,24 @@ describe('Integration Testing: finding teams', () => {
         expect(res.statusCode).toBe(404)
         expect(res.body.success).toBe(false)
         expect(res.body.error).toBe('Team does not exist')
+    })
+})
+
+describe('Integration Testing: finding all teams', () => {
+    test('Should be able to find all existing teams', async () => {
+        const res = await request.get(`/api/team`)
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data.length).toBe(3)
+    })
+
+    test('Should be able to find all teams that are not in a specific grade', async () => {
+        const res = await request.get(`/api/team?grade=${env.grade0_id}`)
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data.length).toBe(2)
     })
 })
 

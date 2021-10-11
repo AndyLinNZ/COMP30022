@@ -32,7 +32,7 @@ const index = () => {
         resolver: yupResolver(createTeamSchema),
     })
 
-    const { mutate, isLoading } = useCreateTeam({
+    const { mutate, isLoading, isSuccess } = useCreateTeam({
         onSuccess: (response) => {
             router.push(
                 new URL(`${response?.data?.data?._id}/games`, window.location.href).pathname
@@ -84,7 +84,7 @@ const index = () => {
                         <FormButton onClick={() => router.push(appPaths.DASHBOARD_TEAMS_PATH)}>
                             Back
                         </FormButton>
-                        <FormButton type="submit" color="black" bg="orange" isLoading={isLoading}>
+                        <FormButton type="submit" color="black" bg="orange" isLoading={isLoading || isSuccess}>
                             Create
                         </FormButton>
                     </HStack>

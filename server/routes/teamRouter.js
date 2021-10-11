@@ -1,11 +1,12 @@
 const express = require('express')
-const { getTeamDocument, ensureAuthenticated, ensureTeamAdmin } = require('./utils')
+const { getTeamDocument, ensureAuthenticated, ensureTeamAdmin, getLeagueGradeSeason } = require('./utils')
 const teamController = require('../controllers/teamController.js')
 
 const teamRouter = express.Router()
 
 // GET
 teamRouter.get('/:teamId', getTeamDocument, teamController.getTeam)
+teamRouter.get('/', (req, res, next) => getLeagueGradeSeason(req, res, next, true), teamController.getAllTeams)
 
 // POST
 teamRouter.post('/', ensureAuthenticated, teamController.createTeam)

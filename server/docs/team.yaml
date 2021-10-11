@@ -56,6 +56,33 @@ components:
 
 paths:
     /team:
+        get:
+            tags:
+                - 'Team'
+            summary: 'Get all teams.'
+            responses:
+                '200':
+                    description: 'Successfully got all teams.'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ApiResponse'
+                            example:
+                                success: true
+                                data:
+                                    - games: []
+                                      players: []
+                                      admin: 11111a111111aa1111a11111
+                                      _id: 55555e555555ee5555e55555
+                                      name: Joshua SENPAl
+                                      grades: []
+                                      __v: 0
+                '400':
+                    description: 'Invalid request.'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GenericErrorResponse'
         post:
             tags:
                 - 'Team'

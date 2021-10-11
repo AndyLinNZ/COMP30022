@@ -36,7 +36,7 @@ const Container = ({ league, children, minH = '375px', w = ['95%', '75%'], stepp
                 padding="1rem"
                 minH={minH}
                 maxH="390px"
-                overflowY="scroll"
+                overflowY="auto"
                 pos="relative"
             >
                 {children}
