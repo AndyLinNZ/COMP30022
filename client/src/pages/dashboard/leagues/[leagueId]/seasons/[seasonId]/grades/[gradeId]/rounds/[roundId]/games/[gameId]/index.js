@@ -142,28 +142,26 @@ const index = () => {
                 </Grid> 
                 
                 :
-                <HStack>
-                <Grid templateRows="1fr 1fr" gridGap="1rem" alignItems="center" justifyItems="center" w="100%" fontWeight="semibold" fontSize={isDesktop ? "3rem" : "1.5rem"}>
-                    <Text justifyItems="center" color="greyText.500">{game?.team1?.team?.name}</Text>
+                <VStack>
+                    <Grid templateColumns="1fr 1fr" gridGap="1rem" alignItems="center" justifyItems="center" w="100%" fontWeight="semibold" fontSize={isDesktop ? "3rem" : "1.5rem"}>
+                        <Text justifyItems="center" color="greyText.500">{game?.team1?.team?.name}</Text>
+                        <Text justifyItems="center" color="greyText.500">{game?.team2?.team?.name}</Text>
 
-                    {hasResults ?
-                        <Text justifyItems="center" color="greyText.500"> 36 </Text>
-                        :
-                        <MinusIcon color="greyText.500"/>
-                    }
+                    </Grid>
+                    <Grid templateColumns="1fr 1fr" gridGap="1rem" alignItems="center" justifyItems="center" w="100%" fontWeight="semibold" fontSize={isDesktop ? "3rem" : "1.5rem"}>
+                        {hasResults ?
+                            <Text justifyItems="center" color="greyText.500"> 36 </Text>
+                            :
+                            <MinusIcon color="greyText.500"/>
+                        }
+                        {hasResults ?
+                            <Text justifyItems="center" color="greyText.500"> 125 </Text>
+                            :
+                            <MinusIcon color="greyText.500"/>
+                        }
 
-                </Grid>
-                <Grid templateRows="1fr 1fr" gridGap="1rem" alignItems="center" justifyItems="center" w="100%" fontWeight="semibold" fontSize={isDesktop ? "3rem" : "1.5rem"}>
-                    <Text justifyItems="center" color="greyText.500">{game?.team2?.team?.name}</Text>
-
-                    {hasResults ?
-                        <Text justifyItems="center" color="greyText.500"> 125 </Text>
-                        :
-                        <MinusIcon color="greyText.500"/>
-                    }
-
-                </Grid>
-                </HStack>
+                    </Grid>
+                </VStack>
                 
 
 
