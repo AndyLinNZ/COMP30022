@@ -1,4 +1,5 @@
 import { Box, Flex, VStack, HStack, Text, Divider, Grid, GridItem } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 import { useMediaQuerySSR } from 'hooks'
 import LocationIcon from 'components/svg/LocationIcon'
 import DateIcon from 'components/svg/DateIcon'
@@ -7,10 +8,12 @@ import Tag from 'components/Dashboard/Tag'
 import React from 'react'
 
 const MatchContainer = ({ game }) => {
+    const router = useRouter()
     const isDesktop = useMediaQuerySSR(860)
     const { team1, team2, locationName, status, dateStart } = game
     const team1PointsColour = team1.totalPoints >= team2.totalPoints ? 'gray.800' : 'gray.300'
     const team2PointsColour = team2.totalPoints >= team1.totalPoints ? 'gray.800' : 'gray.300'
+    console.log('game', game)
     return isDesktop ? (
         <Flex
             w="100%"
@@ -23,7 +26,7 @@ const MatchContainer = ({ game }) => {
             _hover={{
                 boxShadow: '0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);',
             }}
-            onClick={() => {}}
+            onClick={() => router.push(`${window.location.pathname}/${game.round}/games/${game._id}`)}
             paddingX="1rem"
         >
             <Grid
