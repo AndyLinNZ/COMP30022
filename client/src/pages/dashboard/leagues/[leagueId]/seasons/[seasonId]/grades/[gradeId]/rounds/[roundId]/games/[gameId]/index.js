@@ -103,33 +103,38 @@ const index = () => {
                         color="greyText.500"
                         _hover={{ bg: "darkGrey" }} 
                         variant="ghost" 
-                        fontSize="0.9rem"
+                        fontSize={isDesktop ? "0.9rem" : "0.7rem"}
                         onClick={() =>
                             router.back()
                         }
                     >
                         BACK
                     </Button>
-                    <Text color="greyBg" fontSize="1.1rem" lineHeight="1" pl={15}> {season?.name} </Text>
+                    <Text color="greyBg" fontSize={isDesktop ? "1.1rem" : "0.8rem"} lineHeight="1" pl={15}> {season?.name} </Text>
                     <ChevronRightIcon
                         w={[10, 12]}
                         h={[10, 12]}
                         color={'grey'}
                     />
-                    <Text color="greyBg" fontSize="1.1rem" lineHeight="1"> {grade?.name} </Text>
-                    {hasStatus && 
-                        <Box pos="absolute" top="3" right="3" pt={2.5} pr={2.5}>
+                    <Text color="greyBg" fontSize={isDesktop ? "1.1rem" : "0.8rem"} lineHeight="1"> {grade?.name} </Text>
+                    {hasStatus && isDesktop &&
+                        <Box pos="absolute" top="3" right="3" py={2.5} px={2.5}>
                             <Tag type={game.status} text={game.status}/>
                         </Box>
                     }
                 </HStack>
+                {hasStatus && !isDesktop &&
+                    <Box align="center">
+                        <Tag type={game.status} text={game.status}/>
+                    </Box> 
+                }
                 <Divider orientation="horizontal" backgroundColor="gray.500" justifySelf="end" align="top"/>
 
                 {isDesktop ? <Grid templateColumns="3fr 1fr 0.5fr 1fr 3fr" gridGap="1rem" alignItems="center" justifyItems="center" w="100%" fontWeight="semibold" fontSize={isDesktop ? "3rem" : "1.5rem"}>
                     <Text color="greyText.500" fontSize={isDesktop ? "3rem" : "1.5rem"}>{game?.team1?.team?.name}</Text>
 
                     {hasResults ?
-                        <Text justifySelf="end" color="greyText.500" fontSize={isDesktop ? "1rem" : "0.5rem"}> {game?.team1.totalPoints} </Text>
+                        <Text justifySelf="end" color="greyText.500"> 88 </Text>
                         :
                         <MinusIcon justifySelf="end" color="greyText.500"/>
                     }
@@ -137,7 +142,7 @@ const index = () => {
                     <Divider orientation="vertical" backgroundColor="gray.500" justifySelf="center" align="top" fontSize={isDesktop ? "3rem" : "1.5rem"}/>
 
                     {hasResults ?
-                        <Text justifySelf="start" color="greyText.500" fontSize={isDesktop ? "1rem" : "0.5rem"}> {game?.team2.totalPoints} </Text>
+                        <Text justifySelf="start" color="greyText.500"> 22 </Text>
                         :
                         <MinusIcon justifySelf="start" color="greyText.500"/>
                     }
@@ -237,7 +242,7 @@ const index = () => {
                     </Box>
                 </VStack>
                 <GameDetails season={season} grade={grade} game={game}/>
-                <BoxScore game={game}/>
+                
             </VStack>
         </Template>
     )
