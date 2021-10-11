@@ -90,7 +90,7 @@ async function updateGamePlayerStats(req, res, next) {
 
 async function updatePlayersStats(oldPlayersStats, team, next) {
     var allPlayerStats = await Promise.all(
-        Object.keys(team).map(async (player_id) => {
+        Object.keys(team || {}).map(async (player_id) => {
             const player = ObjectId.isValid(player_id) ? await Player.findById(player_id) : null
             if (!player) return next({ status: 404, message: 'Player does not exist' })
 
@@ -112,10 +112,8 @@ async function updatePlayersStats(oldPlayersStats, team, next) {
     return allPlayerStats
 }
 
-async function updateGameDateLocation(req, res, next){
-
+async function updateGameDateLocation(req, res, next) {
     try {
-
         let { newLocationName, newLocation, newStart, newFinish } = req.body
 
         const updateQuery = {}
@@ -134,12 +132,10 @@ async function updateGameDateLocation(req, res, next){
             success: true,
             data: game,
         })
-
     } catch (err) {
         console.log(err)
         return next(err)
     }
-
 }
 
 module.exports = {

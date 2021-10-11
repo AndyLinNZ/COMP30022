@@ -30,24 +30,24 @@ const formatTeamMinimalPlayers = (teamDoc) => {
 
 const formatGameResp = (gameDoc) => {
     const details = pick(gameDoc, [
-        '_id', 
-        'round', 
-        'dateStart', 
-        'dateFinish', 
-        'location', 
-        'locationName', 
-        'status'
+        '_id',
+        'round',
+        'dateStart',
+        'dateFinish',
+        'location',
+        'locationName',
+        'status',
     ])
-    const team1 = { 
-        team: formatTeamMinimal(gameDoc.team1.team), 
+    const team1 = {
+        team: formatTeamMinimalPlayers(gameDoc.team1.team),
         playersStats: gameDoc.team1.playersStats,
         totalPoints: gameDoc.team1.totalPoints,
     }
-    const team2 = { 
-        team: formatTeamMinimal(gameDoc.team2.team), 
+    const team2 = {
+        team: formatTeamMinimalPlayers(gameDoc.team2.team),
         playersStats: gameDoc.team2.playersStats,
         totalPoints: gameDoc.team2.totalPoints,
-     }
+    }
     return { ...details, team1, team2 }
 }
 
