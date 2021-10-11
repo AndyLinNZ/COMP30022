@@ -20,7 +20,7 @@ const Totals = ({ playersStats }) => {
 
 const PlayerData = ({ playerStat }) => {
     return ( 
-        <Tr fontSize="1.1rem">
+        <Tr fontSize="1.1rem" key={playerStat._id} >
             <Td>{playerStat.playerId.name}</Td>
             <Td paddingLeft="1.75rem">{playerStat?.points >= 0 ? playerStat?.points : "-"}</Td>
         </Tr>
