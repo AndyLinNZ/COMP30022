@@ -14,3 +14,5 @@ export const appPaths = {
     LEAGUE_SEASON_PATH: '/league/[leagueId]/seasons',
     LEAGUE_GRADE_PATH: '/league/[leagueId]/seasons/[seasonId]/grades',
 }
+
+export const requiredText = 'This is a required field.'

@@ -7,29 +7,60 @@ import { Template, Container } from 'components/Dashboard'
 import { HStack, Box, useToast, Text, VStack, FormLabel } from '@chakra-ui/react'
 import { FormButton, Input } from 'components/Form'
 import { useRouter } from 'next/router'
-import { useCreateSeasonGrade, useMediaQuerySSR, useTeams } from 'hooks'
-import { createErrorMessage } from 'utils'
+import { useCreateSeasonGrade, useMediaQuerySSR, useTeams, useUserDetails } from 'hooks'
 import { Toast } from 'components'
-import { TeamCapsule, SearchInput } from 'components/Dashboard/League/Rounds'
 import TeamSelectPage from 'components/Dashboard/League/Rounds/TeamSelectPage'
 import DatePicker from 'components/Form/DatePicker'
+import { requiredText } from 'utils/constants'
+import moment from 'moment'
+import { getSeasonFromUser } from 'utils'
+import useCreateFixtures from 'hooks/useCreateFixtures'
 
 const generateFixturesSchema = yup.object().shape({
-    numRounds: yup.number().min(1).max(50).required(),
+    numRounds: yup.number().min(1).max(50).required(requiredText),
     datesAndLocations: yup.array().of(
         yup.object().shape({
-            day: yup.string().required(),
-            time: yup.string().required(),
-            locationName: yup.string().required(),
+            day: yup.string().required(requiredText),
+            time: yup.string().required(requiredText),
+            locationName: yup.string().required(requiredText),
         })
     ),
 })
 
+const getDateFromWeekAfter = (seasonStartDate, day, time) => {
+    let date = moment(seasonStartDate).day(moment(seasonStartDate).day() - day > 0 ? 7 + day : day)
+    date = date.set({
+        hour: time.get('hour'),
+        minute: time.get('minute'),
+    })
+    return date.toISOString()
+}
+
+const generateResponse = (teams, formData, seasonStartDate) => {
+    const { numRounds, datesAndLocations } = formData
+    return {
+        teamIds: teams.map((team) => team.id),
+        numRounds,
+        datesAndLocations: datesAndLocations?.map(({ day, time, locationName }) => {
+            return {
+                dateStart: getDateFromWeekAfter(seasonStartDate, parseInt(day), moment(time)),
+                locationName,
+            }
+        }),
+    }
+}
+
 const index = () => {
     const router = useRouter()
+    const isDesktop = useMediaQuerySSR(1200)
+    const isMobile = !useMediaQuerySSR(600)
     const toast = useToast()
-    const [showTeamsPage, setShowTeamsPage] = React.useState(false)
+    const { user } = useUserDetails()
+    const season = getSeasonFromUser(user)
+    const [showTeamsPage, setShowTeamsPage] = React.useState(true)
     const [selectedTeams, setSelectedTeams] = React.useState([])
+
+    const bottomRef = React.useRef()
 
     const {
         handleSubmit,
@@ -38,11 +69,33 @@ const index = () => {
         control,
     } = useForm({
         resolver: yupResolver(generateFixturesSchema),
+        defaultValues: {
+            numRounds: 10,
+            datesAndLocations: [{}],
+        },
     })
 
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'datesAndLocations',
+    })
+
+    const { mutate, isLoading } = useCreateFixtures({
+        onSuccess: () => {
+            router.push(
+                window.location.pathname
+                    .split('/')
+                    .slice(0, window.location.pathname.split('/').length - 1)
+                    .join('/')
+            )
+        },
+        onError: () => {
+            toast({
+                render: () => <Toast title="Unable to generate matches" type="error" />,
+                position: 'top',
+                duration: 5000,
+            })
+        },
     })
 
     const handleNextPage = () => {
@@ -58,7 +111,7 @@ const index = () => {
     }
 
     const onSubmit = (data) => {
-        console.log(data)
+        mutate(generateResponse(selectedTeams, data, season?.dateStart))
     }
 
     return (
@@ -79,8 +132,10 @@ const index = () => {
                         alignItems="flex-start"
                         as="form"
                         onSubmit={handleSubmit(onSubmit)}
-                        maxH="400px"
+                        h="400px"
                         overflowY="auto"
+                        overflowX="hidden"
+                        mb="2.5rem"
                     >
                         <Input
                             placeholder="Enter number"
@@ -92,26 +147,26 @@ const index = () => {
                         />
                         <FormLabel fontSize="1.25rem">Day/time and location slots</FormLabel>
                         {fields.map((item, index) => {
-                            return (
-                                <HStack key={item.id} spacing="0.5rem" align="center" w="100%">
+                            return isDesktop ? (
+                                <HStack key={item.id} spacing="0.5rem" alignItems="center" w="100%">
                                     <Input
                                         type="select"
                                         placeholder="Select a day for the match"
                                         error={errors.datesAndLocations?.[index]?.day?.message}
                                         {...register(`datesAndLocations.${index}.day`)}
                                     >
-                                        <option value="0">Monday</option>
-                                        <option value="1">Tuesday</option>
-                                        <option value="2">Wednesday</option>
-                                        <option value="3">Thursday</option>
-                                        <option value="4">Friday</option>
-                                        <option value="5">Saturday</option>
-                                        <option value="6">Sunday</option>
+                                        <option value="1">Monday</option>
+                                        <option value="2">Tuesday</option>
+                                        <option value="3">Wednesday</option>
+                                        <option value="4">Thursday</option>
+                                        <option value="5">Friday</option>
+                                        <option value="6">Saturday</option>
+                                        <option value="7">Sunday</option>
                                     </Input>
                                     <DatePicker
                                         control={control}
                                         name={`datesAndLocations.${index}.time`}
-                                        placeholder="Enter the match time"
+                                        placeholder="Enter Time"
                                         showTimeSelect
                                         showPopperArrow={false}
                                         showTimeSelectOnly
@@ -119,6 +174,9 @@ const index = () => {
                                         timeCaption="Time"
                                         dateFormat="h:mm aa"
                                     />
+                                    <Text mt="0.5rem !important" fontSize="1.25rem">
+                                        at
+                                    </Text>
                                     <Input
                                         bg="white"
                                         borderRadius="1rem"
@@ -128,10 +186,95 @@ const index = () => {
                                         }
                                         {...register(`datesAndLocations.${index}.locationName`)}
                                     />
-                                    <FormButton type="button" onClick={() => remove(index)}>
-                                        Delete
+                                    <FormButton
+                                        type="button"
+                                        inverse
+                                        fontWeight="bold"
+                                        fontSize="1.25rem"
+                                        mt="0.25rem !important"
+                                        onClick={() => remove(index)}
+                                    >
+                                        X
                                     </FormButton>
                                 </HStack>
+                            ) : (
+                                <Box pos="relative" w="100%">
+                                    <VStack
+                                        key={item.id}
+                                        alignItems="flex-start"
+                                        w={isMobile ? '90%' : '90%'}
+                                    >
+                                        <Box
+                                            display="grid"
+                                            gridTemplateColumns="6fr 3fr 1fr"
+                                            gridColumnGap="0.5rem"
+                                            alignItems="center"
+                                            w="100%"
+                                        >
+                                            <Input
+                                                type="select"
+                                                placeholder="Select a day for the match"
+                                                error={
+                                                    errors.datesAndLocations?.[index]?.day?.message
+                                                }
+                                                {...register(`datesAndLocations.${index}.day`)}
+                                                minW="unset"
+                                            >
+                                                <option value="1">Monday</option>
+                                                <option value="2">Tuesday</option>
+                                                <option value="3">Wednesday</option>
+                                                <option value="4">Thursday</option>
+                                                <option value="5">Friday</option>
+                                                <option value="6">Saturday</option>
+                                                <option value="7">Sunday</option>
+                                            </Input>
+                                            <DatePicker
+                                                control={control}
+                                                name={`datesAndLocations.${index}.time`}
+                                                placeholder="Enter Time"
+                                                showTimeSelect
+                                                showPopperArrow={false}
+                                                showTimeSelectOnly
+                                                timeIntervals={15}
+                                                timeCaption="Time"
+                                                dateFormat="h:mm aa"
+                                            />
+                                            <Text
+                                                mt="0.5rem !important"
+                                                fontSize="1.25rem"
+                                                textAlign="center"
+                                            >
+                                                at
+                                            </Text>
+                                        </Box>
+                                        <Input
+                                            bg="white"
+                                            borderRadius="1rem"
+                                            minW="unset"
+                                            placeholder="Enter the match location"
+                                            error={
+                                                errors.datesAndLocations?.[index]?.locationName
+                                                    ?.message
+                                            }
+                                            {...register(`datesAndLocations.${index}.locationName`)}
+                                        />
+                                    </VStack>
+                                    <FormButton
+                                        type="button"
+                                        inverse
+                                        fontWeight="bold"
+                                        fontSize="1.25rem"
+                                        mt="0.25rem !important"
+                                        pos="absolute"
+                                        right="-0.5rem"
+                                        top="50%"
+                                        transform="translateY(-50%)"
+                                        width="30px"
+                                        onClick={() => remove(index)}
+                                    >
+                                        X
+                                    </FormButton>
+                                </Box>
                             )
                         })}
                         <FormButton
@@ -143,13 +286,22 @@ const index = () => {
                             alignSelf="center"
                             onClick={() => {
                                 append({})
+                                setTimeout(() => {
+                                    bottomRef.current.scrollIntoView()
+                                }, 1)
                             }}
                         >
                             Add Slot
                         </FormButton>
-                        <HStack alignSelf="center" mb="1rem">
+                        <div ref={bottomRef} />
+                        <HStack
+                            pos="absolute"
+                            bottom="1rem"
+                            left="50%"
+                            transform="translateX(-50%)"
+                        >
                             <FormButton onClick={() => setShowTeamsPage(true)}>BACK</FormButton>
-                            <FormButton bg="orange" inverse type="submit">
+                            <FormButton bg="orange" inverse type="submit" isLoading={isLoading}>
                                 SUBMIT
                             </FormButton>
                         </HStack>

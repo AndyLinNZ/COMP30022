@@ -6,21 +6,27 @@ const formatLeagueResp = (leagueDoc) => {
     return { ...league, creator }
 }
 
-
-const formatTeamResp = (teamDoc) =>
-    pick(teamDoc, ['_id', 'name', 'grades', 'players', 'games'])
-
+const formatTeamResp = (teamDoc) => pick(teamDoc, ['_id', 'name', 'grades', 'players', 'games'])
 
 const formatUserResp = (userDoc) => {
     const leagues = userDoc.leagues.map(formatLeagueResp)
     const teams = userDoc.teams.map(formatTeamResp)
-    const details = pick(userDoc, ['_id', 'email', 'firstName', 'lastName'])
+    const details = formatUserDetailsResp(userDoc)
     return { ...details, leagues, teams }
 }
 
+const formatUserDetailsResp = (userDoc) => pick(userDoc, ['_id', 'email', 'firstName', 'lastName'])
 
 const formatTeamMinimal = (teamDoc) => pick(teamDoc, ['_id', 'name'])
 
+const formatPlayerMinimal = (playerDoc) => pick(playerDoc, ['_id', 'name'])
+
+const formatTeamMinimalPlayers = (teamDoc) => {
+    const t = pick(teamDoc, ['_id', 'name'])
+    const players = teamDoc.players.map(formatPlayerMinimal)
+    console.log('huh', players)
+    return { ...t, players }
+}
 
 const formatGameResp = (gameDoc) => {
     const details = pick(gameDoc, [
@@ -45,7 +51,6 @@ const formatGameResp = (gameDoc) => {
     return { ...details, team1, team2 }
 }
 
-
 const formatGradeResp = (gradeDoc) => {
     const teams = gradeDoc.teams.map(formatTeamMinimal)
     const fixture = []
@@ -54,9 +59,23 @@ const formatGradeResp = (gradeDoc) => {
         const teamsOnBye = round.teamsOnBye.map(formatTeamMinimal)
         const games = []
         round.games.forEach((game) => {
-            const newGame = pick(game, ['_id', 'dateStart', 'dateFinish', 'location', 'locationName', 'round', 'status'])
-            const team1 = { team: formatTeamMinimal(game.team1.team), totalPoints: game.team1.totalPoints }
-            const team2 = { team: formatTeamMinimal(game.team2.team), totalPoints: game.team2.totalPoints }
+            const newGame = pick(game, [
+                '_id',
+                'dateStart',
+                'dateFinish',
+                'location',
+                'locationName',
+                'round',
+                'status',
+            ])
+            const team1 = {
+                team: formatTeamMinimal(game.team1.team),
+                totalPoints: game.team1.totalPoints,
+            }
+            const team2 = {
+                team: formatTeamMinimal(game.team2.team),
+                totalPoints: game.team2.totalPoints,
+            }
             newGame.team1 = team1
             newGame.team2 = team2
             games.push(newGame)
@@ -69,14 +88,13 @@ const formatGradeResp = (gradeDoc) => {
     return { ...details, teams, fixture }
 }
 
-
 const formatOrderByStatus = (doc) => {
     const sortingOrder = {
-        'active': 1,
-        'upcoming': 2,
-        'completed': 3
+        active: 1,
+        upcoming: 2,
+        completed: 3,
     }
-    return doc.sort((a, b) => {           
+    return doc.sort((a, b) => {
         const first = sortingOrder[a.status]
         const second = sortingOrder[b.status]
 
@@ -93,7 +111,8 @@ module.exports = {
     formatLeagueResp,
     formatTeamResp,
     formatUserResp,
+    formatUserDetailsResp,
     formatGradeResp,
     formatGameResp,
-    formatOrderByStatus
+    formatOrderByStatus,
 }

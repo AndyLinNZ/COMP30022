@@ -14,8 +14,9 @@ const ensureAuthenticated = passport.authenticate('jwt', { session: false })
 // this middleware checks the request parameters for a game id, round id, grade id,
 // season id, or league id and appropriately populates req.round, req.season,
 // req.grade, req.round and req.game
-// or returns an error otherwise (if not found, or if params not sent in request)
-async function getLeagueGradeSeason(req, res, next) {
+// skip allows the middleware to skip an error in case it is optional to use this middleware
+// returns an error otherwise (if not found, or if params not sent in request)
+async function getLeagueGradeSeason(req, res, next, skip = false) {
     if (req.params.gameId) {
         const gameId = req.params.gameId
         var game = ObjectId.isValid(gameId) ? await Game.findById(gameId) : null
@@ -28,7 +29,7 @@ async function getLeagueGradeSeason(req, res, next) {
         if (!round) return res.status(404).json({ success: false, error: 'Round does not exist' })
         req.round = round
     }
-    var gradeId = req.params.gradeId || req.round?.grade._id
+    var gradeId = req.params.gradeId || req.round?.grade._id || req.query?.grade
     if (gradeId) {
         var grade = ObjectId.isValid(gradeId) ? await Grade.findById(gradeId) : null
         if (!grade) return res.status(404).json({ success: false, error: 'Grade does not exist' })
@@ -45,6 +46,9 @@ async function getLeagueGradeSeason(req, res, next) {
         var league = ObjectId.isValid(leagueId) ? await League.findById(leagueId) : null
         if (!league) return res.status(404).json({ success: false, error: 'League does not exist' })
         req.league = league
+        return next()
+    }
+    if (skip === true) {
         return next()
     }
     return res.status(400).json({ success: false, error: 'Invalid request' })

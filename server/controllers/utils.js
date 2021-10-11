@@ -187,6 +187,12 @@ async function _createRound(grade, next) {
     }
 }
 
+// returns true if a team is in any grade of a season
+async function checkTeamInGrade(teamDoc, seasonDoc) {
+    const season = await seasonDoc.execPopulate('grades')
+    return season.grades.some((grade) => grade.teams.includes(teamDoc._id.toString()))
+}
+
 module.exports = {
     allValidDocumentIds,
     pick,
@@ -194,5 +200,6 @@ module.exports = {
     calculateGradeLadder,
     populateGradeGamesTotalPoints,
     _createGame,
-    _createRound
+    _createRound,
+    checkTeamInGrade
 }
