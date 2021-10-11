@@ -37,10 +37,9 @@ const index = () => {
     }
 
     const PlayerData = ({ playerStat }) => {
-        var name = playerStat.playerId?.name
         return ( 
             <Tr fontSize="1.1rem">
-                <Td>{playerStat.playerId}</Td>
+                <Td>{playerStat.playerId.name}</Td>
                 <Td paddingLeft="1.75rem">{playerStat?.points >= 0 ? playerStat?.points : "-"}</Td>
             </Tr>
         )
