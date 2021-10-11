@@ -50,6 +50,19 @@ const generateResponse = (teams, formData, seasonStartDate) => {
     }
 }
 
+const createErrorMessage = (msg) => {
+    switch (msg) {
+        case 'Dates and locations are invalid':
+            return 'Date(s) or location(s) entered are invalid'
+        case 'numRounds is invalid':
+            return 'The number of rounds entered is invalid'
+        case 'numRounds cannot fit within the season':
+            return 'The number of rounds (weeks) entered cannot fit within the length of the season'
+        default:
+            return msg
+    }
+}
+
 const index = () => {
     const router = useRouter()
     const isDesktop = useMediaQuerySSR(1200)
@@ -89,9 +102,10 @@ const index = () => {
                     .join('/')
             )
         },
-        onError: () => {
+        onError: (error) => {
+            const errMsg = error.response?.data?.error || 'Error logging in'
             toast({
-                render: () => <Toast title="Unable to generate matches" type="error" />,
+                render: () => <Toast title={createErrorMessage(errMsg)} type="error" />,
                 position: 'top',
                 duration: 5000,
             })
