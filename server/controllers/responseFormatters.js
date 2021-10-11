@@ -39,12 +39,12 @@ const formatGameResp = (gameDoc) => {
         'status'
     ])
     const team1 = { 
-        team: formatTeamMinimal(gameDoc.team1.team), 
+        team: formatTeamMinimalPlayers(gameDoc.team1.team), 
         playersStats: gameDoc.team1.playersStats,
         totalPoints: gameDoc.team1.totalPoints,
     }
     const team2 = { 
-        team: formatTeamMinimal(gameDoc.team2.team), 
+        team: formatTeamMinimalPlayers(gameDoc.team2.team), 
         playersStats: gameDoc.team2.playersStats,
         totalPoints: gameDoc.team2.totalPoints,
      }
