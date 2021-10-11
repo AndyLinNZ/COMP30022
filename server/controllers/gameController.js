@@ -90,7 +90,7 @@ async function updateGamePlayerStats(req, res, next) {
 
 async function updatePlayersStats(oldPlayersStats, team, next) {
     var allPlayerStats = await Promise.all(
-        Object.keys(team).map(async (player_id) => {
+        Object.keys(team || {}).map(async (player_id) => {
             const player = ObjectId.isValid(player_id) ? await Player.findById(player_id) : null
             if (!player) return next({ status: 404, message: 'Player does not exist' })
 

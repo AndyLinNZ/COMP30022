@@ -79,7 +79,7 @@ const index = () => {
                 position: 'top',
                 duration: 5000,
             })
-            history.push(
+            router.push(
                 window.location.pathname
                     .split('/')
                     .slice(0, window.location.pathname.split('/').length - 4)
@@ -100,12 +100,12 @@ const index = () => {
         if (!game) return
         game.team1.playersStats.forEach((stats) => {
             STATS_FIELDS.forEach((s) => {
-                if (stats[s]) setValue(`team1.${stats.playerId}.${s}`, stats[s])
+                if (stats[s]) setValue(`team1.${stats.playerId._id}.${s}`, stats[s])
             })
         })
         game.team2.playersStats.forEach((stats) => {
             STATS_FIELDS.forEach((s) => {
-                if (stats[s]) setValue(`team2.${stats.playerId}.${s}`, stats[s])
+                if (stats[s]) setValue(`team2.${stats.playerId._id}.${s}`, stats[s])
             })
         })
     }, [game, setValue])
