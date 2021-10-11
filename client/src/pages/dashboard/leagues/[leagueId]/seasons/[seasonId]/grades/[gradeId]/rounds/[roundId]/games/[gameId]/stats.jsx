@@ -30,7 +30,7 @@ const STATS_FIELDS = ['points', 'assists', 'steals']
 
 // https://github.com/jquense/yup/issues/130#issuecomment-578392176
 const mapRules = (map, rule) =>
-    Object.keys(map).reduce((newMap, key) => ({ ...newMap, [key]: rule }), {})
+    Object.keys(map || {}).reduce((newMap, key) => ({ ...newMap, [key]: rule }), {})
 // https://github.com/jquense/yup/issues/1330#issuecomment-901170542
 const nullableNum = () =>
     yup
@@ -79,7 +79,12 @@ const index = () => {
                 position: 'top',
                 duration: 5000,
             })
-            // TODO: redirect to match details page?
+            history.push(
+                window.location.pathname
+                    .split('/')
+                    .slice(0, window.location.pathname.split('/').length - 4)
+                    .join('/')
+            )
         },
         onError: (error) => {
             const errMsg = error.response?.data?.error
