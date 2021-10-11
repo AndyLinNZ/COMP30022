@@ -12,6 +12,9 @@ const GameContainer = ({season, grade, game}) => {
     const isDesktop = useMediaQuerySSR(860)
     const router = useRouter()
 
+    const team1PointsColour = game?.team1.totalPoints >= game?.team2.totalPoints ? 'gray.500' : 'gray.300'
+    const team2PointsColour = game?.team2.totalPoints >= game?.team1.totalPoints ? 'gray.500' : 'gray.300'
+
     return (
     <Box
         h="100%"
@@ -61,7 +64,7 @@ const GameContainer = ({season, grade, game}) => {
                 <Text color="greyText.500" fontSize={isDesktop ? "3rem" : "1.5rem"}>{game?.team1?.team?.name}</Text>
 
                 {hasResults ?
-                    <Text justifySelf="end" color="greyText.500"> {game.team1.totalPoints} </Text>
+                    <Text justifySelf="end" color={team1PointsColour}> {game.team1.totalPoints} </Text>
                     :
                     <MinusIcon justifySelf="end" color="greyText.500"/>
                 }
@@ -69,7 +72,7 @@ const GameContainer = ({season, grade, game}) => {
                 <Divider orientation="vertical" backgroundColor="gray.500" justifySelf="center" align="top" fontSize={isDesktop ? "3rem" : "1.5rem"}/>
 
                 {hasResults ?
-                    <Text justifySelf="start" color="greyText.500"> {game.team2.totalPoints} </Text>
+                    <Text justifySelf="start" color={team2PointsColour}> {game.team2.totalPoints} </Text>
                     :
                     <MinusIcon justifySelf="start" color="greyText.500"/>
                 }
@@ -87,12 +90,12 @@ const GameContainer = ({season, grade, game}) => {
                 </Grid>
                 <Grid templateColumns="1fr 1fr" gridGap="1rem" alignItems="center" justifyItems="center" w="100%" fontWeight="semibold" fontSize={isDesktop ? "3rem" : "1.5rem"}>
                     {hasResults ?
-                        <Text justifyItems="center" color="greyText.500"> {game.team1.totalPoints} </Text>
+                        <Text justifyItems="center" color={team1PointsColour}> {game.team1.totalPoints} </Text>
                         :
                         <MinusIcon color="greyText.500"/>
                     }
                     {hasResults ?
-                        <Text justifyItems="center" color="greyText.500"> {game.team2.totalPoints} </Text>
+                        <Text justifyItems="center" color={team2PointsColour}> {game.team2.totalPoints} </Text>
                         :
                         <MinusIcon color="greyText.500"/>
                     }
