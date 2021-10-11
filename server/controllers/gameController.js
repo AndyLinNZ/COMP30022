@@ -24,6 +24,13 @@ async function getGame(req, res, next) {
                 model: 'PlayerStat',
             },
             {
+                path: 'team1.playersStats',
+                populate: {
+                    path: 'playerId',
+                    model: 'Player',
+                },
+            },
+            {
                 path: 'team2.team',
                 model: 'Team',
             },
@@ -38,8 +45,17 @@ async function getGame(req, res, next) {
                 path: 'team2.playersStats',
                 model: 'PlayerStat',
             },
+            {
+                path: 'team2.playersStats',
+                populate: {
+                    path: 'playerId',
+                    model: 'Player',
+                },
+            },
         ]
         const game = await req.game.execPopulate(populateQuery)
+        game.team1.totalPoints = calculateTotalPoints(game.team1.playersStats)
+        game.team2.totalPoints = calculateTotalPoints(game.team2.playersStats)
         return res.status(200).json({
             success: true,
             data: formatGameResp(game),
