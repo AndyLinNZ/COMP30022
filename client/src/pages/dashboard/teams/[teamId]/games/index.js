@@ -1,22 +1,40 @@
 import React from 'react'
 import Head from 'next/head'
-import { useGetAllLeagueSeasons, useUserDetails } from 'hooks'
-import { Template, CreateCapsule } from 'components/Dashboard'
-import { Box, VStack } from '@chakra-ui/react'
+import { useUserDetails, useMediaQuerySSR } from 'hooks'
+import { Template } from 'components/Dashboard'
+import { Box, VStack, HStack } from '@chakra-ui/react'
+import Input from 'components/Form/Input'
 import { Container } from 'components/Dashboard'
-import { getLeagueFromUser } from 'utils'
-import EditButton from 'components/Dashboard/League/EditButton'
+import { getTeamFromUser, createErrorMessage } from 'utils'
 
 const index = () => {
     const { user } = useUserDetails()
+    const team = getTeamFromUser(user)
+    const isDesktop = useMediaQuerySSR(900)
+
+    const heading = team?.name ? `${team?.name}` : 'Team Info'
 
     return (
         <Template>
             <Head>
-                <title>Dribblr | Team Details</title>
+                <title>Dribblr | {team?.name || 'Team Details'}</title>
             </Head>
-            <Container>
-                <VStack spacing="1.25rem"></VStack>
+            <Container heading={heading}>
+                <VStack spacing="1.25rem">
+                    {team?.players.map((player) => {
+                        return (
+                            <HStack key={player} spacing="0.5rem" align="center">
+                                <Input
+                                    minW={isDesktop ? '320px' : '160px'}
+                                    size="sm"
+                                    bg="white"
+                                    borderRadius="1rem"
+                                    placeholder={player}
+                                />
+                            </HStack>
+                        )
+                    })}
+                </VStack>
             </Container>
         </Template>
     )
