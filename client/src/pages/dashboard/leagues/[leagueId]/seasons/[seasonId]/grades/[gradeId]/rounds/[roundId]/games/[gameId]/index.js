@@ -211,7 +211,7 @@ const index = () => {
         <Template>
             <VStack
                 pos="absolute"
-                top="35.5%"
+                top={isDesktop ? "50%" : "68%"}
                 left="50%"
                 transform="translate(-50%, -50%)"
                 w={['95%', '75%']}
