@@ -24,7 +24,6 @@ const formatPlayerMinimal = (playerDoc) => pick(playerDoc, ['_id', 'name'])
 const formatTeamMinimalPlayers = (teamDoc) => {
     const t = pick(teamDoc, ['_id', 'name'])
     const players = teamDoc.players.map(formatPlayerMinimal)
-    console.log('huh', players)
     return { ...t, players }
 }
 
