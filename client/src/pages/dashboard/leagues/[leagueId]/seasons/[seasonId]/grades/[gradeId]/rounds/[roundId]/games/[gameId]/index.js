@@ -1,20 +1,10 @@
 import React from 'react'
-import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useGrade, useLeague, useGame, useSeason } from 'hooks'
-import { Template, CreateCapsule } from 'components/Dashboard'
-import { VStack, HStack, Button, Divider, Text, Grid, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react'
-import { Container, RoundsView } from 'components'
-import ActiveSeasonLabel from 'components/AssociationPage/ActiveSeasonLabel'
-import { ArrowBackIcon, TimeIcon, MinusIcon, StarIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
-import { Box } from '@chakra-ui/react'
-import { IconButton } from "@chakra-ui/react"
-import { useMediaQuerySSR } from 'hooks'
+import { useGrade, useLeague, useGame, useSeason, useMediaQuerySSR } from 'hooks'
+import { Template } from 'components/Dashboard'
+import { VStack, HStack, Button, Divider, Text, Grid, Table, Thead, Tbody, Tr, Th, Td, Box } from '@chakra-ui/react'
+import { TimeIcon, MinusIcon, StarIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
 import Tag from 'components/Dashboard/Tag'
-
-import { useQuery } from 'react-query'
-import { getPlayer, getPlayerStat } from 'api'
-import { extractData } from 'utils'
 
 const index = () => {
     const { grade } = useGrade()
