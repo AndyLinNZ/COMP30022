@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useGrade, useLeague, useGame, useSeason } from 'hooks'
 import { Template, CreateCapsule } from 'components/Dashboard'
-import { VStack, HStack, Button, Divider, Text, Grid } from '@chakra-ui/react'
+import { VStack, HStack, Button, Divider, Text, Grid, Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react'
 import { Container, RoundsView } from 'components'
 import ActiveSeasonLabel from 'components/AssociationPage/ActiveSeasonLabel'
 import { ArrowBackIcon, TimeIcon, MinusIcon, StarIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
@@ -11,6 +11,10 @@ import { Box } from '@chakra-ui/react'
 import { IconButton } from "@chakra-ui/react"
 import { useMediaQuerySSR } from 'hooks'
 import Tag from 'components/Dashboard/Tag'
+
+import { useQuery } from 'react-query'
+import { getPlayer, getPlayerStat } from 'api'
+import { extractData } from 'utils'
 
 const index = () => {
     const { grade } = useGrade()
@@ -21,84 +25,178 @@ const index = () => {
     const router = useRouter()
     const isDesktop = useMediaQuerySSR(860)
 
-    const hasResults = (game?.team1?.playerStats?.length > 0) && (game?.team2?.playerStats?.length > 0)
+    const hasResults = (game?.team1.playersStats?.length > 0) && (game?.team2.playersStats?.length > 0)
+    // const hasResults = game && game?.team1.totalPoints
+    const playerStatsLength = game?.team1.playersStats?.length
     const hasStatus = game?.status
+    const STATS_FIELDS = ['points']
+
+    const Totals = ({ playersStats }) => {
+        var point_total = 0
+
+        for (let i = 0; i < playersStats.length; i++) {
+            point_total += playersStats[i].points
+        }
+
+        return ( 
+            <Tr borderTop="2px solid grey" fontWeight="semibold" fontSize="1.1rem">
+                <Td>TOTALS</Td>
+                <Td paddingLeft="1.75rem">{point_total}</Td>
+            </Tr>
+         )
+    }
+
+    const PlayerData = ({ playerStat }) => {
+        var name = playerStat.playerId?.name
+        return ( 
+            <Tr fontSize="1.1rem">
+                <Td>{playerStat.playerId}</Td>
+                <Td paddingLeft="1.75rem">{playerStat?.points >= 0 ? playerStat?.points : "-"}</Td>
+            </Tr>
+        )
+    }
+
+    const PlayersTable = ({ playersStats }) => (
+
+        <Box
+                h="100%"
+                w="100%"
+                bg="white"
+                borderRadius="1rem"
+                boxShadow="0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);"
+                padding="1rem"
+        >
+        <Table variant="striped" size="sm">
+            <Thead>
+                <Tr borderBottom="2px solid grey" fontWeight="semibold">
+                    <Th minW="100px">PLAYER</Th>
+                    {STATS_FIELDS.map((s) => <Th key={s}>{s.toUpperCase()}</Th>)}
+                </Tr>
+            </Thead>
+            <Tbody>
+                {playersStats.map((playerStat) => (
+                    <PlayerData playerStat={playerStat}/>
+                ))}
+                <Totals playersStats={playersStats} />
+            </Tbody>
+        </Table>
+        </Box>
+    )
 
     return (
         <Template>
-            <Container league={league}>
-                <VStack spacing="1.25rem" h="100%">
-                    <HStack w="full" spacing="0.5rem" >
-                        <Box>
-                            <Button 
-                                leftIcon={<ChevronLeftIcon />} 
-                                color="greyText.500"
-                                _hover={{ bg: "darkGrey" }} 
-                                variant="ghost" 
-                                fontSize="0.9rem"
-                                onClick={() =>
-                                    router.back()
-                                }
-                            >
-                                BACK
-                            </Button>
-                        </Box>
-                        <Box w="20%" fontSize="1.1rem" lineHeight="1" pl={15} color="greyBg">
-                            {season?.name}
-                        </Box>
-                        <ChevronRightIcon
-                            w={[10, 12]}
-                            h={[10, 12]}
-                            color={'grey'}
-                        />
-                        <Box w="20%" fontSize="1.1rem" lineHeight="1" color="greyBg">
-                            {grade?.name}
-                        </Box>
-                        {hasStatus && 
-                            <Box pos="absolute" top="3" right="3" pt={2.5} pr={2.5}>
-                                <Tag type={game.status} text={game.status}/>
-                            </Box>
-                        }
-                    </HStack>
-                    <Divider orientation="horizontal" backgroundColor="gray.500" justifySelf="end" align="top"/>
-
-
-                    <Grid templateColumns="3fr 1fr 0.5fr 1fr 3fr" gridGap="1rem" alignItems="center" w="100%" fontWeight="semibold" fontSize="3rem">
-                        <Text justifySelf="center" color="greyText.500">{game?.team1?.team?.name}</Text>
-
-                        {hasResults ?
-                            <Text justifySelf="end" color="greyText.500"> {game?.team1?.totalPoints} </Text>
-                            :
-                            <MinusIcon justifySelf="end" color="greyText.500"/>
-                        }
-
-                        <Divider orientation="vertical" backgroundColor="gray.500" justifySelf="center" align="top"/>
-
-                        {hasResults ?
-                            <Text justifySelf="start" color="greyText.500"> {game?.team2?.totalPoints} </Text>
-                            :
-                            <MinusIcon justifySelf="start" color="greyText.500"/>
-                        }
-                        <Text justifySelf="center" color="greyText.500">{game?.team2?.team?.name}</Text>
-
-                    </Grid>
-                    <Divider orientation="horizontal" backgroundColor="gray.500" justifySelf="end" align="top"/>
-
-
-                    <Grid templateColumns="1fr 1fr" gridGap="1rem" alignItems="center" w="100%" justifyItems="center">
-                        <HStack>
-                            <TimeIcon color="greyText.500"/>
-                            <Text color="greyText.500">From {new Date(game?.dateStart).toLocaleString()} to {new Date(game?.dateFinish).toLocaleString()} </Text>
-                        </HStack>
-
-                        <HStack>
-                            <StarIcon color="greyText.500"/>
-                            <Text color="greyText.500">{game?.locationName}</Text>
-                        </HStack>
-
-                    </Grid>
+            <VStack
+                pos="absolute"
+                top="35.5%"
+                left="50%"
+                transform="translate(-50%, -50%)"
+                w={['95%', '75%']}
+                spacing="0.75rem"
+            >
+                <VStack spacing="0.25rem" alignSelf="flex-start">
+                    <Box fontSize="3rem" lineHeight="1">
+                        {league?.name}
+                    </Box>
+                    <Box
+                        alignSelf="flex-start"
+                        bg="greyBg"
+                        color="white"
+                        px="0.5rem"
+                        borderRadius="5px"
+                    >
+                        {league?.organisation}
+                    </Box>
                 </VStack>
-            </Container>
+                <Box
+                    h="100%"
+                    w="100%"
+                    bg="white"
+                    borderRadius="1rem"
+                    boxShadow="0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);"
+                    padding="1rem"
+                    overflowY="auto"
+                    pos="relative"
+                >
+                    <VStack spacing="1.25rem" h="100%">
+                        <HStack w="full" spacing="0.5rem" >
+                            <Box>
+                                <Button 
+                                    leftIcon={<ChevronLeftIcon />} 
+                                    color="greyText.500"
+                                    _hover={{ bg: "darkGrey" }} 
+                                    variant="ghost" 
+                                    fontSize="0.9rem"
+                                    onClick={() =>
+                                        router.back()
+                                    }
+                                >
+                                    BACK
+                                </Button>
+                            </Box>
+                            <Box w="20%" fontSize="1.1rem" lineHeight="1" pl={15} color="greyBg">
+                                {season?.name}
+                            </Box>
+                            <ChevronRightIcon
+                                w={[10, 12]}
+                                h={[10, 12]}
+                                color={'grey'}
+                            />
+                            <Box w="20%" fontSize="1.1rem" lineHeight="1" color="greyBg">
+                                {grade?.name}
+                            </Box>
+                            {hasStatus && 
+                                <Box pos="absolute" top="3" right="3" pt={2.5} pr={2.5}>
+                                    <Tag type={game.status} text={game.status}/>
+                                </Box>
+                            }
+                        </HStack>
+                        <Divider orientation="horizontal" backgroundColor="gray.500" justifySelf="end" align="top"/>
+
+
+                        <Grid templateColumns="3fr 1fr 0.5fr 1fr 3fr" gridGap="1rem" alignItems="center" w="100%" fontWeight="semibold" fontSize="3rem">
+                            <Text justifySelf="center" color="greyText.500">{game?.team1?.team?.name}</Text>
+
+                            {hasResults ?
+                                <Text justifySelf="end" color="greyText.500"> {game?.team1.totalPoints} </Text>
+                                :
+                                <MinusIcon justifySelf="end" color="greyText.500"/>
+                            }
+
+                            <Divider orientation="vertical" backgroundColor="gray.500" justifySelf="center" align="top"/>
+
+                            {hasResults ?
+                                <Text justifySelf="start" color="greyText.500"> {game?.team2.totalPoints} </Text>
+                                :
+                                <MinusIcon justifySelf="start" color="greyText.500"/>
+                            }
+
+                            <Text justifySelf="center" color="greyText.500">{game?.team2?.team?.name}</Text>
+
+                        </Grid>
+                        <Divider orientation="horizontal" backgroundColor="gray.500" justifySelf="end" align="top"/>
+
+
+                        <Grid templateColumns="1fr 1fr" gridGap="1rem" alignItems="center" w="100%" justifyItems="center">
+                            <HStack>
+                                <TimeIcon color="greyText.500"/>
+                                <Text color="greyText.500">From {new Date(game?.dateStart).toLocaleString()} to {new Date(game?.dateFinish).toLocaleString()} </Text>
+                            </HStack>
+
+                            <HStack>
+                                <StarIcon color="greyText.500"/>
+                                <Text color="greyText.500">{game?.locationName}</Text>
+                            </HStack>
+
+                        </Grid>
+                    </VStack>
+                </Box>
+                <HStack w="full" spacing="0.5rem" >      
+                    {hasResults && 
+                        <PlayersTable playersStats={game.team1.playersStats}/>}
+                    {hasResults && 
+                        <PlayersTable playersStats={game.team2.playersStats}/>}
+                </HStack>
+            </VStack>
         </Template>
     )
 }
