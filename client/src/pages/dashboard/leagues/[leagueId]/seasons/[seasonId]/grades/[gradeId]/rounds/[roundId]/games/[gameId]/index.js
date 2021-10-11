@@ -124,7 +124,7 @@ const index = () => {
                     <Text color="greyText.500" fontSize={isDesktop ? "3rem" : "1.5rem"}>{game?.team1?.team?.name}</Text>
 
                     {hasResults ?
-                        <Text justifySelf="end" color="greyText.500"> 88 </Text>
+                        <Text justifySelf="end" color="greyText.500"> {game.team1.totalPoints} </Text>
                         :
                         <MinusIcon justifySelf="end" color="greyText.500"/>
                     }
@@ -132,7 +132,7 @@ const index = () => {
                     <Divider orientation="vertical" backgroundColor="gray.500" justifySelf="center" align="top" fontSize={isDesktop ? "3rem" : "1.5rem"}/>
 
                     {hasResults ?
-                        <Text justifySelf="start" color="greyText.500"> 22 </Text>
+                        <Text justifySelf="start" color="greyText.500"> {game.team2.totalPoints} </Text>
                         :
                         <MinusIcon justifySelf="start" color="greyText.500"/>
                     }
@@ -150,12 +150,12 @@ const index = () => {
                     </Grid>
                     <Grid templateColumns="1fr 1fr" gridGap="1rem" alignItems="center" justifyItems="center" w="100%" fontWeight="semibold" fontSize={isDesktop ? "3rem" : "1.5rem"}>
                         {hasResults ?
-                            <Text justifyItems="center" color="greyText.500"> 36 </Text>
+                            <Text justifyItems="center" color="greyText.500"> {game.team1.totalPoints} </Text>
                             :
                             <MinusIcon color="greyText.500"/>
                         }
                         {hasResults ?
-                            <Text justifyItems="center" color="greyText.500"> 125 </Text>
+                            <Text justifyItems="center" color="greyText.500"> {game.team2.totalPoints} </Text>
                             :
                             <MinusIcon color="greyText.500"/>
                         }
