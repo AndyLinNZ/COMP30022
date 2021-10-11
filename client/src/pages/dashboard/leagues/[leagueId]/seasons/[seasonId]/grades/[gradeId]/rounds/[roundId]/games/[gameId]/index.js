@@ -232,7 +232,7 @@ const index = () => {
                     </Box>
                 </VStack>
                 <GameDetails season={season} grade={grade} game={game}/>
-                
+                <BoxScore game={game}/>
             </VStack>
         </Template>
     )
