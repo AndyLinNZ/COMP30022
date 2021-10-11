@@ -20,7 +20,7 @@ const Totals = ({ playersStats }) => {
 
 const PlayerData = ({ playerStat }) => {
     return ( 
-        <Tr fontSize="1.1rem" key={playerStat._id} >
+        <Tr fontSize="1.1rem">
             <Td>{playerStat.playerId.name}</Td>
             <Td paddingLeft="1.75rem">{playerStat?.points >= 0 ? playerStat?.points : "-"}</Td>
         </Tr>
@@ -45,7 +45,7 @@ const PlayersTable = ({ playersStats, stats_fields }) => (
         </Thead>
         <Tbody>
             {playersStats.map((playerStat) => (
-                <PlayerData playerStat={playerStat}/>
+                <PlayerData key={playerStat._id} playerStat={playerStat}/>
             ))}
             <Totals playersStats={playersStats} />
         </Tbody>
