@@ -18,7 +18,7 @@ const index = () => {
         <Template>
             <VStack
                 pos="absolute"
-                top={isDesktop ? "50%" : "68%"}
+                top={isDesktop ? '50%' : '68%'}
                 left="50%"
                 transform="translate(-50%, -50%)"
                 w={['95%', '75%']}
@@ -38,8 +38,8 @@ const index = () => {
                         {league?.organisation}
                     </Box>
                 </VStack>
-                <GameContainer season={season} grade={grade} game={game}/>
-                <GameBoxScore game={game}/>
+                <GameContainer season={season} grade={grade} game={game} />
+                <GameBoxScore game={game} />
             </VStack>
         </Template>
     )

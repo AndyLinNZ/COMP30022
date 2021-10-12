@@ -41,7 +41,7 @@ const edit = () => {
             router.push(
                 window.location.pathname
                     .split('/')
-                    .slice(0, window.location.pathname.split('/').length - 2)
+                    .slice(0, window.location.pathname.split('/').length - 1)
                     .join('/')
             )
         },

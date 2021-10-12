@@ -41,13 +41,13 @@ const RoundsView = ({ rounds }) => {
                                 {round.games.map((game) => (
                                     <HStack key={game._id} w="100%">
                                         <MatchContainer game={game} />
-                                        {game.status == 'upcoming' ? (
-                                            <EditButton name={game._id} />
+                                        {game.status === 'upcoming' ? (
+                                            <EditButton name={`${round._id}/games/${game._id}`} />
                                         ) : (
                                             <EditButton
-                                                name={game._id}
+                                                name={`${round._id}/games/${game._id}`}
                                                 icon={<UpdatePlayerStatsIcon />}
-                                                path={'stats'}
+                                                path="stats"
                                             />
                                         )}
                                     </HStack>
