@@ -123,8 +123,9 @@ function populateGradeGamesTotalPoints(grade) {
 }
 
 function calculateTotalPoints(allStats) {
+    console.log('allstats', allStats)
     return allStats
-        .map((playerStat) => playerStat.points)
+        .map((playerStat) => playerStat.points || 0)
         .reduce((prevPoint, nextPoint) => prevPoint + nextPoint, 0)
 }
 

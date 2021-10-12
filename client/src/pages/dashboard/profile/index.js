@@ -7,22 +7,14 @@ import { Template, Container } from 'components/Dashboard'
 import { HStack, VStack, useToast } from '@chakra-ui/react'
 import Input from 'components/Form/Input'
 import FormButton from 'components/Form/FormButton'
-import { appPaths } from 'utils/constants'
 import { useRouter } from 'next/router'
 import { useUserDetails, useUpdateUserDetails } from 'hooks'
 import Toast from 'components/Toast'
 
 const userUpdateSchema = yup.object().shape({
-    firstName: yup
-        .string()
-        .required('First name is required'),
-    lastName: yup
-        .string()
-        .required('Last name is required'),
-    email: yup
-        .string()
-        .email('Incorrect email format')
-        .required('email is required'),
+    firstName: yup.string().required('First name is required'),
+    lastName: yup.string().required('Last name is required'),
+    email: yup.string().email('Incorrect email format').required('email is required'),
     password: yup
         .string()
         .min(8, 'Password must be at least 8 characters long')
@@ -47,21 +39,16 @@ const index = () => {
     })
 
     React.useEffect(() => {
-        if(!user) return
+        if (!user) return
         setValue('firstName', user.firstName)
         setValue('lastName', user.lastName)
         setValue('email', user.email)
     }, [user, setValue])
 
-    const { mutate, isLoading } = useUpdateUserDetails({
+    const { mutate, isLoading, isSuccess } = useUpdateUserDetails({
         onSuccess: () => {
             toast({
-                render: () => (
-                    <Toast
-                        title="Successfully updated details"
-                        type="success"
-                    />
-                ),
+                render: () => <Toast title="Successfully updated details" type="success" />,
                 position: 'top',
                 duration: 5000,
             })
@@ -69,12 +56,7 @@ const index = () => {
         onError: (error) => {
             const errMsg = error.response?.data?.error
             toast({
-                render: () => (
-                    <Toast
-                        title={errMsg}
-                        type="error"
-                    />
-                ),
+                render: () => <Toast title={errMsg} type="error" />,
                 position: 'top',
                 duration: 5000,
             })
@@ -126,10 +108,13 @@ const index = () => {
                         {...register('password')}
                     />
                     <HStack spacing="0.5rem">
-                        <FormButton onClick={router.back}>
-                            Cancel
-                        </FormButton>
-                        <FormButton type="submit" color="black" bg="orange" isLoading={isLoading}>
+                        <FormButton onClick={router.back}>Cancel</FormButton>
+                        <FormButton
+                            type="submit"
+                            color="black"
+                            bg="orange"
+                            isLoading={isLoading || isSuccess}
+                        >
                             Confirm
                         </FormButton>
                     </HStack>

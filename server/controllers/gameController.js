@@ -24,6 +24,13 @@ async function getGame(req, res, next) {
                 model: 'PlayerStat',
             },
             {
+                path: 'team1.playersStats',
+                populate: {
+                    path: 'playerId',
+                    model: 'Player',
+                },
+            },
+            {
                 path: 'team2.team',
                 model: 'Team',
             },
@@ -38,8 +45,17 @@ async function getGame(req, res, next) {
                 path: 'team2.playersStats',
                 model: 'PlayerStat',
             },
+            {
+                path: 'team2.playersStats',
+                populate: {
+                    path: 'playerId',
+                    model: 'Player',
+                },
+            },
         ]
         const game = await req.game.execPopulate(populateQuery)
+        game.team1.totalPoints = calculateTotalPoints(game.team1.playersStats)
+        game.team2.totalPoints = calculateTotalPoints(game.team2.playersStats)
         return res.status(200).json({
             success: true,
             data: formatGameResp(game),
@@ -74,7 +90,7 @@ async function updateGamePlayerStats(req, res, next) {
 
 async function updatePlayersStats(oldPlayersStats, team, next) {
     var allPlayerStats = await Promise.all(
-        Object.keys(team).map(async (player_id) => {
+        Object.keys(team || {}).map(async (player_id) => {
             const player = ObjectId.isValid(player_id) ? await Player.findById(player_id) : null
             if (!player) return next({ status: 404, message: 'Player does not exist' })
 
@@ -96,10 +112,8 @@ async function updatePlayersStats(oldPlayersStats, team, next) {
     return allPlayerStats
 }
 
-async function updateGameDateLocation(req, res, next){
-
+async function updateGameDateLocation(req, res, next) {
     try {
-
         let { newLocationName, newLocation, newStart, newFinish } = req.body
 
         const updateQuery = {}
@@ -118,12 +132,10 @@ async function updateGameDateLocation(req, res, next){
             success: true,
             data: game,
         })
-
     } catch (err) {
         console.log(err)
         return next(err)
     }
-
 }
 
 module.exports = {

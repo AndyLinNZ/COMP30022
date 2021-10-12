@@ -113,7 +113,18 @@ const TeamSelectPage = ({ selectedTeams, setSelectedTeams, handleNextPage }) => 
                     ))}
                 </VStack>
                 <HStack pos="absolute" bottom="0" left="50%" transform="translateX(-50%)">
-                    <FormButton onClick={() => router.back()}>CANCEL</FormButton>
+                    <FormButton
+                        onClick={() =>
+                            router.push(
+                                window.location.pathname
+                                    .split('/')
+                                    .slice(0, window.location.pathname.split('/').length - 1)
+                                    .join('/')
+                            )
+                        }
+                    >
+                        CANCEL
+                    </FormButton>
                     <FormButton bg="orange" inverse onClick={handleNextPage}>
                         NEXT
                     </FormButton>

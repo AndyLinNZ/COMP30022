@@ -24,14 +24,29 @@ const formatPlayerMinimal = (playerDoc) => pick(playerDoc, ['_id', 'name'])
 const formatTeamMinimalPlayers = (teamDoc) => {
     const t = pick(teamDoc, ['_id', 'name'])
     const players = teamDoc.players.map(formatPlayerMinimal)
-    console.log('huh', players)
     return { ...t, players }
 }
 
 const formatGameResp = (gameDoc) => {
-    const details = pick(gameDoc, ['_id', 'round', 'dateStart', 'dateFinish', 'location', 'locationName', 'status'])
-    const team1 = { team: formatTeamMinimalPlayers(gameDoc.team1.team), playersStats: gameDoc.team1.playersStats }
-    const team2 = { team: formatTeamMinimalPlayers(gameDoc.team2.team), playersStats: gameDoc.team2.playersStats }
+    const details = pick(gameDoc, [
+        '_id',
+        'round',
+        'dateStart',
+        'dateFinish',
+        'location',
+        'locationName',
+        'status',
+    ])
+    const team1 = {
+        team: formatTeamMinimalPlayers(gameDoc.team1.team),
+        playersStats: gameDoc.team1.playersStats,
+        totalPoints: gameDoc.team1.totalPoints,
+    }
+    const team2 = {
+        team: formatTeamMinimalPlayers(gameDoc.team2.team),
+        playersStats: gameDoc.team2.playersStats,
+        totalPoints: gameDoc.team2.totalPoints,
+    }
     return { ...details, team1, team2 }
 }
 

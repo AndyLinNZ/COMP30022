@@ -9,7 +9,7 @@ import { appPaths } from 'utils/constants'
 import HeaderDropdown from './HeaderDropdown'
 import HomeHeader from './HomeHeader'
 
-const UserHeader = ({ isHome = false }) => {
+const UserHeader = () => {
     const isDesktop = useMediaQuerySSR(1024)
     const router = useRouter()
     const hideLogo = router.pathname === '/'
@@ -26,8 +26,8 @@ const UserHeader = ({ isHome = false }) => {
             zIndex="dropdown"
         >
             <Box
-                marginTop={['1rem', 0]}
-                marginLeft={['1rem', 0]}
+                marginTop={isDesktop ? 0 : '1rem'}
+                marginLeft={isDesktop ? 0 : '1rem'}
                 cursor="pointer"
                 onClick={() => router.push(appPaths.HOME_PATH)}
                 visibility={hideLogo ? 'hidden' : undefined}

@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { MatchContainer, ByeContainer } from 'components'
 import EditButton from 'components/Dashboard/League/EditButton'
-import ErrorIcon from 'components/svg/ErrorIcon'
+import UpdatePlayerStatsIcon from 'components/svg/UpdatePlayerStatsIcon'
 
 const RoundsView = ({ rounds, showEditButtons }) => {
     return (
@@ -40,13 +40,20 @@ const RoundsView = ({ rounds, showEditButtons }) => {
                                     <HStack key={game._id} w="100%">
                                         <MatchContainer game={game} />
                                         {showEditButtons ? (
-                                            game.status == 'upcoming' ? (
-                                                <EditButton name={game._id} />
-                                            ) : (
-                                                <ErrorIcon width={48} />
-                                            )
-                                        ) : null}{' '}
-                                        {/* TODO: replace me with proper icon */}
+                                            <>
+                                                {game.status === 'upcoming' ? (
+                                                    <EditButton
+                                                        name={`${round._id}/games/${game._id}`}
+                                                    />
+                                                ) : (
+                                                    <EditButton
+                                                        name={`${round._id}/games/${game._id}`}
+                                                        icon={<UpdatePlayerStatsIcon />}
+                                                        path="stats"
+                                                    />
+                                                )}
+                                            </>
+                                        ) : null}
                                     </HStack>
                                 ))}
                                 {round.teamsOnBye.map((team) => (
