@@ -2,7 +2,6 @@ import { Box, Flex, VStack, HStack, Text, Divider, Grid, GridItem } from '@chakr
 import { useRouter } from 'next/router'
 import { useMediaQuerySSR } from 'hooks'
 import LocationIcon from 'components/svg/LocationIcon'
-import DateIcon from 'components/svg/DateIcon'
 import { TimeIcon } from '@chakra-ui/icons'
 import Tag from 'components/Dashboard/Tag'
 import React from 'react'
@@ -26,7 +25,12 @@ const MatchContainer = ({ game }) => {
                 boxShadow: '0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);',
             }}
             onClick={() =>
-                router.push(`${window.location.pathname}/${game.round}/games/${game._id}`)
+                router.push(
+                    `${window.location.pathname
+                        .split('/')
+                        .filter((path) => path !== 'dashboard')
+                        .join('/')}/${game.round}/games/${game._id}`
+                )
             }
             paddingX="1rem"
         >

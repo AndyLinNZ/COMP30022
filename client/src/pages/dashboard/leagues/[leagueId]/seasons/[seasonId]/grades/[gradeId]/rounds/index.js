@@ -24,7 +24,18 @@ const index = () => {
                         <Button bg="greyText.500" color="white">
                             FIXTURE
                         </Button>
-                        <Button onClick={() => router.push(window.location.pathname + '/ladder')}>
+                        <Button
+                            onClick={() =>
+                                router.push(
+                                    router.push(
+                                        `${window.location.pathname
+                                            .split('/')
+                                            .filter((path) => path !== 'dashboard')
+                                            .join('/')}/ladder`
+                                    )
+                                )
+                            }
+                        >
                             LADDER
                         </Button>
                     </HStack>

@@ -12,7 +12,7 @@ const allValidObjectIds = (arr) => arr.every(ObjectId.isValid)
 const allValidDocumentIds = async (ids, docType) => {
     if (!allValidObjectIds(ids)) return Promise.resolve(false)
     const docs = await docType.find({
-        _id: { $in: ids.map(ObjectId) }
+        _id: { $in: ids.map(ObjectId) },
     })
     return Promise.resolve(docs.length === ids.length)
 }
@@ -21,7 +21,7 @@ const allValidDocumentIds = async (ids, docType) => {
 // from the original object
 const pick = (obj, keys) => {
     var newObj = {}
-    keys.forEach(k => {
+    keys.forEach((k) => {
         newObj[k] = obj[k]
     })
     return newObj
@@ -36,7 +36,7 @@ function calculateGradeLadder(grade) {
         var keyStats = calculateTeamGradeStats(grade, team._id)
         rankings.push({
             team: pick(team, ['id', 'name']),
-            keyStats
+            keyStats,
         })
     })
 
@@ -123,7 +123,6 @@ function populateGradeGamesTotalPoints(grade) {
 }
 
 function calculateTotalPoints(allStats) {
-    console.log('allstats', allStats)
     return allStats
         .map((playerStat) => playerStat.points || 0)
         .reduce((prevPoint, nextPoint) => prevPoint + nextPoint, 0)
@@ -142,29 +141,21 @@ async function _createGame(team1Id, team2Id, start, finish, round, locationName,
                 team: team2Id,
             },
             locationName: locationName,
-            location: location
+            location: location,
         })
 
         const game = await newGame.save()
 
         // adding game to team's details
-        await Team.findOneAndUpdate(
-            { _id: team1Id },
-            { $addToSet: { games: game } },
-            { new: true },
-        )
+        await Team.findOneAndUpdate({ _id: team1Id }, { $addToSet: { games: game } }, { new: true })
 
-        await Team.findOneAndUpdate(
-            { _id: team2Id },
-            { $addToSet: { games: game } },
-            { new: true },
-        )
+        await Team.findOneAndUpdate({ _id: team2Id }, { $addToSet: { games: game } }, { new: true })
 
         // add the game to the round
         const newRound = await Round.findOneAndUpdate(
             { _id: round._id },
             { $addToSet: { games: game } },
-            { new: true },
+            { new: true }
         )
 
         return { game: game, round: newRound }
@@ -202,5 +193,5 @@ module.exports = {
     populateGradeGamesTotalPoints,
     _createGame,
     _createRound,
-    checkTeamInGrade
+    checkTeamInGrade,
 }

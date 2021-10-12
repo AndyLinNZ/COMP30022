@@ -1,4 +1,4 @@
-import { Box, Flex, Text, VStack } from '@chakra-ui/react'
+import { Box, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { Stepper } from './Dashboard/League'
 
