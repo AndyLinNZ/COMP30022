@@ -4,13 +4,13 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Template, Container } from 'components/Dashboard'
-import { HStack, VStack, useToast } from '@chakra-ui/react'
+import { CloseButton, FormLabel, Stack, HStack, VStack, useToast } from '@chakra-ui/react'
 import Input from 'components/Form/Input'
 import FormButton from 'components/Form/FormButton'
 import { appPaths } from 'utils/constants'
 import { useRouter } from 'next/router'
-import { useUserDetails, useEditTeam } from 'hooks'
-import { createErrorMessage, getTeamFromUser } from 'utils'
+import { useTeam, useEditTeam, useMediaQuerySSR } from 'hooks'
+import { createErrorMessage } from 'utils'
 import { Toast } from 'components'
 
 const editTeamSchema = yup.object().shape({
@@ -22,9 +22,11 @@ const editTeamSchema = yup.object().shape({
 
 const edit = () => {
     const router = useRouter()
+    const teamId = router.query?.teamId
+    const teams = useTeam(teamId)
+    const team = teams?.team
     const toast = useToast()
-    const { user } = useUserDetails()
-    const team = getTeamFromUser(user)
+    const isDesktop = useMediaQuerySSR(900)
 
     const {
         handleSubmit,
@@ -72,6 +74,8 @@ const edit = () => {
         })
     }, [team])
 
+    console.log(team)
+
     return (
         <Template>
             <Head>
@@ -91,6 +95,23 @@ const edit = () => {
                         {...register('teamName')}
                         isRequired
                     />
+                    <Stack spacing={3} overflow="auto" maxHeight="250px">
+                        <FormLabel fontSize="1.25rem">Current players</FormLabel>
+                        {team?.players.map((player) => {
+                            return (
+                                <HStack key={player?.id} spacing="0.5rem" align="center">
+                                    <Input
+                                        minW={isDesktop ? '320px' : '160px'}
+                                        size="sm"
+                                        bg="white"
+                                        borderRadius="1rem"
+                                        placeholder={player?.name}
+                                    />
+                                    <CloseButton size="sm" />
+                                </HStack>
+                            )
+                        })}
+                    </Stack>
                     <HStack spacing="0.5rem">
                         <FormButton onClick={() => router.push(appPaths.DASHBOARD_TEAMS_PATH)}>
                             Back
@@ -103,9 +124,6 @@ const edit = () => {
                         >
                             Confirm
                         </FormButton>
-                    </HStack>
-                    <HStack>
-                        <FormButton bg="red">Delete Team</FormButton>
                     </HStack>
                 </VStack>
             </Container>

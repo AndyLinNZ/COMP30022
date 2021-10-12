@@ -1,12 +1,11 @@
 import React from 'react'
 import Head from 'next/head'
-import { useTeam, useMediaQuerySSR } from 'hooks'
+import { useTeam, useGame, useMediaQuerySSR } from 'hooks'
 import { useRouter } from 'next/router'
 import { Template } from 'components/Dashboard'
 import {
     VStack,
     HStack,
-    FormLabel,
     Table,
     Thead,
     Tbody,
@@ -22,6 +21,7 @@ import {
     Center,
 } from '@chakra-ui/react'
 import { Container } from 'components/Dashboard'
+import { MatchContainer } from 'components'
 
 const index = () => {
     const router = useRouter()
@@ -32,11 +32,16 @@ const index = () => {
     const heading = team?.team?.name ? `${team?.team?.name}` : 'Team Info'
     const tag = `${team?.team?.players?.length} PLAYERS`
     const players = team?.team?.players?.map((player) => ` ${player.name}`)
+    const playersStats = team?.team?.games.map((game) =>
+        game?.team1?.team.id === team?.team?.id
+            ? game?.team1?.playersStats
+            : game?.team2?.playersStats
+    )
     const hover = players?.toString()
 
-    const STATS_FIELDS = ['points across all matches']
+    console.log(playersStats)
 
-    console.log(team?.team)
+    const STATS_FIELDS = ['points', 'assists', 'steals']
 
     const PlayersTable = ({ players, statsFields }) => (
         <Table variant="striped" size="sm">
@@ -44,7 +49,7 @@ const index = () => {
                 <Tr borderBottom="2px solid grey" fontWeight="semibold">
                     <Th minW="100px">PLAYER</Th>
                     {statsFields.map((s) => (
-                        <Th key={s}>{s.toUpperCase()}</Th>
+                        <Th key={s}>{`TOTAL ${s.toUpperCase()}`}</Th>
                     ))}
                 </Tr>
             </Thead>
@@ -53,7 +58,9 @@ const index = () => {
                     return (
                         <Tr fontSize="1.1rem">
                             <Td>{player.name}</Td>
-                            <Td paddingLeft="1.75rem">{'-'}</Td>
+                            {statsFields.map((s) => (
+                                <Td paddingLeft="1.75rem">{'-'}</Td>
+                            ))}
                         </Tr>
                     )
                 })}
@@ -76,11 +83,20 @@ const index = () => {
                             </Center>
                         </TabList>
                         <TabPanels w="100%">
-                            <TabPanel w="100%">
+                            <TabPanel w="100%" overflow="auto" maxHeight="400px">
                                 <PlayersTable
                                     players={team?.team?.players}
                                     statsFields={STATS_FIELDS}
                                 />
+                            </TabPanel>
+                            <TabPanel w="100%" overflow="auto" maxHeight="400px">
+                                <VStack spacing="0.5rem" w="100%">
+                                    {team?.team?.games.map((game) => (
+                                        <HStack key={game._id} w="100%">
+                                            <MatchContainer game={game} />
+                                        </HStack>
+                                    ))}
+                                </VStack>
                             </TabPanel>
                         </TabPanels>
                     </Tabs>
