@@ -38,7 +38,7 @@ export default function Home() {
                     <HeroBackDropMobile />
                 </>
             )}
-            <UserHeader isHome />
+            <UserHeader />
             <Flex
                 pos="absolute"
                 left="50%"
