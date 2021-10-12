@@ -104,9 +104,6 @@ const edit = () => {
                             Confirm
                         </FormButton>
                     </HStack>
-                    <HStack>
-                        <FormButton bg="red">Delete Team</FormButton>
-                    </HStack>
                 </VStack>
             </Container>
         </Template>
