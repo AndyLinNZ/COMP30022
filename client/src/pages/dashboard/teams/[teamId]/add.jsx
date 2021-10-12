@@ -88,7 +88,7 @@ const add = () => {
                     spacing="2rem"
                     onSubmit={handleSubmit(onSubmit)}
                 >
-                    <Stack spacing={3}>
+                    <Stack spacing={3} overflow="auto" maxHeight="250px">
                         <FormLabel fontSize="1.25rem">New players to add</FormLabel>
                         {fields.map((item, index) => {
                             return (
