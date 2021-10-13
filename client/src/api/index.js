@@ -47,8 +47,7 @@ export const addPlayerToTeam = async (playerNames, teamId) => {
 }
 
 export const deletePlayersFromTeam = async (playerIds, teamId) => {
-    console.log(playerIds)
-    return await axiosInstance.delete(`/team/${teamId}/player`, playerIds)
+    return await axiosInstance.delete(`/team/${teamId}/player`, { data: playerIds })
 }
 
 export const createLeagueSeason = async (season, leagueId) => {

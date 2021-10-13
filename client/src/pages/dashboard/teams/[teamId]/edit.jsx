@@ -22,7 +22,6 @@ import { useRouter } from 'next/router'
 import { useTeam, useEditTeam, useDeletePlayersFromTeam, useMediaQuerySSR } from 'hooks'
 import { createErrorMessage } from 'utils'
 import { Toast } from 'components'
-import { set } from 'lodash'
 
 const editTeamSchema = yup.object().shape({
     teamName: yup
@@ -103,7 +102,6 @@ const edit = () => {
     })
 
     const onSubmit = (data) => {
-        console.log(data)
         selected.playerIds.length > 0 && deletePlayersFromTeam(selected)
         editTeam(data)
     }
@@ -113,8 +111,6 @@ const edit = () => {
             teamName: team?.name,
         })
     }, [team])
-
-    console.log(selected)
 
     return (
         <Template>
