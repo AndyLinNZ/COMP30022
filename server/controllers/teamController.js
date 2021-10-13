@@ -1,6 +1,7 @@
 const Team = require('../models/team')
+const Grade = require('../models/grade')
 const Player = require('../models/player')
-const { allValidDocumentIds } = require('./utils')
+const { allValidDocumentIds, checkTeamInGrade } = require('./utils')
 
 async function createTeam(req, res, next) {
     try {
@@ -28,9 +29,35 @@ async function createTeam(req, res, next) {
 
 async function getTeam(req, res, next) {
     try {
+        const team = await req.team.execPopulate('players')
+
         return res.status(200).json({
             success: true,
-            data: req.team,
+            data: team,
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
+async function getAllTeams(req, res, next) {
+    try {
+        var teams = await Team.find()
+
+        if (req.grade) {
+            var unwantedTeams = []
+            for (const team of teams) {
+                if (await checkTeamInGrade(team, req.season)) {
+                    if (!unwantedTeams.includes(team)) unwantedTeams.push(team)
+                }
+            }
+            teams = teams.filter(team => !unwantedTeams.some(uTeam => uTeam._id == team._id))
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: teams
         })
     } catch (err) {
         console.log(err)
@@ -121,6 +148,7 @@ async function deletePlayersFromTeam(req, res, next) {
 module.exports = {
     createTeam,
     getTeam,
+    getAllTeams,
     updateTeam,
     addPlayerToTeam,
     deletePlayersFromTeam,

@@ -164,8 +164,6 @@ beforeAll(async () => {
         team2: team2_updateDetails2,
     }
 
-    
-
     env.game0_id = game._id.toString()
     env.round0_id = round._id.toString()
     env.team1_id = team1._id.toString()
@@ -188,8 +186,8 @@ describe('Integration Testing: finding games', () => {
         expect(res.body.data.locationName).toBe('Josh Dubz Stadium')
         expect(res.body.data.location.type).toBe('Point')
         expect(res.body.data.location.coordinates).toStrictEqual([-22.22, 33.33])
-        expect(res.body.data.team1.team).toBe(env.team1_id)
-        expect(res.body.data.team2.team).toBe(env.team2_id)
+        expect(res.body.data.team1.team._id.toString()).toBe(env.team1_id)
+        expect(res.body.data.team2.team._id.toString()).toBe(env.team2_id)
     })
 
     test('Finding a game with a nonexistent id should return an error', async () => {

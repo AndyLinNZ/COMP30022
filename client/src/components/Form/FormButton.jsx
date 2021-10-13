@@ -15,8 +15,8 @@ const FormButton = ({
     inverse = false,
     onClick,
     type,
-    disabled,
     isLoading = false,
+    disabled = isLoading,
     children,
     ...props
 }) => {

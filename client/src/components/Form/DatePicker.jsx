@@ -9,7 +9,9 @@ const DatePicker = ({
     label,
     isRequired,
     name = 'DatePicker',
-    placeHolder = 'DD/MM/YYYY',
+    placeholder = 'DD/MM/YYYY',
+    dateFormat = 'dd/MM/yyyy',
+    ...props
 }) => {
     return (
         <Controller
@@ -26,8 +28,9 @@ const DatePicker = ({
                             onChange={onChange}
                             onBlur={onBlur}
                             selected={value}
-                            placeholderText={placeHolder}
-                            dateFormat="dd/MM/yyyy"
+                            placeholderText={placeholder}
+                            dateFormat={dateFormat}
+                            {...props}
                         />
                         <FormErrorMessage pos="absolute" fontSize="0.75rem" color="greyText.500">
                             {error?.message}

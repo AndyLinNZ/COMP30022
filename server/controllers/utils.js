@@ -74,11 +74,11 @@ function calculateTeamGradeStats(grade, teamid) {
             var thisTeam = null
             var oppTeam = null
 
-            if (game.team1.team.toString() == teamid.toString()) {
+            if (game.team1.team._id.toString() == teamid.toString()) {
                 thisTeam = game.team1
                 oppTeam = game.team2
             }
-            if (game.team2.team.toString() == teamid.toString()) {
+            if (game.team2.team._id.toString() == teamid.toString()) {
                 thisTeam = game.team2
                 oppTeam = game.team1
             }
@@ -103,9 +103,29 @@ function calculateTeamGradeStats(grade, teamid) {
     return keyStats
 }
 
+function populateGradeGamesTotalPoints(grade) {
+    grade.fixture.forEach((round) => {
+        round.games.forEach((game) => {
+            if (game.team1.playersStats.length == 0) {
+                game.team1.totalPoints = -1
+            } else {
+                const team1TotalPoints = calculateTotalPoints(game.team1.playersStats)
+                game.team1.totalPoints = team1TotalPoints
+            }
+            if (game.team2.playersStats.length == 0) {
+                game.team2.totalPoints = -1
+            } else {
+                const team2TotalPoints = calculateTotalPoints(game.team2.playersStats)
+                game.team2.totalPoints = team2TotalPoints
+            }
+        })
+    })
+}
+
 function calculateTotalPoints(allStats) {
+    console.log('allstats', allStats)
     return allStats
-        .map((playerStat) => playerStat.points)
+        .map((playerStat) => playerStat.points || 0)
         .reduce((prevPoint, nextPoint) => prevPoint + nextPoint, 0)
 }
 
@@ -168,11 +188,19 @@ async function _createRound(grade, next) {
     }
 }
 
+// returns true if a team is in any grade of a season
+async function checkTeamInGrade(teamDoc, seasonDoc) {
+    const season = await seasonDoc.execPopulate('grades')
+    return season.grades.some((grade) => grade.teams.includes(teamDoc._id.toString()))
+}
+
 module.exports = {
     allValidDocumentIds,
     pick,
     calculateTotalPoints,
     calculateGradeLadder,
+    populateGradeGamesTotalPoints,
     _createGame,
-    _createRound
+    _createRound,
+    checkTeamInGrade
 }

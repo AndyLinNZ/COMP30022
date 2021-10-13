@@ -1,7 +1,7 @@
 import { Box, Flex, Text } from '@chakra-ui/react'
 import React from 'react'
 
-const Container = ({ heading, children, minH = '375px', w = ['95%', '75%'] }) => {
+const Container = ({ heading, children, minH = '375px', w = ['95%', '75%'], ...props }) => {
     return (
         <Flex
             flexDir="column"
@@ -20,6 +20,7 @@ const Container = ({ heading, children, minH = '375px', w = ['95%', '75%'] }) =>
                 boxShadow="0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);"
                 padding="1rem"
                 minH={minH}
+                {...props}
             >
                 {children}
             </Box>
