@@ -27,21 +27,51 @@ const index = () => {
     const router = useRouter()
     const teamId = router.query?.teamId
     const team = useTeam(teamId)
-    const isDesktop = useMediaQuerySSR(860)
 
     const heading = team?.team?.name ? `${team?.team?.name}` : 'Team Info'
     const tag = `${team?.team?.players?.length} PLAYERS`
     const players = team?.team?.players?.map((player) => ` ${player.name}`)
-    const playersStats = team?.team?.games.map((game) =>
-        game?.team1?.team.id === team?.team?.id
-            ? game?.team1?.playersStats
-            : game?.team2?.playersStats
-    )
+    const gamesStats = team?.team?.games
+        .filter(function (game) {
+            return game?.status === 'completed'
+        })
+        .map((game) =>
+            game?.team1?.team.id === team?.team?.id
+                ? game?.team1?.playersStats
+                : game?.team2?.playersStats
+        )
     const hover = players?.toString()
 
-    console.log(playersStats)
-
     const STATS_FIELDS = ['points', 'assists', 'steals']
+
+    const Totals = ({ stats, playerId, gamesStats }) => {
+        let statsTotal = 0
+
+        for (let i = 0; i < gamesStats.length; i++) {
+            for (let j = 0; j < gamesStats[i].length; j++) {
+                gamesStats[i][j].playerId === playerId &&
+                    stats === 'points' &&
+                    gamesStats[i][j].points &&
+                    (statsTotal = statsTotal + gamesStats[i][j].points)
+                gamesStats[i][j].playerId === playerId &&
+                    stats === 'assists' &&
+                    gamesStats[i][j].assists &&
+                    (statsTotal = statsTotal + gamesStats[i][j].assists)
+                gamesStats[i][j].playerId === playerId &&
+                    stats === 'steals' &&
+                    gamesStats[i][j].steals &&
+                    (statsTotal = statsTotal + gamesStats[i][j].steals)
+            }
+        }
+
+        return gamesStats.length !== 0 ? (
+            <Td paddingLeft="1.75rem">
+                {Math.round((statsTotal / gamesStats.length) * 100) / 100}
+            </Td>
+        ) : (
+            <Td paddingLeft="1.75rem">0</Td>
+        )
+    }
 
     const PlayersTable = ({ players, statsFields }) => (
         <Table variant="striped" size="sm">
@@ -49,7 +79,7 @@ const index = () => {
                 <Tr borderBottom="2px solid grey" fontWeight="semibold">
                     <Th minW="100px">PLAYER</Th>
                     {statsFields.map((s) => (
-                        <Th key={s}>{`TOTAL ${s.toUpperCase()}`}</Th>
+                        <Th key={s}>{`AVERAGE ${s.toUpperCase()}`}</Th>
                     ))}
                 </Tr>
             </Thead>
@@ -59,7 +89,7 @@ const index = () => {
                         <Tr fontSize="1.1rem">
                             <Td>{player.name}</Td>
                             {statsFields.map((s) => (
-                                <Td paddingLeft="1.75rem">{'-'}</Td>
+                                <Totals stats={s} playerId={player.id} gamesStats={gamesStats} />
                             ))}
                         </Tr>
                     )

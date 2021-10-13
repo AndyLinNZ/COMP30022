@@ -146,6 +146,8 @@ async function addPlayerToTeam(req, res, next) {
 
 async function deletePlayersFromTeam(req, res, next) {
     try {
+        console.log('Deleting players..')
+        console.log(req.body)
         if (!(await allValidDocumentIds(req.body.playerIds, Player))) {
             return next({ status: 404, message: 'Some players do not exist' })
         }

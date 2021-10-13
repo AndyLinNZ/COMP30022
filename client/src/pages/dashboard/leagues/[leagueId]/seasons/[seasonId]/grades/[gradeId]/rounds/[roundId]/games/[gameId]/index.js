@@ -49,7 +49,7 @@ const index = () => {
                     </Box>
                 </VStack>
                 <GameContainer season={season} grade={grade} game={game} />
-                <VStack w="100%" overflow="auto" maxHeight="175px">
+                <VStack w="100%" overflow="auto" maxHeight="125px">
                     <GameBoxScore game={game} />
                 </VStack>
             </VStack>

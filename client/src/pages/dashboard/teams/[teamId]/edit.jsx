@@ -4,14 +4,25 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Template, Container } from 'components/Dashboard'
-import { CloseButton, FormLabel, Stack, HStack, VStack, useToast } from '@chakra-ui/react'
+import {
+    Editable,
+    EditablePreview,
+    EditableInput,
+    CloseButton,
+    FormLabel,
+    Stack,
+    HStack,
+    VStack,
+    useToast,
+} from '@chakra-ui/react'
 import Input from 'components/Form/Input'
 import FormButton from 'components/Form/FormButton'
 import { appPaths } from 'utils/constants'
 import { useRouter } from 'next/router'
-import { useTeam, useEditTeam, useMediaQuerySSR } from 'hooks'
+import { useTeam, useEditTeam, useDeletePlayersFromTeam, useMediaQuerySSR } from 'hooks'
 import { createErrorMessage } from 'utils'
 import { Toast } from 'components'
+import { set } from 'lodash'
 
 const editTeamSchema = yup.object().shape({
     teamName: yup
@@ -23,10 +34,18 @@ const editTeamSchema = yup.object().shape({
 const edit = () => {
     const router = useRouter()
     const teamId = router.query?.teamId
-    const teams = useTeam(teamId)
-    const team = teams?.team
+    const teamObject = useTeam(teamId)
+    const team = teamObject?.team
     const toast = useToast()
     const isDesktop = useMediaQuerySSR(900)
+
+    const [selected, setSelected] = React.useState({ playerIds: [] })
+    const [players, setPlayers] = React.useState([])
+    React.useEffect(() => {
+        if (team) {
+            setPlayers(team?.players)
+        }
+    }, [team])
 
     const {
         handleSubmit,
@@ -64,7 +83,28 @@ const edit = () => {
         },
     })
 
+    const { mutate: deletePlayersFromTeam } = useDeletePlayersFromTeam({
+        onSuccess: () => {
+            router.push(appPaths.DASHBOARD_TEAMS_PATH)
+        },
+        onError: (error) => {
+            const errMsg = error.response?.data?.error
+            toast({
+                render: () => (
+                    <Toast
+                        title={createErrorMessage(errMsg, 'Error deleting Players!')}
+                        type="error"
+                    />
+                ),
+                position: 'top',
+                duration: 5000,
+            })
+        },
+    })
+
     const onSubmit = (data) => {
+        console.log(data)
+        selected.playerIds.length > 0 && deletePlayersFromTeam(selected)
         editTeam(data)
     }
 
@@ -74,7 +114,7 @@ const edit = () => {
         })
     }, [team])
 
-    console.log(team)
+    console.log(selected)
 
     return (
         <Template>
@@ -97,17 +137,30 @@ const edit = () => {
                     />
                     <Stack spacing={3} overflow="auto" maxHeight="250px">
                         <FormLabel fontSize="1.25rem">Current players</FormLabel>
-                        {team?.players.map((player) => {
+                        {players.map((player) => {
                             return (
                                 <HStack key={player?.id} spacing="0.5rem" align="center">
-                                    <Input
+                                    <Editable
                                         minW={isDesktop ? '320px' : '160px'}
                                         size="sm"
-                                        bg="white"
-                                        borderRadius="1rem"
-                                        placeholder={player?.name}
+                                        defaultValue={player?.name}
+                                        isDisabled="true"
+                                    >
+                                        <EditablePreview />
+                                        <EditableInput />
+                                    </Editable>
+                                    <CloseButton
+                                        size="sm"
+                                        onClick={() => {
+                                            setSelected({
+                                                playerIds: selected.playerIds.concat([player?.id]),
+                                            })
+                                            const newPlayers = players.filter(
+                                                (p) => p.id !== player.id
+                                            )
+                                            setPlayers(newPlayers)
+                                        }}
                                     />
-                                    <CloseButton size="sm" />
                                 </HStack>
                             )
                         })}
