@@ -37,7 +37,7 @@ seasonSchema.virtual('status').get(function () {
 })
 
 seasonSchema.pre('validate', function (next) {
-    if (this.dateStart >= this.dateFinish) {
+    if (this.dateStart > this.dateFinish) {
         this.invalidate('dateFinish', 'Start date must be less than end date.', this.dateFinish)
     }
     next()

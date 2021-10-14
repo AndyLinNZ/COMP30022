@@ -38,23 +38,14 @@ const edit = () => {
         editIsSuccess,
     } = useEditGame({
         onSuccess: () => {
-            router.push(
-                window.location.pathname
-                    .split('/')
-                    .slice(0, window.location.pathname.split('/').length - 1)
-                    .join('/')
-            )
+            router.push(`${appPaths.GAME_PATH}/${game._id}`)
         },
         onError: (error) => {
             const errMsg = error.response?.data?.error
             toast({
                 render: () => (
                     <Toast
-                        title={createErrorMessage(
-                            errMsg,
-                            '',
-                            'Error editing Game'
-                        )}
+                        title={createErrorMessage(errMsg, '', 'Error editing Game')}
                         type="error"
                     />
                 ),
@@ -87,13 +78,13 @@ const edit = () => {
                     spacing="2rem"
                     onSubmit={handleSubmit(onSubmit)}
                 >
-                    {game &&
+                    {game && (
                         <VStack>
                             <Text fontWeight="bold">{game.team1.team.name}</Text>
                             <Text>vs.</Text>
                             <Text fontWeight="bold">{game.team2.team.name}</Text>
                         </VStack>
-                    }
+                    )}
                     <Input
                         label="Match location"
                         placeholder={game?.locationName}
