@@ -64,8 +64,7 @@ const gameSchema = new mongoose.Schema({
 })
 
 gameSchema.virtual('status').get(function () {
-    const matchCompleteTime = new Date(this.dateStart)
-    matchCompleteTime.setHours(this.dateStart.getHours() + 1.5)
+    const matchCompleteTime = this.dateFinish ? this.dateFinish : new Date(this.dateStart).setHours(this.dateStart.getHours() + 1.5)
     if (matchCompleteTime <= Date.now()) return 'completed'
     if (matchCompleteTime > Date.now() && Date.now() > this.dateStart) return 'active'
     return 'upcoming'

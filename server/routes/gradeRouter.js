@@ -15,7 +15,6 @@ gradeRouter.get('/:gradeId', getLeagueGradeSeason, gradeController.getGrade)
 gradeRouter.get('/:gradeId/team', getLeagueGradeSeason, gradeController.getAllGradeTeams)
 gradeRouter.get('/:gradeId/round/:roundNum', getLeagueGradeSeason, gradeController.getRound)
 
-
 // POST
 gradeRouter.post(
     '/:gradeId/team',
@@ -36,6 +35,9 @@ gradeRouter.post(
     validateFixture,
     gradeController.createFixture
 )
+
+// PATCH
+gradeRouter.patch('/:gradeId', ensureAuthenticated, ensureLeagueAdmin, gradeController.updateGrade)
 
 // DELETE
 gradeRouter.delete('/:gradeId', ensureAuthenticated, ensureLeagueAdmin, gradeController.deleteGrade)

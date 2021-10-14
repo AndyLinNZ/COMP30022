@@ -117,12 +117,18 @@ async function updateTeam(req, res, next) {
 
 async function addPlayerToTeam(req, res, next) {
     try {
+        const playerNames = [... new Set(req.body.playerNames.map(player => player.playerName))]
         var newPlayers = await Promise.all(
-            req.body.playerNames.map(async ({ playerName }) => {
-                const newPlayer = new Player({
-                    name: playerName,
-                })
-                const player = await newPlayer.save()
+            playerNames.map(async (playerName) => {
+                // Find if a player already exists
+                var player = await Player.findOne({ name: playerName, team: req.team._id })
+                if (!player) {
+                    const newPlayer = new Player({
+                        team: req.team._id,
+                        name: playerName,
+                    })
+                    player = await newPlayer.save()
+                }
                 return player
             })
         )
