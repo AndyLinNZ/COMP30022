@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useGrade, useLeague } from 'hooks'
 import { Template } from 'components/Dashboard'
-import { VStack, HStack, Button, Text } from '@chakra-ui/react'
+import { VStack, HStack, Button, Text, Spinner } from '@chakra-ui/react'
 import { Container, RoundsView } from 'components'
 
 const index = () => {
