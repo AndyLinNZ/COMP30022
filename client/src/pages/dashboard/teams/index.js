@@ -19,7 +19,7 @@ const index = () => {
                 <title>Dribblr | Teams</title>
             </Head>
             <Container heading={heading}>
-                <VStack spacing="1.25rem">
+                <VStack spacing="1.25rem" maxH="390px" overflow="auto">
                     {user?.teams?.length < 8 && (
                         <CreateCapsule
                             heading="CREATE A NEW TEAM"
