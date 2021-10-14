@@ -81,6 +81,10 @@ export const createSeasonGrade = async (grade, seasonId) => {
     return await axiosInstance.post(`/season/${seasonId}/grade`, grade)
 }
 
+export const editGrade = async (grade, gradeId) => {
+    return await axiosInstance.patch(`/grade/${gradeId}`, grade)
+}
+
 export const deleteSeason = async (seasonId) => {
     return await axiosInstance.delete(`/season/${seasonId}`)
 }

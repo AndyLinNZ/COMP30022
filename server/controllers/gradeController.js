@@ -1,4 +1,5 @@
 const { _createRound, _createGame } = require('./utils')
+const Grade = require('../models/grade')
 const { calculateGradeLadder, populateGradeGamesTotalPoints, checkTeamInGrade } = require('./utils')
 const { formatGradeResp } = require('./responseFormatters')
 const {
@@ -204,6 +205,31 @@ async function _addTeamToGrade(teamDoc, gradeDoc) {
     return await gradeDoc.save()
 }
 
+async function updateGrade(req, res, next) {
+    try {
+        let { gradeName, gradeGender, gradeDifficulty } = req.body
+
+        const updateQuery = {}
+        if (gradeName) updateQuery.name = gradeName
+        if (gradeGender) updateQuery.gender = gradeGender
+        if (gradeDifficulty) updateQuery.difficulty = gradeDifficulty
+
+        const grade = await Grade.findOneAndUpdate(
+            { _id: req.grade._id },
+            { $set: updateQuery },
+            { new: true, runValidators: true }
+        )
+
+        return res.status(200).json({
+            success: true,
+            data: grade,
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
 module.exports = {
     getRound,
     getGrade,
@@ -212,4 +238,5 @@ module.exports = {
     createRound,
     deleteGrade,
     createFixture,
+    updateGrade
 }
