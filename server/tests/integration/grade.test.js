@@ -119,11 +119,21 @@ beforeAll(async () => {
     })
     const grade4 = await fifthGrade.save()
 
+    // add a test grade object to be updated
+    const sixthGrade = new Grade({
+        ...testGrade,
+        name: 'Joshua Dubar Grade 6',
+        teams: [],
+        season: season._id
+    })
+    const grade5 = await sixthGrade.save()
+
     // add the new grades as a grade to the season
     season.grades.push(grade._id)
     season.grades.push(grade1._id)
     season.grades.push(grade2._id)
     season.grades.push(grade3._id)
+    season.grades.push(grade5._id)
     await season.save()
 
     season1.grades.push(grade4._id)
@@ -206,6 +216,7 @@ beforeAll(async () => {
     env.grade2_id = grade2._id.toString()
     env.grade3_id = grade3._id.toString()
     env.grade4_id = grade4._id.toString()
+    env.grade5_id = grade5._id.toString()
     env.round0_id = round._id.toString()
     env.team0_id = team._id.toString()
     env.team1_id = team1._id.toString()
@@ -644,5 +655,74 @@ describe('Integration Testing: creating a fixture for a grade', () => {
         expect(res.statusCode).toBe(400)
         expect(res.body.success).toBe(false)
         expect(res.body.error).toBe('This grade already has a fixture')
+    })
+})
+
+describe('Integration Testing: updating a grade', () => {
+    test('Updating a grade with a nonexistent id should return an error', async () => {
+        const res = await request.patch(`/api/grade/aaaabbbbcccc`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+
+        expect(res.statusCode).toBe(404)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('Grade does not exist')
+    })
+
+    test('A user should not be able to update a grade if they are not a league admin', async () => {
+        const res = await request.patch(`/api/grade/${env.grade5_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[2][1]}`)
+
+        expect(res.statusCode).toBe(403)
+        expect(res.body.success).toBe(false)
+        expect(res.body.error).toBe('User is not an admin')
+    })
+
+
+    test('Should be able to update a grade with valid id for just gradeName', async () => {
+        const res = await request.patch(`/api/grade/${env.grade5_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send({
+                gradeName: 'Joshua Dubar Average Grade'
+            })
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data.teams).toStrictEqual([])
+        expect(res.body.data.name).toBe('Joshua Dubar Average Grade')
+        expect(res.body.data.difficulty).toBe(testGrade.difficulty)
+        expect(res.body.data.gender).toBe(testGrade.gender)
+    })
+
+    test('Should be able to update a grade with valid id for both gradeDifficulty and gradeGender', async () => {
+        const res = await request.patch(`/api/grade/${env.grade5_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send({
+                gradeDifficulty: 'A',
+                gradeGender: 'mixed'
+            })
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data.teams).toStrictEqual([])
+        expect(res.body.data.name).toBe('Joshua Dubar Average Grade') // same grade's name was updated in prev test
+        expect(res.body.data.difficulty).toBe('A')
+        expect(res.body.data.gender).toBe('mixed')
+    })
+
+    test('Should be able to update a grade with valid id for all of gradeName, gradeDifficulty and gradeGender', async () => {
+        const res = await request.patch(`/api/grade/${env.grade5_id}`)
+            .set('Authorization', `Bearer ${env.auth_tokens[0][1]}`)
+            .send({
+                gradeName: 'Joshua Dubar Cool Grade',
+                gradeDifficulty: 'B',
+                gradeGender: 'female'
+            })
+
+        expect(res.statusCode).toBe(200)
+        expect(res.body.success).toBe(true)
+        expect(res.body.data.teams).toStrictEqual([])
+        expect(res.body.data.name).toBe('Joshua Dubar Cool Grade')
+        expect(res.body.data.difficulty).toBe('B')
+        expect(res.body.data.gender).toBe('female')
     })
 })
