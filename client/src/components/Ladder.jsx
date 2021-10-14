@@ -24,7 +24,7 @@ const Ladder = ({ ladder }) => {
                     let { wins, losses, draws, totalPoints } = ladderEntry.keyStats
                     const played = wins + losses + draws
                     return (
-                        <Tr>
+                        <Tr key={ladderEntry.team.id}>
                             <Td>{ladderEntry.rank}</Td>
                             <Td
                                 _hover={{

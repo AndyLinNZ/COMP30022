@@ -1,14 +1,8 @@
 import React from 'react'
-import Head from 'next/head'
-import { useForm } from 'react-hook-form'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { Template, Container } from 'components/Dashboard'
-import { HStack, Box, useToast, Text, VStack } from '@chakra-ui/react'
+import { HStack, Box, Text, VStack } from '@chakra-ui/react'
 import { FormButton } from 'components/Form'
 import { useRouter } from 'next/router'
 import { useMediaQuerySSR, useTeams } from 'hooks'
-import { Toast } from 'components'
 import { TeamCapsule, SearchInput } from 'components/Dashboard/League/Rounds'
 
 const sortByTeam = (teams) => {

@@ -1,5 +1,4 @@
 const Team = require('../models/team')
-const Grade = require('../models/grade')
 const Player = require('../models/player')
 const { allValidDocumentIds, checkTeamInGrade } = require('./utils')
 

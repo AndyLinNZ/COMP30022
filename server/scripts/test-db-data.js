@@ -11,9 +11,9 @@ class InternalId {
     }
 }
 
-john = new InternalId('john')
-jane = new InternalId('jane')
-joshua = new InternalId('joshua')
+const john = new InternalId('john')
+const jane = new InternalId('jane')
+const joshua = new InternalId('joshua')
 const users = [
     {
         id: john,
@@ -63,7 +63,7 @@ const seasons = [
         id: johnSeason1,
         name: 'Summer 2021/2022',
         dateStart: Date.now(),
-        dateFinish: Date.now() + 1000*86400*31,
+        dateFinish: Date.now() + 1000 * 86400 * 31,
         league: johnLeague1,
     },
 ]
@@ -218,7 +218,7 @@ const games = [
     {
         id: johnGame1,
         dateStart: Date.now(),
-        dateFinish: Date.now() + 1000*60,
+        dateFinish: Date.now() + 1000 * 60,
         round: johnRound1,
         team1: {
             team: johnTeam1,
@@ -262,8 +262,8 @@ const games = [
     },
     {
         id: johnGame2,
-        dateStart: Date.now() + 1000*86400*3,
-        dateFinish: Date.now() + 1000*86400*3 + 1000*60,
+        dateStart: Date.now() + 1000 * 86400 * 3,
+        dateFinish: Date.now() + 1000 * 86400 * 3 + 1000 * 60,
         round: johnRound1,
         team1: {
             team: lygonKangaroos,
@@ -307,8 +307,8 @@ const games = [
     },
     {
         id: johnGame3,
-        dateStart: Date.now() + 1000*86400*5,
-        dateFinish: Date.now() + 1000*86400*5 + 1000*60,
+        dateStart: Date.now() + 1000 * 86400 * 5,
+        dateFinish: Date.now() + 1000 * 86400 * 5 + 1000 * 60,
         round: johnRound1,
         team1: {
             team: swinburneBulls,
@@ -358,8 +358,8 @@ const games = [
     },
     {
         id: johnGame4,
-        dateStart: Date.now() + 1000*86400*7,
-        dateFinish: Date.now() + 1000*86400*7 + 1000*60,
+        dateStart: Date.now() + 1000 * 86400 * 7,
+        dateFinish: Date.now() + 1000 * 86400 * 7 + 1000 * 60,
         round: johnRound2,
         team1: {
             team: janeTeam1,
@@ -403,8 +403,8 @@ const games = [
     },
     {
         id: johnGame5,
-        dateStart: Date.now() + 1000*86400*(7+3),
-        dateFinish: Date.now() + 1000*86400*(7+3) + 1000*60,
+        dateStart: Date.now() + 1000 * 86400 * (7 + 3),
+        dateFinish: Date.now() + 1000 * 86400 * (7 + 3) + 1000 * 60,
         round: johnRound2,
         team1: {
             team: brunswickEmus,
@@ -448,8 +448,8 @@ const games = [
     },
     {
         id: johnGame6,
-        dateStart: Date.now() + 1000*86400*(7+5),
-        dateFinish: Date.now() + 1000*86400*(7+5) + 1000*60,
+        dateStart: Date.now() + 1000 * 86400 * (7 + 5),
+        dateFinish: Date.now() + 1000 * 86400 * (7 + 5) + 1000 * 60,
         round: johnRound2,
         team1: {
             team: johnTeam1,
