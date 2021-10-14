@@ -83,9 +83,6 @@ const edit = () => {
     })
 
     const { mutate: deletePlayersFromTeam } = useDeletePlayersFromTeam({
-        onSuccess: () => {
-            router.push(appPaths.DASHBOARD_TEAMS_PATH)
-        },
         onError: (error) => {
             const errMsg = error.response?.data?.error
             toast({
