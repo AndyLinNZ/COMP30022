@@ -36,6 +36,7 @@ const formatGameResp = (gameDoc) => {
         'location',
         'locationName',
         'status',
+        'paths'
     ])
     const team1 = {
         team: formatTeamMinimalPlayers(gameDoc.team1.team),

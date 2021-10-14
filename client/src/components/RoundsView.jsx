@@ -39,21 +39,18 @@ const RoundsView = ({ rounds, showEditButtons }) => {
                                 {round.games.map((game) => (
                                     <HStack key={game._id} w="100%">
                                         <MatchContainer game={game} />
-                                        {showEditButtons ? (
-                                            <>
-                                                {game.status === 'upcoming' ? (
-                                                    <EditButton
-                                                        name={`${round._id}/games/${game._id}`}
-                                                    />
-                                                ) : (
-                                                    <EditButton
-                                                        name={`${round._id}/games/${game._id}`}
-                                                        icon={<UpdatePlayerStatsIcon />}
-                                                        path="stats"
-                                                    />
-                                                )}
-                                            </>
-                                        ) : null}
+                                        {showEditButtons &&
+                                            (game.status === 'upcoming' ? (
+                                                <EditButton
+                                                    name={`${round._id}/games/${game._id}`}
+                                                />
+                                            ) : (
+                                                <EditButton
+                                                    name={`${round._id}/games/${game._id}`}
+                                                    icon={<UpdatePlayerStatsIcon />}
+                                                    path="stats"
+                                                />
+                                            ))}
                                     </HStack>
                                 ))}
                                 {round.teamsOnBye.map((team) => (

@@ -56,6 +56,11 @@ async function getGame(req, res, next) {
         const game = await req.game.execPopulate(populateQuery)
         game.team1.totalPoints = calculateTotalPoints(game.team1.playersStats)
         game.team2.totalPoints = calculateTotalPoints(game.team2.playersStats)
+        game.paths = {
+            leagueId: req.league._id,
+            seasonId: req.season._id,
+            gradeId: req.grade._id
+        }
         return res.status(200).json({
             success: true,
             data: formatGameResp(game),
