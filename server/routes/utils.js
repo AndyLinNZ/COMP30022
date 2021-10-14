@@ -56,7 +56,6 @@ async function getLeagueGradeSeason(req, res, next, skip = false) {
 
 // this middleware gets a team document and populates req.team
 async function getTeamDocument(req, res, next) {
-    console.log(req.body)
     const teamId = req.params.teamId ? req.params.teamId : req.body.teamId
     const team = ObjectId.isValid(teamId) ? await Team.findById(teamId) : null
     if (!team) return res.status(404).json({ success: false, error: 'Team does not exist' })

@@ -44,7 +44,7 @@ const index = () => {
 
     const STATS_FIELDS = ['points', 'assists', 'steals']
 
-    const Totals = ({ stats, playerId, gamesStats }) => {
+    const Averages = ({ stats, playerId, gamesStats }) => {
         let statsTotal = 0
 
         for (let i = 0; i < gamesStats.length; i++) {
@@ -86,10 +86,15 @@ const index = () => {
             <Tbody>
                 {players?.map((player) => {
                     return (
-                        <Tr fontSize="1.1rem">
+                        <Tr key={player.id} fontSize="1.1rem">
                             <Td>{player.name}</Td>
-                            {statsFields.map((s) => (
-                                <Totals stats={s} playerId={player.id} gamesStats={gamesStats} />
+                            {statsFields.map((s, index) => (
+                                <Averages
+                                    key={index}
+                                    stats={s}
+                                    playerId={player.id}
+                                    gamesStats={gamesStats}
+                                />
                             ))}
                         </Tr>
                     )
