@@ -42,7 +42,7 @@ const Ladder = ({ ladder }) => {
                 top="50%"
                 left="50%"
                 transform="translate(-50%, -50%)"
-             >
+            >
                 No games played yet!
             </Text>
     )
