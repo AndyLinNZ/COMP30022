@@ -29,7 +29,35 @@ async function createTeam(req, res, next) {
 
 async function getTeam(req, res, next) {
     try {
-        const team = await req.team.execPopulate('players')
+        const populateQuery = [
+            {
+                path: 'players',
+                model: 'Player',
+            },
+            {
+                path: 'games',
+                model: 'Game',
+                populate: [
+                    {
+                        path: 'team1.team',
+                        model: 'Team',
+                    },
+                    {
+                        path: 'team1.playersStats',
+                        model: 'PlayerStat',
+                    },
+                    {
+                        path: 'team2.team',
+                        model: 'Team',
+                    },
+                    {
+                        path: 'team2.playersStats',
+                        model: 'PlayerStat',
+                    },
+                ],
+            },
+        ]
+        const team = await req.team.execPopulate(populateQuery)
 
         return res.status(200).json({
             success: true,
@@ -52,12 +80,12 @@ async function getAllTeams(req, res, next) {
                     if (!unwantedTeams.includes(team)) unwantedTeams.push(team)
                 }
             }
-            teams = teams.filter(team => !unwantedTeams.some(uTeam => uTeam._id == team._id))
+            teams = teams.filter((team) => !unwantedTeams.some((uTeam) => uTeam._id == team._id))
         }
 
         return res.status(200).json({
             success: true,
-            data: teams
+            data: teams,
         })
     } catch (err) {
         console.log(err)
