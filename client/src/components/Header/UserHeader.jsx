@@ -14,20 +14,28 @@ const UserHeader = () => {
     const router = useRouter()
     const hideLogo = router.pathname === '/'
 
-    return isLoggedIn() ? (
+    const [userloggedIn, setUserloggedIn] = React.useState(false)
+
+    React.useEffect(() => {
+        setUserloggedIn(isLoggedIn())
+    })
+
+    return userloggedIn ? (
         <Flex
             as="nav"
             w={isDesktop ? '78%' : '100%'}
+            h="40px"
             bg="transparent"
             fontSize="1.5rem"
             pos="absolute"
             left="50%"
             transform="translateX(-50%)"
+            top="0"
             zIndex="dropdown"
         >
             <Box
-                marginTop={isDesktop ? 0 : '1rem'}
-                marginLeft={isDesktop ? 0 : '1rem'}
+                marginTop={['1rem', 0]}
+                marginLeft={['1rem', 0]}
                 cursor="pointer"
                 onClick={() => router.push(appPaths.HOME_PATH)}
                 visibility={hideLogo ? 'hidden' : undefined}
