@@ -1,5 +1,4 @@
 import React from 'react'
-import { useRouter } from 'next/router'
 import { useMediaQuerySSR } from 'hooks'
 import { VStack, HStack, Table, Thead, Tbody, Tr, Th, Td, Box } from '@chakra-ui/react'
 
@@ -56,11 +55,9 @@ const PlayersTable = ({ playersStats, stats_fields }) => (
 )
 
 const GameBoxScore = ({ game }) => {
-    const router = useRouter()
     const isDesktop = useMediaQuerySSR(860)
 
     const hasResults = game?.team1.playersStats?.length > 0 && game?.team2.playersStats?.length > 0
-    const hasStatus = game?.status
     const STATS_FIELDS = ['points']
 
     return isDesktop ? (

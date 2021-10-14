@@ -1,11 +1,9 @@
-import { Flex, VStack, Text, Divider, Grid, HStack } from '@chakra-ui/react'
+import { Flex, Text, Grid, HStack } from '@chakra-ui/react'
 import { useMediaQuerySSR } from 'hooks'
-import { useRouter } from 'next/router'
 import Tag from 'components/Dashboard/Tag'
 import React from 'react'
 
 const ByeContainer = ({ team }) => {
-    const router = useRouter()
     const isDesktop = useMediaQuerySSR(860)
     const { name } = team
     return isDesktop ? (
@@ -23,7 +21,12 @@ const ByeContainer = ({ team }) => {
             onClick={() => {}}
             paddingX="1rem"
         >
-            <Grid templateColumns="3fr 2fr 2fr 2fr 3fr 0.5rem 6fr" gridGap="1rem" alignItems="center" w="100%">
+            <Grid
+                templateColumns="3fr 2fr 2fr 2fr 3fr 0.5rem 6fr"
+                gridGap="1rem"
+                alignItems="center"
+                w="100%"
+            >
                 <Text fontWeight="bold" fontSize="lg">
                     {name}
                 </Text>
@@ -31,7 +34,7 @@ const ByeContainer = ({ team }) => {
                 <Tag type="players" text="bye" />
             </Grid>
         </Flex>
-    ) : 
+    ) : (
         <Flex
             w="100%"
             h="100px"
@@ -53,6 +56,7 @@ const ByeContainer = ({ team }) => {
                 <Tag type="players" text="bye" />
             </HStack>
         </Flex>
+    )
 }
 
 export default ByeContainer

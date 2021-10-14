@@ -2,7 +2,8 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import { useMediaQuerySSR } from 'hooks'
 import { VStack, HStack, Button, Divider, Text, Grid, Box } from '@chakra-ui/react'
-import { TimeIcon, MinusIcon, StarIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
+import { TimeIcon, MinusIcon, ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
+import { appPaths } from 'utils/constants'
 import Tag from 'components/Dashboard/Tag'
 import LocationIcon from 'components/svg/LocationIcon'
 
@@ -36,14 +37,7 @@ const GameContainer = ({ season, grade, game }) => {
                         _hover={{ bg: 'darkGrey' }}
                         variant="ghost"
                         fontSize={isDesktop ? '0.9rem' : '0.7rem'}
-                        onClick={() =>
-                            router.push(
-                                window.location.pathname
-                                    .split('/')
-                                    .slice(0, window.location.pathname.split('/').length - 3)
-                                    .join('/')
-                            )
-                        }
+                        onClick={() => router.back()}
                     >
                         BACK
                     </Button>
@@ -53,13 +47,11 @@ const GameContainer = ({ season, grade, game }) => {
                         lineHeight="1"
                         pl={15}
                     >
-                        {' '}
-                        {season?.name}{' '}
+                        {season?.name}
                     </Text>
                     <ChevronRightIcon w={[10, 12]} h={[10, 12]} color={'grey'} />
                     <Text color="greyBg" fontSize={isDesktop ? '1.1rem' : '0.8rem'} lineHeight="1">
-                        {' '}
-                        {grade?.name}{' '}
+                        {grade?.name}
                     </Text>
                     {hasStatus && isDesktop && (
                         <Box pos="absolute" top="3" right="3" py={2.5} px={2.5}>
@@ -89,14 +81,25 @@ const GameContainer = ({ season, grade, game }) => {
                         fontWeight="semibold"
                         fontSize={isDesktop ? '3rem' : '1.5rem'}
                     >
-                        <Text color="greyText.500" fontSize={isDesktop ? '3rem' : '1.5rem'}>
+                        <Text
+                            _hover={{
+                                cursor: 'pointer',
+                                color: 'darkGrey',
+                            }}
+                            color="greyText.500"
+                            fontSize={isDesktop ? '3rem' : '1.5rem'}
+                            onClick={() =>
+                                router.push(
+                                    `${appPaths.DASHBOARD_TEAMS_PATH}/${game?.team1?.team._id}/games`
+                                )
+                            }
+                        >
                             {game?.team1?.team?.name}
                         </Text>
 
                         {hasResults ? (
                             <Text justifySelf="end" color={team1PointsColour}>
-                                {' '}
-                                {game.team1.totalPoints}{' '}
+                                {game.team1.totalPoints}
                             </Text>
                         ) : (
                             <MinusIcon justifySelf="end" color="greyText.500" />
@@ -112,14 +115,27 @@ const GameContainer = ({ season, grade, game }) => {
 
                         {hasResults ? (
                             <Text justifySelf="start" color={team2PointsColour}>
-                                {' '}
-                                {game.team2.totalPoints}{' '}
+                                {game.team2.totalPoints}
                             </Text>
                         ) : (
                             <MinusIcon justifySelf="start" color="greyText.500" />
                         )}
 
-                        <Text color="greyText.500">{game?.team2?.team?.name}</Text>
+                        <Text
+                            _hover={{
+                                cursor: 'pointer',
+                                color: 'darkGrey',
+                            }}
+                            color="greyText.500"
+                            fontSize={isDesktop ? '3rem' : '1.5rem'}
+                            onClick={() =>
+                                router.push(
+                                    `${appPaths.DASHBOARD_TEAMS_PATH}/${game?.team2?.team._id}/games`
+                                )
+                            }
+                        >
+                            {game?.team2?.team?.name}
+                        </Text>
                     </Grid>
                 ) : (
                     <VStack>
@@ -150,16 +166,14 @@ const GameContainer = ({ season, grade, game }) => {
                         >
                             {hasResults ? (
                                 <Text justifyItems="center" color={team1PointsColour}>
-                                    {' '}
-                                    {game.team1.totalPoints}{' '}
+                                    {game.team1.totalPoints}
                                 </Text>
                             ) : (
                                 <MinusIcon color="greyText.500" />
                             )}
                             {hasResults ? (
                                 <Text justifyItems="center" color={team2PointsColour}>
-                                    {' '}
-                                    {game.team2.totalPoints}{' '}
+                                    {game.team2.totalPoints}
                                 </Text>
                             ) : (
                                 <MinusIcon color="greyText.500" />

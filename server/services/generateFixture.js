@@ -17,11 +17,11 @@ class TeamNode {
             .reduce((prev, curr) => prev + curr, 0)
     }
     // Private method to find next team to play from adjacency list based on least amount of times played
-    #nextTeamFromPlayedTeams() {
+    nextTeamFromPlayedTeams() {
         return [...this.played].sort((t1, t2) => t1.times - t2.times)[0].team
     }
     // Given an array of Teams, find any team from the Nodes list that this current Node hasen't played
-    #teamsNotPlayed(teams) {
+    teamsNotPlayed(teams) {
         return [...teams
             .filter((team) => !this.played
                 .map((playedTeam) => playedTeam.team)
@@ -30,9 +30,9 @@ class TeamNode {
     }
     // Find the next team to play
     nextTeamToPlay(teams) {
-        const newTeamsToPlay = this.#teamsNotPlayed(teams)
+        const newTeamsToPlay = this.teamsNotPlayed(teams)
         if (newTeamsToPlay.length !== 0) return newTeamsToPlay[0]
-        return this.#nextTeamFromPlayedTeams()
+        return this.nextTeamFromPlayedTeams()
     }
 }
 

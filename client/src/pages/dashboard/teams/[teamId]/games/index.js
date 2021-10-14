@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import { useTeam, useGame, useMediaQuerySSR } from 'hooks'
+import { useTeam } from 'hooks'
 import { useRouter } from 'next/router'
 import { Template } from 'components/Dashboard'
 import {
@@ -12,7 +12,6 @@ import {
     Tr,
     Th,
     Td,
-    Box,
     Tabs,
     TabList,
     TabPanels,

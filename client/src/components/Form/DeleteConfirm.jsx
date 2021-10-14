@@ -21,7 +21,7 @@ const DeleteConfirm = ({ isOpen, onClose, onDelete, toDeleteText = '' }) => {
                     </AlertDialogHeader>
 
                     <AlertDialogBody>
-                        Are you sure? You can't undo this action afterwards.
+                        Are you sure? You cannot undo this action afterwards.
                     </AlertDialogBody>
 
                     <AlertDialogFooter spacing="0.5rem">

@@ -14,9 +14,7 @@ import { MatchContainer, ByeContainer } from 'components'
 import EditButton from 'components/Dashboard/League/EditButton'
 import UpdatePlayerStatsIcon from 'components/svg/UpdatePlayerStatsIcon'
 
-// if using this for the non-logged in user pages, it might be good to add a
-// "showEditButtons" prop or something to hide the edit buttons
-const RoundsView = ({ rounds }) => {
+const RoundsView = ({ rounds, showEditButtons }) => {
     return (
         <Tabs variant="soft-rounded" colorScheme="gray" w="100%">
             <TabList background="greyText.500" paddingY="0.8rem" paddingX="1rem" borderRadius="8px">
@@ -41,15 +39,18 @@ const RoundsView = ({ rounds }) => {
                                 {round.games.map((game) => (
                                     <HStack key={game._id} w="100%">
                                         <MatchContainer game={game} />
-                                        {game.status === 'upcoming' ? (
-                                            <EditButton name={`${round._id}/games/${game._id}`} />
-                                        ) : (
-                                            <EditButton
-                                                name={`${round._id}/games/${game._id}`}
-                                                icon={<UpdatePlayerStatsIcon />}
-                                                path="stats"
-                                            />
-                                        )}
+                                        {showEditButtons &&
+                                            (game.status === 'upcoming' ? (
+                                                <EditButton
+                                                    name={`${round._id}/games/${game._id}`}
+                                                />
+                                            ) : (
+                                                <EditButton
+                                                    name={`${round._id}/games/${game._id}`}
+                                                    icon={<UpdatePlayerStatsIcon />}
+                                                    path="stats"
+                                                />
+                                            ))}
                                     </HStack>
                                 ))}
                                 {round.teamsOnBye.map((team) => (

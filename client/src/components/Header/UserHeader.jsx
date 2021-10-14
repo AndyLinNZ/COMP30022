@@ -12,7 +12,11 @@ import HomeHeader from './HomeHeader'
 const UserHeader = () => {
     const isDesktop = useMediaQuerySSR(1024)
     const router = useRouter()
-    const hideLogo = router.pathname === '/'
+    const [hideLogo, setHideLogo] = React.useState(false)
+
+    React.useEffect(() => {
+        setHideLogo(router.pathname === '/')
+    }, [])
 
     return isLoggedIn() ? (
         <Flex

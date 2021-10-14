@@ -1,4 +1,4 @@
-import { Flex, Box, VStack, IconButton, Text } from '@chakra-ui/react'
+import { Flex, VStack, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useMediaQuerySSR } from 'hooks'
 import React from 'react'

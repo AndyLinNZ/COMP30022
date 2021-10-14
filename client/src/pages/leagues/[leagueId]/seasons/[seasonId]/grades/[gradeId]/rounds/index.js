@@ -2,8 +2,8 @@ import React from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useGrade, useLeague } from 'hooks'
-import { Template, CreateCapsule } from 'components/Dashboard'
-import { VStack, HStack, Button, Spinner } from '@chakra-ui/react'
+import { Template } from 'components/Dashboard'
+import { VStack, HStack, Button, Text, Spinner } from '@chakra-ui/react'
 import { Container, RoundsView } from 'components'
 
 const index = () => {
@@ -42,12 +42,19 @@ const index = () => {
                     ) : (
                         <>
                             {hasRounds ? (
-                                <RoundsView rounds={grade.fixture} showEditButtons={true} />
+                                <RoundsView rounds={grade.fixture} showEditButtons={false} />
                             ) : (
-                                <CreateCapsule
-                                    heading="GENERATE ROUNDS AND MATCHES"
-                                    borderRadius="1rem"
-                                />
+                                <Text
+                                    fontSize="2rem"
+                                    textAlign="center"
+                                    color="greyText"
+                                    pos="absolute"
+                                    top="50%"
+                                    left="50%"
+                                    transform="translate(-50%, -50%)"
+                                >
+                                    This Grade does not have a fixture yet!
+                                </Text>
                             )}
                         </>
                     )}

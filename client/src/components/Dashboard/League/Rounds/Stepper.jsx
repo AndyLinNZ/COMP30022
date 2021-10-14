@@ -1,11 +1,8 @@
 import React from 'react'
-import { Text, Flex, HStack, IconButton } from '@chakra-ui/react'
+import { Text, Flex, HStack } from '@chakra-ui/react'
 import { useMediaQuerySSR } from 'hooks'
-import { useRouter } from 'next/router'
 
 const Stepper = () => {
-    const router = useRouter()
-
     const [selected, setSelected] = React.useState(1)
     const isDesktop = useMediaQuerySSR(600)
 

@@ -10,9 +10,10 @@ export const appPaths = {
     DASHBOARD_CREATE_LEAGUE_PATH: '/dashboard/leagues/create',
     DASHBOARD_PROFILE_PATH: '/dashboard/profile',
     LOG_OUT_PATH: '/logout',
-    LEAGUE_PATH: '/league',
-    LEAGUE_SEASON_PATH: '/league/[leagueId]/seasons',
-    LEAGUE_GRADE_PATH: '/league/[leagueId]/seasons/[seasonId]/grades',
+    LEAGUE_PATH: '/leagues',
+    LEAGUE_SEASON_PATH: '/leagues/[leagueId]/seasons',
+    LEAGUE_GRADE_PATH: '/leagues/[leagueId]/seasons/[seasonId]/grades',
+    GAME_PATH: '/games',
 }
 
 export const requiredText = 'This is a required field.'
