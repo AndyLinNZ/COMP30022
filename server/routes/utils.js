@@ -82,7 +82,9 @@ async function _validateFixture(req, res, next) {
         return res.status(404).json({ success: false, error: 'Some team does not exist' })
     }
     // Check date and location. NB: Excluded check for location coordinates and game dateFinish
-    const noDateOrLocations = !datesAndLocations || datesAndLocations.length === 0 ||
+    const noDateOrLocations =
+        !datesAndLocations ||
+        datesAndLocations.length === 0 ||
         datesAndLocations.some((dl) => !dl.dateStart || !dl.locationName)
     if (noDateOrLocations) {
         return res.status(400).json({ success: false, error: 'Dates and locations are invalid' })
@@ -93,7 +95,9 @@ async function _validateFixture(req, res, next) {
     }
     // Check number of rounds can fit within season
     if (dateStart.setDate(dateStart.getDate() + numRounds * 7) > dateFinish) {
-        return res.status(400).json({ success: false, error: 'numRounds cannot fit within the season' })
+        return res
+            .status(400)
+            .json({ success: false, error: 'numRounds cannot fit within the season' })
     }
 
     req.teams = await Promise.all(teamIds.map(async (teamId) => await Team.findById(teamId)))
@@ -151,5 +155,5 @@ module.exports = {
     ensureLeagueCreator,
     ensureLeagueAdmin,
     ensureTeamAdmin,
-    validateFixture
+    validateFixture,
 }

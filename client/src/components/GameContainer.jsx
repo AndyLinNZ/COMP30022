@@ -36,7 +36,14 @@ const GameContainer = ({ season, grade, game }) => {
                         _hover={{ bg: 'darkGrey' }}
                         variant="ghost"
                         fontSize={isDesktop ? '0.9rem' : '0.7rem'}
-                        onClick={() => router.back()}
+                        onClick={() =>
+                            router.push(
+                                window.location.pathname
+                                    .split('/')
+                                    .slice(0, window.location.pathname.split('/').length - 3)
+                                    .join('/')
+                            )
+                        }
                     >
                         BACK
                     </Button>

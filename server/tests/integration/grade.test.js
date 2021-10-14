@@ -417,12 +417,12 @@ describe('Integration Testing: creating a fixture for a grade', () => {
                 teamIds: [env.team0_id],
                 numRounds: 3,
                 datesAndLocations: [{
-                    "dateStart": "2021-09-11T12:23:34.944Z",
-                    "dateFinish": "2021-09-11T12:23:35.944Z",
-                    "locationName": "Joshua Dubar Sports Centre",
-                    "location": {
-                        "type": "Point",
-                        "coordinates": [144.96305759999998, -37.8136276]
+                    'dateStart': '2021-09-11T12:23:34.944Z',
+                    'dateFinish': '2021-09-11T12:23:35.944Z',
+                    'locationName': 'Joshua Dubar Sports Centre',
+                    'location': {
+                        'type': 'Point',
+                        'coordinates': [144.96305759999998, -37.8136276]
                     }
                 }]
             })
@@ -479,11 +479,11 @@ describe('Integration Testing: creating a fixture for a grade', () => {
                 teamIds: [env.team2_id, env.team3_id],
                 numRounds: 3,
                 datesAndLocations: [{
-                    "dateStart": "2021-09-11T12:23:34.944Z",
-                    "dateFinish": "2021-09-11T12:23:35.944Z",
-                    "location": {
-                        "type": "Point",
-                        "coordinates": [144.96305759999998, -37.8136276]
+                    'dateStart': '2021-09-11T12:23:34.944Z',
+                    'dateFinish': '2021-09-11T12:23:35.944Z',
+                    'location': {
+                        'type': 'Point',
+                        'coordinates': [144.96305759999998, -37.8136276]
                     }
                 }]
             })
@@ -499,12 +499,12 @@ describe('Integration Testing: creating a fixture for a grade', () => {
             .send({
                 teamIds: [env.team2_id, env.team3_id],
                 datesAndLocations: [{
-                    "dateStart": "2021-09-11T12:23:34.944Z",
-                    "dateFinish": "2021-09-11T12:23:35.944Z",
-                    "locationName": "Joshua Dubar Sports Centre",
-                    "location": {
-                        "type": "Point",
-                        "coordinates": [144.96305759999998, -37.8136276]
+                    'dateStart': '2021-09-11T12:23:34.944Z',
+                    'dateFinish': '2021-09-11T12:23:35.944Z',
+                    'locationName': 'Joshua Dubar Sports Centre',
+                    'location': {
+                        'type': 'Point',
+                        'coordinates': [144.96305759999998, -37.8136276]
                     }
                 }]
             })
@@ -521,12 +521,12 @@ describe('Integration Testing: creating a fixture for a grade', () => {
                 teamIds: [env.team2_id, env.team3_id],
                 numRounds: 0,
                 datesAndLocations: [{
-                    "dateStart": "2021-09-11T12:23:34.944Z",
-                    "dateFinish": "2021-09-11T12:23:35.944Z",
-                    "locationName": "Joshua Dubar Sports Centre",
-                    "location": {
-                        "type": "Point",
-                        "coordinates": [144.96305759999998, -37.8136276]
+                    'dateStart': '2021-09-11T12:23:34.944Z',
+                    'dateFinish': '2021-09-11T12:23:35.944Z',
+                    'locationName': 'Joshua Dubar Sports Centre',
+                    'location': {
+                        'type': 'Point',
+                        'coordinates': [144.96305759999998, -37.8136276]
                     }
                 }]
             })
@@ -543,12 +543,12 @@ describe('Integration Testing: creating a fixture for a grade', () => {
                 teamIds: [env.team2_id, env.team3_id],
                 numRounds: 69,
                 datesAndLocations: [{
-                    "dateStart": "2021-09-11T12:23:34.944Z",
-                    "dateFinish": "2021-09-11T12:23:35.944Z",
-                    "locationName": "Joshua Dubar Sports Centre",
-                    "location": {
-                        "type": "Point",
-                        "coordinates": [144.96305759999998, -37.8136276]
+                    'dateStart': '2021-09-11T12:23:34.944Z',
+                    'dateFinish': '2021-09-11T12:23:35.944Z',
+                    'locationName': 'Joshua Dubar Sports Centre',
+                    'location': {
+                        'type': 'Point',
+                        'coordinates': [144.96305759999998, -37.8136276]
                     }
                 }]
             })
@@ -565,8 +565,8 @@ describe('Integration Testing: creating a fixture for a grade', () => {
                 teamIds: [env.team1_id, env.team2_id],
                 numRounds: 2,
                 datesAndLocations: [{
-                    "dateStart": "2021-09-11T12:23:34.944Z",
-                    "locationName": "Joshua Dubar Sports Centre"
+                    'dateStart': '2021-09-11T12:23:34.944Z',
+                    'locationName': 'Joshua Dubar Sports Centre'
                 }]
             })
 
@@ -583,12 +583,12 @@ describe('Integration Testing: creating a fixture for a grade', () => {
                 teamIds: [env.team2_id, env.team3_id],
                 numRounds: 2,
                 datesAndLocations: [{
-                    "dateStart": "2021-09-11T12:23:34.944Z",
-                    "dateFinish": "2021-09-11T12:23:35.944Z",
-                    "locationName": "Joshua Dubar Sports Centre",
-                    "location": {
-                        "type": "Point",
-                        "coordinates": [144.96305759999998, -37.8136276]
+                    'dateStart': '2021-09-11T12:23:34.944Z',
+                    'dateFinish': '2021-09-11T12:23:35.944Z',
+                    'locationName': 'Joshua Dubar Sports Centre',
+                    'location': {
+                        'type': 'Point',
+                        'coordinates': [144.96305759999998, -37.8136276]
                     }
                 }]
             })
@@ -610,8 +610,8 @@ describe('Integration Testing: creating a fixture for a grade', () => {
                 teamIds: [env.team4_id, env.team5_id, env.team6_id],
                 numRounds: 2,
                 datesAndLocations: [{
-                    "dateStart": "2021-09-11T12:23:34.944Z",
-                    "locationName": "Joshua Dubar Sports Centre",
+                    'dateStart': '2021-09-11T12:23:34.944Z',
+                    'locationName': 'Joshua Dubar Sports Centre',
                 }]
             })
 
@@ -631,12 +631,12 @@ describe('Integration Testing: creating a fixture for a grade', () => {
                 teamIds: [env.team2_id, env.team3_id],
                 numRounds: 2,
                 datesAndLocations: [{
-                    "dateStart": "2021-09-11T12:23:34.944Z",
-                    "dateFinish": "2021-09-11T12:23:35.944Z",
-                    "locationName": "Joshua Dubar Sports Centre",
-                    "location": {
-                        "type": "Point",
-                        "coordinates": [144.96305759999998, -37.8136276]
+                    'dateStart': '2021-09-11T12:23:34.944Z',
+                    'dateFinish': '2021-09-11T12:23:35.944Z',
+                    'locationName': 'Joshua Dubar Sports Centre',
+                    'location': {
+                        'type': 'Point',
+                        'coordinates': [144.96305759999998, -37.8136276]
                     }
                 }]
             })

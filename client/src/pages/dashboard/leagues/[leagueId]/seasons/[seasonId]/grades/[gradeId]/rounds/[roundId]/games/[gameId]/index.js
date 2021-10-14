@@ -1,8 +1,9 @@
 import React from 'react'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useGrade, useLeague, useGame, useSeason, useMediaQuerySSR } from 'hooks'
 import { Template } from 'components/Dashboard'
-import { VStack, Box } from '@chakra-ui/react'
+import { VStack, HStack, Box } from '@chakra-ui/react'
 import { GameContainer, GameBoxScore } from 'components'
 
 const index = () => {
@@ -16,6 +17,15 @@ const index = () => {
 
     return (
         <Template>
+            <Head>
+                {game ? (
+                    <title>
+                        Dribblr | {`${game?.team1?.team?.name} VS ${game?.team2?.team?.name}`}
+                    </title>
+                ) : (
+                    <title>Dribblr | Match Details</title>
+                )}
+            </Head>
             <VStack
                 pos="absolute"
                 top={isDesktop ? '50%' : '68%'}
@@ -39,7 +49,9 @@ const index = () => {
                     </Box>
                 </VStack>
                 <GameContainer season={season} grade={grade} game={game} />
-                <GameBoxScore game={game} />
+                <VStack w="100%" overflow="auto" maxHeight="125px">
+                    <GameBoxScore game={game} />
+                </VStack>
             </VStack>
         </Template>
     )

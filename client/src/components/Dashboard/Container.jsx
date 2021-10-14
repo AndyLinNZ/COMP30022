@@ -1,7 +1,23 @@
-import { Box, Flex, Text } from '@chakra-ui/react'
+import { Box, Flex, Text, Tag, Tooltip, HStack } from '@chakra-ui/react'
 import React from 'react'
 
-const Container = ({ heading, children, minH = '375px', w = ['95%', '75%'], ...props }) => {
+const CustomTag = React.forwardRef(({ children, ...rest }, ref) => (
+    <Box p="1">
+        <Tag bg="greyBg" color="white" ref={ref} {...rest}>
+            {children}
+        </Tag>
+    </Box>
+))
+
+const Container = ({
+    heading,
+    tag,
+    hover,
+    children,
+    minH = '375px',
+    w = ['95%', '75%'],
+    ...props
+}) => {
     return (
         <Flex
             flexDir="column"
@@ -11,7 +27,14 @@ const Container = ({ heading, children, minH = '375px', w = ['95%', '75%'], ...p
             transform="translate(-50%, -50%)"
             w={w}
         >
-            <Text fontSize="2rem">{heading}</Text>
+            <HStack spacing="0.5rem" align="center">
+                <Text fontSize="2rem">{heading}</Text>
+                {tag && (
+                    <Tooltip label={hover} placement="right">
+                        <CustomTag>{tag}</CustomTag>
+                    </Tooltip>
+                )}
+            </HStack>
             <Box
                 h="100%"
                 w="100%"

@@ -46,6 +46,10 @@ export const addPlayerToTeam = async (playerNames, teamId) => {
     return await axiosInstance.post(`/team/${teamId}/player`, playerNames)
 }
 
+export const deletePlayersFromTeam = async (playerIds, teamId) => {
+    return await axiosInstance.delete(`/team/${teamId}/player`, { data: playerIds })
+}
+
 export const createLeagueSeason = async (season, leagueId) => {
     return await axiosInstance.post(`/league/${leagueId}/season`, season)
 }
