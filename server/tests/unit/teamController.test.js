@@ -97,6 +97,7 @@ describe('Unit Testing: addPlayerToTeam in teamController', () => {
         const expectedTeam = new Team({ ...teamDetails, players: ['613472896ef0dc42247c6520'] })
 
         Player.prototype.save = jest.fn().mockResolvedValue(new Player(playerDetails))
+        Player.findOne = jest.fn().mockResolvedValue(null)
         Player.findOneAndUpdate = jest
             .fn()
             .mockResolvedValue(new Player({ ...playerDetails, team: '6131e8b7f69a130fa021f6fd' }))
