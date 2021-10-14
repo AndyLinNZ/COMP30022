@@ -1,5 +1,4 @@
 import React from 'react'
-import { useRouter } from 'next/router'
 import { useGrade, useLeague, useGame, useSeason, useMediaQuerySSR } from 'hooks'
 import { Template } from 'components/Dashboard'
 import { VStack, Box } from '@chakra-ui/react'
@@ -11,7 +10,6 @@ const index = () => {
     const { season } = useSeason()
     const { game } = useGame()
 
-    const router = useRouter()
     const isDesktop = useMediaQuerySSR(860)
 
     return (

@@ -5,6 +5,7 @@ import { useGrade, useLeague } from 'hooks'
 import { Template } from 'components/Dashboard'
 import { VStack, HStack, Button, Spinner } from '@chakra-ui/react'
 import { Container, Ladder } from 'components'
+import { isBrowser } from 'utils'
 
 const index = () => {
     const { grade, isLoading } = useGrade()
@@ -18,10 +19,13 @@ const index = () => {
             </Head>
             <Container
                 league={league}
-                stepperLoc={window.location.pathname
-                    .split('/')
-                    .slice(0, window.location.pathname.split('/').length - 3)
-                    .join('/')}
+                stepperLoc={
+                    isBrowser() &&
+                    window.location.pathname
+                        .split('/')
+                        .slice(0, window.location.pathname.split('/').length - 3)
+                        .join('/')
+                }
             >
                 <VStack spacing="1.25rem">
                     <HStack spacing="1rem">

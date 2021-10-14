@@ -24,18 +24,7 @@ const index = () => {
                         <Button bg="greyText.500" color="white">
                             FIXTURE
                         </Button>
-                        <Button
-                            onClick={() =>
-                                router.push(
-                                    router.push(
-                                        `${window.location.pathname
-                                            .split('/')
-                                            .filter((path) => path !== 'dashboard')
-                                            .join('/')}/ladder`
-                                    )
-                                )
-                            }
-                        >
+                        <Button onClick={() => router.push(window.location.pathname + '/ladder')}>
                             LADDER
                         </Button>
                     </HStack>
@@ -53,7 +42,7 @@ const index = () => {
                     ) : (
                         <>
                             {hasRounds ? (
-                                <RoundsView rounds={grade.fixture} />
+                                <RoundsView rounds={grade.fixture} showEditButtons={true} />
                             ) : (
                                 <CreateCapsule
                                     heading="GENERATE ROUNDS AND MATCHES"
