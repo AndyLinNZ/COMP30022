@@ -184,8 +184,12 @@ const GameContainer = ({ season, grade, game }) => {
                     <HStack>
                         <TimeIcon color="greyText.500" />
                         <Text color="greyText.500">
+<<<<<<< HEAD
                             From {new Date(game?.dateStart).toLocaleString()} to{' '}
                             {new Date(game?.dateFinish).toLocaleString()}{' '}
+=======
+                            {new Date(game?.dateStart).toLocaleString()}
+>>>>>>> 23b23d4ec3eeeffc26317ced9077ca6cac0ae5da
                         </Text>
                     </HStack>
 
