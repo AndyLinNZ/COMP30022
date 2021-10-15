@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import { useTeam } from 'hooks'
+import { useTeam, useMediaQuerySSR } from 'hooks'
 import { useRouter } from 'next/router'
 import { Template } from 'components/Dashboard'
 import {
@@ -18,7 +18,9 @@ import {
     Tab,
     TabPanel,
     Center,
+    IconButton,
 } from '@chakra-ui/react'
+import { ArrowBackIcon } from '@chakra-ui/icons'
 import { Container } from 'components/Dashboard'
 import { MatchContainer } from 'components'
 
@@ -26,6 +28,7 @@ const index = () => {
     const router = useRouter()
     const teamId = router.query?.teamId
     const team = useTeam(teamId)
+    const isDesktop = useMediaQuerySSR(600)
 
     const heading = team?.team?.name ? `${team?.team?.name}` : 'Team Info'
     const tag = `${team?.team?.players?.length} PLAYERS`
@@ -108,6 +111,19 @@ const index = () => {
                 <title>Dribblr | {team?.team?.name || 'Team Details'}</title>
             </Head>
             <Container heading={heading} tag={tag} hover={hover}>
+                <IconButton
+                    icon={<ArrowBackIcon />}
+                    size={isDesktop ? 'md' : 'xs'}
+                    boxSize={isDesktop ? 6 : null}
+                    alignSelf="center"
+                    justifySelf="center"
+                    position="absolute"
+                    left="0rem"
+                    transform="translateX(-40%)"
+                    color="white"
+                    bg="greyBg"
+                    onClick={() => router.back()}
+                />
                 <VStack spacing="1.25rem" align="left">
                     <Tabs variant="soft-rounded" colorScheme="gray" w="100%">
                         <TabList w="100%" paddingY="0.5rem" paddingX="1rem" color="greyText.500">

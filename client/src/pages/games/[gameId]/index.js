@@ -2,6 +2,7 @@ import React from 'react'
 import { useGame, useMediaQuerySSR } from 'hooks'
 import { getLeague, getSeason, getGrade } from 'api'
 import { extractData } from 'utils'
+import { appPaths } from 'utils/constants'
 import Head from 'next/head'
 import { Template } from 'components/Dashboard'
 import { VStack, Box } from '@chakra-ui/react'
@@ -15,6 +16,8 @@ const index = () => {
     const { game } = useGame()
 
     const isDesktop = useMediaQuerySSR(860)
+
+    const leagueLink = `${appPaths.LEAGUE_PATH}/${league?._id}/seasons`
 
     /**
      * This hook uses the game object from a useQuery hook to fetch the appropriate
@@ -54,8 +57,8 @@ const index = () => {
                 spacing="0.75rem"
             >
                 <VStack spacing="0.25rem" alignSelf="flex-start">
-                    <Box fontSize="3rem" lineHeight="1">
-                        {league?.name}
+                    <Box fontSize="3rem" lineHeight="1" _hover={{ color: 'white' }}>
+                        <a href={leagueLink}>{league?.name}</a>
                     </Box>
                     <Box
                         alignSelf="flex-start"
