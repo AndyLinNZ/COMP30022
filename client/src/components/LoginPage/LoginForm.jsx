@@ -26,8 +26,17 @@ const LoginForm = () => {
     } = useForm({
         resolver: yupResolver(loginSchema),
     })
-    const { mutate: loginUser, isLoading } = useLogin({
+    const {
+        mutate: loginUser,
+        isLoading,
+        isSuccess,
+    } = useLogin({
         onSuccess: (response) => {
+            toast({
+                render: () => <Toast title="Successfully logged in" type="success" />,
+                position: 'top',
+                duration: 5000,
+            })
             window.localStorage.setItem('token', response.data.token)
             router.push(appPaths.DASHBOARD_TEAMS_PATH)
         },
@@ -67,7 +76,7 @@ const LoginForm = () => {
                     error={errors.password?.message}
                     {...register('password')}
                 />
-                <FormButton isLoading={isLoading} type="submit">
+                <FormButton isLoading={isLoading || isSuccess} type="submit">
                     LOGIN
                 </FormButton>
             </VStack>

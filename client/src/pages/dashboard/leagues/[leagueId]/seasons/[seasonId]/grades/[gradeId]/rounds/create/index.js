@@ -93,8 +93,13 @@ const index = () => {
         name: 'datesAndLocations',
     })
 
-    const { mutate, isLoading } = useCreateFixtures({
+    const { mutate, isLoading, isSuccess } = useCreateFixtures({
         onSuccess: () => {
+            toast({
+                render: () => <Toast title="Successfully created fixture" type="success" />,
+                position: 'top',
+                duration: 5000,
+            })
             router.push(
                 window.location.pathname
                     .split('/')
@@ -315,7 +320,7 @@ const index = () => {
                             transform="translateX(-50%)"
                         >
                             <FormButton onClick={() => setShowTeamsPage(true)}>BACK</FormButton>
-                            <FormButton bg="orange" inverse type="submit" isLoading={isLoading}>
+                            <FormButton bg="orange" inverse type="submit" isLoading={isLoading || isSuccess}>
                                 SUBMIT
                             </FormButton>
                         </HStack>

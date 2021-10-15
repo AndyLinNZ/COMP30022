@@ -39,6 +39,11 @@ const edit = () => {
         editIsSuccess,
     } = useEditGame({
         onSuccess: () => {
+            toast({
+                render: () => <Toast title="Successfully updated game" type="success" />,
+                position: 'top',
+                duration: 5000,
+            })
             router.push(`${appPaths.GAME_PATH}/${game._id}`)
         },
         onError: (error) => {

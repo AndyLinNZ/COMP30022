@@ -127,3 +127,7 @@ export const editGame = async (game, gameId) => {
 export const editGameStats = async (stats, gameId) => {
     return await axiosInstance.patch(`/game/${gameId}/playerStats`, stats)
 }
+
+export const deleteGrade = async (gradeId) => {
+    return await axiosInstance.delete(`/grade/${gradeId}`)
+}

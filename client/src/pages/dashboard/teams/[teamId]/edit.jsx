@@ -61,6 +61,11 @@ const edit = () => {
         editIsSuccess,
     } = useEditTeam({
         onSuccess: () => {
+            toast({
+                render: () => <Toast title="Successfully updated team" type="success" />,
+                position: 'top',
+                duration: 5000,
+            })
             router.push(appPaths.DASHBOARD_TEAMS_PATH)
         },
         onError: (error) => {

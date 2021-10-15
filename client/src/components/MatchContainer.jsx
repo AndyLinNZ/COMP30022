@@ -11,8 +11,15 @@ const MatchContainer = ({ game }) => {
     const router = useRouter()
     const isDesktop = useMediaQuerySSR(860)
     const { team1, team2, locationName, status, dateStart } = game
-    const team1PointsColour = team1.totalPoints >= team2.totalPoints ? 'gray.800' : 'gray.300'
-    const team2PointsColour = team2.totalPoints >= team1.totalPoints ? 'gray.800' : 'gray.300'
+    const team1PointsColour =
+        team1.totalPoints >= team2.totalPoints || team1.totalPoints === undefined
+            ? 'gray.800'
+            : 'gray.300'
+    const team2PointsColour =
+        team2.totalPoints >= team1.totalPoints || team2.totalPoints === undefined
+            ? 'gray.800'
+            : 'gray.300'
+
     return isDesktop ? (
         <Flex
             w="100%"
@@ -43,11 +50,15 @@ const MatchContainer = ({ game }) => {
                     fontWeight="extrabold"
                     color={team1PointsColour}
                 >
-                    {team1.totalPoints < 0 ? '-' : team1.totalPoints}
+                    {team1.totalPoints === undefined || team1.totalPoints < 0
+                        ? '-'
+                        : team1.totalPoints}
                 </Text>
                 <Tag type={status} text={status} />
                 <Text fontSize="4xl" fontWeight="extrabold" color={team2PointsColour}>
-                    {team2.totalPoints < 0 ? '-' : team2.totalPoints}
+                    {team2.totalPoints === undefined || team2.totalPoints < 0
+                        ? '-'
+                        : team2.totalPoints}
                 </Text>
                 <Text justifySelf="end" fontWeight="bold" fontSize="lg">
                     {team2.team.name}

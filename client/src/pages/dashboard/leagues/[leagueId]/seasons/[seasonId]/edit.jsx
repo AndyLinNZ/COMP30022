@@ -52,6 +52,11 @@ const edit = () => {
         editIsSuccess,
     } = useEditSeason({
         onSuccess: (response) => {
+            toast({
+                render: () => <Toast title="Successfully updated season" type="success" />,
+                position: 'top',
+                duration: 5000,
+            })
             router.push(
                 window.location.pathname
                     .split('/')

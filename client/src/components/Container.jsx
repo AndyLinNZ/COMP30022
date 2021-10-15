@@ -1,8 +1,15 @@
 import { Box, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { Stepper } from './Dashboard/League'
+import { appPaths } from 'utils/constants'
+import { isBrowser } from 'utils'
 
 const Container = ({ league, children, minH = '375px', w = ['95%', '75%'], stepperLoc }) => {
+    const onDashBoard = isBrowser() && window.location.pathname.includes('dashboard')
+    const leagueLink = `${onDashBoard ? appPaths.DASHBOARD_LEAGUES_PATH : appPaths.LEAGUE_PATH}/${
+        league?._id
+    }/seasons`
+
     return (
         <VStack
             pos="absolute"
@@ -13,8 +20,8 @@ const Container = ({ league, children, minH = '375px', w = ['95%', '75%'], stepp
             spacing="0.75rem"
         >
             <VStack spacing="0.25rem" alignSelf="flex-start">
-                <Box fontSize="3rem" lineHeight="1">
-                    {league?.name}
+                <Box fontSize="3rem" lineHeight="1" _hover={{ color: 'white' }}>
+                    <a href={leagueLink}>{league?.name}</a>
                 </Box>
                 <Box
                     alignSelf="flex-start"

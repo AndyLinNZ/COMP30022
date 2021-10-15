@@ -45,7 +45,7 @@ const index = () => {
         setValue('email', user.email)
     }, [user, setValue])
 
-    const { mutate, isLoading, isSuccess } = useUpdateUserDetails({
+    const { mutate, isLoading } = useUpdateUserDetails({
         onSuccess: () => {
             toast({
                 render: () => <Toast title="Successfully updated details" type="success" />,
@@ -108,12 +108,12 @@ const index = () => {
                         {...register('password')}
                     />
                     <HStack spacing="0.5rem">
-                        <FormButton onClick={router.back}>Cancel</FormButton>
+                        <FormButton onClick={router.back}>Back</FormButton>
                         <FormButton
                             type="submit"
                             color="black"
                             bg="orange"
-                            isLoading={isLoading || isSuccess}
+                            isLoading={isLoading}
                         >
                             Confirm
                         </FormButton>
