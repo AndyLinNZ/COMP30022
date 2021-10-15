@@ -124,6 +124,12 @@ const index = () => {
         }
     }
 
+    const calcMaxRounds = () => {
+        if (!season) return 0
+        const { dateStart, dateFinish } = season
+        return moment(dateFinish).diff(moment(dateStart), 'week')
+    }
+
     const onSubmit = (data) => {
         mutate(generateResponse(selectedTeams, data, season?.dateStart))
     }
@@ -154,7 +160,7 @@ const index = () => {
                         <Input
                             placeholder="Enter number"
                             {...register('numRounds')}
-                            label="Number of rounds"
+                            label={`Number of rounds (max ${calcMaxRounds()})`}
                             error={errors.numRounds?.message}
                             type="number"
                             w="300px"
