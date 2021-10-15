@@ -1,15 +1,15 @@
 import React from 'react'
 import { useMediaQuerySSR } from 'hooks'
-import { VStack, HStack, Table, Thead, Tbody, Tr, Th, Td, Box } from '@chakra-ui/react'
+import { HStack, Table, Thead, Tbody, Tr, Th, Td, Box } from '@chakra-ui/react'
 
 const Totals = ({ playersStats }) => {
     const isDesktop = useMediaQuerySSR(860)
     const totals = React.useMemo(() => {
         return playersStats.reduce((prev, next) => {
             return {
-                points: prev.points + next.points,
-                assists: prev.assists + next.assists,
-                steals: prev.steals + next.steals,
+                points: (prev.points ? prev.points : 0) + (next.points ? next.points : 0),
+                assists: (prev.assists ? prev.assists : 0) + (next.assists ? next.assists : 0),
+                steals: (prev.steals ? prev.steals : 0) + (next.steals ? next.steals : 0),
             }
         })
     }, [playersStats])
