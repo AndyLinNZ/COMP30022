@@ -95,6 +95,11 @@ const index = () => {
 
     const { mutate, isLoading, isSuccess } = useCreateFixtures({
         onSuccess: () => {
+            toast({
+                render: () => <Toast title="Successfully created fixture" type="success" />,
+                position: 'top',
+                duration: 5000,
+            })
             router.push(
                 window.location.pathname
                     .split('/')

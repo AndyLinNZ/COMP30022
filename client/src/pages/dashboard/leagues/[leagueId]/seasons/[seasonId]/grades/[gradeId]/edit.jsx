@@ -33,6 +33,11 @@ const edit = () => {
 
     const { mutate, isLoading, isSuccess } = useEditGrade({
         onSuccess: (response) => {
+            toast({
+                render: () => <Toast title="Successfully updated grade" type="success" />,
+                position: 'top',
+                duration: 5000,
+            })
             router.push(
                 window.location.pathname
                     .split('/')

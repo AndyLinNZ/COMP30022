@@ -37,6 +37,11 @@ const index = () => {
 
     const { mutate, isLoading, isSuccess } = useCreateLeague({
         onSuccess: (response) => {
+            toast({
+                render: () => <Toast title="Successfully created league" type="success" />,
+                position: 'top',
+                duration: 5000,
+            })
             router.push(
                 new URL(`${response?.data?.data?._id}/seasons`, window.location.href).pathname
             )

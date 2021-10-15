@@ -32,6 +32,11 @@ const LoginForm = () => {
         isSuccess,
     } = useLogin({
         onSuccess: (response) => {
+            toast({
+                render: () => <Toast title="Successfully logged in" type="success" />,
+                position: 'top',
+                duration: 5000,
+            })
             window.localStorage.setItem('token', response.data.token)
             router.push(appPaths.DASHBOARD_TEAMS_PATH)
         },

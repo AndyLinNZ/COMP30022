@@ -38,6 +38,11 @@ const RegisterForm = () => {
 
     const { mutate, isLoading, isSuccess } = useRegister({
         onSuccess: (response) => {
+            toast({
+                render: () => <Toast title="Successfully registered" type="success" />,
+                position: 'top',
+                duration: 5000,
+            })
             window.localStorage.setItem('token', response.data.token)
             router.push(appPaths.DASHBOARD_TEAMS_PATH)
         },
