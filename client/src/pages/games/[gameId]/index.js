@@ -22,13 +22,13 @@ const index = () => {
      */
     React.useEffect(() => {
         if (game) {
-            getLeague({ queryKey: [null, game?.paths.leagueId] }).then(data => {
+            getLeague({ queryKey: [null, game?.paths.leagueId] }).then((data) => {
                 setLeague(extractData(data))
             })
-            getSeason({ queryKey: [null, game?.paths.seasonId] }).then(data => {
+            getSeason({ queryKey: [null, game?.paths.seasonId] }).then((data) => {
                 setSeason(extractData(data))
             })
-            getGrade({ queryKey: [null, game?.paths.gradeId] }).then(data => {
+            getGrade({ queryKey: [null, game?.paths.gradeId] }).then((data) => {
                 setGrade(extractData(data))
             })
         }
@@ -47,7 +47,7 @@ const index = () => {
             </Head>
             <VStack
                 pos="absolute"
-                top={isDesktop ? '50%' : '68%'}
+                top="50%"
                 left="50%"
                 transform="translate(-50%, -50%)"
                 w={['95%', '75%']}
@@ -68,7 +68,7 @@ const index = () => {
                     </Box>
                 </VStack>
                 <GameContainer season={season} grade={grade} game={game} />
-                <VStack w="100%" overflow="auto" maxHeight="125px">
+                <VStack w="100%">
                     <GameBoxScore game={game} />
                 </VStack>
             </VStack>
