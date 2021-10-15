@@ -4,10 +4,13 @@ import FooterBg from 'components/svg/FooterBg'
 import FooterBgMobile from 'components/svg/FooterBgMobile'
 import LogoWhite from 'components/svg/LogoWhite'
 import { useMediaQuerySSR } from 'hooks'
+import { useRouter } from 'next/router'
 import { isLoggedIn } from 'utils'
 
 const Footer = () => {
     const isDesktop = useMediaQuerySSR(900)
+    const router = useRouter()
+
     return (
         <Box w="100%" pos="relative">
             {isDesktop ? (
@@ -21,7 +24,7 @@ const Footer = () => {
                         alignItems="center"
                     >
                         <LogoWhite />
-                        {!isLoggedIn() &&
+                        {!isLoggedIn() && (
                             <Box mt={4}>
                                 <Button
                                     fontWeight="normal"
@@ -32,6 +35,7 @@ const Footer = () => {
                                     borderRadius="0.75rem"
                                     transition="background 0.5s ease, color 0.5s ease"
                                     _hover={{ bg: 'greyText.500', color: 'white' }}
+                                    onClick={() => router.push(appPaths.LOGIN_PATH)}
                                 >
                                     LOGIN
                                 </Button>
@@ -44,11 +48,12 @@ const Footer = () => {
                                     borderRadius="0.75rem"
                                     transition="background 0.5s ease, color 0.5s ease"
                                     _hover={{ color: 'black.500', bg: 'white' }}
+                                    onClick={() => router.push(appPaths.SIGN_UP_PATH)}
                                 >
                                     SIGNUP
                                 </Button>
                             </Box>
-                        }
+                        )}
                     </Flex>
                     <Flex
                         flexDir="column"
@@ -84,6 +89,7 @@ const Footer = () => {
                                 borderRadius="0.75rem"
                                 transition="background 0.5s ease, color 0.5s ease"
                                 _hover={{ bg: 'greyText.500', color: 'white' }}
+                                onClick={() => router.push(appPaths.LOGIN_PATH)}
                             >
                                 LOGIN
                             </Button>
@@ -96,6 +102,7 @@ const Footer = () => {
                                 borderRadius="0.75rem"
                                 transition="background 0.5s ease, color 0.5s ease"
                                 _hover={{ color: 'black.500', bg: 'white' }}
+                                onClick={() => router.push(appPaths.SIGN_UP_PATH)}
                             >
                                 SIGNUP
                             </Button>
