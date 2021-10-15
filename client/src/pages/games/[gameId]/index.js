@@ -1,5 +1,5 @@
 import React from 'react'
-import { useGame, useMediaQuerySSR } from 'hooks'
+import { useGame } from 'hooks'
 import { getLeague, getSeason, getGrade } from 'api'
 import { extractData } from 'utils'
 import { appPaths } from 'utils/constants'
@@ -14,8 +14,6 @@ const index = () => {
     const [grade, setGrade] = React.useState()
 
     const { game } = useGame()
-
-    const isDesktop = useMediaQuerySSR(860)
 
     const leagueLink = `${appPaths.LEAGUE_PATH}/${league?._id}/seasons`
 

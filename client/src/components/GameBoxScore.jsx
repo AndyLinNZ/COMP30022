@@ -1,6 +1,6 @@
 import React from 'react'
 import { useMediaQuerySSR } from 'hooks'
-import { VStack, HStack, Table, Thead, Tbody, Tr, Th, Td, Box } from '@chakra-ui/react'
+import { HStack, Table, Thead, Tbody, Tr, Th, Td, Box } from '@chakra-ui/react'
 
 const Totals = ({ playersStats }) => {
     const isDesktop = useMediaQuerySSR(860)
