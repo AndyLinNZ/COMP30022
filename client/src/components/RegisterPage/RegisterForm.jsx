@@ -95,7 +95,7 @@ const RegisterForm = () => {
                 />
                 <FormButton
                     type="submit"
-                    disabled={Object.keys(errors) > 0}
+                    disabled={Object.keys(errors).length > 0}
                     isLoading={isLoading || isSuccess}
                 >
                     SIGN UP
