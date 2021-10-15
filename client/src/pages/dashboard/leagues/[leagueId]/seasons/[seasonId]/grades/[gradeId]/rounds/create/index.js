@@ -93,7 +93,7 @@ const index = () => {
         name: 'datesAndLocations',
     })
 
-    const { mutate, isLoading } = useCreateFixtures({
+    const { mutate, isLoading, isSuccess } = useCreateFixtures({
         onSuccess: () => {
             router.push(
                 window.location.pathname
@@ -315,7 +315,7 @@ const index = () => {
                             transform="translateX(-50%)"
                         >
                             <FormButton onClick={() => setShowTeamsPage(true)}>BACK</FormButton>
-                            <FormButton bg="orange" inverse type="submit" isLoading={isLoading}>
+                            <FormButton bg="orange" inverse type="submit" isLoading={isLoading || isSuccess}>
                                 SUBMIT
                             </FormButton>
                         </HStack>
