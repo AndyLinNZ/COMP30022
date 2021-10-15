@@ -5,9 +5,9 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Template, Container } from 'components/Dashboard'
 import { HStack, VStack, useToast } from '@chakra-ui/react'
-import { FormButton, Input } from 'components/Form'
+import { FormButton, Input, DeleteConfirm } from 'components/Form'
 import { useRouter } from 'next/router'
-import { useGrade, useEditGrade } from 'hooks'
+import { useGrade, useEditGrade, useDeleteGrade } from 'hooks'
 import { createErrorMessage } from 'utils'
 import { Toast } from 'components'
 
@@ -19,9 +19,13 @@ const editGradeSchema = yup.object().shape({
 
 const edit = () => {
     const router = useRouter()
+    const toast = useToast()
+
     const { grade } = useGrade()
 
-    const toast = useToast()
+    const [isOpen, setIsOpen] = React.useState(false)
+    const onClose = () => setIsOpen(false)
+
     const {
         handleSubmit,
         register,
@@ -31,7 +35,7 @@ const edit = () => {
         resolver: yupResolver(editGradeSchema),
     })
 
-    const { mutate, isLoading, isSuccess } = useEditGrade({
+    const { mutate, editIsLoading, editIsSuccess } = useEditGrade({
         onSuccess: (response) => {
             toast({
                 render: () => <Toast title="Successfully updated grade" type="success" />,
@@ -61,6 +65,20 @@ const edit = () => {
         },
     })
 
+    const deleteGrade = useDeleteGrade({
+        onSuccess: () => {
+            router.push(
+                window.location.pathname
+                    .split('/')
+                    .slice(0, window.location.pathname.split('/').length - 2)
+                    .join('/')
+            )
+        },
+        onError: (error) => {
+            console.log(error)
+        },
+    })
+
     const onSubmit = (data) => {
         mutate(Object.assign({ _id: grade._id }, data))
     }
@@ -79,6 +97,12 @@ const edit = () => {
                 <title>Dribblr | Edit a Grade</title>
             </Head>
             <Container heading="Update Grade" minH="unset" w="unset !important">
+                <DeleteConfirm
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    onDelete={deleteGrade}
+                    toDeleteText="Grade"
+                />
                 <VStack
                     marginleft={['0', '2rem']}
                     as="form"
@@ -127,9 +151,14 @@ const edit = () => {
                             type="submit"
                             color="black"
                             bg="orange"
-                            isLoading={isLoading || isSuccess}
+                            isLoading={editIsLoading || editIsSuccess}
                         >
                             Update
+                        </FormButton>
+                    </HStack>
+                    <HStack>
+                        <FormButton bg="red" onClick={() => setIsOpen(true)}>
+                            Delete Grade
                         </FormButton>
                     </HStack>
                 </VStack>
