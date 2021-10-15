@@ -6,6 +6,7 @@ import LogoWhite from 'components/svg/LogoWhite'
 import { useMediaQuerySSR } from 'hooks'
 import { useRouter } from 'next/router'
 import { isLoggedIn } from 'utils'
+import { appPaths } from 'utils/constants'
 
 const Footer = () => {
     const isDesktop = useMediaQuerySSR(900)
