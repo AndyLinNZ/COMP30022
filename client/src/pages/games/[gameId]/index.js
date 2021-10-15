@@ -56,7 +56,9 @@ const index = () => {
             >
                 <VStack spacing="0.25rem" alignSelf="flex-start">
                     <Box fontSize="3rem" lineHeight="1" _hover={{ color: 'white' }}>
-                        <a href={leagueLink}>{league?.name}</a>
+                        <a href={leagueLink} target="_blank" rel="noreferrer">
+                            {league?.name}
+                        </a>
                     </Box>
                     <Box
                         alignSelf="flex-start"

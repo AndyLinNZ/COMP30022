@@ -31,7 +31,7 @@ const index = () => {
     const isDesktop = useMediaQuerySSR(600)
 
     const heading = team?.team?.name ? `${team?.team?.name}` : 'Team Info'
-    const tag = `${team?.team?.players?.length} PLAYERS`
+    const tag = `${team?.team?.players ? team?.team?.players.length : 0} PLAYERS`
     const players = team?.team?.players?.map((player) => ` ${player.name}`)
     const gamesStats = team?.team?.games
         .filter(function (game) {
