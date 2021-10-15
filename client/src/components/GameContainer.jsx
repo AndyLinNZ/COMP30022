@@ -29,7 +29,7 @@ const GameContainer = ({ season, grade, game }) => {
             overflowY="auto"
             pos="relative"
         >
-            <VStack spacing="1.25rem" h="100%">
+            <VStack spacing={['0.75rem', '1.25rem']} h="100%">
                 <HStack w="full" spacing="0.5rem">
                     <Button
                         leftIcon={<ChevronLeftIcon />}
