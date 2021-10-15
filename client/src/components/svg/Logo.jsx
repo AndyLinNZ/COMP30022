@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-function SvgComponent({ width, height, ...props }) {
+function SvgComponent({ width, ...props }) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

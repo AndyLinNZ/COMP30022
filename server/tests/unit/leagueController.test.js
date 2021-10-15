@@ -20,8 +20,12 @@ describe('Unit Testing: getAllLeagues in leagueController', () => {
                 seasons: ['611b9bea1f374212cc10bb59'],
                 name: 'Joshua Basketball Association',
                 organisation: 'JoshuaDubar',
-                creator: '611a8a311fb4c81d84a55126',
-                __v: 8,
+                creator: {
+                    _id: '611a8a311fb4c81d84a55126',
+                    email: 'john.smith@example.com',
+                    firstName: 'John',
+                    lastName: 'Smith',
+                },
             },
             {
                 _id: '611bbfe2aaa94829988d0b18',
@@ -29,14 +33,18 @@ describe('Unit Testing: getAllLeagues in leagueController', () => {
                 seasons: [],
                 name: 'Joshua Basketball Association',
                 organisation: 'JoshuaDubar',
-                creator: '611a8a311fb4c81d84a55126',
-                __v: 0,
+                creator: {
+                    _id: '611a8a311fb4c81d84a55126',
+                    email: 'john.smith@example.com',
+                    firstName: 'John',
+                    lastName: 'Smith',
+                },
             },
         ]
 
         League.find = jest.fn().mockResolvedValue(allLeagues)
         League.find.mockImplementationOnce(() => ({
-            lean: jest.fn().mockReturnValue(allLeagues),
+            populate: jest.fn().mockReturnValue(allLeagues),
         }))
 
         await leagueController.getAllLeagues(req, res, next)
@@ -63,7 +71,7 @@ describe('Unit Testing: getAllLeagues in leagueController', () => {
 
         League.find = jest.fn().mockResolvedValue([])
         League.find.mockImplementationOnce(() => ({
-            lean: jest.fn().mockReturnValue([]),
+            populate: jest.fn().mockReturnValue([]),
         }))
 
         await leagueController.getAllLeagues(req, res, next)
@@ -102,7 +110,6 @@ describe('Unit Testing: createLeague in leagueController', () => {
             name: 'Joshua Basketball Association',
             organisation: 'JoshuaDubar',
             creator: '611a8a311fb4c81d84a55126',
-            __v: 0,
         }
 
         req.body = {
@@ -143,7 +150,6 @@ describe('Unit Testing: getAllLeagueSeasons in leagueController', () => {
             name: 'Joshua Basketball Association',
             organisation: 'JoshuaDubar',
             creator: '611a8a311fb4c81d84a55126',
-            __v: 8,
         }
         req.league = new League(leagueDetails)
 
@@ -156,7 +162,6 @@ describe('Unit Testing: getAllLeagueSeasons in leagueController', () => {
                 league: '611a8a661fb4c81d84a5512c',
                 dateStart: '2021-08-12T12:23:34.944Z',
                 dateFinish: '2021-08-14T12:23:34.944Z',
-                __v: 0,
             },
         ]
 
@@ -584,7 +589,7 @@ describe('Unit Testing: deleteLeague in leagueController', () => {
             name: 'Joshua Basketball Association',
             organisation: 'JoshuaDubar',
             creator: '611a8a311fb4c81d84a55126',
-            __v: 0
+            __v: 0,
         })
 
         League.prototype.deleteOne = jest.fn().mockImplementationOnce()
@@ -594,5 +599,98 @@ describe('Unit Testing: deleteLeague in leagueController', () => {
         expect(next).not.toHaveBeenCalled()
         expect(res.status).toHaveBeenCalledTimes(1)
         expect(res.status).toHaveBeenCalledWith(204)
+    })
+})
+
+describe('Unit Testing: updateLeague in leagueController', () => {
+    test('Updating a league with valid leagueName and organisationName should update the league', async () => {
+        const req = mockRequest()
+        const res = mockResponse()
+        const next = mockNext()
+
+        const leagueDetails = {
+            _id: '611bbfe2aaa94829988d0b18',
+            admins: ['611a8a311fb4c81d84a55126'],
+            seasons: [],
+            name: 'Joshua Basketball Association',
+            organisation: 'JoshuaDubar',
+            creator: '611a8a311fb4c81d84a55126',
+            __v: 0,
+        }
+        req.league = new League(leagueDetails)
+
+        req.body = {
+            leagueName: 'Josh League',
+            organisationName: 'Josh Org',
+        }
+
+        const expectedLeague = new League({
+            ...leagueDetails,
+            name: req.body.leagueName,
+            organisaiton: req.body.organisationName,
+        })
+
+        League.findOneAndUpdate = jest.fn().mockResolvedValue(expectedLeague)
+
+        await leagueController.updateLeague(req, res, next)
+
+        const actualRes = {
+            status: 200,
+            json: {
+                success: true,
+                data: expectedLeague,
+            },
+        }
+
+        expect(next).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledTimes(1)
+        expect(res.status).toHaveBeenCalledWith(actualRes.status)
+        expect(res.json).toHaveBeenCalledTimes(1)
+        expect(res.json).toHaveBeenCalledWith(actualRes.json)
+    })
+
+    test('Updating a league with valid leagueName but not organisationName should \
+        update the league dynamically', async () => {
+        const req = mockRequest()
+        const res = mockResponse()
+        const next = mockNext()
+
+        const leagueDetails = {
+            _id: '611bbfe2aaa94829988d0b18',
+            admins: ['611a8a311fb4c81d84a55126'],
+            seasons: [],
+            name: 'Joshua Basketball Association',
+            organisation: 'JoshuaDubar',
+            creator: '611a8a311fb4c81d84a55126',
+            __v: 0,
+        }
+        req.league = new League(leagueDetails)
+
+        req.body = {
+            leagueName: 'Josh League',
+        }
+
+        const expectedLeague = new League({
+            ...leagueDetails,
+            name: req.body.leagueName,
+        })
+
+        League.findOneAndUpdate = jest.fn().mockResolvedValue(expectedLeague)
+
+        await leagueController.updateLeague(req, res, next)
+
+        const actualRes = {
+            status: 200,
+            json: {
+                success: true,
+                data: expectedLeague,
+            },
+        }
+
+        expect(next).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledTimes(1)
+        expect(res.status).toHaveBeenCalledWith(actualRes.status)
+        expect(res.json).toHaveBeenCalledTimes(1)
+        expect(res.json).toHaveBeenCalledWith(actualRes.json)
     })
 })

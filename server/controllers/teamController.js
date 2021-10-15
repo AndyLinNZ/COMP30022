@@ -1,6 +1,6 @@
 const Team = require('../models/team')
 const Player = require('../models/player')
-const { allValidDocumentIds } = require('./utils')
+const { allValidDocumentIds, checkTeamInGrade } = require('./utils')
 
 async function createTeam(req, res, next) {
     try {
@@ -28,9 +28,63 @@ async function createTeam(req, res, next) {
 
 async function getTeam(req, res, next) {
     try {
+        const populateQuery = [
+            {
+                path: 'players',
+                model: 'Player',
+            },
+            {
+                path: 'games',
+                model: 'Game',
+                populate: [
+                    {
+                        path: 'team1.team',
+                        model: 'Team',
+                    },
+                    {
+                        path: 'team1.playersStats',
+                        model: 'PlayerStat',
+                    },
+                    {
+                        path: 'team2.team',
+                        model: 'Team',
+                    },
+                    {
+                        path: 'team2.playersStats',
+                        model: 'PlayerStat',
+                    },
+                ],
+            },
+        ]
+        const team = await req.team.execPopulate(populateQuery)
+
         return res.status(200).json({
             success: true,
-            data: req.team,
+            data: team,
+        })
+    } catch (err) {
+        console.log(err)
+        return next(err)
+    }
+}
+
+async function getAllTeams(req, res, next) {
+    try {
+        var teams = await Team.find()
+
+        if (req.grade) {
+            var unwantedTeams = []
+            for (const team of teams) {
+                if (await checkTeamInGrade(team, req.season)) {
+                    if (!unwantedTeams.includes(team)) unwantedTeams.push(team)
+                }
+            }
+            teams = teams.filter((team) => !unwantedTeams.some((uTeam) => uTeam._id == team._id))
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: teams,
         })
     } catch (err) {
         console.log(err)
@@ -63,12 +117,18 @@ async function updateTeam(req, res, next) {
 
 async function addPlayerToTeam(req, res, next) {
     try {
+        const playerNames = [... new Set(req.body.playerNames.map(player => player.playerName))]
         var newPlayers = await Promise.all(
-            req.body.playerNames.map(async (playerName) => {
-                const newPlayer = new Player({
-                    name: playerName,
-                })
-                const player = await newPlayer.save()
+            playerNames.map(async (playerName) => {
+                // Find if a player already exists
+                var player = await Player.findOne({ name: playerName, team: req.team._id })
+                if (!player) {
+                    const newPlayer = new Player({
+                        team: req.team._id,
+                        name: playerName,
+                    })
+                    player = await newPlayer.save()
+                }
                 return player
             })
         )
@@ -121,6 +181,7 @@ async function deletePlayersFromTeam(req, res, next) {
 module.exports = {
     createTeam,
     getTeam,
+    getAllTeams,
     updateTeam,
     addPlayerToTeam,
     deletePlayersFromTeam,

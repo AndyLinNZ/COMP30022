@@ -1,177 +1,294 @@
 components:
-  schemas:
-    TeamRegistration:
-      properties:
-        teamName:
-          type: string
-      required:
-        - teamName
-      example:
-        teamName: Joshua SENPAl
+    examples:
+        TeamNotFound:
+            value:
+                success: false
+                error: 'Team does not exist'
 
-    TeamAddPlayers:
-      properties:
-        playerNames:
-          type: array
-      required:
-        - playerNames
-      example:
-        playerNames:
-          - "Joshua SENPAl Player"
+        PlayersNotFound:
+            value:
+                success: false
+                error: 'Some players do not exist'
 
-    TeamDeletePlayers:
-      properties:
-        playerIds:
-          type: array
-      required:
-        - playerIds
-      example:
-        playerIds:
-          - "66666f666666ff6666f66666"
+    schemas:
+        UserNotTeamAdminResponse:
+            allOf:
+                - $ref: '#/components/schemas/GenericErrorResponse'
+            example:
+                success: false
+                error: 'User is not a team admin'
 
+        TeamRegistration:
+            properties:
+                teamName:
+                    type: string
+            required:
+                - teamName
+            example:
+                teamName: Joshua SENPAl
+
+        TeamAddPlayers:
+            properties:
+                playerNames:
+                    type: array
+            required:
+                - playerNames
+            example:
+                playerNames:
+                    - playerName: Joshua SENPAl player
+
+        TeamDeletePlayers:
+            properties:
+                playerIds:
+                    type: array
+            required:
+                - playerIds
+            example:
+                playerIds:
+                    - '66666f666666ff6666f66666'
+
+        TeamChange:
+            properties:
+                teamName:
+                    type: string
+            example:
+                teamName: jdubz average team
 
 paths:
-  /team:
-   post:
-      tags:
-        - 'Team'
-      summary: 'Creates a team.'
-      security:
-      - BearerAuth: []  
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TeamRegistration'
-      responses:
-        '201':
-          description: 'Successfully created a team.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-              example:
-                success: true
-                data:
-                  games: []
-                  players: []
-                  admin: 11111a111111aa1111a11111
-                  _id: 55555e555555ee5555e55555
-                  name: Joshua SENPAl
-                  grades: []
-                  __v: 0
+    /team:
+        get:
+            tags:
+                - 'Team'
+            summary: 'Get all teams.'
+            responses:
+                '200':
+                    description: 'Successfully got all teams.'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ApiResponse'
+                            example:
+                                success: true
+                                data:
+                                    - games: []
+                                      players: []
+                                      admin: 11111a111111aa1111a11111
+                                      _id: 55555e555555ee5555e55555
+                                      name: Joshua SENPAl
+                                      grades: []
+                                      __v: 0
+                '400':
+                    description: 'Invalid request.'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GenericErrorResponse'
+        post:
+            tags:
+                - 'Team'
+            summary: 'Creates a team.'
+            security:
+                - BearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/TeamRegistration'
+            responses:
+                '201':
+                    description: 'Successfully created a team.'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ApiResponse'
+                            example:
+                                success: true
+                                data:
+                                    games: []
+                                    players: []
+                                    admin: 11111a111111aa1111a11111
+                                    _id: 55555e555555ee5555e55555
+                                    name: Joshua SENPAl
+                                    grades: []
+                                    __v: 0
 
-  /team/{teamId}:
-    get:
-      tags:
-        - 'Team'
-      summary: 'Find team by id.'
-      parameters:
-      - name: 'teamId'
-        in: 'path'
-        description: 'ID of team to return.'
-        required: true
-        type: 'string'
-      responses:
-        '200':
-          description: 'Successfully found a team.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-              example:
-                success: true
-                data:
-                  games: []
-                  players: []
-                  admin: 11111a111111aa1111a11111
-                  _id: 55555e555555ee5555e55555
-                  name: Joshua SENPAl
-                  grades: []
-                  __v: 0
-        '404':
-          description: 'Team does not exist.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TeamNotFoundResponse'
+    /team/{teamId}:
+        get:
+            tags:
+                - 'Team'
+            summary: 'Find team by id.'
+            parameters:
+                - name: 'teamId'
+                  in: 'path'
+                  description: 'ID of team to return.'
+                  required: true
+                  type: 'string'
+            responses:
+                '200':
+                    description: 'Successfully found a team.'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ApiResponse'
+                            example:
+                                success: true
+                                data:
+                                    games: []
+                                    players: []
+                                    admin: 11111a111111aa1111a11111
+                                    _id: 55555e555555ee5555e55555
+                                    name: Joshua SENPAl
+                                    grades: []
+                                    __v: 0
+                '404':
+                    description: 'Team does not exist.'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TeamNotFoundResponse'
+        patch:
+            tags:
+                - 'Team'
+            summary: 'Update teamName by id.'
+            description: 'This can only be done by a logged in user and the team admin.'
+            parameters:
+                - name: 'teamId'
+                  in: 'path'
+                  description: 'ID of team to patch.'
+                  required: true
+                  type: 'string'
+            security:
+                - BearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/TeamChange'
+            responses:
+                '200':
+                    description: 'Successfully updated a team.'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ApiResponse'
+                            example:
+                                success: true
+                                data:
+                                    games: []
+                                    players: []
+                                    admin: 11111a111111aa1111a11111
+                                    _id: 55555e555555ee5555e55555
+                                    name: jdubz average team
+                                    grades: []
+                                    __v: 0
+                '403':
+                    description: 'User is not a team admin.'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UserNotTeamAdminResponse'
+                '404':
+                    description: 'Team does not exist.'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TeamNotFoundResponse'
 
-  /team/{teamId}/player:
-    post:
-      tags:
-        - 'Team'
-      summary: 'Add a player to a team.'
-      description: 'This can only be done by a logged in user and the team admin.'
-      parameters:
-      - name: 'teamId'
-        in: 'path'
-        description: 'ID of team to add player to.'
-        required: true
-        type: 'string'
-      security:
-      - BearerAuth: []  
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TeamAddPlayers'
-      responses:
-        '200':
-          description: 'Successfully created and added players to a team. Returns full list of players in team.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-              example:
-                success: true
-                data:
-                  - "613c2ff0160d49222703633a"
+    /team/{teamId}/player:
+        post:
+            tags:
+                - 'Team'
+            summary: 'Add a player to a team.'
+            description: 'This can only be done by a logged in user and the team admin.'
+            parameters:
+                - name: 'teamId'
+                  in: 'path'
+                  description: 'ID of team to add player to.'
+                  required: true
+                  type: 'string'
+            security:
+                - BearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/TeamAddPlayers'
+            responses:
+                '200':
+                    description: 'Successfully created and added players to a team. Returns full list of players in team.'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ApiResponse'
+                            example:
+                                success: true
+                                data:
+                                    - '613c2ff0160d49222703633a'
+                '403':
+                    description: 'User is not a team admin.'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UserNotTeamAdminResponse'
+                '404':
+                    description: 'Some of the players in the playerIds array do not exist or team does not exist.'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GenericErrorResponse'
+                            examples:
+                                PlayersNotFound:
+                                    $ref: '#/components/examples/PlayersNotFound'
+                                TeamNotFound:
+                                    $ref: '#/components/examples/TeamNotFound'
 
-    delete:
-      tags:
-        - 'Team'
-      summary: 'Delete a player from a team.'
-      description: 'This can only be done by a logged in user and the team admin.'
-      parameters:
-      - name: 'teamId'
-        in: 'path'
-        description: 'ID of team to remove player from.'
-        required: true
-        type: 'string'
-      security:
-      - BearerAuth: []  
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TeamDeletePlayers'
-      responses:
-        '200':
-          description: 'Successfully delete a player from a team.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-              example:
-                success: true
-                data:
-                  - 66666f666666ff6666f66666
-        '404':
-          description: 'Some of the players in the playerIds array do not exist or team does not exist.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericErrorResponse'
-              examples:
-                PlayersNotFound:
-                  value:
-                    success: false
-                    error: 'Some players do not exist'
-                TeamNotFound:
-                  value:
-                    success: false
-                    error: 'Team does not exist'
-                
+        delete:
+            tags:
+                - 'Team'
+            summary: 'Delete a player from a team.'
+            description: 'This can only be done by a logged in user and the team admin.'
+            parameters:
+                - name: 'teamId'
+                  in: 'path'
+                  description: 'ID of team to remove player from.'
+                  required: true
+                  type: 'string'
+            security:
+                - BearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/TeamDeletePlayers'
+            responses:
+                '200':
+                    description: 'Successfully delete a player from a team.'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ApiResponse'
+                            example:
+                                success: true
+                                data:
+                                    - 66666f666666ff6666f66666
+                '403':
+                    description: 'User is not a team admin.'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UserNotTeamAdminResponse'
+                '404':
+                    description: 'Some of the players in the playerIds array do not exist or team does not exist.'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GenericErrorResponse'
+                            examples:
+                                PlayersNotFound:
+                                    $ref: '#/components/examples/PlayersNotFound'
+                                TeamNotFound:
+                                    $ref: '#/components/examples/TeamNotFound'

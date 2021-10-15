@@ -1,14 +1,16 @@
 import React from 'react'
+import Head from 'next/head'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Template, Container } from 'components/Dashboard'
-import { HStack, VStack } from '@chakra-ui/react'
+import { HStack, VStack, useToast } from '@chakra-ui/react'
 import { DatePicker, FormButton, Input, DeleteConfirm } from 'components/Form'
 import { useRouter } from 'next/router'
 import { useUserDetails, useEditSeason, useDeleteSeason } from 'hooks'
-import { getSeasonFromUser } from 'utils'
+import { createErrorMessage, getSeasonFromUser } from 'utils'
 import moment from 'moment'
+import Toast from 'components/Toast'
 
 const editSeasonSchema = yup.object().shape({
     seasonName: yup.string().max(20, 'Season Name must be at most 20 characters'),
@@ -26,8 +28,11 @@ const editSeasonSchema = yup.object().shape({
 
 const edit = () => {
     const router = useRouter()
+    const toast = useToast()
+
     const { user } = useUserDetails()
     const season = getSeasonFromUser(user)
+
     const [isOpen, setIsOpen] = React.useState(false)
     const onClose = () => setIsOpen(false)
 
@@ -56,7 +61,21 @@ const edit = () => {
             )
         },
         onError: (error) => {
-            console.log(error)
+            const errMsg = error.response?.data?.error
+            toast({
+                render: () => (
+                    <Toast
+                        title={createErrorMessage(
+                            errMsg,
+                            'This League already has a Season with this name',
+                            'Error editing Season'
+                        )}
+                        type="error"
+                    />
+                ),
+                position: 'top',
+                duration: 5000,
+            })
         },
     })
 
@@ -79,17 +98,18 @@ const edit = () => {
     }
 
     React.useEffect(() => {
-        if (season) {
-            reset({
-                seasonName: season?.name,
-                seasonStart: new Date(season.dateStart),
-                seasonFinish: new Date(season.dateFinish),
-            })
-        }
+        reset({
+            seasonName: season?.name,
+            seasonStart: new Date(season.dateStart),
+            seasonFinish: new Date(season.dateFinish),
+        })
     }, [season])
 
     return (
         <Template>
+            <Head>
+                <title>Dribblr | Edit Your Season</title>
+            </Head>
             <Container heading="Update Season" minH="unset" w="unset !important">
                 <DeleteConfirm
                     isOpen={isOpen}

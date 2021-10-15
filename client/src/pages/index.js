@@ -1,99 +1,30 @@
 import React from 'react'
 import Head from 'next/head'
 import { Flex, Box, Checkbox, Text } from '@chakra-ui/react'
-import HomeHeader from 'components/Header/HomeHeader'
 import HeroBackDrop from 'components/svg/HeroBackDrop'
 import HeroBackDropMobile from 'components/svg/HeroBackDropMobile'
 import AssociationSearch from 'components/AssociationPage/AssociationSearch'
 import AssociationGrid from 'components/AssociationPage/AssociationGrid'
 import Logo from 'components/svg/Logo'
-import { useMediaQuerySSR } from 'hooks'
+import { useLeagues, useMediaQuerySSR } from 'hooks'
 import Footer from 'components/Footer'
-import { isBrowser, isLoggedIn } from 'utils'
 import UserHeader from 'components/Header/UserHeader'
-
-const mockTeams = [
-    {
-        name: 'National Basketball Association',
-        org: 'Basketball Victoria',
-        activeSeasons: 2,
-        _id: 0,
-    },
-    {
-        name: 'National Orange Association',
-        org: 'Basketball Victoria',
-        activeSeasons: 1,
-        _id: 1,
-    },
-    {
-        name: 'National Basketball Players',
-        org: 'Basketball Victoria',
-        activeSeasons: 0,
-        _id: 2,
-    },
-    {
-        name: 'Okay Basketball Association',
-        org: 'Basketball Victoria',
-        activeSeasons: 2,
-        _id: 3,
-    },
-    {
-        name: 'National Basketball Association',
-        org: 'Basketball Victoria',
-        activeSeasons: 1,
-        _id: 4,
-    },
-    {
-        name: 'National Basketball Association',
-        org: 'Basketball Victoria',
-        activeSeasons: 0,
-        _id: 5,
-    },
-    {
-        name: 'National Basketball Association',
-        org: 'Basketball Victoria',
-        activeSeasons: 2,
-        _id: 6,
-    },
-    {
-        name: 'National Basketball Association',
-        org: 'Basketball Victoria',
-        activeSeasons: 2,
-        _id: 7,
-    },
-    {
-        name: 'National Basketball Association',
-        org: 'Basketball Victoria',
-        activeSeasons: 2,
-        _id: 8,
-    },
-    {
-        name: 'National Basketball Association',
-        org: 'Basketball Victoria',
-        activeSeasons: 2,
-        _id: 9,
-    },
-    {
-        name: 'National Basketball Association',
-        org: 'Basketball Victoria',
-        activeSeasons: 2,
-        _id: 10,
-    },
-]
 
 export default function Home() {
     const [inSeason, setInSeason] = React.useState(true)
     const [upcomingSeason, setUpcomingSeason] = React.useState(true)
     const [searchValue, setSearchValue] = React.useState('')
     const isDesktop = useMediaQuerySSR(940)
+    const { leagues } = useLeagues()
 
-    const [filteredTeams, setFilteredTeams] = React.useState(mockTeams)
+    const [filteredLeagues, setFilteredLeagues] = React.useState([])
 
     React.useEffect(() => {
-        setFilteredTeams(
-            mockTeams.filter(({ name }) => name.toLowerCase().includes(searchValue.toLowerCase()))
+        setFilteredLeagues(
+            leagues?.filter(({ name }) => name.toLowerCase().includes(searchValue.toLowerCase())) ||
+                []
         )
-    }, [searchValue, mockTeams])
+    }, [searchValue, leagues])
 
     return (
         <Flex maxW="100vw" flexDir="column" justifyContent="flex-start" bg="grey" overflow="hidden">
@@ -107,7 +38,7 @@ export default function Home() {
                     <HeroBackDropMobile />
                 </>
             )}
-            {isLoggedIn() ? <UserHeader isHome /> : <HomeHeader />}
+            <UserHeader />
             <Flex
                 pos="absolute"
                 left="50%"
@@ -151,7 +82,7 @@ export default function Home() {
                     </Checkbox>
                 </Flex>
                 <Flex alignItems="center" width="100%" mt={['2rem', '5rem']}>
-                    <AssociationGrid {...{ inSeason, upcomingSeason, teams: filteredTeams }} />
+                    <AssociationGrid {...{ inSeason, upcomingSeason, leagues: filteredLeagues }} />
                 </Flex>
             </Box>
             <Box w="100%">

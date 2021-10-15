@@ -3,20 +3,19 @@ import { Box, Flex, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React from 'react'
 import EditButton from 'components/Dashboard/League/EditButton'
+import { useMediaQuerySSR } from 'hooks'
 
 const CreateCapsule = ({ heading, borderRadius, buttonNum }) => {
     const router = useRouter()
-    const buttonNums = {0:"12fr", 1:"12fr 1fr", 2:"12fr 1fr 1fr"}
+    const buttonNums = { 0: '12fr', 1: '12fr 1fr', 2: '12fr 1fr 1fr' }
+    const isDesktop = useMediaQuerySSR(1024)
+
     return (
-        <Box
-            display="grid"
-            gridTemplateColumns={buttonNums[buttonNum]}
-            w="100%"
-        >
+        <Box display="grid" gridTemplateColumns={isDesktop && buttonNums[buttonNum]} w="100%">
             <Flex
                 w="100%"
                 h="70px"
-                borderRadius={borderRadius}
+                borderRadius={['24px', borderRadius]}
                 border="2px solid grey"
                 pos="relative"
                 cursor="pointer"
@@ -42,17 +41,24 @@ const CreateCapsule = ({ heading, borderRadius, buttonNum }) => {
                     <AddIcon fontSize="1.25rem" color="greyBg" />
                 </Flex>
 
-                <Text pos="absolute" top="50%" left="5rem" transform="translateY(-50%)" color="white">
+                <Text
+                    pos="absolute"
+                    top="50%"
+                    left="5rem"
+                    transform="translateY(-50%)"
+                    color="white"
+                >
                     {heading}
                 </Text>
             </Flex>
-            {[...Array(buttonNum).keys()].map((num) => {
-                return (
-                    <div key={num} style={{visibility: "hidden" }}>
-                        <EditButton />
-                    </div>
-                )
-            })}
+            {isDesktop &&
+                [...Array(buttonNum).keys()].map((num) => {
+                    return (
+                        <Box visibility="hidden" key={num}>
+                            <EditButton />
+                        </Box>
+                    )
+                })}
         </Box>
     )
 }

@@ -2,7 +2,6 @@ import { Flex, HStack, Text, Box, VStack } from '@chakra-ui/react'
 import { useMediaQuerySSR } from 'hooks'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { Status } from '.'
 
 const GradeContainer = ({ grade, path }) => {
     const router = useRouter()
@@ -20,7 +19,7 @@ const GradeContainer = ({ grade, path }) => {
             _hover={{
                 boxShadow: '0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);',
             }}
-            onClick={() => router.push(window.location.pathname + `/${path}`)}
+            onClick={() => router.push(window.location.pathname + `/${path}/rounds`)}
             paddingX="1rem"
         >
             <Box
@@ -65,7 +64,7 @@ const GradeContainer = ({ grade, path }) => {
             _hover={{
                 boxShadow: '0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);',
             }}
-            onClick={() => router.push(window.location.pathname + `/${path}/grades`)}
+            onClick={() => router.push(window.location.pathname + `/${path}/rounds`)}
             padding="1rem"
             flexDir="column"
         >

@@ -289,3 +289,98 @@ describe('Unit Testing: createRound in gradeController', () => {
         expect(res.json).toHaveBeenCalledWith(actualRes.json)
     })
 })
+
+describe('Unit Testing: updateGrade in gradeController', () => {
+    test('Updating a season with valid gradeName, gradeGender, gradeDifficulty should update the grade', async () => {
+        const req = mockRequest()
+        const res = mockResponse()
+        const next = mockNext()
+
+        const gradeDetails = {
+            _id: '612788ed698aac7c50c3d3b6',
+            name: 'jdubz grade',
+            gender: 'male',
+            difficulty: 'A',
+            season: '60741060d14008bd0efff9d5',
+            teams: ['611ba6a199599722e4d01c38'],
+        }
+        req.grade = new Grade(gradeDetails)
+
+        req.body = {
+            gradeName: 'jdubz',
+            gradeGender: 'mixed',
+            gradeDifficulty: 'B',
+        }
+
+        const expectedGrade = new Grade({
+            ...gradeDetails,
+            name: req.body.gradeName,
+            gender: req.body.gradeGender,
+            difficulty: req.body.gradeDifficulty
+        })
+
+        Grade.findOneAndUpdate = jest.fn().mockResolvedValue(expectedGrade)
+
+        await gradeController.updateGrade(req, res, next)
+
+        const actualRes = {
+            status: 200,
+            json: {
+                success: true,
+                data: expectedGrade,
+            },
+        }
+
+        expect(next).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledTimes(1)
+        expect(res.status).toHaveBeenCalledWith(actualRes.status)
+        expect(res.json).toHaveBeenCalledTimes(1)
+        expect(res.json).toHaveBeenCalledWith(actualRes.json)
+    })
+
+    test('Updating a grade with valid gradeName and gradeGender but not gradeDifficulty should \
+        update the grade dynamically', async () => {
+        const req = mockRequest()
+        const res = mockResponse()
+        const next = mockNext()
+
+        const gradeDetails = {
+            _id: '612788ed698aac7c50c3d3b6',
+            name: 'jdubz grade',
+            gender: 'male',
+            difficulty: 'A',
+            season: '60741060d14008bd0efff9d5',
+            teams: ['611ba6a199599722e4d01c38'],
+        }
+        req.grade = new Grade(gradeDetails)
+
+        req.body = {
+            gradeName: 'jdubz',
+            gradeGender: 'mixed'
+        }
+
+        const expectedGrade = new Grade({
+            ...gradeDetails,
+            name: req.body.gradeName,
+            gender: req.body.gradeGender
+        })
+
+        Grade.findOneAndUpdate = jest.fn().mockResolvedValue(expectedGrade)
+
+        await gradeController.updateGrade(req, res, next)
+
+        const actualRes = {
+            status: 200,
+            json: {
+                success: true,
+                data: expectedGrade,
+            },
+        }
+
+        expect(next).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledTimes(1)
+        expect(res.status).toHaveBeenCalledWith(actualRes.status)
+        expect(res.json).toHaveBeenCalledTimes(1)
+        expect(res.json).toHaveBeenCalledWith(actualRes.json)
+    })
+})

@@ -1,4 +1,35 @@
 components:
+  examples:
+    FixtureExists:
+      value:
+        success: false
+        error: This grade already has a fixture
+
+    TeamsNotEnough:
+      value:
+        success: false
+        error: Need at least 2 teams
+
+    TeamNotInGrade:
+      value:
+        success: false
+        error: Team already exists in a grade for the season
+
+    InvalidDateLocation:
+      value:
+        success: false
+        error: Dates and locations are invalid
+    
+    InvalidNumRounds:
+      value:
+        success: false
+        error: numRounds is invalid
+    
+    NumRoundsRangeError:
+      value:
+        success: false
+        error: numRounds cannot fit within the season
+
   schemas:
     TeamAddition:
       properties:
@@ -9,12 +40,59 @@ components:
       example:
         teamId: 55555e555555ee5555e55555
 
+    GradeChange:
+      properties:
+        gradeName:
+          type: string
+        gradeGender:
+          type: string
+        gradeDifficulty:
+          type: String
+      example:
+        gradeName: Joshua Dubar Grade
+        gradeGender: female
+        gradeDifficulty: E
+    
+    FixtureAddition:
+      properties:
+        teamIds:
+          type: array
+        numRounds:
+          type: integer
+        datesAndLocations:
+          type: array
+      required:
+        - teamIds
+        - numRounds
+        - datesAndLocations
+      example:
+        teamIds: 
+          - 55555e555555ee5555e55555
+          - 6155d80d017d461164e690d1
+        numRounds: 1
+        datesAndLocations:
+          - dateStart: '2021-09-11T12:23:34.944Z'
+            dateFinish: '2021-09-11T12:23:50.944Z'
+            locationName: josh Dubar sports centre
+            location: 
+              type: 'Point'
+              coordinates:
+                - 123.456
+                - 88.666
+
     GradeNotFoundResponse:
       allOf:
         - $ref: '#/components/schemas/GenericErrorResponse'
       example:
         success: false
         error: 'Grade does not exist'
+
+    InvalidRoundIndexResponse:
+      allOf:
+        - $ref: '#/components/schemas/GenericErrorResponse'
+      example:
+        success: false
+        error: 'Invalid round number'
 
 paths:
   /grade/{gradeId}:
@@ -40,10 +118,53 @@ paths:
                 data:
                   difficulty: E
                   gender: female
-                  teams: []
+                  teams:
+                    - _id: 6153e84a72b2dec03665a11b
+                      admin: 6153e84872b2dec03665a105
+                      games:
+                        - 6153e84d72b2dec03665a140
+                      grades:
+                        - 6153e84a72b2dec03665a118
+                      name: John's BBallers
+                      players:
+                        - 6153e84b72b2dec03665a123
+                        - 6153e84b72b2dec03665a124
+                    - _id: 6153e84a72b2dec03665a11c
+                      admin: 6153e84872b2dec03665a106
+                      games:
+                        - 6153e84d72b2dec03665a140
+                      grades:
+                        - 6153e84a72b2dec03665a118
+                      name: Jane's BBallers
+                      players:
+                        - 6153e84b72b2dec03665a126
+                        - 6153e84b72b2dec03665a127
                   _id: 44444d444444dd4444d44444
                   name: Joshua Dubar Grade
                   season: 33333c333333cc3333c33333
+                  fixture:
+                    - _id: 6153e84c72b2dec03665a132
+                      date: '2021-09-29T04:15:04.709Z'
+                      games: []
+                  ladder:
+                    - rank: 1
+                      team:
+                        id: 6153e84a72b2dec03665a11c
+                        name: Jane's BBallers
+                      keyStats:
+                        draws: 0
+                        losses: 0
+                        wins: 1
+                        totalPoints: 3
+                    - rank: 2
+                      team:
+                        id: 6153e84a72b2dec03665a11b
+                        name: John's BBallers
+                      keyStats:
+                        draws: 0
+                        losses: 1
+                        wins: 0
+                        totalPoints: 0
                   __v: 0
         '404':
           description: 'Grade does not exist.'
@@ -78,6 +199,100 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GradeNotFoundResponse'
+    patch:
+      tags:
+        - 'Grade'
+      summary: 'Update gradeName, gradeGender or gradeDifficulty by id.'
+      description: 'This can only be done by a logged in user and the creator of the league of the season.'
+      parameters:
+      - name: 'gradeId'
+        in: 'path'
+        description: 'ID of grade to patch.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GradeChange'
+      responses:
+        '200':
+          description: 'Successfully updated a grade.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  difficulty: E
+                  gender: female
+                  teams: []
+                  _id: 44444d444444dd4444d44444
+                  name: Joshua Dubar Grade
+                  season:
+                    status: completed
+                    grades:
+                      - 44444d444444dd4444d44444
+                    _id: 33333c333333cc3333c33333
+                    name: Summer 2020/2021
+                    dateStart: '2021-08-12T12:23:34.944Z'
+                    dateFinish: '2021-08-14T12:23:34.944Z'
+                    __v: 0
+                  __v: 0
+        '403':
+          description: 'User is not an admin for this league.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotAdminResponse'
+        '404':
+          description: 'Grade does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GradeNotFoundResponse'
+
+  /grade/{gradeId}/round/{roundNum}:
+    get:
+      tags:
+        - 'Grade'
+      summary: 'Find round by number, starting from 1.'
+      parameters:
+      - name: 'gradeId'
+        in: 'path'
+        description: 'ID of the grade.'
+        required: true
+        type: 'string'
+      - name: 'roundNum'
+        in: 'path'
+        description: 'Index of round to return.'
+        required: true
+        type: 'string'
+      responses:
+        '200':
+          description: 'Successfully found a round.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  games: []
+                  grade: 6138a18dbe9bc3b701dec788
+                  teamsOnBye: []
+                  _id: 613c51ca9ba1acc1926855e8
+        '400':
+          description: 'Invalid round number.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvalidRoundIndexResponse'
+
 
   /grade/{gradeId}/team:
     get:
@@ -200,3 +415,70 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GradeNotFoundResponse'
+  
+  /grade/{gradeId}/fixture:
+    post:
+      tags:
+        - 'Grade'
+      summary: 'Add a fixture to a grade'
+      description: 'This can only be done by a logged in user and a league admin of the grade.'
+      parameters:
+      - name: 'gradeId'
+        in: 'path'
+        description: 'ID of the grade.'
+        required: true
+        type: 'string'
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FixtureAddition'
+      responses:
+        '201':
+          description: 'Successfully created a fixture for the grade.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              example:
+                success: true
+                data:
+                  - games: [6156dae78b967e42349517c2]
+                    teamsOnBye: []
+                    _id: 6156dae78b967e42349517bf
+                    grade: 613c32222222222193333331
+                    __v: 0
+        '400':
+          description: 'Validation errors from the request.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericErrorResponse'
+              examples:
+                FixtureExists:
+                  $ref: '#/components/examples/FixtureExists'
+                TeamsNotEnough:
+                  $ref: '#/components/examples/TeamsNotEnough'
+                TeamNotInGrade:
+                  $ref: '#/components/examples/TeamNotInGrade'
+                InvalidDateLocation:
+                  $ref: '#/components/examples/InvalidDateLocation'
+                InvalidNumRounds:
+                  $ref: '#/components/examples/InvalidNumRounds'
+                NumRoundsRangeError:
+                  $ref: '#/components/examples/NumRoundsRangeError'
+        '404':
+          description: 'Some team does not exist.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamNotFoundResponse'
+        '403':
+          description: 'User is not an admin for this team.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotTeamAdminResponse'

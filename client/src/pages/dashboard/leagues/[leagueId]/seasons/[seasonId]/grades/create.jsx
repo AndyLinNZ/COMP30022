@@ -1,30 +1,31 @@
 import React from 'react'
+import Head from 'next/head'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Template, Container } from 'components/Dashboard'
-import { HStack, VStack } from '@chakra-ui/react'
+import { HStack, VStack, useToast } from '@chakra-ui/react'
 import { FormButton, Input } from 'components/Form'
 import { useRouter } from 'next/router'
-import { useCreateSeasonGrade } from 'hooks'
+import { useUserDetails, useCreateSeasonGrade } from 'hooks'
+import { getSeasonFromUser, createErrorMessage } from 'utils'
+import { Toast } from 'components'
 
 const createGradeSchema = yup.object().shape({
     gradeName: yup
         .string()
         .required("The Grade's name is required")
         .max(20, 'Grade Name must be at most 20 characters'),
-    // numberOfRounds: yup
-    //     .number()
-    //     .typeError("Please enter numbers only")
-    //     .required("The number of rounds for this grade is required")
-    //     .min(1, 'There must be at least 1 round in the grade'),
     gradeDifficulty: yup.string().required("The Grade's difficulty is required"),
     gradeGender: yup.string().required("The Grade's gender is required"),
 })
 
 const create = () => {
     const router = useRouter()
+    const { user } = useUserDetails()
+    const season = getSeasonFromUser(user)
 
+    const toast = useToast()
     const {
         handleSubmit,
         register,
@@ -40,7 +41,21 @@ const create = () => {
             )
         },
         onError: (error) => {
-            console.log(error)
+            const errMsg = error.response?.data?.error
+            toast({
+                render: () => (
+                    <Toast
+                        title={createErrorMessage(
+                            errMsg,
+                            'This Season already has a Grade with this name',
+                            'Error creating Grade'
+                        )}
+                        type="error"
+                    />
+                ),
+                position: 'top',
+                duration: 5000,
+            })
         },
     })
 
@@ -50,7 +65,10 @@ const create = () => {
 
     return (
         <Template>
-            <Container heading="Create a new Grade" minH="unset" w="unset !important">
+            <Head>
+                <title>Dribblr | Create a Grade</title>
+            </Head>
+            <Container heading={`Add a Grade to ${season?.name}`} minH="unset" w="unset !important">
                 <VStack
                     marginleft={['0', '2rem']}
                     as="form"

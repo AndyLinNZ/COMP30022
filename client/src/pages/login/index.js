@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import LoginForm from 'components/LoginPage/LoginForm'
 import { Box, VStack } from '@chakra-ui/react'
 import Logo from 'components/svg/Logo'
@@ -14,6 +15,9 @@ const index = () => {
             justifyContent="center"
             flexDir="column"
         >
+            <Head>
+                <title>Dribblr | Log in</title>
+            </Head>
             <VStack spacing="1rem">
                 <Logo width="300" />
                 <LoginForm />

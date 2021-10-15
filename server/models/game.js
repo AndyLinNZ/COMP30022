@@ -8,7 +8,6 @@ const gameSchema = new mongoose.Schema({
     },
     dateFinish: {
         type: Date,
-        required: true,
     },
     round: {
         type: mongoose.Schema.Types.ObjectId,
@@ -31,7 +30,7 @@ const gameSchema = new mongoose.Schema({
             ],
             default: [],
         },
-        totalPoints: Number
+        totalPoints: Number,
     },
     team2: {
         team: {
@@ -49,7 +48,7 @@ const gameSchema = new mongoose.Schema({
             ],
             default: [],
         },
-        totalPoints: Number
+        totalPoints: Number,
     },
     locationName: String,
     location: {
@@ -65,8 +64,9 @@ const gameSchema = new mongoose.Schema({
 })
 
 gameSchema.virtual('status').get(function () {
-    if (this.dateFinish <= Date.now()) return 'completed'
-    if (this.dateFinish > Date.now() && Date.now() > this.dateStart) return 'active'
+    const matchCompleteTime = this.dateFinish ? this.dateFinish : new Date(this.dateStart).setHours(this.dateStart.getHours() + 1.5)
+    if (matchCompleteTime <= Date.now()) return 'completed'
+    if (matchCompleteTime > Date.now() && Date.now() > this.dateStart) return 'active'
     return 'upcoming'
 })
 

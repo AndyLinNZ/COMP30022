@@ -29,12 +29,12 @@ describe('Unit Testing: createTeam in teamController', () => {
         }
 
         const expectedTeam = new Team({
-            teamName: 'joshua dubar team',
+            name: 'joshua dubar team',
             admin: '611a8a311fb4c81d84a55126',
             grades: [],
             players: [],
             games: [],
-            __v: 0
+            __v: 0,
         })
 
         User.prototype.save = jest.fn().mockImplementationOnce()
@@ -65,11 +65,11 @@ describe('Unit Testing: addPlayerToTeam in teamController', () => {
 
         const playerDetails = {
             name: 'joshua dubar player',
-            _id: '613472896ef0dc42247c6520'
+            _id: '613472896ef0dc42247c6520',
         }
 
         const teamDetails = {
-            teamName: 'joshua dubar team',
+            name: 'joshua dubar team',
             admin: '611a8a311fb4c81d84a55126',
             _id: '6131e8b7f69a130fa021f6fd',
             grades: [],
@@ -91,13 +91,16 @@ describe('Unit Testing: addPlayerToTeam in teamController', () => {
         req.user = new User(user)
 
         req.body = {
-            playerNames: ['joshua dubar player'],
+            playerNames: [{ playerName: 'joshua dubar player' }],
         }
 
         const expectedTeam = new Team({ ...teamDetails, players: ['613472896ef0dc42247c6520'] })
 
         Player.prototype.save = jest.fn().mockResolvedValue(new Player(playerDetails))
-        Player.findOneAndUpdate = jest.fn().mockResolvedValue(new Player({ ...playerDetails, team: '6131e8b7f69a130fa021f6fd' }))
+        Player.findOne = jest.fn().mockResolvedValue(null)
+        Player.findOneAndUpdate = jest
+            .fn()
+            .mockResolvedValue(new Player({ ...playerDetails, team: '6131e8b7f69a130fa021f6fd' }))
         Team.findOneAndUpdate = jest.fn().mockResolvedValue(expectedTeam)
 
         await teamController.addPlayerToTeam(req, res, next)
@@ -107,6 +110,52 @@ describe('Unit Testing: addPlayerToTeam in teamController', () => {
             json: {
                 success: true,
                 data: expectedTeam.players,
+            },
+        }
+
+        expect(next).not.toHaveBeenCalled()
+        expect(res.status).toHaveBeenCalledTimes(1)
+        expect(res.status).toHaveBeenCalledWith(actualRes.status)
+        expect(res.json).toHaveBeenCalledTimes(1)
+        expect(res.json).toHaveBeenCalledWith(actualRes.json)
+    })
+})
+
+describe('Unit Testing: updateTeam in teamController', () => {
+    test('Updating a season with valid teamName should update the team', async () => {
+        const req = mockRequest()
+        const res = mockResponse()
+        const next = mockNext()
+
+        const teamDetails = {
+            name: 'joshua dubar team',
+            admin: '611a8a311fb4c81d84a55126',
+            _id: '6131e8b7f69a130fa021f6fd',
+            grades: [],
+            players: [],
+            games: [],
+            __v: 0,
+        }
+        req.team = new Team(teamDetails)
+
+        req.body = {
+            teamName: 'Joshua Dubar Second Team',
+        }
+
+        const expectedTeam = new Team({
+            ...teamDetails,
+            name: req.body.teamName,
+        })
+
+        Team.findOneAndUpdate = jest.fn().mockResolvedValue(expectedTeam)
+
+        await teamController.updateTeam(req, res, next)
+
+        const actualRes = {
+            status: 200,
+            json: {
+                success: true,
+                data: expectedTeam,
             },
         }
 

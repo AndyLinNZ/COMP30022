@@ -24,7 +24,7 @@ module.exports = {
         },
     },
     rules: {
-        indent: ['error', 4],
+        indent: ['error', 4, { SwitchCase: 1 }],
         'linebreak-style': ['error', 'unix'],
         quotes: [
             'error',
@@ -37,5 +37,6 @@ module.exports = {
         semi: ['error', 'never'],
         'no-unused-vars': ['warn', { vars: 'all', args: 'after-used', argsIgnorePattern: '^_' }],
         'react/prop-types': 'off',
+        'react/display-name': 'off',
     },
 }

@@ -50,7 +50,8 @@ const populateIds = (obj) => {
 
 async function setupUsers() {
     await Promise.all(users.map(async (details) => {
-        var newUser = new User(details)
+        let { email, firstName, lastName } = details
+        var newUser = new User({ email, firstName, lastName })
         await User.register(newUser, details.password)
         details.id.objId = newUser._id.toString()
         logger.info(`user ${details.id.name} created: ${details.id.objId}`)

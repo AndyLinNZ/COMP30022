@@ -28,9 +28,6 @@ const testGrade = {
     difficulty: 'E',
     gender: 'female',
 }
-const testRound = {
-    date: '2021-08-11T00:00:00.000Z',
-}
 const testTeam1 = {
     name: 'jdubz1'
 }
@@ -78,7 +75,6 @@ beforeAll(async () => {
 
     // add a new round object to database
     const newRound = new Round({
-        ...testRound,
         grade: grade._id,
     })
     const round = await newRound.save()
@@ -125,35 +121,6 @@ beforeAll(async () => {
     env.team1_id = team1._id.toString()
     env.team2_id = team2._id.toString()
     env.test_game_details = testGame
-})
-
-describe('Integration Testing: finding rounds', () => {
-    test('Should be able to find an existent round', async () => {
-        const res = await request.get(`/api/round/${env.round0_id}`)
-
-        expect(res.statusCode).toBe(200)
-        expect(res.body.success).toBe(true)
-        expect(res.body.data._id).toBe(env.round0_id)
-        expect(res.body.data.games).toStrictEqual([])
-        expect(res.body.data.date).toBe(testRound.date)
-        expect(res.body.data.grade).toBe(env.grade0_id)
-    })
-
-    test('Finding a round with a nonexistent id should return an error', async () => {
-        const res = await request.get(`/api/round/aaaabbbbcccc`)
-
-        expect(res.statusCode).toBe(404)
-        expect(res.body.success).toBe(false)
-        expect(res.body.error).toBe('Round does not exist')
-    })
-
-    test('Finding a grade with an invalid MongoDB object id should return an error', async () => {
-        const res = await request.get(`/api/round/1337`)
-
-        expect(res.statusCode).toBe(404)
-        expect(res.body.success).toBe(false)
-        expect(res.body.error).toBe('Round does not exist')
-    })
 })
 
 describe('Integration Testing: creating games', () => {

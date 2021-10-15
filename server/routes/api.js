@@ -3,7 +3,7 @@ const router = express.Router()
 
 // routes
 router.use('/auth', require('./authRouter'))
-router.use('/user',  require('./userRouter'))
+router.use('/user', require('./userRouter'))
 router.use('/league', require('./leagueRouter'))
 router.use('/season', require('./seasonRouter'))
 router.use('/grade', require('./gradeRouter'))
@@ -14,8 +14,7 @@ router.use('/team', require('./teamRouter'))
 // general error handling
 router.use((err, req, res, _) => {
     if (err?.code === 11000) {
-        const constraints = Object.keys(err.keyPattern).reduce((key1, key2) => `${key1}, ${key2}`)
-        err.message = `${constraints} input pairing not unique.`
+        err.message = 'Input pairing not unique.'
     }
     res.status(err.status || 400).json({
         success: false,

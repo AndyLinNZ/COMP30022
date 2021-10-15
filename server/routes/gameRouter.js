@@ -13,10 +13,17 @@ gameRouter.get('/:gameId', getLeagueGradeSeason, gameController.getGame)
 
 // PATCH
 gameRouter.patch(
-    '/:gameId',
+    '/:gameId/playerStats',
     ensureAuthenticated,
     ensureLeagueAdmin,
-    gameController.updateGame
+    gameController.updateGamePlayerStats
+)
+
+gameRouter.patch(
+    '/:gameId/details',
+    ensureAuthenticated,
+    ensureLeagueAdmin,
+    gameController.updateGameDateLocation
 )
 
 module.exports = gameRouter

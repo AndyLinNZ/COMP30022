@@ -1,14 +1,17 @@
 import React from 'react'
+import Head from 'next/head'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Template, Container } from 'components/Dashboard'
-import { HStack, VStack } from '@chakra-ui/react'
+import { HStack, VStack, useToast } from '@chakra-ui/react'
 import Input from 'components/Form/Input'
 import FormButton from 'components/Form/FormButton'
 import { appPaths } from 'utils/constants'
 import { useRouter } from 'next/router'
 import { useCreateTeam } from 'hooks'
+import { Toast } from 'components'
+import { createErrorMessage } from 'utils'
 
 const createTeamSchema = yup.object().shape({
     teamName: yup
@@ -19,6 +22,7 @@ const createTeamSchema = yup.object().shape({
 
 const index = () => {
     const router = useRouter()
+    const toast = useToast()
 
     const {
         handleSubmit,
@@ -28,14 +32,28 @@ const index = () => {
         resolver: yupResolver(createTeamSchema),
     })
 
-    const { mutate, isLoading } = useCreateTeam({
+    const { mutate, isLoading, isSuccess } = useCreateTeam({
         onSuccess: (response) => {
             router.push(
                 new URL(`${response?.data?.data?._id}/games`, window.location.href).pathname
             )
         },
         onError: (error) => {
-            console.log(error)
+            const errMsg = error.response?.data?.error
+            toast({
+                render: () => (
+                    <Toast
+                        title={createErrorMessage(
+                            errMsg,
+                            'There is already has a Team with this name',
+                            'Error creating Team'
+                        )}
+                        type="error"
+                    />
+                ),
+                position: 'top',
+                duration: 5000,
+            })
         },
     })
 
@@ -45,6 +63,9 @@ const index = () => {
 
     return (
         <Template>
+            <Head>
+                <title>Dribblr | Create a Team</title>
+            </Head>
             <Container heading="Create a new Team" minH="unset" w="unset !important">
                 <VStack
                     marginleft={['0', '2rem']}
@@ -63,7 +84,7 @@ const index = () => {
                         <FormButton onClick={() => router.push(appPaths.DASHBOARD_TEAMS_PATH)}>
                             Back
                         </FormButton>
-                        <FormButton type="submit" color="black" bg="orange" isLoading={isLoading}>
+                        <FormButton type="submit" color="black" bg="orange" isLoading={isLoading || isSuccess}>
                             Create
                         </FormButton>
                     </HStack>

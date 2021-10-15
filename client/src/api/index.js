@@ -15,7 +15,17 @@ export const login = async (user) => {
 }
 
 export const getUserDetails = async () => {
-    const data = await axiosInstance.get('/user/details')
+    return await axiosInstance.get('/user/details')
+}
+
+export const updateUserDetails = async (details) => {
+    const { firstName, lastName, email, password } = details
+    const data = await axiosInstance.patch('/user/details', {
+        firstName,
+        lastName,
+        email,
+        password,
+    })
     return data
 }
 
@@ -31,8 +41,12 @@ export const editTeam = async (team, teamId) => {
     return await axiosInstance.patch(`/team/${teamId}`, team)
 }
 
-export const addPlayerToTeam = async (player) => {
-    return await axiosInstance.post(`/team/${teamId}/player`, player)
+export const addPlayerToTeam = async (playerNames, teamId) => {
+    return await axiosInstance.post(`/team/${teamId}/player`, playerNames)
+}
+
+export const deletePlayersFromTeam = async (playerIds, teamId) => {
+    return await axiosInstance.delete(`/team/${teamId}/player`, { data: playerIds })
 }
 
 export const createLeagueSeason = async (season, leagueId) => {
@@ -41,6 +55,10 @@ export const createLeagueSeason = async (season, leagueId) => {
 
 export const getAllLeagueSeasons = async ({ queryKey }) => {
     return await axiosInstance.get(`/league/${queryKey[1]}/season`)
+}
+
+export const getSeason = async ({ queryKey }) => {
+    return await axiosInstance.get(`/season/${queryKey[1]}`)
 }
 
 export const editSeason = async (season, seasonId) => {
@@ -63,6 +81,49 @@ export const createSeasonGrade = async (grade, seasonId) => {
     return await axiosInstance.post(`/season/${seasonId}/grade`, grade)
 }
 
+export const editGrade = async (grade, gradeId) => {
+    return await axiosInstance.patch(`/grade/${gradeId}`, grade)
+}
+
 export const deleteSeason = async (seasonId) => {
     return await axiosInstance.delete(`/season/${seasonId}`)
+}
+
+export const getAllleagues = async () => {
+    return await axiosInstance.get('/league')
+}
+
+export const getLeague = async ({ queryKey }) => {
+    return await axiosInstance.get(`/league/${queryKey[1]}`)
+}
+
+export const getAllTeams = async ({ queryKey }) => {
+    if (queryKey[1]) {
+        return await axiosInstance.get(`/team?grade=${queryKey[1]}`)
+    }
+    return await axiosInstance.get(`/team`)
+}
+
+export const createFixtures = async (gradeId, data) => {
+    return await axiosInstance.post(`/grade/${gradeId}/fixture`, data)
+}
+
+export const getGrade = async ({ queryKey }) => {
+    return await axiosInstance.get(`/grade/${queryKey[1]}`)
+}
+
+export const getGame = async ({ queryKey }) => {
+    return await axiosInstance.get(`/game/${queryKey[1]}`)
+}
+
+export const getTeam = async ({ queryKey }) => {
+    return await axiosInstance.get(`/team/${queryKey[1]}`)
+}
+
+export const editGame = async (game, gameId) => {
+    return await axiosInstance.patch(`/game/${gameId}/details`, game)
+}
+
+export const editGameStats = async (stats, gameId) => {
+    return await axiosInstance.patch(`/game/${gameId}/playerStats`, stats)
 }

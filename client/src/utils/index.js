@@ -25,9 +25,16 @@ export const getSeasonFromUser = (user) => {
     return leagues?.seasons.find(({ _id }) => _id === router.query.seasonId)
 }
 
-export const getHumanReadableDate = (dateStr) =>
+export const getHumanReadableDate = (dateStr = '1970-01-01') =>
     new Intl.DateTimeFormat('en', {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
     }).format(new Date(dateStr))
+
+export const createErrorMessage = (errMsg, pairingText, defaultText) => {
+    if (errMsg === 'Input pairing not unique.') {
+        return pairingText
+    }
+    return defaultText
+}
