@@ -47,6 +47,11 @@ const index = () => {
         editIsSuccess,
     } = useEditLeague({
         onSuccess: () => {
+            toast({
+                render: () => <Toast title="Successfully updated league" type="success" />,
+                position: 'top',
+                duration: 5000,
+            })
             router.push(appPaths.DASHBOARD_LEAGUES_PATH)
         },
         onError: (error) => {

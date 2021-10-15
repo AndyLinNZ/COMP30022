@@ -37,6 +37,11 @@ const add = () => {
         isSuccess,
     } = useAddPlayerToTeam({
         onSuccess: () => {
+            toast({
+                render: () => <Toast title="Successfully added players" type="success" />,
+                position: 'top',
+                duration: 5000,
+            })
             router.push(appPaths.DASHBOARD_TEAMS_PATH)
         },
         onError: (error) => {

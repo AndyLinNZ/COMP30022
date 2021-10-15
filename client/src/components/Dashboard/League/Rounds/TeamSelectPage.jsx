@@ -84,6 +84,7 @@ const TeamSelectPage = ({ selectedTeams, setSelectedTeams, handleNextPage }) => 
                             <Box w="100%" key={team.name}>
                                 <TeamCapsule
                                     name={team.name}
+                                    id={team._id}
                                     type="add"
                                     onClick={() => handleAddTeam(team)}
                                 />

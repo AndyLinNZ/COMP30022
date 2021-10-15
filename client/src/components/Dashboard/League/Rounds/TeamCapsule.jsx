@@ -1,6 +1,7 @@
 import React from 'react'
-import { Flex, Text } from '@chakra-ui/react'
+import { Flex, Box } from '@chakra-ui/react'
 import { AddIcon, MinusIcon } from '@chakra-ui/icons'
+import { appPaths } from 'utils/constants'
 
 const types = {
     add: {
@@ -18,7 +19,9 @@ const types = {
         icon: <MinusIcon color="white" fontSize="1.5rem" />,
     },
 }
-const TeamCapsule = ({ name, type = 'add', onClick }) => {
+const TeamCapsule = ({ name, id, type = 'add', onClick }) => {
+    const teamLink = `${appPaths.DASHBOARD_TEAMS_PATH}/${id}/games`
+
     return (
         <Flex
             w="100%"
@@ -27,13 +30,23 @@ const TeamCapsule = ({ name, type = 'add', onClick }) => {
             borderRadius="999px"
             border="2px solid grey"
             pos="relative"
-            cursor="pointer"
             alignItems="center"
         >
-            <Text pos="absolute" left="1rem">
-                {name}
-            </Text>
+            <Box
+                fontSize="16px"
+                pos="absolute"
+                left="1rem"
+                _hover={{
+                    cursor: 'pointer',
+                    color: 'lightGray',
+                }}
+            >
+                <a href={teamLink} target="_blank" rel="noreferrer">
+                    {name}
+                </a>
+            </Box>
             <Flex
+                cursor="pointer"
                 pos="absolute"
                 right="0.5rem"
                 borderRadius="50%"

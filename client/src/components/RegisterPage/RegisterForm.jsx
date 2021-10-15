@@ -36,8 +36,13 @@ const RegisterForm = () => {
         resolver: yupResolver(registerSchema),
     })
 
-    const { mutate, isLoading } = useRegister({
+    const { mutate, isLoading, isSuccess } = useRegister({
         onSuccess: (response) => {
+            toast({
+                render: () => <Toast title="Successfully registered" type="success" />,
+                position: 'top',
+                duration: 5000,
+            })
             window.localStorage.setItem('token', response.data.token)
             router.push(appPaths.DASHBOARD_TEAMS_PATH)
         },
@@ -88,7 +93,11 @@ const RegisterForm = () => {
                     error={errors.password?.message}
                     {...register('password')}
                 />
-                <FormButton type="submit" disabled={Object.keys(errors) > 0} isLoading={isLoading}>
+                <FormButton
+                    type="submit"
+                    disabled={Object.keys(errors).length > 0}
+                    isLoading={isLoading || isSuccess}
+                >
                     SIGN UP
                 </FormButton>
             </VStack>

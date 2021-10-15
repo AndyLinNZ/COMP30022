@@ -70,7 +70,7 @@ function calculateTeamGradeStats(grade, teamid) {
     }
 
     grade.fixture.forEach((round) => {
-        round.games.forEach((game) => {
+        round.games.filter(game => game.status === 'completed').forEach((game) => {
             var thisTeam = null
             var oppTeam = null
 

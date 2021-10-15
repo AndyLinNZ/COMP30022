@@ -36,6 +36,11 @@ const create = () => {
 
     const { mutate, isLoading, isSuccess } = useCreateSeasonGrade({
         onSuccess: (response) => {
+            toast({
+                render: () => <Toast title="Successfully created grade" type="success" />,
+                position: 'top',
+                duration: 5000,
+            })
             router.push(
                 new URL(`${response?.data?.data?._id}/rounds`, window.location.href).pathname
             )
