@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react'
+import { Box, Flex, Button, HStack } from '@chakra-ui/react'
 import CircleLogo from 'components/svg/CircleLogo'
 import Logo from 'components/svg/Logo'
 import { useMediaQuerySSR } from 'hooks'
@@ -7,11 +7,12 @@ import React from 'react'
 import { isLoggedIn } from 'utils'
 import { appPaths } from 'utils/constants'
 import HeaderDropdown from './HeaderDropdown'
-import HomeHeader from './HomeHeader'
+// import HomeHeader from './HomeHeader'
 
 const UserHeader = () => {
     const isDesktop = useMediaQuerySSR(1024)
     const router = useRouter()
+
     const [hideLogo, setHideLogo] = React.useState(false)
 
     React.useEffect(() => {
@@ -24,7 +25,7 @@ const UserHeader = () => {
         setUserloggedIn(isLoggedIn())
     })
 
-    return userloggedIn ? (
+    return (
         <Flex
             as="nav"
             w={isDesktop ? '78%' : '100%'}
@@ -50,13 +51,41 @@ const UserHeader = () => {
                     <CircleLogo cursor="pointer" />
                 )}
             </Box>
-
-            <Box pos="absolute" top="1rem" right="1rem" zIndex="dropdown">
-                <HeaderDropdown />
-            </Box>
+            {userloggedIn ? (
+                <Box pos="absolute" top="1rem" right="1rem" zIndex="dropdown">
+                    <HeaderDropdown />
+                </Box>
+            ) : (
+                <HStack spacing="1.25rem" pos="absolute" top="1rem" right="1rem">
+                    <Button
+                        fontWeight="normal"
+                        bg="white"
+                        color="greyText.500"
+                        px="6"
+                        borderRadius="0.75rem"
+                        transition="background 0.5s ease, color 0.5s ease"
+                        _hover={{ bg: 'greyText.500', color: 'white' }}
+                        onClick={() => router.push(appPaths.LOGIN_PATH)}
+                    >
+                        LOGIN
+                    </Button>
+                    {isDesktop && (
+                        <Button
+                            fontWeight="normal"
+                            bg="greyText.500"
+                            color="white"
+                            px="6"
+                            borderRadius="0.75rem"
+                            transition="background 0.5s ease, color 0.5s ease"
+                            _hover={{ color: 'greyText.500', bg: 'white' }}
+                            onClick={() => router.push(appPaths.SIGN_UP_PATH)}
+                        >
+                            SIGNUP
+                        </Button>
+                    )}
+                </HStack>
+            )}
         </Flex>
-    ) : (
-        <HomeHeader />
     )
 }
 
