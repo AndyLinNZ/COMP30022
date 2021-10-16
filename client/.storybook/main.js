@@ -11,8 +11,6 @@ module.exports = {
         '@storybook/addon-controls',
         '@storybook/addon-viewport',
     ],
-    // the following 20 lines of configuration were the most painful things
-    // I have ever experienced
     // first fix: https://github.com/chakra-ui/chakra-ui/blob/main/.storybook/main.js
     // second fix: https://github.com/storybookjs/storybook/issues/11639#issuecomment-689835701
     webpackFinal: (config) => {

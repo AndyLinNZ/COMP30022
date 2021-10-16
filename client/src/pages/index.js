@@ -19,6 +19,7 @@ export default function Home() {
 
     const [filteredLeagues, setFilteredLeagues] = React.useState([])
 
+    // filter leagues based on search term
     React.useEffect(() => {
         setFilteredLeagues(
             leagues?.filter(({ name }) => name.toLowerCase().includes(searchValue.toLowerCase())) ||

@@ -4,6 +4,8 @@ import { HStack, Table, Thead, Tbody, Tr, Th, Td, Box } from '@chakra-ui/react'
 
 const Totals = ({ playersStats }) => {
     const isDesktop = useMediaQuerySSR(860)
+
+    // calculate totals for all columns
     const totals = React.useMemo(() => {
         return playersStats.reduce((prev, next) => {
             return {

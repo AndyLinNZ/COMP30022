@@ -7,7 +7,6 @@ import React from 'react'
 import { isLoggedIn } from 'utils'
 import { appPaths } from 'utils/constants'
 import HeaderDropdown from './HeaderDropdown'
-// import HomeHeader from './HomeHeader'
 
 const UserHeader = () => {
     const isDesktop = useMediaQuerySSR(1024)
@@ -15,6 +14,7 @@ const UserHeader = () => {
 
     const [hideLogo, setHideLogo] = React.useState(false)
 
+    // on first render
     React.useEffect(() => {
         setHideLogo(router.pathname === '/')
     }, [])

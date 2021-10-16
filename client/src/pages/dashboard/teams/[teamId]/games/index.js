@@ -49,6 +49,7 @@ const index = () => {
     const Averages = ({ stats, playerId, gamesStats }) => {
         let statsTotal = 0
 
+        // calculate averages for each statistic
         for (let i = 0; i < gamesStats.length; i++) {
             for (let j = 0; j < gamesStats[i].length; j++) {
                 gamesStats[i][j].playerId === playerId &&

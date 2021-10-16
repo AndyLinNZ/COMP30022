@@ -11,6 +11,8 @@ const MatchContainer = ({ game }) => {
     const router = useRouter()
     const isDesktop = useMediaQuerySSR(860)
     const { team1, team2, locationName, status, dateStart } = game
+
+    // color based off which team won
     const team1PointsColour =
         team1.totalPoints >= team2.totalPoints || team1.totalPoints === undefined
             ? 'gray.800'

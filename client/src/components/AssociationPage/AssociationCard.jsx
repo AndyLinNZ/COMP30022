@@ -6,8 +6,9 @@ import { useMediaQuerySSR } from 'hooks'
 import { useRouter } from 'next/router'
 import { appPaths } from 'utils/constants'
 import { EmailIcon } from '@chakra-ui/icons'
+import BasketBallAvatar from 'components/svg/BasketBallAvatar'
 
-const AssociationCard = ({ name, org, activeSeasons, icon, id, creator }) => {
+const AssociationCard = ({ name, org, activeSeasons, id, creator }) => {
     const isDesktop = useMediaQuerySSR(1024)
     const router = useRouter()
 
@@ -35,7 +36,7 @@ const AssociationCard = ({ name, org, activeSeasons, icon, id, creator }) => {
             }
         >
             <Box pos="absolute" top="-25%">
-                <Avatar src={icon} size="xl" bg="grey" border="2px solid black" />
+                <Avatar icon={<BasketBallAvatar />} size="xl" bg="grey" />
             </Box>
             <Box textAlign="center" color="greyText" mt="1rem" maxW="100%">
                 <Text fontSize="1.125rem">{name}</Text>
@@ -78,7 +79,7 @@ const AssociationCard = ({ name, org, activeSeasons, icon, id, creator }) => {
             }
         >
             <Box pos="absolute" bottom={3} right={3}>
-                <Avatar src={icon} size="lg" bg="grey" />
+                <Avatar icon={<BasketBallAvatar size={60} />} size="lg" bg="grey" />
             </Box>
             <Box textAlign="left" color="greyText" maxW="100%">
                 <Text fontSize="1.125rem" fontWeight="bold">
