@@ -12,7 +12,7 @@ const GameContainer = ({ season, grade, game }) => {
     const hasStatus = game?.status
     const isDesktop = useMediaQuerySSR(860)
     const router = useRouter()
-    console.log(game)
+    
     const team1PointsColour =
         game?.team1.totalPoints >= game?.team2.totalPoints ? 'gray.500' : 'gray.300'
     const team2PointsColour =
