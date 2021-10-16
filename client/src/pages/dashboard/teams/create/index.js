@@ -33,15 +33,13 @@ const index = () => {
     })
 
     const { mutate, isLoading, isSuccess } = useCreateTeam({
-        onSuccess: (response) => {
+        onSuccess: () => {
             toast({
                 render: () => <Toast title="Successfully created team" type="success" />,
                 position: 'top',
                 duration: 5000,
             })
-            router.push(
-                new URL(`${response?.data?.data?._id}/games`, window.location.href).pathname
-            )
+            router.push(appPaths.DASHBOARD_TEAMS_PATH)
         },
         onError: (error) => {
             const errMsg = error.response?.data?.error
