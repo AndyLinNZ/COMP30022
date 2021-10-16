@@ -1,5 +1,6 @@
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'
 
+// some of the basic accessible paths
 export const appPaths = {
     LOGIN_PATH: '/login',
     SIGN_UP_PATH: '/register',

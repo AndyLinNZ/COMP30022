@@ -8,11 +8,12 @@ import Tag from 'components/Dashboard/Tag'
 import LocationIcon from 'components/svg/LocationIcon'
 
 const GameContainer = ({ season, grade, game }) => {
+    // determine whether results have been uploaded
     const hasResults = game?.team1.playersStats?.length > 0 && game?.team2.playersStats?.length > 0
     const hasStatus = game?.status
     const isDesktop = useMediaQuerySSR(860)
     const router = useRouter()
-    
+
     const team1PointsColour =
         game?.team1.totalPoints >= game?.team2.totalPoints ? 'gray.500' : 'gray.300'
     const team2PointsColour =

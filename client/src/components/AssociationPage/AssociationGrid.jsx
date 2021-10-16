@@ -3,6 +3,7 @@ import React from 'react'
 import AssociationCard from 'components/AssociationPage/AssociationCard'
 
 const AssociationGrid = ({ leagues, inSeason, upcomingSeason }) => {
+    // determine leagues to render based on which checkboxes are ticked
     const displayLeagues = React.useMemo(() => {
         return leagues?.filter(({ seasons }) => {
             let valid = false
@@ -30,7 +31,6 @@ const AssociationGrid = ({ leagues, inSeason, upcomingSeason }) => {
                         activeSeasons={
                             seasons.filter((season) => season.status === 'active').length
                         }
-                        icon={null}
                         id={_id}
                         creator={creator}
                     />

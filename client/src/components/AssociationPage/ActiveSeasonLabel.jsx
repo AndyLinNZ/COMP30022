@@ -1,6 +1,7 @@
 import { Text } from '@chakra-ui/react'
 import React from 'react'
 
+// determine styles and display based on number of seasons
 const seasonTextConfig = (seasons) => {
     if (seasons >= 2) {
         return {

@@ -6,6 +6,8 @@ import { appPaths } from 'utils/constants'
 const ProtectedRoute = ({ children }) => {
     const router = useRouter()
 
+    // auto-redirect to login page if user not logged in and
+    // visits a protected route
     React.useEffect(() => {
         if (isBrowser()) {
             const isLoggedIn = !!window.localStorage.getItem('token')
