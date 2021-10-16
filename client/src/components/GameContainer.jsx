@@ -12,7 +12,7 @@ const GameContainer = ({ season, grade, game }) => {
     const hasStatus = game?.status
     const isDesktop = useMediaQuerySSR(860)
     const router = useRouter()
-
+    console.log(game)
     const team1PointsColour =
         game?.team1.totalPoints >= game?.team2.totalPoints ? 'gray.500' : 'gray.300'
     const team2PointsColour =
@@ -46,12 +46,30 @@ const GameContainer = ({ season, grade, game }) => {
                         fontSize={isDesktop ? '1.1rem' : '0.8rem'}
                         lineHeight="1"
                         pl={15}
+                        cursor="pointer"
+                        _hover={{ color: 'darkGrey' }}
                     >
-                        {season?.name}
+                        <a
+                            href={`${appPaths.LEAGUE_PATH}/${game?.paths?.leagueId}/seasons/${game?.paths?.seasonId}/grades`}
+                            rel="noreferrer"
+                        >
+                            {season?.name}
+                        </a>
                     </Text>
                     <ChevronRightIcon w={[10, 12]} h={[10, 12]} color={'grey'} />
-                    <Text color="greyBg" fontSize={isDesktop ? '1.1rem' : '0.8rem'} lineHeight="1">
-                        {grade?.name}
+                    <Text
+                        color="greyBg"
+                        fontSize={isDesktop ? '1.1rem' : '0.8rem'}
+                        lineHeight="1"
+                        cursor="pointer"
+                        _hover={{ color: 'darkGrey' }}
+                    >
+                        <a
+                            href={`${appPaths.LEAGUE_PATH}/${game?.paths?.leagueId}/seasons/${game?.paths?.seasonId}/grades/${game?.paths?.gradeId}/rounds`}
+                            rel="noreferrer"
+                        >
+                            {grade?.name}
+                        </a>
                     </Text>
                     {hasStatus && isDesktop && (
                         <Box pos="absolute" top="3" right="3" py={2.5} px={2.5}>

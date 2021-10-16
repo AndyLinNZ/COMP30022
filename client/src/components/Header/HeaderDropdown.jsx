@@ -18,18 +18,21 @@ const HeaderDropdown = () => {
     const menuItems = [
         {
             name: 'MY TEAMS',
-            onClick: () => router.push(appPaths.DASHBOARD_TEAMS_PATH),
+            onClick: () => {},
             icon: <PeopleAltOutlined />,
+            href: appPaths.DASHBOARD_TEAMS_PATH,
         },
         {
             name: 'MY LEAGUES',
-            onClick: () => router.push(appPaths.DASHBOARD_LEAGUES_PATH),
+            onClick: () => {},
             icon: <GroupWorkOutlined />,
+            href: appPaths.DASHBOARD_LEAGUES_PATH,
         },
         {
             name: 'PROFILE',
             icon: <AccountCircleOutlined />,
-            onClick: () => router.push(appPaths.DASHBOARD_PROFILE_PATH),
+            onClick: () => {},
+            href: appPaths.DASHBOARD_PROFILE_PATH,
         },
         {
             name: 'LOG OUT',
@@ -50,12 +53,16 @@ const HeaderDropdown = () => {
                 </HStack>
             </MenuButton>
             <MenuList minWidth="160px" fontSize="1.25rem">
-                {menuItems.map(({ name, onClick, icon }) => (
+                {menuItems.map(({ name, onClick, icon, href }) => (
                     <MenuItem
                         key={`${name}`}
+                        cursor="pointer"
                         justifyContent="flex-end"
                         onClick={onClick}
                         icon={icon}
+                        as="a"
+                        rel="noreferrer"
+                        href={href ? href : undefined}
                     >
                         {name}
                     </MenuItem>
