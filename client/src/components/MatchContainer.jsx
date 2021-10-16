@@ -93,7 +93,7 @@ const MatchContainer = ({ game }) => {
             _hover={{
                 boxShadow: '0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);',
             }}
-            onClick={() => {}}
+            onClick={() => router.push(`${appPaths.GAME_PATH}/${game._id}`)}
             paddingX="1rem"
         >
             <Grid
