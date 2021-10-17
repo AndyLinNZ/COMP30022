@@ -54,6 +54,11 @@ const formatGameResp = (gameDoc) => {
 const formatGradeResp = (gradeDoc) => {
     const teams = gradeDoc.teams.map(formatTeamMinimal)
     const fixture = []
+    const sortingOrder = {
+        completed: 1,
+        active: 2,
+        upcoming: 3
+    }
     gradeDoc.fixture.forEach((round) => {
         const newRound = pick(round, ['_id', 'grade'])
         const teamsOnBye = round.teamsOnBye.map(formatTeamMinimal)
@@ -80,7 +85,7 @@ const formatGradeResp = (gradeDoc) => {
             newGame.team2 = team2
             games.push(newGame)
         })
-        newRound.games = games
+        newRound.games = formatOrderByStatus(games, sortingOrder)
         newRound.teamsOnBye = teamsOnBye
         fixture.push(newRound)
     })
@@ -88,13 +93,8 @@ const formatGradeResp = (gradeDoc) => {
     return { ...details, teams, fixture }
 }
 
-const formatOrderByStatus = (doc) => {
-    const sortingOrder = {
-        active: 1,
-        upcoming: 2,
-        completed: 3,
-    }
-    return doc.sort((a, b) => {
+const formatOrderByStatus = (doc, sortingOrder) =>
+    doc.sort((a, b) => {
         const first = sortingOrder[a.status]
         const second = sortingOrder[b.status]
 
@@ -105,7 +105,7 @@ const formatOrderByStatus = (doc) => {
         else result = a.dateStart < b.dateStart ? -1 : 1
         return result
     })
-}
+
 
 module.exports = {
     formatLeagueResp,

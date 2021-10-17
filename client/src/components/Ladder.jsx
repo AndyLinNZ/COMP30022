@@ -1,13 +1,21 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import { appPaths } from 'utils/constants'
+import { useMediaQuerySSR } from 'hooks'
 import { Table, Thead, Tbody, Tr, Th, Td, Text } from '@chakra-ui/react'
 
 const Ladder = ({ ladder }) => {
+    const isDesktop = useMediaQuerySSR(860)
     const router = useRouter()
 
-    return ladder ? (
-        <Table variant="striped" size="sm">
+    return ladder && ladder.length !== 0 ? (
+        <Table
+            variant="striped"
+            size="sm"
+            display={isDesktop ? null : 'table'}
+            alignSelf={isDesktop ? null : 'flex-start'}
+            overflowX="auto"
+        >
             <Thead>
                 <Tr borderBottom="2px solid grey">
                     <Th fontSize="1rem">#</Th>

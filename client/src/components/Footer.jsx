@@ -64,8 +64,10 @@ const Footer = () => {
                         left="60%"
                         transform="translate(-60%, 40%)"
                     >
-                        <Link mb={2}>About</Link>
-                        <Link>Contact Us</Link>
+                        <Link mb={2} onClick={() => router.push(appPaths.ABOUT_PATH)}>
+                            About
+                        </Link>
+                        <Link onClick={() => router.push(appPaths.CONTACT_PATH)}>Contact Us</Link>
                     </Flex>
                     <FooterBg />
                 </>
@@ -80,37 +82,43 @@ const Footer = () => {
                         alignItems="center"
                     >
                         <LogoWhite />
-                        <Box mt={4}>
-                            <Button
-                                fontWeight="normal"
-                                bg="white"
-                                color="greyText.500"
-                                px="6"
-                                mr={4}
-                                borderRadius="0.75rem"
-                                transition="background 0.5s ease, color 0.5s ease"
-                                _hover={{ bg: 'greyText.500', color: 'white' }}
-                                onClick={() => router.push(appPaths.LOGIN_PATH)}
-                            >
-                                LOGIN
-                            </Button>
+                        {!isLoggedIn() && (
+                            <Box mt={4}>
+                                <Button
+                                    fontWeight="normal"
+                                    bg="white"
+                                    color="greyText.500"
+                                    px="6"
+                                    mr={4}
+                                    borderRadius="0.75rem"
+                                    transition="background 0.5s ease, color 0.5s ease"
+                                    _hover={{ bg: 'greyText.500', color: 'white' }}
+                                    onClick={() => router.push(appPaths.LOGIN_PATH)}
+                                >
+                                    LOGIN
+                                </Button>
 
-                            <Button
-                                fontWeight="normal"
-                                bg="black.500"
-                                color="white"
-                                px="6"
-                                borderRadius="0.75rem"
-                                transition="background 0.5s ease, color 0.5s ease"
-                                _hover={{ color: 'black.500', bg: 'white' }}
-                                onClick={() => router.push(appPaths.SIGN_UP_PATH)}
-                            >
-                                SIGNUP
-                            </Button>
-                        </Box>
+                                <Button
+                                    fontWeight="normal"
+                                    bg="black.500"
+                                    color="white"
+                                    px="6"
+                                    borderRadius="0.75rem"
+                                    transition="background 0.5s ease, color 0.5s ease"
+                                    _hover={{ color: 'black.500', bg: 'white' }}
+                                    onClick={() => router.push(appPaths.SIGN_UP_PATH)}
+                                >
+                                    SIGNUP
+                                </Button>
+                            </Box>
+                        )}
                         <Flex color="white" mt={8}>
-                            <Link mr={8}>About</Link>
-                            <Link>Contact Us</Link>
+                            <Link mb={2} onClick={() => router.push(appPaths.ABOUT_PATH)}>
+                                About
+                            </Link>
+                            <Link onClick={() => router.push(appPaths.CONTACT_PATH)}>
+                                Contact Us
+                            </Link>
                         </Flex>
                     </Flex>
                     <FooterBgMobile />
