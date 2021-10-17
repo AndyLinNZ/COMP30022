@@ -92,10 +92,14 @@ async function updateLeague(req, res, next) {
 async function getAllLeagueSeasons(req, res, next) {
     try {
         const league = await req.league.execPopulate('seasons')
-
+        const sortingOrder = {
+            active: 1,
+            upcoming: 2,
+            completed: 3
+        }
         return res.status(200).json({
             success: true,
-            data: formatOrderByStatus(league.seasons),
+            data: formatOrderByStatus(league.seasons, sortingOrder),
         })
     } catch (err) {
         console.log(err)
