@@ -1,14 +1,19 @@
 import React from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { Flex, Box, Textarea, Button, VStack, FormLabel, useToast } from '@chakra-ui/react'
-import { Input, FormButton } from 'components/Form'
+import { Flex, Box, VStack, Text, Button } from '@chakra-ui/react'
 import { useMediaQuerySSR } from 'hooks'
 import { appPaths } from 'utils/constants'
 import HeroBackDrop from 'components/svg/HeroBackDrop'
 import HeroBackDropMobile from 'components/svg/HeroBackDropMobile'
 import UserHeader from 'components/Header/UserHeader'
+
+const aboutUs = {
+    whoIsItFor:
+        'Dribblr is a cohesive platform for league personnel, team managers, basketball players or just casual fans.',
+    whatIsIt:
+        'Step by step management of Leagues, Seasons, Grades, Fixtures and matches through a seamless system for admins.',
+}
 
 const index = ({ w = ['95%', '75%'] }) => {
     const router = useRouter()
@@ -54,17 +59,29 @@ const index = ({ w = ['95%', '75%'] }) => {
                         GO BACK HOME
                     </Button>
                 </VStack>
-                <Box
+                <VStack
                     h="100%"
                     w="100%"
                     bg="white"
                     borderRadius="1rem"
+                    spacing="2rem"
                     boxShadow="0 5px 10px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.12);"
                     padding="1rem"
                     minH="375px"
+                    alignItems="left"
                 >
-                    <Text>Dribblr is shit</Text>
-                </Box>
+                    <Text textAlign="center" fontSize="2.5rem" px="4">
+                        Welcome to Dribblr!
+                    </Text>
+                    <Box>
+                        <Text fontSize="2rem">Who is it for?</Text>
+                        <Text fontSize="1.25rem">{aboutUs.whoIsItFor}</Text>
+                    </Box>
+                    <Box>
+                        <Text fontSize="2rem">What is it?</Text>
+                        <Text fontSize="1.25rem">{aboutUs.whatIsIt}</Text>
+                    </Box>
+                </VStack>
             </VStack>
         </Flex>
     )
