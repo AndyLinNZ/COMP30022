@@ -64,8 +64,10 @@ const Footer = () => {
                         left="60%"
                         transform="translate(-60%, 40%)"
                     >
-                        <Link mb={2}>About</Link>
-                        <Link>Contact Us</Link>
+                        <Link mb={2} onClick={() => router.push(appPaths.ABOUT_PATJ)}>
+                            About
+                        </Link>
+                        <Link onClick={() => router.push(appPaths.CONTACT_PATH)}>Contact Us</Link>
                     </Flex>
                     <FooterBg />
                 </>
@@ -111,8 +113,12 @@ const Footer = () => {
                             </Box>
                         )}
                         <Flex color="white" mt={8}>
-                            <Link mr={8}>About</Link>
-                            <Link>Contact Us</Link>
+                            <Link mb={2} onClick={() => router.push(appPaths.ABOUT_PATJ)}>
+                                About
+                            </Link>
+                            <Link onClick={() => router.push(appPaths.CONTACT_PATH)}>
+                                Contact Us
+                            </Link>
                         </Flex>
                     </Flex>
                     <FooterBgMobile />
