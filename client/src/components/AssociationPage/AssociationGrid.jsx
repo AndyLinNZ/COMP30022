@@ -12,7 +12,7 @@ const AssociationGrid = ({ leagues, inSeason, upcomingSeason }) => {
             }
             if (upcomingSeason && seasons.some((season) => season.status === 'upcoming'))
                 return true
-            return valid
+            return (!inSeason && !upcomingSeason) || valid
         })
     }, [leagues, inSeason, upcomingSeason])
     return (
