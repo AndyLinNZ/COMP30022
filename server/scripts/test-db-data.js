@@ -62,8 +62,8 @@ const seasons = [
     {
         id: johnSeason1,
         name: 'Summer 2021/2022',
-        dateStart: Date.now(),
-        dateFinish: Date.now() + 1000 * 86400 * 31,
+        dateStart: Date.now() - 1000*86400*31,
+        dateFinish: Date.now() - 1000*86400*31 + 1000 * 86400 * 60,
         league: johnLeague1,
     },
 ]
@@ -217,8 +217,8 @@ const johnGame6 = new InternalId('john-game-6')
 const games = [
     {
         id: johnGame1,
-        dateStart: Date.now(),
-        dateFinish: Date.now() + 1000 * 60,
+        dateStart: Date.now() - 1000*86400*31,
+        dateFinish: Date.now() - 1000*86400*31 + 1000 * 60,
         round: johnRound1,
         team1: {
             team: johnTeam1,
@@ -262,8 +262,8 @@ const games = [
     },
     {
         id: johnGame2,
-        dateStart: Date.now() + 1000 * 86400 * 3,
-        dateFinish: Date.now() + 1000 * 86400 * 3 + 1000 * 60,
+        dateStart: Date.now() - 1000*86400*31 + 1000 * 86400 * 3,
+        dateFinish: Date.now() - 1000*86400*31 + 1000 * 86400 * 3 + 1000 * 60,
         round: johnRound1,
         team1: {
             team: lygonKangaroos,
@@ -307,8 +307,8 @@ const games = [
     },
     {
         id: johnGame3,
-        dateStart: Date.now() + 1000 * 86400 * 5,
-        dateFinish: Date.now() + 1000 * 86400 * 5 + 1000 * 60,
+        dateStart: Date.now() - 1000*86400*31 + 1000 * 86400 * 5,
+        dateFinish: Date.now() - 1000*86400*31 + 1000 * 86400 * 5 + 1000 * 60,
         round: johnRound1,
         team1: {
             team: swinburneBulls,
@@ -358,8 +358,8 @@ const games = [
     },
     {
         id: johnGame4,
-        dateStart: Date.now() + 1000 * 86400 * 7,
-        dateFinish: Date.now() + 1000 * 86400 * 7 + 1000 * 60,
+        dateStart: Date.now() - 1000*86400*31 + 1000 * 86400 * 7,
+        dateFinish: Date.now() - 1000*86400*31 + 1000 * 86400 * 7 + 1000 * 60,
         round: johnRound2,
         team1: {
             team: janeTeam1,
@@ -403,8 +403,8 @@ const games = [
     },
     {
         id: johnGame5,
-        dateStart: Date.now() + 1000 * 86400 * (7 + 3),
-        dateFinish: Date.now() + 1000 * 86400 * (7 + 3) + 1000 * 60,
+        dateStart: Date.now() - 1000*86400*31 + 1000 * 86400 * (7 + 3),
+        dateFinish: Date.now() - 1000*86400*31 + 1000 * 86400 * (7 + 3) + 1000 * 60,
         round: johnRound2,
         team1: {
             team: brunswickEmus,
@@ -448,8 +448,8 @@ const games = [
     },
     {
         id: johnGame6,
-        dateStart: Date.now() + 1000 * 86400 * (7 + 5),
-        dateFinish: Date.now() + 1000 * 86400 * (7 + 5) + 1000 * 60,
+        dateStart: Date.now() - 1000*86400*31 + 1000 * 86400 * (7 + 5),
+        dateFinish: Date.now() - 1000*86400*31 + 1000 * 86400 * (7 + 5) + 1000 * 60,
         round: johnRound2,
         team1: {
             team: johnTeam1,
