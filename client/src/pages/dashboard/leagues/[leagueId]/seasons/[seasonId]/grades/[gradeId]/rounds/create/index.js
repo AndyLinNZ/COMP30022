@@ -25,7 +25,7 @@ const generateFixturesSchema = yup.object().shape({
             locationName: yup
                 .string()
                 .required(requiredText)
-                .max(40, 'Location must be at most 30 characters'),
+                .max(40, 'Location must be at most 40 characters'),
         })
     ),
 })
