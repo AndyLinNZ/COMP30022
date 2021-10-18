@@ -17,10 +17,11 @@ const createLeagueSchema = yup.object().shape({
     leagueName: yup
         .string()
         .required("The League's name is required")
-        .max(20, 'League Name must be at most 20 characters'),
+        .max(30, 'League Name must be at most 30 characters'),
     organisationName: yup
         .string()
-        .required('Please enter the name of the Organisation running this League'),
+        .required('Please enter the name of the Organisation running this League')
+        .max(30, 'Organisation Name must be at most 30 characters'),
 })
 
 const index = () => {
@@ -99,7 +100,12 @@ const index = () => {
                         <FormButton onClick={() => router.push(appPaths.DASHBOARD_LEAGUES_PATH)}>
                             Back
                         </FormButton>
-                        <FormButton type="submit" color="black" bg="orange" isLoading={isLoading || isSuccess}>
+                        <FormButton
+                            type="submit"
+                            color="black"
+                            bg="orange"
+                            isLoading={isLoading || isSuccess}
+                        >
                             Create
                         </FormButton>
                     </HStack>
