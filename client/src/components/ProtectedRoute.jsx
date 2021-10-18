@@ -18,6 +18,7 @@ const ProtectedRoute = ({ children }) => {
                 appPaths.LEAGUE_PATH,
                 appPaths.LEAGUE_SEASON_PATH,
                 appPaths.LEAGUE_GRADE_PATH,
+                appPaths.DASHBOARD_TEAMS_DETAILS_PATH,
             ]
 
             const pathIsProtected = unprotectedRoutes.indexOf(router.pathname) === -1
