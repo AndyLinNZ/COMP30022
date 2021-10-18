@@ -16,6 +16,7 @@ import {
     TabList,
     TabPanels,
     Tab,
+    Text,
     TabPanel,
     Center,
     IconButton,
@@ -141,13 +142,27 @@ const index = () => {
                                 />
                             </TabPanel>
                             <TabPanel w="100%" overflow="auto" maxHeight="400px">
-                                <VStack spacing="0.5rem" w="100%">
-                                    {team?.team?.games.map((game) => (
-                                        <HStack key={game._id} w="100%">
-                                            <MatchContainer game={game} />
-                                        </HStack>
-                                    ))}
-                                </VStack>
+                                {team?.team?.games?.length !== 0 ? (
+                                    <VStack spacing="0.5rem" w="100%">
+                                        {team?.team?.games.map((game) => (
+                                            <HStack key={game._id} w="100%">
+                                                <MatchContainer game={game} />
+                                            </HStack>
+                                        ))}
+                                    </VStack>
+                                ) : (
+                                    <Text
+                                        fontSize="2rem"
+                                        textAlign="center"
+                                        color="greyText"
+                                        pos="absolute"
+                                        top="50%"
+                                        left="50%"
+                                        transform="translate(-50%, -50%)"
+                                    >
+                                        Not assigned to any games!
+                                    </Text>
+                                )}
                             </TabPanel>
                         </TabPanels>
                     </Tabs>

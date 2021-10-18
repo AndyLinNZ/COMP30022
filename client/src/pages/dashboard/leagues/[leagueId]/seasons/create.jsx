@@ -15,7 +15,7 @@ const createSeasonSchema = yup.object().shape({
     seasonName: yup
         .string()
         .required("The Season's name is required")
-        .max(20, 'Season Name must be at most 20 characters'),
+        .max(30, 'Season Name must be at most 30 characters'),
     seasonStart: yup.date().default(null).required('The starting date of the seasion is required'),
     seasonFinish: yup
         .date()

@@ -22,7 +22,10 @@ const generateFixturesSchema = yup.object().shape({
         yup.object().shape({
             day: yup.string().required(requiredText),
             time: yup.string().required(requiredText),
-            locationName: yup.string().required(requiredText),
+            locationName: yup
+                .string()
+                .required(requiredText)
+                .max(40, 'Location must be at most 30 characters'),
         })
     ),
 })
@@ -326,7 +329,12 @@ const index = () => {
                             transform="translateX(-50%)"
                         >
                             <FormButton onClick={() => setShowTeamsPage(true)}>BACK</FormButton>
-                            <FormButton bg="orange" inverse type="submit" isLoading={isLoading || isSuccess}>
+                            <FormButton
+                                bg="orange"
+                                inverse
+                                type="submit"
+                                isLoading={isLoading || isSuccess}
+                            >
                                 SUBMIT
                             </FormButton>
                         </HStack>
