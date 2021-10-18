@@ -15,7 +15,10 @@ export const appPaths = {
     LEAGUE_PATH: '/leagues',
     LEAGUE_SEASON_PATH: '/leagues/[leagueId]/seasons',
     LEAGUE_GRADE_PATH: '/leagues/[leagueId]/seasons/[seasonId]/grades',
+    LEAGUE_ROUND_PATH: '/leagues/[leagueId]/seasons/[seasonId]/grades/[gradeId]/rounds',
+    LEAGUE_LADDER_PATH: '/leagues/[leagueId]/seasons/[seasonId]/grades/[gradeId]/rounds/ladder',
     GAME_PATH: '/games',
+    GAMES_PATH: '/games/[gameId]',
     ABOUT_PATH: '/about',
     CONTACT_PATH: '/contact',
 }
