@@ -1,18 +1,7 @@
 import React from 'react'
 import { render } from 'utils/test-utils'
 import InfoContainer from 'components/InfoContainer'
-
-const stubSeasonData = {
-    grades: ['616ca8930939fbed67c979d0'],
-    _id: '616ca8930939fbed67c979cd',
-    name: 'Summer 2021/2022',
-    dateStart: '2021-09-16T22:49:50.844Z',
-    dateFinish: '2021-11-15T22:49:50.844Z',
-    league: '616ca8930939fbed67c979c6',
-    __v: 0,
-    status: 'active',
-    id: '616ca8930939fbed67c979cd',
-}
+import { stubSeasonData } from 'tests/stub'
 
 describe('InfoContainer', () => {
     test('renders correctly', () => {
