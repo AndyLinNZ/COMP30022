@@ -93,7 +93,6 @@ const PlayersTable = ({ playersStats, stats_fields }) => {
 
 const GameBoxScore = ({ game }) => {
     const isDesktop = useMediaQuerySSR(860)
-
     const hasResults = game?.team1.playersStats?.length > 0 && game?.team2.playersStats?.length > 0
     const STATS_FIELDS = ['points']
     if (isDesktop) STATS_FIELDS.push('assists', 'steals')
