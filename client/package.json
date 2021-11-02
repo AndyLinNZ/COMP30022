@@ -10,7 +10,7 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "test": "jest",
+        "test": "TZ=UTC jest",
         "precommit": "eslint --fix --ext .js,.jsx",
         "storybook": "start-storybook -p 9009",
         "coverage": "jest --collectCoverage"

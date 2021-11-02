@@ -215,7 +215,7 @@ describe('MatchContainer', () => {
             <p
               class="chakra-text css-0"
             >
-              9/24/2021, 8:49:50 AM
+              9/23/2021, 10:49:50 PM
             </p>
           </div>
           <div

@@ -576,7 +576,7 @@ describe('GameContainer', () => {
           <p
             class="chakra-text css-v0eyye"
           >
-            9/24/2021, 8:49:50 AM
+            9/23/2021, 10:49:50 PM
           </p>
         </div>
         <div

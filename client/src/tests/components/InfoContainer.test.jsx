@@ -37,7 +37,7 @@ describe('InfoContainer', () => {
         <p
           class="chakra-text css-0"
         >
-          Sep 17, 2021
+          Sep 16, 2021
         </p>
         <div
           class="css-0"
@@ -47,7 +47,7 @@ describe('InfoContainer', () => {
         <p
           class="chakra-text css-0"
         >
-          Nov 16, 2021
+          Nov 15, 2021
         </p>
       </div>
     </div>

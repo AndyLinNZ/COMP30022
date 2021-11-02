@@ -340,7 +340,7 @@ describe('RoundsView', () => {
                       <p
                         class="chakra-text css-0"
                       >
-                        9/24/2021, 8:49:50 AM
+                        9/23/2021, 10:49:50 PM
                       </p>
                     </div>
                     <div
@@ -469,7 +469,7 @@ describe('RoundsView', () => {
                       <p
                         class="chakra-text css-0"
                       >
-                        9/27/2021, 8:49:50 AM
+                        9/26/2021, 10:49:50 PM
                       </p>
                     </div>
                     <div
@@ -598,7 +598,7 @@ describe('RoundsView', () => {
                       <p
                         class="chakra-text css-0"
                       >
-                        9/29/2021, 8:49:50 AM
+                        9/28/2021, 10:49:50 PM
                       </p>
                     </div>
                     <div
@@ -762,7 +762,7 @@ describe('RoundsView', () => {
                       <p
                         class="chakra-text css-0"
                       >
-                        9/17/2021, 8:49:50 AM
+                        9/16/2021, 10:49:50 PM
                       </p>
                     </div>
                     <div
@@ -891,7 +891,7 @@ describe('RoundsView', () => {
                       <p
                         class="chakra-text css-0"
                       >
-                        9/20/2021, 8:49:50 AM
+                        9/19/2021, 10:49:50 PM
                       </p>
                     </div>
                     <div
@@ -1020,7 +1020,7 @@ describe('RoundsView', () => {
                       <p
                         class="chakra-text css-0"
                       >
-                        9/22/2021, 8:49:50 AM
+                        9/21/2021, 10:49:50 PM
                       </p>
                     </div>
                     <div
