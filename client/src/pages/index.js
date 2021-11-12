@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import { Flex, Box, Checkbox, Text } from '@chakra-ui/react'
+import { Flex, Box, Checkbox, Text, Spinner } from '@chakra-ui/react'
 import HeroBackDrop from 'components/svg/HeroBackDrop'
 import HeroBackDropMobile from 'components/svg/HeroBackDropMobile'
 import AssociationSearch from 'components/AssociationPage/AssociationSearch'
@@ -15,7 +15,7 @@ export default function Home() {
     const [upcomingSeason, setUpcomingSeason] = React.useState(true)
     const [searchValue, setSearchValue] = React.useState('')
     const isDesktop = useMediaQuerySSR(940)
-    const { leagues } = useLeagues()
+    const { leagues, isLoading } = useLeagues()
 
     const [filteredLeagues, setFilteredLeagues] = React.useState([])
 
@@ -82,8 +82,23 @@ export default function Home() {
                         <Text fontSize="1rem">SEASON UPCOMING</Text>
                     </Checkbox>
                 </Flex>
-                <Flex alignItems="center" width="100%" mt={['2rem', '5rem']}>
-                    <AssociationGrid {...{ inSeason, upcomingSeason, leagues: filteredLeagues }} />
+                <Flex alignItems="center" width="100%" mt={['2rem', '5rem']} pos="relative">
+                    {isLoading ? (
+                        <Spinner
+                            thickness="4px"
+                            speed="0.65s"
+                            emptyColor="gray.200"
+                            color="blue.500"
+                            size="xl"
+                            position="absolute"
+                            top="50%"
+                            left="calc(50% - 1rem)"
+                        />
+                    ) : (
+                        <AssociationGrid
+                            {...{ inSeason, upcomingSeason, leagues: filteredLeagues }}
+                        />
+                    )}
                 </Flex>
             </Box>
             <Box w="100%">
